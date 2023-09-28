@@ -14,6 +14,6 @@ namespace Valghalla.External.Application.Modules.Tasks.Interfaces
         Task<TeamResponsibleTasksFiltersOptionsResponse> GetTeamResponsibleTasksFiltersOptionsAsync(Guid teamResponsibleId, CancellationToken cancellationToken);
         Task<TeamResponsibleTaskResponse> GetTeamResponsibleTasksAsync(Guid teamResponsibleId, GetTeamResponsibleTasksQuery query, CancellationToken cancellationToken);
         Task<TaskAssignmentResponse?> GetTaskAssignmentAsync(string hashValue, Guid? invitationCode, Guid participantId, CancellationToken cancellationToken);
-        Task<bool> CheckIfTaskHasConflicts(Guid participantId, DateTime taskDate, TimeSpan startTime, TimeSpan endTime, CancellationToken cancellationToken);
+        Task<bool> CheckIfTaskHasConflicts(Guid participantId, DateTime taskDate, TimeSpan startTime, TimeSpan endTime, Guid? invitationCode, CancellationToken cancellationToken);
     }
 }

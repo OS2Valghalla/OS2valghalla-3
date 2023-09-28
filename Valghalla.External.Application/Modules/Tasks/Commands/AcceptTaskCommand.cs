@@ -51,7 +51,7 @@ namespace Valghalla.External.Application.Modules.Tasks.Commands
                 return Response.Ok(TaskConfirmationResult.CprInvalidResult());
             }
 
-            var conflicted = await taskQueryRepository.CheckIfTaskHasConflicts(participantId, taskAssignment.TaskDate, taskAssignment.StartTime, taskAssignment.EndTime, cancellationToken);
+            var conflicted = await taskQueryRepository.CheckIfTaskHasConflicts(participantId, taskAssignment.TaskDate, taskAssignment.StartTime, taskAssignment.EndTime, command.InvitationCode, cancellationToken);
 
             if (conflicted)
             {

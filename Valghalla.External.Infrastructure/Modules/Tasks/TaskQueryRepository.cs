@@ -159,17 +159,23 @@ namespace Valghalla.External.Infrastructure.Modules.Tasks
             return mapper.Map<TaskAssignmentResponse>(entity);
         }
 
-        public async Task<bool> CheckIfTaskHasConflicts(Guid participantId, DateTime taskDate, TimeSpan startTime, TimeSpan endTime, CancellationToken cancellationToken)
+        public async Task<bool> CheckIfTaskHasConflicts(Guid participantId, DateTime taskDate, TimeSpan startTime, TimeSpan endTime, Guid? invitationCode, CancellationToken cancellationToken)
         {
-            return await taskAssignments.Include(i => i.TaskType)
+            var queryable = taskAssignments
+                .Include(i => i.TaskType)
                 .Where(i =>
                     i.ParticipantId == participantId &&
                     i.TaskDate == taskDate &&
                     !(
                         (i.TaskType.StartTime > startTime && i.TaskType.StartTime >= endTime) ||
                         (i.TaskType.EndTime <= startTime && i.TaskType.EndTime < endTime)
-                    ))
-                .AnyAsync(cancellationToken);
+                    ));
+					
+            if (invitationCode.HasValue)
+            {
+                queryable = queryable.Where(i => i.InvitationCode != invitationCode);
+            }
+            return await queryable.AnyAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<TaskOverviewItem>> GetTaskOverviewAsync(Guid participantId, GetTaskOverviewQuery query, CancellationToken cancellationToken)
