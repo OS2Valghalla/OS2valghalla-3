@@ -1,0 +1,22 @@
+<mat-form-field class="grow w-full" appearance="fill">
+  <mat-label *ngIf="label">{{ label }}{{ required ? '*' : '' }}</mat-label>
+  <mat-chip-grid #chipGrid>
+    <mat-chip-row *ngFor="let item of selectedItems" (removed)="remove(item)">
+      {{ item[displayProperty] }}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+  </mat-chip-grid>
+  <input matInput
+    #input
+    [formControl]="formControl"
+    [matChipInputFor]="chipGrid"
+    [matAutocomplete]="auto"
+    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+      {{ item[displayProperty] }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

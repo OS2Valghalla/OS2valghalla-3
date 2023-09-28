@@ -1,0 +1,9 @@
+<div class="field-value mb-2">
+  <label class="font-bold">{{ fieldLabel }}</label>
+  <div *ngIf="!linkValue">
+    <ng-content></ng-content>
+  </div>
+  <div>
+    <a *ngIf="linkValue" [href]="cleanLink(linkValue)" target="_blank" rel="noopener"> {{ linkValue }} </a>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<app-card [cardTitle]="'communication.communication_log.communication_log_listing.title' | transloco">
+  <app-table
+    *appTableCtx="data; let typing"
+    [pageSizeOptions]="[50]"
+    defaultSortColumn="createdAt"
+    defaultSortDirection="desc"
+    [rowNgClass]="getRowNgClass">
+    <app-query-container
+      [label]="'shared.action.search' | transloco"
+      [(model)]="data"
+      (queryEvent)="onQuery($event)"
+      (queryFormEvent)="onQueryForm($event)">
+      <mat-accordion multi *appQueryContainerContent>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ 'communication.communication_log.label.status' | transloco }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-dynamic-query
+            [typing]="queryTyping"
+            label="communication.communication_log.label.status"
+            name="status"
+            [localized]="true"></app-dynamic-query>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [columns]="['messageType', 'sendType', 'participantName', 'shortMessage', 'createdAt', 'status']"
+      [mobileColumns]="['participantName', 'status']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="messageType">
+      <ng-container *appHeaderCellDef="typing">{{
+        'communication.communication_log.label.message_type' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.messageType?.text | transloco }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="sendType">
+      <ng-container *appHeaderCellDef="typing">{{
+        'communication.communication_log.label.send_type' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.sendType?.text | transloco }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="participantName">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'communication.communication_log.label.recipient' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">
+        <a class="hover:underline" href="" (click)="$event.preventDefault(); openParticipantProfile(row)">{{
+          row.participantName
+        }}</a>
+      </ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="shortMessage">
+      <ng-container *appHeaderCellDef="typing">{{
+        'communication.communication_log.label.message' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">
+        <a class="hover:underline" href="" (click)="$event.preventDefault(); openDetails(row)">{{
+          row.shortMessage
+        }}</a>
+      </ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="createdAt">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'shared.common.created_at' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.createdAt | appDateTime }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="status">
+      <ng-container *appHeaderCellDef="typing">{{
+        'communication.communication_log.label.status' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.status?.text | transloco }} </ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

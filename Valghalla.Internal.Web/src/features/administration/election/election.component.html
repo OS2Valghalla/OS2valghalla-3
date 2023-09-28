@@ -1,0 +1,104 @@
+<div class="flex flex-row justify-between">
+  <app-page-title>{{ 'administration.election.page_title' | transloco }}</app-page-title>
+</div>
+
+<app-card
+  [cardTitle]="'administration.election.election_listing.title' | transloco"
+  actionTitle="administration.election.action.create_election"
+  actionIcon="add"
+  (action)="openAddElection()">
+  <app-table #tableElections *appTableCtx="data; let typing" defaultSortColumn="title">
+    <app-query-container
+      [hideFilterBtn]="true"
+      cacheKey="election"
+      [label]="'administration.election.election_listing.search' | transloco"
+      [(model)]="data"
+      (queryFormEvent)="onQueryForm($event)"
+      (queryEvent)="onQuery($event)">
+      <mat-accordion multi *appQueryContainerContent> </mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [customActions]="[
+        {
+          icon: 'edit',
+          hoverText: 'administration.election.election_listing.edit_election' | transloco,
+          onClick: this.editElectionDetails
+        },
+        {
+          icon: 'textsms',
+          hoverText: 'administration.election.election_listing.edit_communication_config' | transloco,
+          onClick: this.editCommunicationConfigurations
+        },
+        {
+          icon: 'content_copy',
+          hoverText: 'administration.election.election_listing.duplicate_election' | transloco,
+          onClick: this.duplicateElection
+        },
+        {
+          icon: 'delete',
+          hoverText: 'administration.election.election_listing.delete_election' | transloco,
+          onClick: this.deleteElection,
+          checkIfVisible: this.checkIfShowDeleteElectionButton
+        },
+        {
+          icon: 'delete',
+          disabled: true,
+          hoverText: 'administration.election.messages.cannot_delete_active_election' | transloco,
+          checkIfVisible: this.checkIfShowCannotDeleteActiveElectionButton
+        },
+        {
+          icon: 'delete',
+          disabled: true,
+          hoverText: 'administration.election.messages.cannot_delete_selected_election' | transloco,
+          checkIfVisible: this.checkIfShowCannotDeleteSelectedElectionButton
+        }
+      ]"
+      [columns]="['title', 'electionDate', 'active', 'electionTypeName', '$customActions']"
+      [mobileColumns]="['title']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="title">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.title' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.title }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="electionDate">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.election.label.election_date' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.electionDate | date }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="active">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.active' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">
+        <button
+          mat-icon-button
+          *ngIf="row.active"
+          [matTooltip]="'administration.election.election_listing.deactivate_election' | transloco"
+          (click)="deactivateElection(row)">
+          <mat-icon class="text-lime-600">done</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          *ngIf="!row.active"
+          [matTooltip]="'administration.election.election_listing.activate_election' | transloco"
+          (click)="activateElection(row)">
+          <mat-icon class="text-red-600">clear</mat-icon>
+        </button>
+      </ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="electionTypeName">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.election.label.election_type' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.electionTypeName }}</ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

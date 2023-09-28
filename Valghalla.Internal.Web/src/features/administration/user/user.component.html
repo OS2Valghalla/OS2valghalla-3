@@ -1,0 +1,50 @@
+<div class="flex flex-row justify-between">
+  <app-page-title>{{ 'administration.user.page_title' | transloco }}</app-page-title>
+  <app-page-menu [items]="menuItems"></app-page-menu>
+</div>
+
+<div class="mt-4 mb-4">
+  <app-card
+    cardTitle="administration.user.users.card_title"
+    actionTitle="administration.user.users.card_action_title"
+    actionIcon="add"
+    (action)="openUserInvitationDialog()">
+    <app-table
+      #tableUsers
+      *appTableCtx="users; let typing"
+      defaultSortColumn="name"
+      (loadEvent)="onLoadEvent()"
+      (deleteEvent)="openDeleteUserDialog($event)"
+      (editEvent)="openEditUserDialog($event)">
+      <ng-container
+        [appTableTyping]="typing"
+        appHeaderRowDef
+        [sticky]="true"
+        [columns]="['name', 'roleId', 'activated', '$actionsEditDelete']"
+        [mobileColumns]="['name']">
+      </ng-container>
+
+      <ng-container [appTableTyping]="typing" appColumnDef="name">
+        <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.name' | transloco }}</ng-container>
+        <ng-container *appCellDef="typing; let row">{{ row.name }}</ng-container>
+      </ng-container>
+
+      <ng-container [appTableTyping]="typing" appColumnDef="roleId">
+        <ng-container *appHeaderCellDef="typing">{{
+          'administration.user.users.columns.role' | transloco
+        }}</ng-container>
+        <ng-container *appCellDef="typing; let row">{{ getRoleName(row.roleId) | transloco }}</ng-container>
+      </ng-container>
+
+      <ng-container [appTableTyping]="typing" appColumnDef="activated">
+        <ng-container *appHeaderCellDef="typing">{{
+          'administration.user.users.columns.activated' | transloco
+        }}</ng-container>
+        <ng-container *appCellDef="typing; let row">
+          <mat-icon *ngIf="row.activated" class="text-lime-600">done</mat-icon>
+          <mat-icon *ngIf="!row.activated" class="text-red-600">clear</mat-icon>
+        </ng-container>
+      </ng-container>
+    </app-table>
+  </app-card>
+</div>

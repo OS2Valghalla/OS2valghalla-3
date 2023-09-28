@@ -1,0 +1,30 @@
+<app-registration-step-indicator
+  class="d-print-none"
+  *ngIf="stepIndicatorVisible"
+  type="task"
+  [currentStep]="3"></app-registration-step-indicator>
+
+<div class="alert alert-warning" [ngClass]="{ 'mt-8': stepIndicatorVisible }" role="alert">
+  <div class="alert-body">
+    <h3 class="alert-heading">{{ 'tasks.task_acceptance_validation_failure.alert.header' | transloco }}</h3>
+    <p class="alert-text">
+      {{ 'tasks.task_acceptance_validation_failure.alert.content' | transloco }}
+    </p>
+  </div>
+</div>
+<h1>{{ 'tasks.task_acceptance_validation_failure.header' | transloco }}</h1>
+<span *ngIf="ageFailed">{{ 'tasks.task_acceptance_validation_failure.age_rule' | transloco }}</span>
+<br *ngIf="ageFailed" />
+<span *ngIf="municipalityFailed">{{ 'tasks.task_acceptance_validation_failure.municipality_rule' | transloco }}</span>
+<br *ngIf="municipalityFailed" />
+<span *ngIf="citizenshipFailed">{{ 'tasks.task_acceptance_validation_failure.citizenship_rule' | transloco }}</span>
+<br *ngIf="citizenshipFailed" />
+<span *ngIf="legalAdultFailed">{{ 'tasks.task_acceptance_validation_failure.legal_adult_rule' | transloco }}</span>
+<br *ngIf="legalAdultFailed" />
+<span *ngIf="aliveFailed">{{ 'tasks.task_acceptance_validation_failure.alive_rule' | transloco }}</span>
+<br *ngIf="aliveFailed" />
+<span>{{ 'tasks.task_acceptance_validation_failure.content' | transloco }} </span>
+<a href="#" [routerLink]="contactUsUrl" class="function-link">{{
+  'tasks.task_acceptance_validation_failure.contact_us' | transloco
+}}</a
+>.

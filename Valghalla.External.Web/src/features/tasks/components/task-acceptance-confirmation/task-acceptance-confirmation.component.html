@@ -1,0 +1,26 @@
+<app-registration-step-indicator
+  class="d-print-none"
+  *ngIf="stepIndicatorVisible"
+  type="task"
+  [currentStep]="3"></app-registration-step-indicator>
+
+<ng-container *appSpinner="loading">
+  <h1 [ngClass]="{ 'mt-8': stepIndicatorVisible }">
+    {{ 'tasks.task_acceptance_confirmation.header' | transloco }}: {{ taskPreview.taskType.title }}
+  </h1>
+  <div class="w-percent-70">
+    <div class="alert alert--show-icon alert-success">
+      <div class="alert-body">
+        <h3 class="alert-heading">
+          {{ 'tasks.task_acceptance_confirmation.alert.header' | transloco }}: {{ taskPreview.taskType.title }}
+        </h3>
+      </div>
+    </div>
+    <app-task-preview [model]="taskPreview"></app-task-preview>
+    <div class="py-2" [innerHTML]="taskPreview.taskType.description"></div>
+    <a href="javascript:if(window.print)window.print()" class="function-link">
+      <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#print"></use></svg>
+      {{ 'tasks.task_acceptance_confirmation.print_confirmation' | transloco }}
+    </a>
+  </div>
+</ng-container>

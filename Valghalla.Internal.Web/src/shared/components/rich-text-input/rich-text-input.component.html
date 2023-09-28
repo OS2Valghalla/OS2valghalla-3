@@ -1,0 +1,17 @@
+<ng-container *ngIf="!options.hidden">
+  <h3>{{ options.fieldTitle | transloco }}</h3>
+  <div class="NgxEditor" *ngIf="!options.isRichText">
+    <div class="single-line">
+      <input matInput type="text" [ngModel]="control.value" (ngModelChange)="onChange($event)" />
+    </div>
+  </div>
+  <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" *ngIf="options.isRichText && !readonly"></ngx-editor-menu>
+  <ngx-editor [disabled]="readonly"
+              [editor]="editor"
+              [ngModel]="control.value"
+              (ngModelChange)="onChange($event)"
+              (focusOut)="setTouched()"
+              placeholder=""
+              outputFormat="html"
+              *ngIf="options.isRichText"></ngx-editor>
+</ng-container>

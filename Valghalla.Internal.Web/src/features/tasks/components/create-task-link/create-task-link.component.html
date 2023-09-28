@@ -1,0 +1,109 @@
+<h3 *ngIf="!election" [innerHtml]="'start.no_election_message' | transloco">  
+</h3>
+<app-card *ngIf="election"
+  cardTitle="app.navigation.tasks.create_task_link_description">
+    <div class="w-full" *appShowSkeleton="loading">
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedTeamId" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.team' | transloco" (selectionChange)="onTeamFilterChanged()">            
+                <mat-option *ngFor="let team of teams" [value]="team.id">
+                {{ team.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedDate" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.all_dates' | transloco" (selectionChange)="onFilterChanged()">
+                <mat-option>{{'tasks.labels.all_dates' | transloco}}</mat-option>
+                <mat-option *ngFor="let electionDate of electionDates" [value]="electionDate">
+                    {{ electionDate | date }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedAreaIds" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.area' | transloco" (selectionChange)="onFilterChanged()" multiple="true">            
+                <mat-option *ngFor="let area of areas" [value]="area.id">
+                {{ area.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedWorkLocationIds" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.work_location' | transloco" (selectionChange)="onFilterChanged()" multiple="true">            
+                <mat-option *ngFor="let workLocation of displayWorkLocations" [value]="workLocation.id">
+                {{ workLocation.title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedTaskTypeIds" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.task_type' | transloco" (selectionChange)="onFilterChanged()" multiple="true">            
+                <mat-option *ngFor="let taskType of displayTaskTypes" [value]="taskType.id">
+                {{ taskType.title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4">
+            <mat-select [(ngModel)]="trustedTaskType" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.trusted_task_types' | transloco" (selectionChange)="onFilterChanged()">
+                <mat-option>{{'tasks.labels.all_types' | transloco}}</mat-option>
+                <mat-option [value]="true">{{'shared.common.yes' | transloco}}</mat-option>
+                <mat-option [value]="false">{{'shared.common.no' | transloco}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="w-full" *appShowSkeleton="loading">
+        <div class="space-y-2">
+            <div class="flex flex-row space-x-4">
+              <mat-form-field class="basis-full" appearance="fill" *appShowSkeleton="loading" [hintLabel]="'tasks.labels.link_description' | transloco">
+                <mat-label>{{ 'shared.common.link' | transloco }}</mat-label>
+                <input matInput type="text" [(ngModel)]="tasksLink" [disabled]="loading || generatingLink" readonly="true" />
+              </mat-form-field>
+              <div class="basis-48 h-[55px]">
+                <button class="min-h-full"
+                  mat-raised-button
+                  color="primary"
+                  (click)="copyFilteredTasksLink()"
+                  [disabled]="loading || generatingLink">
+                  <mat-icon>link</mat-icon>
+                  <span *ngIf="!generatingLink">{{ 'tasks.actions.copy_link' | transloco }}</span>
+                  <mat-icon *ngIf="generatingLink">
+                    <mat-spinner color="primary" diameter="18"></mat-spinner>
+                  </mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div class="w-full">
+        <h3 class="pt-4 pb-2">{{ 'tasks.labels.filtered_tasks_list_header' | transloco }}</h3>
+        <div class="flex flex-row gap-4 flex-wrap" *appShowSkeleton="loading || loadingTasks">
+            <ng-container *ngFor="let task of tasks">
+                <app-card
+                    [cardTitle]="task.taskTypeName"
+                    minWidth="450px"
+                    maxWidth="450px"
+                    minHeight="375px"
+                    [useAnimation]="true"
+                    [isLink]="true"
+                    [color]="task.trustedTask ? 'accent' : 'primary'">
+                    <p>{{ task.workLocationName }}</p>
+                    <p>{{ task.workLocationAddress }}, {{ task.workLocationPostalCode }} {{ task.workLocationCity }}</p>
+                    <p class="pb-4">{{ task.taskDate | date }}, {{ task.taskTypeStartTime.substring(0, 5) }}</p>
+                    <p class="pb-4">{{ 'tasks.labels.trusted_task' | transloco }}: {{ (task.trustedTask ? 'shared.common.yes' : 'shared.common.no') | transloco }}</p>
+                    <p class="line-clamp-3" [innerHtml]="task.taskTypeDescription"></p>
+                    <p class="pt-4">{{ 'tasks.labels.available_tasks' | transloco }}: {{ task.availableTasksCount }}</p>
+                    <div class="pt-4 grid grid-cols-2 absolute bottom-4 left-4 w-full">
+                        <div class="">
+                           <a class="hover:underline font-semibold" [href]="task.taskDetailsPageUrl" target="_blank">{{ 'shared.common.link' | transloco }}</a>
+                        </div>
+                        <div class="absolute bottom-0 right-8">
+                            <button
+                                mat-raised-button
+                                color="primary"
+                                (click)="copyTaskDetailsLink(task.taskDetailsPageUrl)">
+                                <mat-icon>link</mat-icon>
+                                <span>{{ 'tasks.actions.copy_link' | transloco }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </app-card>
+            </ng-container>
+        </div>
+    </div>
+</app-card>

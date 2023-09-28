@@ -1,0 +1,183 @@
+<ng-content select="app-query-container"></ng-content>
+<div class="flex table-wrapper">
+  <div
+    [ngClass]="
+      panelVisible ? tablePanelSize + ' transition-[width] duration-500' : 'w-full transition-[width] duration-500'
+    ">
+    <ng-container [ngTemplateOutlet]="table"></ng-container>
+  </div>
+  <div
+    [ngClass]="
+      panelVisible
+        ? mainPanelSize + ' pl-1 pb-4 transition-[width] duration-500'
+        : 'w-0 transition-[width] duration-500'
+    ">
+    <ng-container [ngTemplateOutlet]="tablePanel"></ng-container>
+  </div>
+</div>
+
+<mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+<ng-template #table>
+  <mat-table [dataSource]="dataSource" matSort [matSortActive]="defaultSortColumn" [matSortDirection]="defaultSortDirection">
+    <!-- Optional selection column -->
+    <ng-container matColumnDef="$selection">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          *ngIf="!onlyOneSelection"
+          (change)="$event ? toggleAllRows() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? onRowSelecting(row) : null"
+          [checked]="selection.isSelected(row[headerRowDef.key])">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Optional actions column -->
+    <ng-container matColumnDef="$actionsEditDelete">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row; let idx = index">
+        <div [matTooltip]="'shared.action.edit' | transloco">
+          <button mat-icon-button (click)="onEditRow(row, idx)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div [matTooltip]="'shared.action.delete' | transloco">
+          <button mat-icon-button (click)="onDeleteRow(row, idx)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Optional action Edit column -->
+    <ng-container matColumnDef="$actionEdit">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row; let idx = index">
+        <div [matTooltip]="'shared.action.edit' | transloco">
+          <button mat-icon-button (click)="onEditRow(row, idx)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Optional action Delete column -->
+    <ng-container matColumnDef="$actionDelete">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row; let idx = index">
+        <div [matTooltip]="'shared.action.delete' | transloco">
+          <button mat-icon-button (click)="onDeleteRow(row, idx)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Optional custom actions column -->
+    <ng-container matColumnDef="$customActions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row; let idx = index">
+        <ng-container *ngFor="let customAction of customActions">
+          <div [matTooltip]="customAction.hoverText">
+            <button
+            mat-icon-button
+            (click)="customAction.onClick && customAction.onClick(row)"            
+            [disabled]="customAction.disabled"
+            *ngIf="!customAction.checkIfVisible || customAction.checkIfVisible(row)">
+            <mat-icon>{{ customAction.icon }}</mat-icon>
+          </button>
+          </div>          
+        </ng-container>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Provided columns -->
+    <ng-container *ngFor="let columnDef of columnDefs" [matColumnDef]="columnDef.name">
+      <ng-container
+        *ngIf="columnDef.headerCellDef.appHeaderCellDefSortable; then sortableHeader; else header"></ng-container>
+
+      <ng-template #header>
+        <mat-header-cell
+          *matHeaderCellDef
+          [ngStyle]="{ width: columnDef.columnWidth ?? null, flex: columnDef.columnWidth ? 'unset' : null }">
+          <ng-container [ngTemplateOutlet]="columnDef.headerCellDef.templateRef"></ng-container>
+        </mat-header-cell>
+      </ng-template>
+
+      <ng-template #sortableHeader>
+        <mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          [ngStyle]="{ width: columnDef.columnWidth ?? null, flex: columnDef.columnWidth ? 'unset' : null }">
+          <ng-container [ngTemplateOutlet]="columnDef.headerCellDef.templateRef"></ng-container>
+        </mat-header-cell>
+      </ng-template>
+
+      <mat-cell
+        *matCellDef="let row; let idx = index"
+        [ngClass]="columnDef.cell?.cellClass"
+        [ngStyle]="
+          mergeStyleObj([
+            columnDef.cell?.cellStyle,
+            { width: columnDef.columnWidth ?? null, flex: columnDef.columnWidth ? 'unset' : null }
+          ])
+        "
+        (click)="onCellClick(columnDef, row, idx)">
+        <div class="w-full" [ngClass]="{ hidden: dataLoaded }">
+          <span *appShowSkeleton="true"></span>
+        </div>
+        <div
+          [ngClass]="{ hidden: !dataLoaded, truncate: !columnDef.cell?.disableTruncate }"
+          [matTooltip]="toolTipContent(row[columnDef.name])">
+          <ng-container
+            [ngTemplateOutlet]="columnDef.cellDef.templateRef"
+            [ngTemplateOutletContext]="{
+              $implicit: row,
+              index: idx,
+              pageIndex: paginator.pageIndex,
+              pageSize: paginator.pageSize
+            }"></ng-container>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Header row -->
+    <mat-header-row *matHeaderRowDef="visibleColumns; sticky: headerRowDef.sticky"></mat-header-row>
+
+    <!-- Row -->
+    <mat-row *matRowDef="let row; columns: visibleColumns" [ngClass]="!!rowNgClass && rowNgClass(row)"></mat-row>
+
+    <!-- No Data Row -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell pl-3" colspan="4">
+        {{ 'shared.error.message_no_item' | transloco }}
+      </td>
+    </tr>
+  </mat-table>
+</ng-template>
+
+<ng-template #tablePanel>
+  <div class="flex h-full w-full" *ngIf="panelRow && tablePanelDef">
+    <div class="relative rounded-ful bg-gray-500 w-1 mr-3">
+      <button
+        mat-mini-fab
+        color="primary"
+        class="absolute !w-6 !h-6 -left-3 top-5"
+        style="z-index: 100"
+        (click)="closePanel()">
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+    </div>
+    <div class="w-full">
+      <ng-template
+        [ngTemplateOutlet]="tablePanelDef.templateRef"
+        [ngTemplateOutletContext]="{ $implicit: panelRow }"></ng-template>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,36 @@
+<app-form-page
+  class="inline-block w-1/2"
+  [formTitle]="'administration.teams.action.create_team' | transloco"
+  [updateFormTitle]="('administration.teams.action.edit_team' | transloco) + ' ' + item?.name"
+  [formGroup]="form"
+  (create)="createTeam($event)"
+  (update)="updateTeam($event)"
+  (delete)="deleteTeam($event)"
+  (onCancelClick)="cancel()">
+  <div class="grid grid-cols-1 gap-4">
+    <div class="flex flex-col">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'shared.common.name' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="name" />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'administration.teams.columns.short_name' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="shortName" />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'shared.common.description' | transloco }}</mat-label>
+        <textarea matInput rows="5" formControlName="description"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+      <app-participant-picker
+        [label]="'administration.teams.columns.responsibles' | transloco"
+        [multiple]="true"
+        formControlName="responsibleIds"></app-participant-picker>
+    </div>
+  </div>
+</app-form-page>

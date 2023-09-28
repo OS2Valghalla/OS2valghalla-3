@@ -1,0 +1,24 @@
+<app-registration-step-indicator
+  class="d-print-none"
+  *ngIf="stepIndicatorVisible"
+  type="task"
+  [currentStep]="3"></app-registration-step-indicator>
+
+<div class="alert alert-warning" [ngClass]="{ 'mt-8': stepIndicatorVisible }" role="alert">
+  <div class="alert-body">
+    <h3 class="alert-heading">{{ 'tasks.task_acceptance_conflict.alert.header' | transloco }}</h3>
+    <p class="alert-text">
+      {{ 'tasks.task_acceptance_conflict.alert.content' | transloco }}
+    </p>
+  </div>
+</div>
+<h1>{{ 'tasks.task_acceptance_conflict.header' | transloco }}</h1>
+<span>{{ 'tasks.task_acceptance_conflict.content_1' | transloco }}</span>
+<br />
+<span>{{ 'tasks.task_acceptance_conflict.content_2' | transloco }} </span>
+<a href="#" [routerLink]="contactUsUrl" class="function-link">{{
+  'tasks.task_acceptance_conflict.contact_us' | transloco
+}}</a
+>.
+<br />
+<span>{{ 'tasks.task_acceptance_conflict.content_3' | transloco }}</span>

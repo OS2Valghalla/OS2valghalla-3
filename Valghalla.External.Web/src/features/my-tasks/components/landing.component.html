@@ -1,0 +1,86 @@
+<div class="d-flex flex-row justify-content-between">
+    <h1>{{ 'tasks.my_tasks.header' | transloco }}</h1>
+    <a href="javascript:if(window.print)window.print()" class="function-link">
+        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#print"></use></svg>
+        {{ 'shared.common.print' | transloco }}
+    </a>
+</div>
+<ng-container *appSpinner="loading">
+    <ng-container *ngFor="let task of tasks; let i = index">
+        <h2 *ngIf="(i == 0 || tasks[i - 1].taskDate != task.taskDate)">{{ getTaskDateFriendlyText(task.taskDate) }} </h2>
+        <div class="d-flex flex-row justify-content-between align-items-center">
+            <div>
+                <h3>{{ task.taskType.title }}</h3>
+                <div class="alert alert-warning alert--show-icon" *ngIf="task.isLocked" role="alert">
+                    <div class="alert-body">
+                        <h4 class="alert-heading" [innerHTML]="('tasks.my_tasks.labels.task_locked_warning' | transloco)"></h4>
+                    </div>
+                </div>
+            </div>
+            <button class="button button-primary d-print-none d-none d-md-block" *ngIf="!task.isLocked" data-module="modal" [attr.data-target]="'modal-unregister-' + task.taskAssignmentId" aria-haspopup="dialog">
+                <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#trash-can"></use></svg>
+                {{ 'tasks.labels.unregister' | transloco }}
+            </button>
+            <div
+                appModal
+                class="fds-modal"
+                [attr.id]="'modal-unregister-' + task.taskAssignmentId" 
+                aria-hidden="true"
+                role="dialog"
+                aria-modal="true"
+                [attr.aria-labelledby]="task.taskAssignmentId">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h2 class="modal-title" [attr.id]="task.taskAssignmentId">{{ 'tasks.my_tasks.labels.unregister_from' | transloco}} {{ task.taskType.title }}</h2>
+                    <button class="modal-close function-link" data-modal-close>
+                        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#close"></use></svg>{{ 'shared.common.close' | transloco}}
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ 'tasks.my_tasks.labels.unregister_dialog_content' | transloco}}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="button button-primary" (click)="unregisterTask(task.taskAssignmentId)" data-modal-close>{{ 'tasks.labels.unregister' | transloco}}</button>
+                        <button class="button button-secondary" data-modal-close>{{ 'shared.common.cancel' | transloco}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <div class="mb-4">
+            <span class="badge badge-small badge-success" *ngIf="task.accepted">{{ 'tasks.my_tasks.labels.you_are_registered' | transloco }}</span>
+            <span class="badge badge-small badge-warning" *ngIf="!task.accepted">{{ 'tasks.my_tasks.labels.you_are_invited' | transloco }}</span>            
+        </div>
+        <div class="mb-4 d-print-none d-block d-md-none d-lg-none d-xl-none">
+            <button class="button button-primary" *ngIf="!task.isLocked" data-module="modal" [attr.data-target]="'modal-unregister-' + task.taskAssignmentId" aria-haspopup="dialog">
+                <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#trash-can"></use></svg>
+                {{ 'tasks.labels.unregister' | transloco }}
+            </button>
+        </div>
+        <app-task-preview [model]="task"></app-task-preview>
+        <div class="w-percent-80 py-2 files" *ngIf="task.taskType && task.taskType.fileReferences && task.taskType.fileReferences.length > 0">
+            <div class="row row-bordered no-gutters">
+                <div class="col">
+                <span class="bold">{{ 'tasks.task_preview.labels.files' | transloco }}</span>
+                </div>
+                <div class="col">
+                    <ul class="mt-0">
+                        <li class="mb-2" *ngFor="let file of task.taskType.fileReferences">
+                            <a href="#" class="function-link" [href]="getFileDownloadLink(file)" download>{{file.fileName}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <details class="details pt-4 d-print-none">
+            <summary class="details-summary">
+                {{ 'tasks.my_tasks.labels.task_description' | transloco }}
+            </summary>
+            <div class="details-text" [innerHTML]="task.taskType.description">
+            </div>
+        </details>
+        <div class="d-none d-print-block" [innerHTML]="task.taskType.description">
+        </div>        
+    </ng-container>
+</ng-container>

@@ -1,0 +1,146 @@
+version: '3.4'
+
+name: valghalla
+
+networks:
+  valghalla:
+    driver: bridge  
+
+services:
+
+  nginx:
+     container_name: nginx
+     image: nginx
+     build:
+        context: .
+        dockerfile: Dockerfile.nginx
+     depends_on:
+       - valghalla.internal
+       - valghalla.external
+     restart: always
+     ports:
+       - "80:80"   
+       - "443:443"
+     networks:
+       - valghalla
+     volumes:
+       - nginx:/etc/nginx
+
+  valghalla.internal:
+    container_name: valghalla-internal-application
+    depends_on: 
+      - valghalla.database
+      - valghalla.queue
+    image: valghallainternal
+    build:
+      context: .
+      dockerfile: Valghalla.Internal.API/Dockerfile
+    networks:
+      - valghalla
+    ports:
+      - "4579:80"
+    volumes: 
+      - 'internal_logging:/logs'
+      - 'certs:/certs/'
+      - 'environment:/Environment/'
+
+  valghalla.worker:
+    container_name: valghalla-worker
+    depends_on: 
+        - valghalla.database
+        - valghalla.queue
+    image: valghallaworker
+    build:
+      context: .
+      dockerfile: Valghalla.Worker/Dockerfile
+    volumes: 
+      - 'worker_logging:/logs'
+    networks:
+    - valghalla
+
+  valghalla.external:
+    container_name: valghalla-external-application    
+    depends_on: 
+        - valghalla.database
+        - valghalla.queue
+    image: valghallaexternal
+    build:
+      context: .
+      dockerfile: Valghalla.External.API/Dockerfile
+    networks:
+    - valghalla 
+    ports:
+      - "4581:80"
+    volumes: 
+      - 'external_logging:/logs'
+      - 'certs:/certs/'
+      - 'environment:/Environment/'
+
+  valghalla.messagereceiver: 
+    container_name: valghalla-message-receiver    
+    depends_on: 
+        - valghalla.database
+        - valghalla.queue
+    image: valghallamessagereceiver
+    build:
+        context: .
+        dockerfile: Valghalla.MessageReceiver/Dockerfile
+    networks:
+    - valghalla
+    ports:
+      - "4577:80"
+      - "4578:443"
+    volumes: 
+      - 'message_logging:/logs'
+
+  valghalla.database: 
+    container_name: valghalla-database
+    image: docker.io/bitnami/postgresql:15
+    networks:
+        - valghalla
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      #- POSTGRESQL_USERNAME=postgres
+      #- POSTGRESQL_DATABASE=postgres
+      #- POSTGRESQL_PASSWORD='admin'
+    ports:
+      - '5433:5432'
+
+  valghalla.queue:
+    container_name: valghalla-queue
+    image: docker.io/bitnami/rabbitmq:3.12
+    networks:
+        - valghalla
+    ports:
+      - '4369:4369'
+      - '5551:5551'
+      - '5552:5552'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_LOGS=-
+    volumes:
+      - 'rabbitmq_data:/bitnami/rabbitmq/mnesia'
+
+volumes:
+  postgresql_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  message_logging:
+    driver: local
+  worker_logging:
+    driver: local
+  internal_logging:
+    driver: local
+  external_logging:
+    driver: local
+  certs:
+    driver: local
+  environment:
+    driver: local
+  nginx:
+    driver: local

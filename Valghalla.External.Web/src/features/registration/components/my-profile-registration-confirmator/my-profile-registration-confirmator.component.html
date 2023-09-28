@@ -1,0 +1,69 @@
+<h1>{{ 'registration.label.steps.user_creation' | transloco }}</h1>
+
+<ng-container *appSpinner="loading">
+  <div class="alert alert--show-icon alert-success">
+    <div class="alert-body">
+      <h3 class="alert-heading">
+        {{ 'registration.label.profile.alert.title' | transloco }}
+      </h3>
+      <p class="alert-text">{{ 'registration.label.profile.alert.content' | transloco }}</p>
+    </div>
+  </div>
+
+  <div class="my-4">
+    <div class="pb-3">
+      <span class="bold">{{ 'registration.label.profile.name' | transloco }}</span> <br />
+      <span>{{ profile.firstName }} {{ profile.lastName }}</span>
+    </div>
+    <div class="py-3">
+      <span class="bold">{{ 'registration.label.profile.cpr' | transloco }}</span> <br />
+      <span>{{ profile.cpr }}</span>
+    </div>
+    <div class="py-3">
+      <span class="bold">{{ 'registration.label.profile.address' | transloco }}</span> <br />
+      <span>{{ profile.streetAddress }}</span> <br />
+      <span>{{ profile.postalCode }} {{ profile.city }}</span>
+    </div>
+    <div class="py-3">
+      <span class="bold">{{ 'registration.label.profile.municipality' | transloco }}</span> <br />
+      <span>{{ profile.municipalityName }}</span>
+    </div>
+    <div class="pt-3">
+      <span>{{ 'registration.label.profile.cpr_help_text' | transloco }}</span>
+    </div>
+  </div>
+
+  <div class="my-4">
+    <div class="pb-3">
+      <span class="bold">{{ 'registration.label.mobile_number.title' | transloco }}</span> <br />
+      <span>{{ profile.mobileNumber }}</span>
+    </div>
+    <div class="pb-3">
+      <span class="bold">{{ 'registration.label.email.title' | transloco }}</span> <br />
+      <span>{{ profile.email }}</span>
+    </div>
+    <div class="pb-3">
+      <span class="bold">{{ 'registration.label.profile.team' | transloco }}</span> <br />
+      <span>{{ profile.registeredTeamName }}</span>
+    </div>
+  </div>
+
+  <div class="my-4" *ngIf="page.isActivated">
+    <span class="bold">{{ 'registration.label.declaration_of_consent' | transloco }}</span> <br />
+    <div [innerHTML]="page.pageContent"></div>
+  </div>
+
+  <div class="my-4" *ngIf="type == 'team' && linkVisible">
+    <a href="javascript:void(0);" (click)="goToTasks()">{{ 'registration.label.go_to_available_tasks' | transloco }}</a>
+  </div>
+
+  <div class="mt-8" *ngIf="type == 'task'">
+    <button class="button button-primary mr-5" (click)="continue()" [disabled]="saving">
+      <span *ngIf="!saving">{{ 'registration.label.complete_registration' | transloco }}</span>
+      <span *ngIf="saving">{{ 'shared.common.saving' | transloco }}</span>
+    </button>
+    <button class="button button-secondary" (click)="cancelRegistration()" [disabled]="saving">
+      {{ 'registration.label.cancel_registration' | transloco }}
+    </button>
+  </div>
+</ng-container>

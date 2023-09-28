@@ -1,0 +1,40 @@
+<app-card
+  cardTitle="participant.event_log.title"
+  actionTitle="participant.event_log.add_event_log"
+  actionIcon="add"
+  (action)="openAddParticipantEventLog()">
+  <app-table
+    *appTableCtx="data; let typing"
+    defaultSortColumn="createdAt"
+    defaultSortDirection="desc"
+    (editEvent)="openEditParticipantEventLog($event)"
+    (deleteEvent)="deleteParticipantEventLog($event)">
+    <app-query-container
+      [label]="'shared.action.search' | transloco"
+      [hideFilterBtn]="true"
+      [hideFreeTextSearch]="true"
+      [(model)]="data"
+      (queryEvent)="onQuery($event)">
+      <mat-accordion multi *appQueryContainerContent></mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [columns]="['text', 'createdAt', '$actionsEditDelete']"
+      [mobileColumns]="['text']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="text">
+      <ng-container *appHeaderCellDef="typing">{{ 'shared.common.text' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.text }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="createdAt">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.created_at' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.createdAt | appDateTime }}</ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

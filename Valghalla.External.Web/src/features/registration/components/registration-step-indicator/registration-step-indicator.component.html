@@ -1,0 +1,17 @@
+<nav class="sidebar-col">
+  <ul class="sidenav-list" role="menu">
+    <ng-container *ngFor="let step of steps; let idx = index">
+      <li class="disabled" [ngClass]="{ 'active current': currentStep == idx }" role="none">
+        <a role="menuitem" [attr.aria-current]="currentStep == idx ? 'page' : null">
+          <span class="sidenav-number">{{ idx + 1 }}.</span>
+          <div>
+            <span>{{ step | transloco }}</span>
+          </div>
+          <span class="sidenav-icon" *ngIf="idx < currentStep">
+            <svg class="icon-svg" aria-label="Gennemført" focusable="false"><use xlink:href="#done"></use></svg>
+          </span>
+        </a>
+      </li>
+    </ng-container>
+  </ul>
+</nav>

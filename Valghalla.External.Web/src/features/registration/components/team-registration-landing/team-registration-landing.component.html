@@ -1,0 +1,21 @@
+<app-registration-step-indicator type="team" [currentStep]="currentStep"></app-registration-step-indicator>
+
+<div class="mt-8">
+  <app-disclosure-statement-confirmator
+    *ngIf="currentStep == 0"
+    (next)="next()"
+    (cancel)="cancel()"></app-disclosure-statement-confirmator>
+
+  <app-participant-register
+    *ngIf="currentStep == 1"
+    type="team"
+    (next)="next()"
+    (cancel)="cancel()"></app-participant-register>
+
+  <app-my-profile-registration-confirmator
+    *ngIf="currentStep == 2"
+    type="team"
+    [linkVisible]="flag"
+    (next)="next()"
+    (cancel)="cancel()"></app-my-profile-registration-confirmator>
+</div>

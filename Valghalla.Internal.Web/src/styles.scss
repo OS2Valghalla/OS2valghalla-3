@@ -1,0 +1,61 @@
+/* You can add global styles to this file, and also import other style files */
+// @import '~material-design-icons-iconfont/dist/material-design-icons.css';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300&family=Roboto:wght@300&display=swap');
+@tailwind base;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-3xl;
+    @apply font-bold;
+    @apply font-heading;
+  }
+  h2 {
+    @apply text-xl;
+    @apply font-bold;
+    @apply font-heading;
+  }
+  h3 {
+    @apply text-lg;
+    @apply font-bold;
+    @apply font-heading;
+  }
+  a:hover {
+    @apply text-blue-300;
+  }
+  ul,
+  ol {
+    list-style: revert;
+    padding-left: theme('spacing.10');
+  }
+}
+
+/* for sidenav to take a whole page */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+ngx-mat-timepicker-time-control .mat-mdc-form-field {
+  min-width: 70px !important;
+}
+.mat-mdc-dialog-container .mdc-dialog__content .mat-mdc-select-min-line {
+  line-height: var(--mdc-dialog-supporting-text-line-height, 16px) !important;
+}
+
+.person_hidden {
+  color: #e50000;
+}
+
+.person_inactive {
+  color: #af5f00;
+}
+
+@media print {
+  .h-screen {
+    height: auto !important; 
+  }
+}

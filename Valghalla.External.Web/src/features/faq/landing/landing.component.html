@@ -1,0 +1,3 @@
+<h1>{{ 'faq.landing.page_title' | transloco}}</h1>
+<div [innerHTML]="page.pageContent" *ngIf="!loading && page.pageContent"></div>
+<div class="spinner" style="margin-top: 20px;" *ngIf="loading"></div>

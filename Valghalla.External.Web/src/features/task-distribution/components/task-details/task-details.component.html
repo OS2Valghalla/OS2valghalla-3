@@ -1,0 +1,69 @@
+<div class="d-flex flex-row justify-content-between d-print-none">
+  <a href="javascript:void(0);" class="back-link" (click)="back()">{{ 'shared.common.back' | transloco }}</a>
+  <a href="javascript:if(window.print)window.print()" class="function-link">
+    <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#print"></use></svg>
+    {{ 'shared.common.print' | transloco }}
+  </a>
+</div>
+<ng-container *appSpinner="loading">
+  <div class="alert alert-warning" role="alert" *ngIf="!taskPreview">
+    <div class="alert-body">
+      <h3 class="alert-heading">{{ 'tasks.task_details.alert.header' | transloco }}</h3>
+      <p class="alert-text">
+        {{ 'tasks.task_details.alert.content' | transloco }}
+      </p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="taskPreview">
+    <h1>{{ taskPreview.taskType.title }}</h1>
+    <button class="button button-primary d-print-none" (click)="copyLinkToTask()" *ngIf="signedIn">
+      {{ 'tasks.task_details.copy_link_to_task' | transloco }}
+    </button>
+    <button class="button button-secondary d-print-none" (click)="register()" *ngIf="(taskPreview.taskType.acceptedTasksCount + taskPreview.taskType.unansweredTasksCount) != taskPreview.taskType.allTasksCount">
+      {{ signedIn ? ('tasks.task_details.register_yourself' | transloco) : ('tasks.task_details.login_register' | transloco) }}
+    </button>
+    <div class="row d-print-none" *ngIf="taskLink && taskLink.length > 0">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-5">
+          <strong>{{ 'tasks.task_details.link' | transloco}}</strong>: {{taskLink}}
+      </div>
+    </div>
+    <div class="row d-print-none">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-5">
+        {{ 'tasks.task_preview.labels.task_distribution_description' | transloco }}
+      </div>
+    </div>
+    <div class="w-percent-100 w-percent-md-70 py-4">
+      <app-task-preview [model]="taskPreview"></app-task-preview>
+      <div class="w-percent-100 w-percent-md-80 pb-2">
+        <div class="row row-bordered no-gutters task-preview-append">
+          <div class="col">
+            <span class="bold">{{ 'tasks.task_preview.labels.trusted' | transloco }}</span>
+          </div>
+          <div class="col">
+            <span>{{ (taskPreview.taskType.trusted ? 'shared.common.yes' : 'shared.common.no') | transloco }}</span>
+          </div>
+        </div>
+        <div class="row row-bordered no-gutters">
+          <div class="col">
+            <span class="bold">{{ 'tasks.task_preview.labels.assigned' | transloco }}</span>
+          </div>
+          <div class="col">
+            <span>{{ taskPreview.taskType.acceptedTasksCount + taskPreview.taskType.unansweredTasksCount }}/{{ taskPreview.taskType.allTasksCount }}</span>
+          </div>
+        </div>
+      </div>      
+      <div class="py-2">
+        <details class="details pt-4 d-print-none">
+          <summary class="details-summary">
+              {{ 'tasks.my_tasks.labels.task_description' | transloco }}
+          </summary>
+          <div class="details-text" [innerHTML]="taskPreview.taskType.description">
+          </div>
+        </details>
+        <div class="d-none d-print-block" [innerHTML]="taskPreview.taskType.description">
+        </div> 
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,60 @@
+<div class="gap-4">
+    <div class="pr-2">
+        <mat-tab-group [selectedIndex]="selectedDateIndex" (selectedIndexChange)="onSelectDate($event)" *appShowSkeleton="loading">
+            <mat-tab *ngFor="let tab of dailyWorkLocationTasks; let index = index" [label]="tab.tasksDate | date" class="w-full">
+                <div class="w-full transition-[width] duration-500 overflow-auto">
+                    <mat-table [dataSource]="tab.teams" *ngIf="!loading">
+                        <ng-container matColumnDef="team" sticky>
+                            <mat-header-cell *matHeaderCellDef class="min-w-[200px]">{{'tasks.labels.team' | transloco}}</mat-header-cell>
+                            <mat-cell *matCellDef="let taskInfo" class="min-w-[200px]">{{taskInfo.teamName}}</mat-cell>
+                            <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[200px] font-semibold">{{'shared.common.total' | transloco}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="total" stickyEnd>
+                            <mat-header-cell *matHeaderCellDef class="min-w-[100px] font-semibold">{{'shared.common.total' | transloco}}</mat-header-cell>
+                            <mat-cell *matCellDef="let taskInfo" class="min-w-[100px] font-semibold">
+                                {{getTeamAssignedTasksCount(taskInfo)}}
+                                <span class="pl-2 pr-2">/</span>
+                                {{getTeamAllTasksCount(taskInfo)}}
+                            </mat-cell>
+                            <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[100px] font-semibold">
+                                {{getSumAssignedTasksCount()}}
+                                <span class="pl-2 pr-2">/</span>
+                                {{getSumAllTasksCount()}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container *ngFor="let taskType of workLocationTasksSummary.taskTypes" [matColumnDef]="taskType.id">
+                            <mat-header-cell *matHeaderCellDef class="min-w-[125px]"><span [matTooltip]="taskType.title" matTooltipPosition="above">{{taskType.shortName}}</span></mat-header-cell>
+                            <mat-cell *matCellDef="let taskInfo" class="min-w-[125px]">  
+                                {{taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].assignedTasksCount}}
+                                <span class="pl-2 pr-2">/</span>
+                                <input class="max-w-[65px] border rounded p-1 text-center" [ngClass]="taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].valueChanged === true ? 'border-2 border-black' : 'border border-gray-200'" matInput type="number" 
+                                    [(ngModel)]="taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].allTasksCount"
+                                    (change)="onValueChanged(taskInfo, taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)])" />
+                            </mat-cell>
+                            <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[125px] font-semibold">
+                                {{getTaskTypeAssignedTasksCount(taskType)}}
+                                <span class="pl-2 pr-2">/</span>
+                                {{getTaskTypeAllTasksCount(taskType)}}
+                            </mat-cell>
+                        </ng-container>
+                        
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                        <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+                    </mat-table>  
+                </div>                              
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div class="pt-4 pb-4">
+        <button mat-raised-button color="primary" (click)="onSave()" [disabled]="loading || submitting" class="mr-4">
+            <span *ngIf="!submitting">{{ 'shared.action.save' | transloco }}</span>
+            <mat-icon *ngIf="submitting">
+                <mat-spinner color="primary" diameter="18"></mat-spinner>
+            </mat-icon>
+        </button>
+        <button mat-raised-button (click)="onCancel()" [disabled]="loading || submitting">
+            {{ 'shared.dialog.cancel' | transloco }}
+        </button>
+    </div>
+</div>

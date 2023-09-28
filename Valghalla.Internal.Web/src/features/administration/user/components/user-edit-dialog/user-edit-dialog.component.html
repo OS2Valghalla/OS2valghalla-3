@@ -1,0 +1,20 @@
+<app-form-dialog label="administration.user.edit_user" [formGroup]="form" (submitEvent)="submit($event)">
+  <div class="md:grid md:grid-cols-2 md:gap-4">
+    <div class="flex flex-col">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'shared.common.name' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="name" />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'administration.user.role' | transloco }}</mat-label>
+        <mat-select formControlName="roleId">
+          <mat-option *ngFor="let role of roles" [value]="role.id">
+            {{ role.name | transloco }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</app-form-dialog>

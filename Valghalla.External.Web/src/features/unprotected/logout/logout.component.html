@@ -1,0 +1,18 @@
+<div *ngIf="profileRemovalAlertVisible" class="alert alert-warning" role="alert">
+  <div class="alert-body">
+    <h3 class="alert-heading">{{ 'logout.profile_removal_alert.title' | transloco }}</h3>
+  </div>
+</div>
+<div class="alert alert-info" role="alert">
+  <div class="alert-body">
+    <h3 class="alert-heading">{{ 'logout.alert.title' | transloco }}</h3>
+    <p class="alert-text">
+      {{ 'logout.alert.content' | transloco }}
+    </p>
+  </div>
+</div>
+<h1>{{ 'logout.header' | transloco }}</h1>
+<span class="bold">{{ 'logout.bold_text' | transloco }}</span>
+<br />
+<br />
+<span>{{ 'logout.text' | transloco }}</span>

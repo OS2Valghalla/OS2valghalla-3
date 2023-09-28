@@ -1,0 +1,35 @@
+
+  <div class="flex flex-row justify-between p-4 shadow-inner" style="background-color: white">
+    <div class="flex gap-32">
+      <div class="flex-initial">
+        <div>
+          {{ currentUser?.name }}
+        </div>
+        <div>
+          {{ currentMunicipality }}
+        </div>
+        <div>
+          <a (click)="onChangeActiveElection()" href="javascript:void">{{ 'app.footer.change_election' | transloco }}</a>
+        </div>
+        <div>
+          <a (click)="onLogout()" href="javascript:void">{{ 'app.footer.logout' | transloco }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-32 text-end">
+      <div class="flex-initial">
+        <div>
+          <a href="{{'app.footer.url_online_manual' | transloco}}" target="_blank">{{ 'app.footer.online_manual' | transloco }}</a>
+        </div>
+        <div>
+          <a [href]="externalWebUrl" target="_blank">{{ 'app.footer.link_to_external_web' | transloco }}</a>
+        </div>
+        <div>
+          <a href="{{'app.footer.url_technical_documentation' | transloco}}" target="_blank">{{ 'app.footer.technical_documentation' | transloco }}</a>
+        </div>
+        <div>
+          <a (click)="onChangeLang()" href="javascript:void">{{ 'app.footer.translate' | transloco }}</a>
+        </div>
+      </div>
+    </div>
+  </div>

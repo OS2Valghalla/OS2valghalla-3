@@ -1,0 +1,39 @@
+<div class="flex flex-row justify-between">
+  <app-page-title>{{ 'administration.specialdiet.page_title' | transloco }}</app-page-title>
+</div>
+
+<app-card
+  [cardTitle]="'administration.specialdiet.specialdiet_listing.title' | transloco"
+  actionTitle="administration.specialdiet.create_page_title"
+  actionIcon="add"
+  (action)="openAddSpecialDiet()">
+  <app-table
+    #tableSpecialDiets
+    *appTableCtx="data; let typing"
+    defaultSortColumn="title"
+    (editEvent)="openEditSpecialDiet($event)"
+    (deleteEvent)="deleteSpecialDiet($event)">
+    <app-query-container
+      [hideFilterBtn]="true"
+      cacheKey="specialdiet"
+      [label]="'administration.specaldiet.specialdiet_listing.search' | transloco"
+      [(model)]="data"
+      (queryEvent)="onQuery($event)">
+      <mat-accordion multi *appQueryContainerContent> </mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [columns]="['title', '$actionsEditDelete']"
+      [mobileColumns]="['title']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="title">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.title' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.title }}</ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

@@ -1,0 +1,512 @@
+{
+  "app": {
+    "weekday_name": {
+      "sun": "Sunday",
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday"
+    },
+    "month_name": {
+      "jan": "january",
+      "feb": "february",
+      "mar": "march",
+      "apr": "april",
+      "may": "may",
+      "jun": "june",
+      "jul": "july",
+      "aug": "august",
+      "sep": "september",
+      "oct": "october",
+      "nov": "november",
+      "dec": "december"
+    },
+    "navigation": {
+      "tasks": "Tasks",
+      "my_tasks": "My tasks",
+      "my_profile": "My profile",
+      "my_team": "My team",
+      "task_distribution": "Task distribution",
+      "my_work_location": "My work location",
+      "faq": "FAQ"
+    },
+    "header": {
+      "login": "Login",
+      "logout": "Logout",
+      "menu": "Menu",
+      "support": "Support",
+      "contact": "Contact"
+    },
+    "footer": {
+      "contact": "Contact",
+      "contact_us": "Contact us",
+      "send_digital_post": "Send secure Digital Post",
+      "privacy_policy": "Privacy policy",
+      "cookie_settings": "Cookie settings",
+      "accessibility_statement": "Accessibility statement",
+      "links": "Links"
+    },
+    "paginator": {
+      "pagination": "Pagination",
+      "first_page": "First page",
+      "last_page": "Last page",
+      "previous": "Previous",
+      "next": "Next",
+      "previous_page": "Previous page",
+      "next_page": "Next page",
+      "page": "Page",
+      "of": "of"
+    },
+    "error": {
+      "get_app_context": "Error fetching app context",
+      "get_user_teams": "Error fetching user teams"
+    },
+    "deactivated_web": {
+      "header": "No active elections",
+      "content": "We are not planning any elections at the moment."
+    }
+  },
+  "shared": {
+    "page_title": "Valghalla online",
+    "common": {
+      "close": "Close",
+      "cancel": "Cancel",
+      "yes": "Yes",
+      "no": "No",
+      "day": "Day",
+      "month": "Month",
+      "year": "Year",
+      "print": "Print",
+      "back": "Back",
+      "loading": "Loading",
+      "remove": "Remove",
+      "search": "Search",
+      "saving": "Saving...",
+      "deleting": "Deleting...",
+      "generating": "Generating..."
+    },
+    "accessibility": {
+      "error": "Error",
+      "date_input": {
+        "day_title": "Enter the day of the month as a number",
+        "month_title": "Enter the number of the month",
+        "year_title": "Enter year"
+      }
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Email is invalid"
+    },
+    "toast": {
+      "close": "Close",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error",
+      "information": "Information"
+    },
+    "error": {
+      "validation": "Validation errors",
+      "get_special_diets_shared": "Errors occurred when fetching special diets",
+      "get_webpage_disclosurestatement": "Error fetching Disclosure Statement page",
+      "get_webpage_declarationofconsent": "Error fetching Declareation Of Consent page",
+      "get_webpage_front": "Error fetching Front page",
+      "get_webpage_faq": "Error fetching FAQ page"
+    }
+  },
+  "unprotected": {
+    "landing": {
+      "page_title": "Start"
+    },
+    "menu": "Menu",
+    "close": "Close",
+    "login": "Login",
+    "logout": "Logout",
+    "support": "Support",
+    "contact": "Contact"
+  },
+  "tasks": {
+    "landing": {
+      "page_title": "Tasks",
+      "error": {
+        "get_task_overview_filter_options": "Errors occurred when fetching task overview filter options",
+        "get_task_overview": "Errors occurred when fetching task overview"
+      }
+    },
+    "task_overview": {
+      "page_title": "Task overview"
+    },
+    "labels": {
+      "team": "Team",
+      "select_a_team": "Select a team",
+      "work_location": "Work location",
+      "select_a_location": "Select a location",
+      "task_type": "Task type",
+      "select_a_task_type": "Select a task type",
+      "date": "Date",
+      "select_a_date": "Select a date",
+      "free_tasks": "free task(s)",
+      "more_info": "More info",
+      "register": "Register",
+      "unregister": "Unregister",
+      "view_more_filters": "View more filters",
+      "view_less_filters": "View less filters",
+      "register_confirmation_text": "Do you want to register for this task on",
+      "confirmation_registration": "Confirm registration",
+      "task_link_copied": "Task link has been copied to clipboard successfully."
+    },
+    "error": {
+      "get_tasks_filters_options": "Error fetching tasks filters options",
+      "get_tasks": "Error fetching tasks"
+    },
+    "my_tasks": {
+      "header": "My tasks",
+      "labels": {
+        "task_description": "Task description",
+        "you_are_registered": "You are registered",
+        "you_are_invited": "You are invited",
+        "unregister_from": "Unregister from",
+        "unregister_dialog_content": "You will be unregistered from the task and will not receive payment. The task becomes possible for others to register. Once you confirm, you can no longer undo it.",
+        "task_locked_warning": "It is not possible to unregister from this task, because it takes place soon. Please <a href='/contact-us'>contact us</a>, if you do not have the opportunity to participate."
+      },
+      "error": {
+        "get_my_tasks": "An error occurred when fetching my tasks"
+      }
+    },
+    "task_preview": {
+      "error": {
+        "get_task_preview": "An error occurred when fetching task preview"
+      },
+      "header": "Task description",
+      "labels": {
+        "task": "Task",
+        "date": "Date",
+        "time": "Time",
+        "work_location": "Work location",
+        "team": "Team",
+        "payment": "Payment",
+        "files": "Files",
+        "trusted": "Trusted",
+        "assigned": "Assigned",
+        "payment_tooltip": "Citizens are paid per diems. Municipal employees who have a role in accordance with the election agreement are remunerated with a fee.",
+        "task_distribution_description": "Invite participants to register for this task by clicking the “Copy link to task” button. This will give you a link in the clipboard that you can share. Using the link, the recipent can register for this particular task."
+      }
+    },
+    "task_details": {
+      "page_title": "Task details",
+      "login_register": "Log in and register",
+      "register": "Register",
+      "copy_link_to_task": "Copy link to task",
+      "link": "Link",
+      "register_yourself": "Register yourself",
+      "alert": {
+        "header": "Not available!",
+        "content": "The task may not exist or all slots have been taken"
+      }
+    },
+    "task_invitation": {
+      "page_title": "Task invitation",
+      "header": "You have been assigned a task",
+      "alert": {
+        "header": "Important!",
+        "content": "Remember to accept or reject the task on this page"
+      },
+      "confirmation": {
+        "header": "Do you accept the task?",
+        "content": "To accept, you must log in with MitID when you press Accept and register",
+        "primary_button": "Accept and register",
+        "secondary_button": "Reject"
+      },
+      "error": {
+        "accept_task": "An error occurred when processing task acceptance",
+        "reject_task": "An error occurred when processing task rejection",
+        "unregister_task": "An error occurred when unregistering from the task"
+      },
+      "success": {
+        "unregister_task": "You are now unregistered from the task"
+      }
+    },
+    "task_rejection_confirmation": {
+      "page_title": "Task rejection confirmation",
+      "header": "Task not accepted",
+      "alert": {
+        "header": "You have rejected the task",
+        "content": "The task will be assigned to another participant"
+      },
+      "contact_us": "contact us",
+      "content_1": "You have chosen not to accept the task. Thank you for your feedback. If you would like to register for another task in the election, please",
+      "content_2": "or your party secretary, if you are member of a political party."
+    },
+    "task_acceptance_cpr_invalid": {
+      "page_title": "Task acceptance cpr invalid",
+      "header": "Error during registration",
+      "alert": {
+        "header": "Error!",
+        "content": "CPR number does not match"
+      },
+      "contact_us": "contact us",
+      "content_1": "Your CPR number does not match the CPR number of the invited participant.",
+      "content_2": "If you believe this is an error, please",
+      "content_3": "You can also look at tasks where it might be possible to register for another task at the election."
+    },
+    "task_acceptance_conflict": {
+      "page_title": "Task acceptance conflict",
+      "header": "Error during registration",
+      "alert": {
+        "header": "Error!",
+        "content": "Conflicting task"
+      },
+      "contact_us": "contact us",
+      "content_1": "You are already registered for another task at the time of this task.",
+      "content_2": "If you believe this is an error, please",
+      "content_3": "You can also look at tasks where it might be possible to register for another task at the election."
+    },
+    "task_acceptance_validation_failure": {
+      "page_title": "Task acceptance validation error",
+      "header": "Error during registration",
+      "alert": {
+        "header": "Error!",
+        "content": "Your data does not match the task"
+      },
+      "contact_us": "contact us",
+      "age_rule": "You cannot register for this task, because you will not be 18 years old on the day of the election",
+      "municipality_rule": "You cannot register for this task, because you are not living in the required municipality",
+      "citizenship_rule": "You cannot register for this task, because you are not a citizen of the required country",
+      "legal_adult_rule": "You cannot register for this task, because you are not a legal adult",
+      "alive_rule": "You cannot register for this task, because we cannot find a person with this CPR-number",
+      "content": "If you believe this is an error, please"
+    },
+    "task_acceptance_confirmation": {
+      "page_title": "Task acceptance confirmation",
+      "header": "Confirmation of registration",
+      "alert": {
+        "header": "You are now registered for the task"
+      },
+      "save_confirmation_pdf": "Save confirmation as PDF",
+      "print_confirmation": "Print confirmation"
+    }
+  },
+  "task_distribution": {
+    "landing": {
+      "page_title": "Task distribution"
+    },
+    "labels": {
+      "total_assigned_tasks": "Total assigned tasks",
+      "of": "of",
+      "assigned": "assigned",
+      "filled": "Filled",
+      "awaiting_answer": "Awaiting answer"
+    },
+    "error": {
+      "get_team_responsible_tasks": "Error fetching team responsible tasks",
+      "get_team_responsible_tasks_filters_options": "Error fetching team responsible tasks filters options"
+    }
+  },
+  "my_work_location": {
+    "landing": {
+      "page_title": "My work location"
+    },
+    "labels": {
+      "work_location_date_description": "The overview shows the participants who have tasks at this workplace on",
+      "work_location_tasks_header": "Work location tasks on",
+      "work_location_participants_header": "Work location participants on",
+      "number_of_tasks": "Number of tasks at the work location:",
+      "number_of_participants": "Number of people at the work location:",
+      "task_name": "Task name",
+      "task_name_sort_header": "Sort by Task name",
+      "start_time": "Start time",
+      "end_time": "End time",
+      "task_status": "Task status",
+      "accepted": "accepted",
+      "full_name": "Full name",
+      "full_name_sort_header": "Sort by Full name",
+      "task_types": "Task type(s) assigned on selected date",
+      "task_types_sort_header": "Sort by Task types",
+      "team": "Team",
+      "team_sort_header": "Sort by Team",
+      "age": "Age",
+      "age_sort_header": "Sort by Age",
+      "email": "Mail address",
+      "phone": "Phone number",
+      "find_participant": "Find participant"
+    },
+    "error": {
+      "get_my_work_locations": "Error fetching my work locations",
+      "get_work_loctaion_dates": "Error fetching work location dates",
+      "get_work_location_details": "Error fetching work location details"
+    }
+  },
+  "my_team": {
+    "landing": {
+      "page_title": "My team"
+    },
+    "labels": {
+      "team_invitation": "Team invitation",
+      "team_invitation_header": "You have been invited to the team",
+      "team_invitation_description": "A team responsible has invited you to join this team. By joining, you can help run the upcoming election. Once you have created a user, you will have access to view and register for the team's available tasks.",
+      "team_invitation_confirmation": "Do you want to help with the election?",
+      "team_invitation_confirmation_description": "To become a member of the team, you must log in with your MitID when you press the button.",
+      "team_invitation_confirmation_button": "Create user and join team",
+      "name": "Name",
+      "number_of_tasks": "Number of tasks",
+      "remove_member": "Remove member",
+      "task": "task",
+      "tasks": "tasks",
+      "team_members": "Team members",
+      "copy_link_to_team": "Copy link to team",
+      "generate_link_to_team": "Generate link to team",
+      "link": "Link",
+      "link_description": "Invite members to your team by pressing the \"Copy link to team\" button. This will give you a link in the clipboard that you can share.<br><br>Using the link, the recipient can create a user and will automatically be added to the team. A team member can view and sign up for all open tasks that are not trusted.",
+      "remove_member_confirmation": "will no longer be part of the team and all assigned tasks will be removed.",
+      "search_for_name": "Search for name",
+      "cannot_be_removed": "Cannot be removed",
+      "cannot_be_removed_tooltip": "It is not possible to remove this member, because we need their information for their payment for a previous task."
+    },
+    "error": {
+      "get_team_by_team_link": "Error fetching team info",
+      "get_my_teams": "Error fetching my teams",
+      "get_team_members": "Error fetching team members",
+      "remove_member": "An error occurred when removing team member",
+      "create_team_link": "Error occurred when creating team link"
+    },
+    "success": {
+      "remove_member": "Team member is removed successfully",
+      "create_team_link": "Team link has been copied to clipboard successfully"
+    }
+  },
+  "my_tasks": {
+    "landing": {
+      "page_title": "My tasks"
+    }
+  },
+  "my_profile": {
+    "landing": {
+      "page_title": "My profile"
+    },
+    "error": {
+      "has_assigned_task_locked": "It is not possible to delete your profile, because you have a task that takes place soon",
+      "has_completed_task": "It is not possible to delete your profile, because you have completed earlier tasks. We therefore need your information for your payment",
+      "get_my_profile": "An error occurred when getting your profile",
+      "update_my_profile": "An error occurred when updating your profile",
+      "delete_my_profile": "An error occurred when deleting your profile",
+      "get_my_profile_permission": "An error occurred when getting your profile permission"
+    },
+    "success": {
+      "update_my_profile": "Your profile has been updated successfully.",
+      "delete_my_profile": "Your profile has been deleted successfully."
+    },
+    "label": {
+      "my_information": "My information",
+      "name": "Name",
+      "cpr": "CPR number",
+      "address": "Address",
+      "municipality": "Municipality",
+      "cpr_help_text": " If the above information is incorrect, you must contact the municipality or parish that handles the registration.",
+      "mobile_number": {
+        "title": "Mobile number",
+        "hint": "For example 20304050"
+      },
+      "email": {
+        "title": "Email",
+        "hint": "For example name@domain.dk"
+      },
+      "special_diets": {
+        "title": "Dietary requirements",
+        "hint": "Choose from the options for special diets"
+      },
+      "save_information": "Save information",
+      "delete_my_profile": "Delete my profile",
+      "delete_help_text": "If you delete your profile, you are automatically unregistered from your registered tasks.",
+      "has_locked_task_1": "It is not possible to delete your profile, because you have a task that takes place soon. Please",
+      "contact_us": "contact us",
+      "has_locked_task_2": "if you do not have the opportunity to participate.",
+      "has_completed_task_1": "It is not possible to delete your profile, because you have completed earlier tasks. We therefore need your information for your payment. Please",
+      "has_completed_task_2": "if you need more information.",
+      "delete_my_profile_modal": {
+        "title": "Do you want to delete your profile?",
+        "content": "You will be unregistered from tasks and your information will be deleted from our system.",
+        "ok": "Yes, delete my profile"
+      }
+    }
+  },
+  "faq": {
+    "landing": {
+      "page_title": "FAQ"
+    }
+  },
+  "contact": {
+    "page_header": "Contact",
+    "contact_description": "See how you can contact us",
+    "digital_post_link": "Write us in a secure way (Digital Post) ",
+    "email_description": "Write us an e-mail at: ",
+    "phone_description": "Call us: "
+  },
+  "registration": {
+    "landing": {
+      "page_title": "Registration"
+    },
+    "label": {
+      "mobile_number": {
+        "title": "Mobile number",
+        "hint": "For example 20304050"
+      },
+      "email": {
+        "title": "Email",
+        "hint": "For example name@domain.dk"
+      },
+      "special_diets": {
+        "title": "Dietary requirements",
+        "hint": "Choose from the options for special diets"
+      },
+      "continue": "Continue",
+      "save_and_continue": "Save and continue",
+      "complete_registration": "Complete registration",
+      "cancel_registration": "Cancel registration",
+      "steps": {
+        "disclosure_statement": "Behandling af personoplysninger",
+        "profile_input": "Indtast dine oplysninger",
+        "user_creation": "Brugeroprettelse",
+        "receipt_for_registration": "Kvittering for tilmelding"
+      },
+      "profile": {
+        "name": "Name (From MitID)",
+        "cpr": "CPR number",
+        "address": "Address",
+        "municipality": "Municipality",
+        "cpr_help_text": "If the above information is incorrect, you must contact the municipality or parish that handles the registration.",
+        "team": "Team",
+        "alert": {
+          "title": "Dine oplysninger blev valideret",
+          "content": "Din bruger er oprettet med følgende informationer"
+        }
+      },
+      "declaration_of_consent": "Declaration of consent",
+      "go_to_available_tasks": "Go to available tasks"
+    },
+    "error": {
+      "team_not_exist": "The team you registered to does not exist",
+      "register_participant": "Errors occurred when creating your account",
+      "get_my_profile_registration": "Errors occurred when fetching your profile registration",
+      "task_not_exist": "The task you are registering no longer exist",
+      "get_team_access_status": "Errors occurred when fetching team access status",
+      "join_team": "Errors occurred when joining team",
+      "participant_exists": "A participant already exists in the system with the same CPR number"
+    },
+    "success": {
+      "join_team": "You have joined the team"
+    }
+  },
+  "logout": {
+    "alert": {
+      "title": "Is this computer public?",
+      "content": "So remember to close and switch off the machine completely before leaving it."
+    },
+    "profile_removal_alert": {
+      "title": "Your profile has been removed successfully."
+    },
+    "header": "You are now logged out of the system",
+    "bold_text": "Thank you for your contribution to the election process",
+    "text": "It is your contribution and that of the other volunteers that helps to ensure a good election process for everyone."
+  }
+}

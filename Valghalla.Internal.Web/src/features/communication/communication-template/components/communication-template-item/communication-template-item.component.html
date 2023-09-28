@@ -1,0 +1,102 @@
+<app-wizard class="inline-block w-1/2" [hideDeleteButton]="item && item.isDefaultTemplate"
+  [wizardTitle]="'communication.communication_template_item.page_title.create' | transloco"
+  [updateWizardTitle]="('communication.communication_template_item.page_title.edit' | transloco)"
+  (onStepEnter)="onStepEnter($event)"
+  (create)="createCommunicationTemplate($event)"
+  (update)="updateCommunicationTemplate($event)"
+  (delete)="deleteCommunicationTemplate($event)"
+  (onCancelClick)="cancel()">
+  <app-wizard-step [formGroup]="formInfo" [stepTitle]="'communication.communication_template_item.steps.title_and_type' | transloco">
+    <div *appWizardStep class="grid grid-cols-1 gap-4">
+        <div class="flex flex-col">
+            <mat-form-field appearance="fill" *appShowSkeleton="loading">
+                <mat-label>{{ 'shared.common.title' | transloco }}</mat-label>
+                <input matInput type="text" formControlName="title" [readonly]="item && item.isDefaultTemplate" />
+            </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+            <mat-label>{{ 'communication.communication_template_item.template_type' | transloco }}</mat-label>
+            <mat-radio-group formControlName="templateType" (change)="templateTypeChanged()" [disabled]="item && item.isDefaultTemplate">
+            <mat-radio-button
+                class="flex flex-col"
+                *ngFor="let templateType of templateTypes"
+                [value]="templateType.id"
+                >{{ templateType.title | transloco }}</mat-radio-button
+            >
+            </mat-radio-group>
+        </div>
+    </div>
+  </app-wizard-step>
+  <app-wizard-step [formGroup]="formContent" [stepTitle]="'communication.communication_template_item.steps.content' | transloco">
+    <div *appWizardStep class="grid grid-cols-1 gap-4">
+        <div class="flex flex-col" *ngIf="formInfo.value.templateType != 2">
+            <mat-form-field appearance="fill" *appShowSkeleton="loading">
+                <mat-label>{{ 'communication.communication_template_item.subject' | transloco }}</mat-label>
+                <input matInput type="text" formControlName="subject" />
+                <mat-error *ngIf="formContent.controls.subject.hasError('maxlength')">
+                    {{ 'communication.communication_template_item.subject_max_length_error' | transloco }}
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex flex-col" *ngIf="formInfo.value.templateType != 2">
+            <h3 [ngClass]="this.isEmptyContent() ? 'text-red-600' : ''">{{ 'communication.communication_template_item.required_content' | transloco }}</h3>
+            <app-rich-text-input
+                [options]="pageContentSettings"
+                [control]="formContent.controls.content"
+                *appShowSkeleton="loading"></app-rich-text-input>
+        </div>
+        <div class="flex flex-col" *ngIf="formInfo.value.templateType == 2">
+            <h3 [ngClass]="this.isEmptyContent() ? 'text-red-600' : ''">{{ 'communication.communication_template_item.required_content' | transloco }}</h3>
+            <mat-form-field appearance="fill" *appShowSkeleton="loading">
+                <textarea matInput rows="12" formControlName="plainTextContent"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="flex flex-col">
+            <h3>{{ 'communication.communication_template_item.tokens_header' | transloco }}</h3>
+            <p [innerHtml]="'communication.communication_template_item.tokens_note' | transloco" class="pl-4"></p>
+            <mat-table [dataSource]="tokens">
+                <ng-container matColumnDef="tokenName" sticky>
+                    <mat-header-cell *matHeaderCellDef>{{'communication.columns.token' | transloco}}</mat-header-cell>
+                    <mat-cell *matCellDef="let token">
+                        !{{ token }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="tokenNameDescription" sticky>
+                    <mat-header-cell *matHeaderCellDef>{{'communication.columns.replace_with' | transloco}}</mat-header-cell>
+                    <mat-cell *matCellDef="let token">
+                        {{ 'communication.tokens_description.' + token | transloco }}
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['tokenName', 'tokenNameDescription']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['tokenName', 'tokenNameDescription'];"></mat-row>
+            </mat-table>                     
+        </div>
+        <div class="flex flex-col" *ngIf="formInfo.value.templateType != 2">
+            <h3 class="pb-2">{{ 'communication.communication_template_item.attach_files' | transloco }}</h3>
+            <app-file-storage
+                type="communicationtemplate"
+                [model]="item?.communicationTemplateFileReferences" helpText="communication.communication_template_item.attach_files_hint"
+                [extensions]="['pdf', 'doc', 'docx', 'txt', 'odt', 'xls', 'xlsx']"
+                [multiple]="true"></app-file-storage>
+        </div>
+    </div>
+  </app-wizard-step>
+  <app-wizard-step [formGroup]="formContent" [stepTitle]="'communication.communication_template_item.steps.preview' | transloco">
+    <div *appWizardStep class="flex flex-col space-y-4">
+        <mat-hint [innerHtml]="'communication.communication_template_item.preview_description' | transloco"></mat-hint>
+        <div class="flex flex-col" *ngIf="formInfo.value.templateType != 2">
+            <h3>{{ 'communication.communication_template_item.subject' | transloco }}</h3>
+            <div class="NgxEditor">
+                <div [innerHTML]="previewSubject" class="ProseMirror NgxEditor__Content"></div>
+            </div>
+        </div>
+        <div class="flex flex-col" *ngIf="formInfo.value.templateType != 5">
+            <h3>{{ 'communication.communication_template_item.content' | transloco }}</h3>            
+            <div class="NgxEditor">
+                <div [innerHTML]="previewContent" class="ProseMirror NgxEditor__Content"></div>
+            </div>            
+        </div>
+    </div>
+  </app-wizard-step>
+</app-wizard>

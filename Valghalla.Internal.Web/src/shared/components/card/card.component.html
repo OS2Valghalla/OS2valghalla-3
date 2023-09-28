@@ -1,0 +1,31 @@
+<mat-card
+  [ngClass]="{
+    card_accent_header: color === 'accent',
+    card_primary_header: color === 'primary',
+    'hover-animation': useAnimation,
+    pointer: isLink
+  }"
+  [ngStyle]="{
+    'max-width': maxWidth,
+    'min-width': minWidth,
+    'min-height': minHeight,
+    'max-height': maxHeight
+  }">
+  <mat-card-header class="flex justify-between mb-4" *ngIf="headerVisible">
+    <mat-card-title *ngIf="cardTitle">
+      <h2>{{ cardTitle | transloco }}</h2>
+    </mat-card-title>
+    <div class="flex flex-row justify-end space-x-6" *ngIf="actionVisible">
+      <ng-container *ngFor="let cardButton of cardButtons">
+        <ng-container [ngTemplateOutlet]="cardButton.templateRef"></ng-container>
+      </ng-container>
+      <button *ngIf="!!actionTitle || !!actionIcon" mat-button (click)="onActionClick()">
+        <mat-icon *ngIf="!!actionIcon">{{ actionIcon }}</mat-icon>
+        <span *ngIf="!!actionTitle">{{ actionTitle | transloco }}</span>
+      </button>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-content></ng-content>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,29 @@
+<div class="flex flex-col w-full space-y-2">
+  <ngx-file-drop (onFileDrop)="onDropped($event)" [directory]="false" [multiple]="multiple">
+    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+      <div class="flex flex-col items-center space-y-2">
+        <span>{{ 'shared.action.drop_file' | transloco }}</span>
+        <button mat-mini-fab color="primary" (click)="openFileSelector()">
+          <mat-icon>attach_file</mat-icon>
+        </button>
+      </div>
+    </ng-template>
+  </ngx-file-drop>
+  <mat-hint class="pl-4" *ngIf="helpText && helpText.length > 0" [innerHtml]="helpText | transloco"></mat-hint>
+  <div class="flex flex-col space-y-1">
+    <div *ngFor="let file of filesToUpload; let idx = index" class="flex justify-between">
+      <span class="self-center">{{ file.name }}</span>
+      <button class="self-center" mat-icon-button color="primary" (click)="removeUploadFile(idx)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="flex flex-col space-y-1">
+    <div *ngFor="let file of model" class="flex justify-between">
+      <a class="self-center" [href]="getFileDownloadLink(file)" download>{{ file.fileName }}</a>
+      <button class="self-center" mat-icon-button color="primary" (click)="removeUploadedFile(file)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

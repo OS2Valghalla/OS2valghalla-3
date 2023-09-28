@@ -1,0 +1,63 @@
+<app-form-page class="inline-block w-full"
+  [updateFormTitle]="('administration.election.edit_communication_configuration_page_title' | transloco) + ' - ' + item?.title"
+  [formGroup]="formCommunicationTemplates" [hideDeleteButton]="true"
+  (update)="updateElection($event)"
+  (onCancelClick)="cancel()">
+  <div class="grid grid-cols-2 gap-4">
+    <div class="flex flex-col">
+      <h2>{{ 'administration.election.label.standard_messages' | transloco }}</h2>
+      <mat-hint class="pb-4">{{ 'administration.election.label.standard_messages_hint' | transloco }}</mat-hint>
+              
+      <app-communication-template-selection [formGroup]="formCommunicationTemplates" inputControlName="confirmationOfRegistration_Template" [selectedTemplateType]="formCommunicationTemplates.value.confirmationOfRegistration_TemplateType"
+        label="administration.election.label.confirmation_of_registration" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+      <app-communication-template-selection [formGroup]="formCommunicationTemplates" inputControlName="confirmationOfCancellation_Template" [selectedTemplateType]="formCommunicationTemplates.value.confirmationOfCancellation_TemplateType"
+        label="administration.election.label.confirmation_of_cancellation" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+      <app-communication-template-selection [formGroup]="formCommunicationTemplates" inputControlName="invitation_Template" [selectedTemplateType]="formCommunicationTemplates.value.invitation_TemplateType"
+        label="administration.election.label.invitation" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+      <app-communication-template-selection class="hidden" [formGroup]="formCommunicationTemplates" inputControlName="invitationReminder_Template" [selectedTemplateType]="formCommunicationTemplates.value.invitationReminder_TemplateType"
+        label="administration.election.label.invitation_reminder" hint="administration.election.label.invitation_reminder_hint" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+      <app-communication-template-selection class="hidden" [formGroup]="formCommunicationTemplates" inputControlName="taskReminder_Template" [selectedTemplateType]="formCommunicationTemplates.value.taskReminder_TemplateType"
+        label="administration.election.label.task_reminder" hint="administration.election.label.task_reminder_hint" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+      <app-communication-template-selection class="hidden" [formGroup]="formCommunicationTemplates" inputControlName="retractedInvitation_Template" [selectedTemplateType]="formCommunicationTemplates.value.retractedInvitation_TemplateType"
+        label="administration.election.label.retracted_invitation" hint="administration.election.label.retracted_invitation_hint" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+    </div>
+    <div class="flex flex-col">
+      <h2 class="pb-4">{{ 'administration.election.label.task_specific_messages' | transloco }}</h2>
+      <ng-container *ngFor="let taskType of taskTypes">
+        <mat-accordion class="pb-2">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title [ngClass]="this.hasSpecificTemplate(taskType) ? 'font-bold' : ''">
+                {{taskType.title}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <app-communication-template-selection [formGroup]="formCommunicationTemplates" [showStandardOption]="true" [(value)]="taskType.confirmationOfRegistration_Template" [selectedTemplateType]="taskType.confirmationOfRegistration_TemplateType"
+              label="administration.election.label.confirmation_of_registration" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+            <app-communication-template-selection [formGroup]="formCommunicationTemplates" [showStandardOption]="true" [(value)]="taskType.confirmationOfCancellation_Template" [selectedTemplateType]="taskType.confirmationOfCancellation_TemplateType"
+              label="administration.election.label.confirmation_of_cancellation" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+            <app-communication-template-selection [formGroup]="formCommunicationTemplates" [showStandardOption]="true" [(value)]="taskType.invitation_Template" [selectedTemplateType]="taskType.invitation_TemplateType"
+              label="administration.election.label.invitation" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+            <app-communication-template-selection class="hidden" [formGroup]="formCommunicationTemplates" [showStandardOption]="true" [(value)]="taskType.invitationReminder_Template" [selectedTemplateType]="taskType.invitationReminder_TemplateType"
+              label="administration.election.label.invitation_reminder" hint="administration.election.label.invitation_reminder_hint" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+            <app-communication-template-selection class="hidden" [formGroup]="formCommunicationTemplates" [showStandardOption]="true" [(value)]="taskType.taskReminder_Template" [selectedTemplateType]="taskType.taskReminder_TemplateType"
+              label="administration.election.label.task_reminder" hint="administration.election.label.task_reminder_hint" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+            <app-communication-template-selection class="hidden" [formGroup]="formCommunicationTemplates" [showStandardOption]="true" [(value)]="taskType.retractedInvitation_Template" [selectedTemplateType]="taskType.retractedInvitation_TemplateType"
+              label="administration.election.label.retracted_invitation" hint="administration.election.label.retracted_invitation_hint" [communicationTemplates]="communicationTemplates" *appShowSkeleton="loading"></app-communication-template-selection>
+
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-container>
+    </div>
+  </div>
+</app-form-page>

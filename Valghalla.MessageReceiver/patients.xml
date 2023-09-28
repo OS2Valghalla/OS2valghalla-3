@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Haendelsesbesked xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:oio:besked:kuvert:1.0">
+  <BeskedId>
+    <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+  </BeskedId>
+  <BeskedVersion>1.0</BeskedVersion>
+  <Beskedkuvert>
+    <Filtreringsdata>
+      <Beskedtype>
+        <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+      </Beskedtype>
+      <BeskedAnsvarligAktoer>
+        <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+      </BeskedAnsvarligAktoer>
+      <TilladtModtager>
+        <URNIdentifikator xmlns="urn:oio:sagdok:3.0.0"></URNIdentifikator>
+      </TilladtModtager>
+      <RelateretObjekt>
+        <ObjektId>
+          <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+        </ObjektId>
+        <ObjektType>
+          <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+        </ObjektType>
+      </RelateretObjekt>
+      <ObjektRegistrering>
+        <ObjektRegistreringId>
+          <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+        </ObjektRegistreringId>
+        <RegistreringsAktoer>
+          <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+        </RegistreringsAktoer>
+        <Registreringstidspunkt>
+          <TidsstempelDatoTid xmlns="urn:oio:sagdok:3.0.0"></TidsstempelDatoTid>
+        </Registreringstidspunkt>
+        <ObjektAnsvarligMyndighed>
+          <URNIdentifikator xmlns="urn:oio:sagdok:3.0.0"></URNIdentifikator>
+        </ObjektAnsvarligMyndighed>
+        <ObjektId>
+          <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+        </ObjektId>
+        <ObjektType>
+          <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+        </ObjektType>
+        <ObjektHandling>
+          <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+        </ObjektHandling>
+      </ObjektRegistrering>
+    </Filtreringsdata>
+    <Leveranceinformation>
+      <Dannelsestidspunkt>
+        <TidsstempelDatoTid xmlns="urn:oio:sagdok:3.0.0"></TidsstempelDatoTid>
+      </Dannelsestidspunkt>
+      <TransaktionsId>
+        <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+      </TransaktionsId>
+      <Kildesystem>
+        <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+      </Kildesystem>
+      <KildesystemIPAdresse></KildesystemIPAdresse>
+      <KildesystemAkkreditiver></KildesystemAkkreditiver>
+      <Sikkerhedsklassificering>
+        <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+      </Sikkerhedsklassificering>
+      <Leveranceruter>
+        <Leverancerute>
+          <Fordelingssystem>
+            <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+          </Fordelingssystem>
+          <ModtagelsesTidspunkt>
+            <TidsstempelDatoTid xmlns="urn:oio:sagdok:3.0.0"></TidsstempelDatoTid>
+          </ModtagelsesTidspunkt>
+          <LeveranceTidspunkt>
+            <TidsstempelDatoTid xmlns="urn:oio:sagdok:3.0.0"></TidsstempelDatoTid>
+          </LeveranceTidspunkt>
+          <ModtagetFraSystem>
+            <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+          </ModtagetFraSystem>
+          <ErLeveretIHenholdTil>
+            <UUIDIdentifikator xmlns="urn:oio:sagdok:3.0.0"></UUIDIdentifikator>
+          </ErLeveretIHenholdTil>
+          <LeveranceruteLokalUdvidelse>
+            <AntalLeveranceforsoeg>1</AntalLeveranceforsoeg>
+          </LeveranceruteLokalUdvidelse>
+        </Leverancerute>
+      </Leveranceruter>
+    </Leveranceinformation>
+  </Beskedkuvert>
+  <Beskeddata>
+    <Base64 content-type="application/xml" encoding="UTF-8" file-type=".xml" xmlns="urn:besked:kuvert:1.0"></Base64>
+  </Beskeddata>
+</Haendelsesbesked>

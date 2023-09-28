@@ -1,0 +1,13 @@
+<h1>{{ 'contact.page_header' | transloco }}</h1>
+<p>{{ 'contact.contact_description' | transloco }}</p>
+<p *ngIf="webPage && webPage.digitalPost">
+  <a href="{{ webPage?.digitalPost }}" class="function-link">{{ 'contact.digital_post_link' | transloco }}</a>
+</p>
+<p *ngIf="webPage && webPage.email">
+  {{ 'contact.email_description' | transloco
+  }}<a href="mailto:{{ webPage?.email }}" class="function-link">{{ webPage?.email }}</a>
+</p>
+<p *ngIf="webPage && webPage.telephoneNumber">
+  {{ 'contact.phone_description' | transloco
+  }}<a href="tel:{{ webPage?.telephoneNumber }}" class="function-link">{{ webPage?.telephoneNumber }}</a>
+</p>

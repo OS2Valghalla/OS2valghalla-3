@@ -1,0 +1,112 @@
+<app-multiple-selection
+  [label]="label"
+  [items]="viewData"
+  [alternative]="true"
+  (alternativeEvent)="openPariticipantSelectionModal()"
+  [formControl]="formData"
+  valueProperty="id"
+  displayProperty="name"></app-multiple-selection>
+
+<app-side-modal
+  [label]="label"
+  [large]="true"
+  [(value)]="visible"
+  [loading]="loading"
+  [submitDisabled]="!!selection && selection.length == 0"
+  (submitEvent)="confirmSelection()"
+  (closeEvent)="onClose()">
+  <ng-container *ngIf="visible">
+    <ng-container *appTableCtx="data; let typing">
+      <mat-card-content class="h-2/4 overflow-auto">
+        <app-query-container
+          #queryContainer
+          [table]="table"
+          [alternative]="true"
+          [(model)]="data"
+          (queryFormEvent)="onQueryForm($event)"
+          (queryEvent)="onQuery($event)">
+          <mat-accordion multi *appQueryContainerContent>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ 'shared.participant_picker.birthdate' | transloco }}</mat-panel-title>
+              </mat-expansion-panel-header>
+              <app-dynamic-query
+                [typing]="queryTyping"
+                label="shared.participant_picker.birthdate"
+                name="birthdate"></app-dynamic-query>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ 'shared.participant_picker.team' | transloco }}</mat-panel-title>
+              </mat-expansion-panel-header>
+              <app-dynamic-query
+                [typing]="queryTyping"
+                label="shared.participant_picker.team"
+                name="teams"></app-dynamic-query>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </app-query-container>
+      </mat-card-content>
+      <mat-divider *ngIf="queryContainer.queriesAvailability()"></mat-divider>
+      <mat-card-content class="flex h-16" *ngIf="queryContainer.queriesAvailability()">
+        <div class="py-4 flex">
+          <app-query-removal [container]="queryContainer" />
+        </div>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-content class="h-2/4 overflow-auto">
+        <app-table #table defaultSortColumn="name">
+          <ng-container
+            [appTableTyping]="typing"
+            appHeaderRowDef
+            key="id"
+            [sticky]="true"
+            [columns]="multiple ? ['name', 'birthdate'] : ['name', 'birthdate']"
+            [mobileColumns]="multiple ? ['name'] : ['name']">
+          </ng-container>
+
+          <ng-container [appTableTyping]="typing" appColumnDef="name">
+            <ng-container *appHeaderCellDef="typing; sortable: true">{{
+              'shared.participant_picker.name' | transloco
+            }}</ng-container>
+            <ng-container *appCellDef="typing; let row">
+              <a
+                *ngIf="!multiple"
+                class="hover:underline"
+                [ngClass]="{
+                  'font-bold': isSelected(row)
+                }"
+                href=""
+                (click)="$event.preventDefault(); onSingleSelect(row)"
+                >{{ row.name }}</a
+              >
+
+              <a
+                *ngIf="multiple"
+                class="hover:underline"
+                [ngClass]="{
+                  'font-bold': isSelected(row)
+                }"
+                href=""
+                (click)="$event.preventDefault(); onMultipleToggle(row)"
+                >{{ row.name }}</a
+              >
+            </ng-container>
+          </ng-container>
+
+          <ng-container [appTableTyping]="typing" appColumnDef="birthdate">
+            <ng-container *appHeaderCellDef>{{ 'shared.participant_picker.birthdate' | transloco }}</ng-container>
+            <ng-container *appCellDef="typing; let row">
+              <span
+                [ngClass]="{
+                  'font-bold': isSelected(row),
+                }"
+                >{{ row.birthdate | date }}</span
+              ></ng-container
+            >
+          </ng-container>
+        </app-table>
+      </mat-card-content>
+    </ng-container>
+  </ng-container>
+</app-side-modal>

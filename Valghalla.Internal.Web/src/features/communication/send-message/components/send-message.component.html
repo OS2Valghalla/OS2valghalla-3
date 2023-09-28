@@ -1,0 +1,193 @@
+<h3 *ngIf="!election" [innerHtml]="'start.no_election_message' | transloco">  
+</h3>
+<ng-container *ngIf="election">
+    <app-wizard class="inline-block w-full" [hideDeleteButton]="true"
+        [wizardTitle]="'communication.send_message.page_title' | transloco"
+        [submitButtonText]="'shared.dialog.send' | transloco"
+        (create)="sendMessage($event)"
+        (onCancelClick)="cancel()"
+        (onStepEnter)="onStepEnter($event)" *appShowSkeleton="loading"
+        >
+        <app-wizard-step [formGroup]="formInfo" [stepTitle]="'communication.send_message.steps.message_type' | transloco" >
+            <div *appWizardStep class="grid grid-cols-1 gap-4 w-1/2">
+                <div class="flex flex-col">
+                    <mat-label>{{ 'communication.send_message.steps.message_type' | transloco }}</mat-label>
+                    <mat-radio-group formControlName="templateType" (change)="templateTypeChanged()">
+                    <mat-radio-button
+                        class="flex flex-col"
+                        *ngFor="let templateType of templateTypes"
+                        [value]="templateType.id"
+                        >{{ templateType.title | transloco }}</mat-radio-button
+                    >
+                    </mat-radio-group>
+                </div>
+            </div>
+        </app-wizard-step>
+        <app-wizard-step [formGroup]="formContent" [stepTitle]="'communication.send_message.steps.content' | transloco">
+            <div *appWizardStep class="grid grid-cols-1 gap-4 w-1/2">
+                <div class="flex flex-col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>{{ 'communication.send_message.labels.select_template' | transloco }}</mat-label>
+                        <mat-select formControlName="selectedTemplate" *ngIf="formInfo.value.templateType == 0" (selectionChange)="onTemplateSelected($event)">
+                            <mat-option *ngFor="let template of communicationTemplates_DigitalPost" [value]="template">
+                                {{ template.title }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-select formControlName="selectedTemplate" *ngIf="formInfo.value.templateType == 1" (selectionChange)="onTemplateSelected($event)">
+                            <mat-option *ngFor="let template of communicationTemplates_Email" [value]="template">
+                                {{ template.title }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-select formControlName="selectedTemplate" *ngIf="formInfo.value.templateType == 2" (selectionChange)="onTemplateSelected($event)">
+                            <mat-option *ngFor="let template of communicationTemplates_SMS" [value]="template">
+                                {{ template.title }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-hint [innerHtml]="'communication.send_message.labels.select_template_hint' | transloco"></mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col" *ngIf="formInfo.value.templateType != 2">
+                    <mat-form-field appearance="fill">
+                        <mat-label>{{ 'communication.communication_template_item.subject' | transloco }}</mat-label>
+                        <input matInput type="text" formControlName="subject" />
+                        <mat-error *ngIf="formContent.controls.subject.hasError('maxlength')">
+                            {{ 'communication.communication_template_item.subject_max_length_error' | transloco }}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col" *ngIf="formInfo.value.templateType != 2">
+                    <h3 [ngClass]="this.isEmptyContent() ? 'text-red-600' : ''">{{ 'communication.communication_template_item.required_content' | transloco }}</h3>
+                    <app-rich-text-input
+                        [options]="pageContentSettings"
+                        [control]="formContent.controls.content"
+                        *appShowSkeleton="loading"></app-rich-text-input>
+                </div>
+                <div class="flex flex-col" *ngIf="formInfo.value.templateType == 2">
+                    <h3 [ngClass]="this.isEmptyContent() ? 'text-red-600' : ''">{{ 'communication.communication_template_item.required_content' | transloco }}</h3>
+                    <mat-form-field appearance="fill">
+                        <textarea matInput rows="12" formControlName="plainTextContent"></textarea>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col">
+                    <h3>{{ 'communication.communication_template_item.tokens_header' | transloco }}</h3>
+                    <p [innerHtml]="'communication.communication_template_item.tokens_note' | transloco" class="pl-4"></p>
+                    <mat-table [dataSource]="tokens">
+                        <ng-container matColumnDef="tokenName" sticky>
+                            <mat-header-cell *matHeaderCellDef>{{'communication.columns.token' | transloco}}</mat-header-cell>
+                            <mat-cell *matCellDef="let token">
+                                !{{ token }}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="tokenNameDescription" sticky>
+                            <mat-header-cell *matHeaderCellDef>{{'communication.columns.replace_with' | transloco}}</mat-header-cell>
+                            <mat-cell *matCellDef="let token">
+                                {{ 'communication.tokens_description.' + token | transloco }}
+                            </mat-cell>
+                        </ng-container>
+        
+                        <mat-header-row *matHeaderRowDef="['tokenName', 'tokenNameDescription']"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: ['tokenName', 'tokenNameDescription'];"></mat-row>
+                    </mat-table>                     
+                </div>
+                <div class="flex flex-col" *ngIf="formInfo.value.templateType != 2">
+                    <h3 class="pb-2">{{ 'communication.communication_template_item.attach_files' | transloco }}</h3>
+                    <app-file-storage
+                        type="communicationtemplate"
+                        [model]="communicationTemplateFileReferences" helpText="communication.communication_template_item.attach_files_hint"
+                        [extensions]="['pdf', 'doc', 'docx', 'txt', 'odt', 'xls', 'xlsx']"
+                        [multiple]="true"></app-file-storage>
+                </div>
+            </div>
+        </app-wizard-step>
+        <app-wizard-step [formGroup]="formRecipients" [stepTitle]="'communication.send_message.steps.recipients' | transloco">
+            <div *appWizardStep class="grid grid-cols-1 gap-4">
+                <div class="flex flex-col">
+                    <h3>{{ 'communication.send_message.labels.select_recipients' | transloco }}</h3>
+                    <mat-hint [innerHtml]="('communication.send_message.labels.select_recipients_hint' | transloco).replace('[[election]]', this.election.title)"></mat-hint>
+                </div>
+                <div class="w-full">
+                    <mat-form-field class="pb-4 pr-4">
+                        <mat-select formControlName="selectedWorkLocationIds" [placeholder]="'tasks.labels.work_location' | transloco" multiple="true" (selectionChange)="onFiltersChanged()" (openedChange)="onFiltersToggle($event)">            
+                            <mat-option *ngFor="let workLocation of workLocations" [value]="workLocation.id">
+                                {{ workLocation.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="pb-4 pr-4">
+                        <mat-select formControlName="selectedDates" [placeholder]="'tasks.labels.all_dates' | transloco" multiple="true" (selectionChange)="onFiltersChanged()" (openedChange)="onFiltersToggle($event)">
+                            <mat-option *ngFor="let electionDate of electionDates" [value]="electionDate">
+                                {{ electionDate | date }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="pb-4 pr-4">
+                        <mat-select formControlName="selectedTaskStatusIds" [placeholder]="'tasks.labels.task_status' | transloco" multiple="true" (selectionChange)="onFiltersChanged()" (openedChange)="onFiltersToggle($event)">              
+                            <mat-option [value]="0">{{'shared.task_status.accepted' | transloco}}</mat-option>
+                            <mat-option [value]="1">{{'shared.task_status.unanswered' | transloco}}</mat-option>
+                            <mat-option [value]="2">{{'shared.task_status.rejected' | transloco}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="pb-4 pr-4">
+                        <mat-select formControlName="selectedTaskTypeIds" [placeholder]="'tasks.labels.task_type' | transloco" multiple="true" (selectionChange)="onFiltersChanged()" (openedChange)="onFiltersToggle($event)">            
+                            <mat-option *ngFor="let taskType of taskTypes" [value]="taskType.id">
+                                {{ taskType.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="pb-4 pr-4">
+                        <mat-select formControlName="selectedTeamIds" [placeholder]="'tasks.labels.team' | transloco" multiple="true" (selectionChange)="onFiltersChanged()" (openedChange)="onFiltersToggle($event)">            
+                            <mat-option *ngFor="let team of teams" [value]="team.id">
+                                {{ team.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col">
+                    <h3>{{ 'communication.send_message.labels.filtered_participants_result' | transloco }}</h3>
+                    <div class="w-full transition-[width] duration-500 overflow-auto pt-4" *appShowSkeleton="loadingParticipants">
+                        <mat-table [dataSource]="dataSource">
+                            <ng-container matColumnDef="name" sticky>
+                                <mat-header-cell *matHeaderCellDef>{{'shared.common.name' | transloco}}</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    {{ row.participantName }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="team" sticky>
+                                <mat-header-cell *matHeaderCellDef>{{'communication.send_message.labels.team' | transloco}}</mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    {{ renderTeamNames(row.teamIds) }}
+                                </mat-cell>
+                            </ng-container>
+            
+                            <mat-header-row *matHeaderRowDef="['name', 'team']"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: ['name', 'team'];"></mat-row>
+                        </mat-table>
+                    </div>
+                    <mat-paginator [pageSize]="25" [pageSizeOptions]="[10, 25, 50]">
+                    </mat-paginator>    
+                </div>
+            </div>
+        </app-wizard-step>
+        <app-wizard-step [formGroup]="formContent" [stepTitle]="'communication.communication_template_item.steps.preview' | transloco">
+            <div *appWizardStep class="flex flex-col space-y-4">
+                <mat-hint [innerHtml]="'communication.communication_template_item.preview_description' | transloco"></mat-hint>
+                <div class="flex flex-col" *ngIf="formInfo.value.templateType != 2">
+                    <h3>{{ 'communication.communication_template_item.subject' | transloco }}</h3>
+                    <div class="NgxEditor">
+                        <div [innerHTML]="previewSubject" class="ProseMirror NgxEditor__Content"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col" *ngIf="formInfo.value.templateType != 5">
+                    <h3>{{ 'communication.communication_template_item.content' | transloco }}</h3>            
+                    <div class="NgxEditor">
+                        <div [innerHTML]="previewContent" class="ProseMirror NgxEditor__Content"></div>
+                    </div>            
+                </div>
+                <div class="flex flex-col">
+                    <h3 [innerHtml]="('communication.send_message.labels.preview_send_message_header' | transloco).replace('[[count]]', this.recipientsCount.toString())"></h3>
+                    <mat-hint [innerHtml]="('communication.send_message.labels.preview_send_message_hint' | transloco)"></mat-hint>
+                </div>
+            </div>
+        </app-wizard-step>
+    </app-wizard>
+</ng-container>

@@ -1,0 +1,58 @@
+<div class="date-group js-calendar-group mt-3">
+  <div class="form-group form-group-day">
+    <label class="form-label" [attr.for]="dayInputId">{{ 'shared.common.day' | transloco }}</label>
+
+    <input
+      appInputRegex
+      type="tel"
+      [attr.id]="dayInputId"
+      class="form-input js-calendar-day-input"
+      [(ngModel)]="day"
+      (ngModelChange)="onValueChange(); dayChanged = true;"
+      [attr.required]="required"
+      data-min="1"
+      data-max="31"
+      maxlength="2"
+      pattern="^[0-9]{0,2}$"
+      data-input-regex="^[0-9]{0,2}$"
+      [attr.title]="'shared.accessibility.date_input.day_title' | transloco" />
+  </div>
+
+  <div class="form-group form-group-month">
+    <label class="form-label" [attr.for]="monthInputId">{{ 'shared.common.month' | transloco }}</label>
+
+    <input
+      appInputRegex
+      type="tel"
+      [attr.id]="monthInputId"
+      class="form-input js-calendar-month-input"
+      [(ngModel)]="month"
+      (ngModelChange)="onValueChange(); monthChanged = true;"
+      [attr.required]="required"
+      data-min="1"
+      data-max="12"
+      maxlength="2"
+      pattern="^[0-9]{0,2}$"
+      data-input-regex="^[0-9]{0,2}$"
+      [attr.title]="'shared.accessibility.date_input.month_title' | transloco" />
+  </div>
+
+  <div class="form-group form-group-year">
+    <label class="form-label" [attr.for]="yearInputId">{{ 'shared.common.year' | transloco }}</label>
+
+    <input
+      appInputRegex
+      type="tel"
+      [attr.id]="yearInputId"
+      class="form-input js-calendar-year-input"
+      [(ngModel)]="year"
+      (ngModelChange)="onValueChange(); yearChanged = true;"
+      [attr.required]="required"
+      data-min="1900"
+      data-max="3000"
+      maxlength="4"
+      pattern="^[0-9]{0,4}$"
+      data-input-regex="^[0-9]{0,4}$"
+      [attr.title]="'shared.accessibility.date_input.year_title' | transloco" />
+  </div>
+</div>

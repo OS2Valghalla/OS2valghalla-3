@@ -1,0 +1,19 @@
+
+<div class="flex flex-row items-stretch">
+    <div class="flex-none w-12 py-2 toast-icon grid items-center justify-items-center rounded-l">
+      <mat-icon>{{icon}}</mat-icon>
+    </div>
+    <div class="py-2 w-full flex items-baseline justify-between">
+      <div class="toast-message pl-2 pb-2 pr-2">
+        <p class="font-bold leading-9">{{data.message}}</p>
+        <p class="pr-2" *ngIf="data.body && data.body.length > 0">{{data.body}}</p>
+        <div class="pr-2" *ngIf="data.htmlContent" [innerHTML]="data.htmlContent"></div>
+      </div>
+      <div class="toast-actions items-start" *ngIf="this.data.showCloseButton">
+        <button mat-icon-button (click)="snackBarRef.dismiss()">
+            <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+</div>
+

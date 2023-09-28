@@ -1,0 +1,48 @@
+<div class="flex flex-row justify-between">
+  <app-page-title>{{ 'administration.teams.page_title' | transloco }}</app-page-title>
+</div>
+
+<app-card
+  [cardTitle]="'administration.teams.teams_listing.title' | transloco"
+  actionTitle="administration.teams.action.create_team"
+  actionIcon="add"
+  (action)="openAddTeam()">
+  <app-table
+    #tableTeams
+    *appTableCtx="data; let typing"
+    defaultSortColumn="name"
+    (editEvent)="openEditTeam($event)"
+    (deleteEvent)="deleteTeam($event)">
+    <app-query-container [hideFilterBtn]="true" cacheKey="teams" [(model)]="data" (queryEvent)="onQuery($event)">
+      <mat-accordion multi *appQueryContainerContent> </mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [columns]="['name', 'shortName', 'responsibleCount', '$actionsEditDelete']"
+      [mobileColumns]="['name', 'shortName', 'responsibleCount']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="name">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.name' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.name }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="shortName">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.teams.columns.short_name' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.shortName }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="responsibleCount">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.teams.columns.responsible_count' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.responsibleCount }}</ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

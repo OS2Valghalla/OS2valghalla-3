@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+.routing-card {
+  @include mat.elevation-transition();
+  @include mat.elevation(2);
+}
+
+.icon-display {
+  transform: scale(3);
+}

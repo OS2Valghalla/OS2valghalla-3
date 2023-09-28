@@ -1,0 +1,55 @@
+<app-form-page
+  [formTitle]="'tasks.labels.task_details' | transloco" [formGroup]="form" (create)="replyForParticipant($event)" (onCancelClick)="onCancel()">
+  <div class="flex flex-col">
+    <div class="flex flex-row h-9">
+        <div class="basis-28 font-semibold">{{ 'tasks.labels.participant' | transloco }} :</div>
+        <div class="basis-full" *appShowSkeleton="!loading">{{ task?.participantName }}</div>
+    </div>
+    <div class="flex flex-row h-9">
+        <div class="basis-28 font-semibold">{{ 'tasks.labels.task' | transloco }} :</div>
+        <div class="basis-full" *appShowSkeleton="!loading">{{ task?.taskTypeName }}</div>
+    </div>
+    <div class="flex flex-row h-9">
+        <div class="basis-28 font-semibold">{{ 'tasks.labels.date' | transloco }} :</div>
+        <div class="basis-full" *appShowSkeleton="!loading">{{ task?.taskDate | date }}</div>
+    </div>
+    <div class="flex flex-row h-9">
+        <div class="basis-28 font-semibold">{{ 'tasks.labels.team' | transloco }} :</div>
+        <div class="basis-full" *appShowSkeleton="!loading">{{ task?.teamName }}</div>
+    </div>
+  </div>
+  <h3 class="pt-4 pb-2">{{ 'tasks.labels.reply_on_behalf_of_user' | transloco }}</h3>
+  <div class="flex flex-col">
+    <mat-radio-group class="block" (change)="onSelectedResponseChanged($event)" [(ngModel)]="selectedResponse" [ngModelOptions]="{standalone: true}">
+        <mat-radio-button
+        class="pr-4"
+        [value]="true">{{ 'shared.common.yes' | transloco }}</mat-radio-button>
+        <mat-radio-button
+        class="pr-4"
+        [value]="false">{{ 'shared.common.no' | transloco }}</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="flex flex-col" *ngIf="selectedResponse">
+    <h3 class="pt-4 pb-2">{{ 'tasks.labels.participant_information_header' | transloco }}</h3>
+    <mat-hint class="pb-4">{{ 'tasks.labels.participant_information_description' | transloco }}</mat-hint>
+    <div class="space-y-2">
+        <div class="flex flex-col space-y-4">
+          <mat-form-field appearance="fill" *appShowSkeleton="loadingParticipantDetails">
+            <mat-label>{{ 'participant.participant_item.fields.mobile_number' | transloco }}</mat-label>
+            <input matInput type="text" formControlName="mobileNumber" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" *appShowSkeleton="loadingParticipantDetails">
+            <mat-label>{{ 'participant.participant_item.fields.email' | transloco }}</mat-label>
+            <input matInput type="text" formControlName="email" />
+          </mat-form-field>
+          <app-multiple-selection
+            *appShowSkeleton="loadingParticipantDetails"
+            formControlName="specialDietIds"
+            [label]="'participant.participant_item.fields.special_diet' | transloco"
+            [items]="specialDiets"
+            valueProperty="id"
+            displayProperty="title"></app-multiple-selection>
+        </div>
+    </div>
+  </div>
+</app-form-page>

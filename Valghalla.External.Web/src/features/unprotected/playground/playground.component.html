@@ -1,0 +1,1054 @@
+<!-- https://designsystem.dk/eksempler/selvbetjeningsloesninger/#sagsoversigt -->
+
+<div appTabNav class="tabnav" role="tablist">
+  <button aria-controls="tabpanel1" id="tab1" class="tabnav-item" role="tab" aria-selected="true">
+    <span>Accordions</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel1" aria-labelledby="tab1">
+    <!-- Accordions -->
+    <!-- https://designsystem.dk/kode/komponenter/accordions/ -->
+    <!-- Container element should have [appAccordion] directive,
+    each accordion should have "aria-controls" attribute matching with expanded element "id" attribute -->
+    <ul appAccordion class="accordion">
+      <li>
+        <h2>
+          <button class="accordion-button" aria-expanded="false" aria-controls="a1">
+            Lorem ipsum dolor sit amet
+            <span class="accordion-icon">
+              <span class="icon_text">Information</span>
+              <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#info"></use></svg>
+            </span>
+          </button>
+        </h2>
+        <div id="a1" aria-hidden="true" class="accordion-content">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat.
+          </p>
+        </div>
+      </li>
+      <li>
+        <h2>
+          <button class="accordion-button" aria-expanded="false" aria-controls="a2">
+            Lorem ipsum dolor sit amet
+            <span class="accordion-icon">
+              <span class="icon_text">Information</span>
+              <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#info"></use></svg>
+            </span>
+          </button>
+        </h2>
+        <div id="a2" aria-hidden="true" class="accordion-content">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat.
+          </p>
+        </div>
+      </li>
+      <li>
+        <h2>
+          <button class="accordion-button" aria-expanded="false" aria-controls="a3">
+            Lorem ipsum dolor sit amet
+            <span class="accordion-icon">
+              <span class="icon_text">Information</span>
+              <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#info"></use></svg>
+            </span>
+          </button>
+        </h2>
+        <div id="a3" aria-hidden="true" class="accordion-content">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat.
+          </p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <button aria-controls="tabpanel2" id="tab2" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Badges</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="false" role="tabpanel" tabindex="0" id="tabpanel2" aria-labelledby="tab2">
+    <!-- Badges -->
+    <!-- https://designsystem.dk/kode/komponenter/badges/ -->
+    <span class="badge badge-large">Nyhed</span> <br /><br />
+    <span class="badge badge-large badge-success">Nyhed</span> <br /><br />
+    <span class="badge badge-large badge-warning">Nyhed</span> <br /><br />
+    <span class="badge badge-large badge-error">Nyhed</span> <br /><br />
+  </section>
+
+  <button aria-controls="tabpanel3" id="tab3" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Alerts</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel3" aria-labelledby="tab3">
+    <!-- Alerts -->
+    <!-- https://designsystem.dk/kode/komponenter/beskeder/ -->
+    <!-- Container element should have [appAlert] directive to make close button works -->
+    <div appAlert class="alert alert-info has-close">
+      <div class="alert-body">
+        <h3 class="alert-heading pr-7">Besked med luk</h3>
+        <p class="alert-text">Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet.</p>
+        <button type="button" class="alert-close">
+          <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#close"></use></svg>Luk
+        </button>
+      </div>
+    </div>
+
+    <div appAlert class="alert alert-info alert--show-icon">
+      <div class="alert-body">
+        <h3 class="alert-heading">Informativ besked - med ikon</h3>
+        <p class="alert-text">
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+        </p>
+      </div>
+    </div>
+
+    <div appAlert class="alert alert-success alert--show-icon">
+      <div class="alert-body">
+        <h3 class="alert-heading">Succesmeddelelse - med ikon</h3>
+        <p class="alert-text">
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+        </p>
+      </div>
+    </div>
+
+    <div appAlert class="alert alert-warning alert--show-icon" role="alert">
+      <div class="alert-body">
+        <h3 class="alert-heading">Advarsel - med ikon</h3>
+        <p class="alert-text">
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+        </p>
+      </div>
+    </div>
+
+    <div appAlert class="alert alert-error alert--show-icon" role="alert">
+      <div class="alert-body">
+        <h3 class="alert-heading">Fejlbesked - med ikon</h3>
+        <p class="alert-text">
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel4" id="tab4" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Breadcrumbs</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel4" aria-labelledby="tab4">
+    <!-- Breadcrumbs -->
+    <!-- https://designsystem.dk/kode/komponenter/broedkrumme/ -->
+    <!-- NOTED: We may need to develop custom component to wrap logic -->
+    <nav class="breadcrumbs container" aria-label="Brødkrumme">
+      <ol class="breadcrumbs__list">
+        <li class="breadcrumbs__list-item">
+          <a class="breadcrumbs__link" href="#">Forside</a>
+        </li>
+
+        <li class="breadcrumbs__list-item">
+          <a class="breadcrumbs__link" href="#">Komponenter</a>
+        </li>
+
+        <li class="breadcrumbs__list-item" aria-current="page">Brødkrumme</li>
+      </ol>
+    </nav>
+  </section>
+
+  <button aria-controls="tabpanel5" id="tab5" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Cards</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel5" aria-labelledby="tab5">
+    <!-- Cards -->
+    <!-- https://designsystem.dk/kode/komponenter/cards/ -->
+    <div class="container pb-5">
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 mt-6 mt-md-0">
+          <div class="card card-align-height">
+            <div class="card-content">
+              <!-- Alt i denne div er blot et eksempel. Visse klasser er ikke en del af FDS. -->
+              <div class="align-text-center background-data-green-blue-300 p-6">
+                <h3 class="h5 mb-5">Lorem ipsum fordeling</h3>
+                <div class="mt-3 row">
+                  <div class="col-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-label="Billedeksempel, der viser at fordelingen i København er 80%"
+                      class="w-percent-30 w-percent-md-70"
+                      viewBox="0 0 50 100">
+                      <rect width="50" height="100" fill="#eefafa" />
+                      <rect y="20" width="50" height="80" fill="#0868AC" />
+                    </svg>
+                    <span class="small-text mt-2 bold d-block">København</span>
+                  </div>
+                  <div class="col-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-label="Billedeksempel, der viser at fordelingen i hele landet er 36%"
+                      class="w-percent-30 w-percent-md-70"
+                      viewBox="0 0 50 100">
+                      <rect width="50" height="100" fill="#eefafa" />
+                      <rect y="64" width="50" height="36" fill="#0868AC" />
+                    </svg>
+                    <span class="small-text mt-2 bold d-block">Hele landet</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-header">
+              <h4 class="header-title">Header</h4>
+            </div>
+
+            <div class="card-text">
+              <p>
+                In sollicitudin, nulla sit amet facilisis euismod, ex ex hendrerit eros, et egestas purus lectus vitae
+                tortor.
+              </p>
+            </div>
+
+            <div class="card-footer card-action">
+              <div class="action-buttons">
+                <button class="button button-secondary">Sekundærknap</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 mt-6 mt-md-0">
+          <div class="card card-align-height">
+            <div class="card-content">
+              <!-- Alt i denne div er blot et eksempel. Visse klasser er ikke en del af FDS. -->
+              <div class="align-text-center background-data-green-blue-300 p-6">
+                <h3 class="h5 mb-5">Lorem ipsum fordeling</h3>
+                <div class="mt-3 row">
+                  <div class="col-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-label="Billedeksempel, der viser at fordelingen i København er 80%"
+                      class="w-percent-30 w-percent-md-70"
+                      viewBox="0 0 50 100">
+                      <rect width="50" height="100" fill="#eefafa" />
+                      <rect y="20" width="50" height="80" fill="#0868AC" />
+                    </svg>
+                    <span class="small-text mt-2 bold d-block">København</span>
+                  </div>
+                  <div class="col-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-label="Billedeksempel, der viser at fordelingen i hele landet er 36%"
+                      class="w-percent-30 w-percent-md-70"
+                      viewBox="0 0 50 100">
+                      <rect width="50" height="100" fill="#eefafa" />
+                      <rect y="64" width="50" height="36" fill="#0868AC" />
+                    </svg>
+                    <span class="small-text mt-2 bold d-block">Hele landet</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-header">
+              <h4 class="header-title">Header</h4>
+            </div>
+
+            <div class="card-text">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+
+            <div class="card-footer card-action">
+              <div class="action-buttons">
+                <button class="button button-secondary">Sekundærknap</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 mt-6 mt-md-0">
+          <div class="card card-align-height">
+            <div class="card-content">
+              <!-- Alt i denne div er blot et eksempel. Visse klasser er ikke en del af FDS. -->
+              <div class="align-text-center background-data-green-blue-300 p-6">
+                <h3 class="h5 mb-5">Lorem ipsum fordeling</h3>
+                <div class="mt-3 row">
+                  <div class="col-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-label="Billedeksempel, der viser at fordelingen i København er 80%"
+                      class="w-percent-30 w-percent-md-70"
+                      viewBox="0 0 50 100">
+                      <rect width="50" height="100" fill="#eefafa" />
+                      <rect y="20" width="50" height="80" fill="#0868AC" />
+                    </svg>
+                    <span class="small-text mt-2 bold d-block">København</span>
+                  </div>
+                  <div class="col-6">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-label="Billedeksempel, der viser at fordelingen i hele landet er 36%"
+                      class="w-percent-30 w-percent-md-70"
+                      viewBox="0 0 50 100">
+                      <rect width="50" height="100" fill="#eefafa" />
+                      <rect y="64" width="50" height="36" fill="#0868AC" />
+                    </svg>
+                    <span class="small-text mt-2 bold d-block">Hele landet</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-header">
+              <h4 class="header-title">Header</h4>
+            </div>
+
+            <div class="card-text">
+              <p>
+                Sed tincidunt, risus vitae rutrum accumsan, urna leo fermentum dui, ac suscipit ante nulla sit amet
+                magna.
+              </p>
+            </div>
+
+            <div class="card-footer card-action">
+              <div class="action-buttons">
+                <button class="button button-secondary">Sekundærknap</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel8" id="tab8" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Details</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel8" aria-labelledby="tab8">
+    <!-- Details -->
+    <!-- https://designsystem.dk/kode/komponenter/detaljer/ -->
+    <details class="details">
+      <summary class="details-summary">Mere information</summary>
+      <div class="details-text">
+        <p>Pellentesque nulla mi, pulvinar id blandit eu, volutpat at libero. Integer euismod augue leo.</p>
+        <p>
+          Morbi faucibus nunc tortor, condimentum vulputate urna sollicitudin non. Nam commodo nulla metus. Phasellus
+          varius eu dolor nec ultricies. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ac leo finibus,
+          blandit velit nec, consequat est. Nulla facilisi.
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <button aria-controls="tabpanel10" id="tab10" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Form validation</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel10" aria-labelledby="tab10">
+    <!-- Error messages -->
+    <!-- https://designsystem.dk/kode/komponenter/fejlmeddelelser/ -->
+
+    <!-- Input fields -->
+    <!-- https://designsystem.dk/kode/komponenter/inputfelter/ -->
+    <div appFormGroup>
+      <label appFormLabel>Text</label>
+      <span appFormHint>The value should be a string</span>
+      <span appFormError></span>
+      <input appFormInput type="text" [formControl]="form.controls.text" />
+    </div>
+
+    <div appFormGroup>
+      <label appFormLabel>Number</label>
+      <span appFormHint>The value should be a number</span>
+      <span appFormError></span>
+      <input appFormInput type="number" [formControl]="form.controls.number" />
+    </div>
+
+    <div appFormGroup>
+      <label appFormLabel>Input field with suffix</label>
+      <span appFormError></span>
+
+      <div class="form-input-wrapper form-input-wrapper--suffix">
+        <input appFormInput type="number" [formControl]="form.controls.inputWithSuffix" />
+        <div class="form-input-suffix" aria-hidden="true">DKK</div>
+      </div>
+    </div>
+
+    <!-- Date fields -->
+    <!-- https://designsystem.dk/kode/komponenter/datofelter/ -->
+    <!-- Input element needs to have [appInputRegex] directive to make [data-input-regex] attribute works (<app-date-input> already abstract this)-->
+    <div appFormGroup>
+      <fieldset appFormDate>
+        <legend appFormLabel>Date</legend>
+        <span appFormHint>The value should be a date</span>
+        <span appFormError></span>
+        <app-date-input [required]="true" [formControl]="form.controls.date"></app-date-input>
+      </fieldset>
+    </div>
+
+    <!-- Date picker -->
+    <!-- https://designsystem.dk/kode/komponenter/datovaelger/ -->
+    <!-- Container element should have [appDatePicker] directive -->
+    <div appFormGroup>
+      <label appFormLabel>Date picker</label>
+      <span appFormError></span>
+      <div appDatePicker>
+        <div class="date-picker">
+          <input appFormInput [datePicker]="true" type="text" [formControl]="form.controls.datePicker" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Drop down -->
+    <!-- https://designsystem.dk/kode/komponenter/dropdown/ -->
+    <div appFormGroup>
+      <label appFormLabel>Dropdown (select)</label>
+      <span appFormError></span>
+      <select appFormSelect [formControl]="form.controls.selection">
+        <option value="option1">Ingen mulighed valgt</option>
+        <option value="option2">Mulighed 1</option>
+        <option value="option3">Mulighed 2</option>
+        <option value="option4">Mulighed 3</option>
+      </select>
+    </div>
+
+    <!-- Radio button -->
+    <!-- https://designsystem.dk/kode/komponenter/radioknap/ -->
+    <div appFormGroup>
+      <fieldset appFormRadioGroup>
+        <legend appFormLabel>Radio input</legend>
+        <span appFormError></span>
+
+        <div appFormRadio>
+          <input appFormRadioOption type="radio" value="option 1" [formControl]="form.controls.radioValue" />
+          <label appFormRadioLabel>Option 1</label>
+        </div>
+
+        <div appFormRadio>
+          <input appFormRadioOption type="radio" value="option 2" [formControl]="form.controls.radioValue" />
+          <label appFormRadioLabel>Option 2</label>
+        </div>
+
+        <div appFormRadio>
+          <input appFormRadioOption type="radio" value="option 3" [formControl]="form.controls.radioValue" />
+          <label appFormRadioLabel>Option 3</label>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Text area -->
+    <!-- https://designsystem.dk/kode/komponenter/tekstomraade/ -->
+    <div appFormGroup>
+      <label appFormLabel>Text area</label>
+      <span appFormError></span>
+      <textarea appFormInput rows="5" [formControl]="form.controls.textarea"></textarea>
+    </div>
+
+    <!-- Checkbox -->
+    <!-- https://designsystem.dk/kode/komponenter/tjekboks/ -->
+    <div appFormGroup>
+      <fieldset appFormCheckboxGroup>
+        <legend appFormLabel>Checkbox</legend>
+        <span appFormError></span>
+
+        <div appFormCheckbox>
+          <input appFormCheckboxOption type="checkbox" value="option 1" [formControl]="form.controls.checkboxValue" />
+          <label appFormCheckboxLabel>Option 1</label>
+        </div>
+
+        <div appFormCheckbox>
+          <input appFormCheckboxOption type="checkbox" value="option 2" [formControl]="form.controls.checkboxValue" />
+          <label appFormCheckboxLabel>Option 2</label>
+        </div>
+
+        <div appFormCheckbox>
+          <input appFormCheckboxOption type="checkbox" value="option 3" [formControl]="form.controls.checkboxValue" />
+          <label appFormCheckboxLabel>Option 3</label>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Attach file -->
+    <!-- https://designsystem.dk/kode/komponenter/fil-upload/ -->
+    <div appFormGroup class="file-input">
+      <label appFormLabel>Attach file</label>
+      <span appFormError></span>
+      <input appFormInput type="file" [formControl]="form.controls.file" />
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel11" id="tab11" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Error summary</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel11" aria-labelledby="tab11">
+    <!-- Error summary -->
+    <!-- https://designsystem.dk/kode/komponenter/fejlopsummering/ -->
+    <!-- NOTED: We may need to develop custom component to wrap logic -->
+    <div appErrorSummary class="alert alert-error mt-0 mb-8" role="alert" data-module="error-summary">
+      <div class="alert-body">
+        <h2 class="alert-heading">Der er problemer</h2>
+        <ul class="alert-text nobullet-list">
+          <li>
+            <a class="function-link" href="#example-name-error"
+              >Skriv dit fulde navn, og adskil for- og efternavne med mellemrum, fx Anders Andersen</a
+            >
+          </li>
+          <li>
+            <a class="function-link" href="#checkboxes-error-option1"
+              >Angiv om du er dansk, svensk eller anden nationalitet</a
+            >
+          </li>
+          <li><a class="function-link" href="#date-input-error-day">Datoen kan ikke være i fremtiden</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <h1 id="oplysninger-om-dig">Oplysninger om dig</h1>
+    <form novalidate>
+      <div class="form-group form-error">
+        <label class="form-label" for="example-name-error">Hvad er dit fulde navn?</label>
+
+        <span class="form-error-message" id="example-name-error-error">
+          <span class="sr-only">Fejl: </span>Skriv dit fulde navn, og adskil for- og efternavne med mellemrum, fx Anders
+          Andersen
+        </span>
+
+        <input
+          type="text"
+          id="example-name-error"
+          name="example-name-error"
+          class="form-input"
+          aria-invalid="true"
+          aria-describedby="example-name-error-error "
+          required />
+      </div>
+
+      <div class="form-group form-error">
+        <fieldset aria-describedby="checkboxes-error-error">
+          <legend class="form-label">Hvad er din nationalitet?</legend>
+
+          <span class="form-error-message" id="checkboxes-error-error">
+            <span class="sr-only">Fejl: </span>Angiv om du er dansk, svensk eller anden nationalitet
+          </span>
+
+          <div class="form-group-checkbox">
+            <input
+              type="checkbox"
+              id="checkboxes-error-option1"
+              name="nationalitet[]"
+              class="form-checkbox checkbox-large"
+              value="dansk" />
+            <label class="form-label" for="checkboxes-error-option1">Dansk</label>
+          </div>
+
+          <div class="form-group-checkbox">
+            <input
+              type="checkbox"
+              id="checkboxes-error-option2"
+              name="nationalitet[]"
+              class="form-checkbox checkbox-large"
+              value="svensk" />
+            <label class="form-label" for="checkboxes-error-option2">Svensk</label>
+          </div>
+
+          <div class="form-group-checkbox">
+            <input
+              type="checkbox"
+              id="checkboxes-error-option3"
+              name="nationalitet[]"
+              class="form-checkbox checkbox-large"
+              value="anden" />
+            <label class="form-label" for="checkboxes-error-option3">Anden nationalitet</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="form-group form-error">
+        <fieldset aria-describedby="date-input-error-hint date-input-error-error ">
+          <legend class="form-label">Hvornår blev dit pas udstedt?</legend>
+          <span class="form-hint" id="date-input-error-hint">For eksempel: 05 12 2018</span>
+          <span class="form-error-message" id="date-input-error-error">
+            <span class="sr-only">Fejl: </span>Datoen kan ikke være i fremtiden
+          </span>
+          <div class="date-group js-calendar-group mt-3">
+            <div class="form-group form-group-day">
+              <label class="form-label" for="date-input-error-day">Dag</label>
+
+              <input
+                type="tel"
+                id="date-input-error-day"
+                class="form-input js-calendar-day-input"
+                value="01"
+                required
+                data-min="1"
+                data-max="31"
+                maxlength="2"
+                pattern="^[0-9]{0,2}$"
+                data-input-regex="^[0-9]{0,2}$"
+                title="Indtast dag på måneden som tal" />
+            </div>
+
+            <div class="form-group form-group-month">
+              <label class="form-label" for="date-input-error-month">Måned</label>
+
+              <input
+                type="tel"
+                id="date-input-error-month"
+                class="form-input js-calendar-month-input"
+                value="12"
+                required
+                data-min="1"
+                data-max="12"
+                maxlength="2"
+                pattern="^[0-9]{0,2}$"
+                data-input-regex="^[0-9]{0,2}$"
+                title="Indtast månedens nummer" />
+            </div>
+
+            <div class="form-group form-group-year">
+              <label class="form-label" for="date-input-error-year">År</label>
+
+              <input
+                type="tel"
+                id="date-input-error-year"
+                class="form-input js-calendar-year-input"
+                value="2076"
+                required
+                data-min="1900"
+                data-max="3000"
+                maxlength="4"
+                pattern="^[0-9]{0,4}$"
+                data-input-regex="^[0-9]{0,4}$"
+                title="Indtast årstal" />
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </form>
+  </section>
+
+  <button aria-controls="tabpanel12" id="tab12" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Function link</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel12" aria-labelledby="tab12">
+    <!-- Function link -->
+    <!-- https://designsystem.dk/kode/komponenter/funktionslink/ -->
+    <button type="button" class="function-link">
+      <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#save"></use></svg>Gem kladde
+    </button>
+  </section>
+
+  <button aria-controls="tabpanel13" id="tab13" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Input fields (Limit)</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel13" aria-labelledby="tab13">
+    <!-- Input fields -->
+    <!-- https://designsystem.dk/kode/komponenter/inputfelter/ -->
+    <!-- Character limit needs to have [appCharacterLimit] directive -->
+    <div appCharacterLimit class="form-group form-limit" data-maxlength="20">
+      <label class="form-label" for="input-type-text-limit">Inputfelt med karakterbegrænsning</label>
+
+      <input
+        type="text"
+        id="input-type-text-limit"
+        name="input-type-text-limit"
+        class="form-input"
+        aria-describedby="input-type-text-limit-limit-message"
+        required />
+      <span id="input-type-text-limit-limit-message" class="sr-only">Du kan indtaste op til 20 tegn</span>
+      <span class="form-hint character-limit" aria-hidden="true">Du har 20 tegn tilbage</span>
+      <span class="character-limit-sr-only sr-only" aria-live="polite">Du har 20 tegn tilbage</span>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel14" id="tab14" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Buttons</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel14" aria-labelledby="tab14">
+    <!-- Buttons -->
+    <!-- https://designsystem.dk/kode/komponenter/knapper/ -->
+    <button class="button button-primary">Gem</button>
+
+    <button class="button button-primary">
+      <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#refresh"></use></svg>
+      Refresh
+    </button>
+
+    <button class="button button-unstyled">
+      <svg class="icon-svg mr-0 mt-0" focusable="false" aria-hidden="true"><use xlink:href="#trash-can"></use></svg>
+      <span class="sr-only">Slet</span>
+    </button>
+  </section>
+
+  <button aria-controls="tabpanel15" id="tab15" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Loading spinner</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel15" aria-labelledby="tab15">
+    <!-- Loading spinner -->
+    <!-- https://designsystem.dk/kode/komponenter/spinner/ -->
+    <div class="spinner" style="margin-top: 20px"></div>
+    <div class="spinner-status" role="status">Arbejder</div>
+  </section>
+
+  <button aria-controls="tabpanel16" id="tab16" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Modal</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel16" aria-labelledby="tab16">
+    <!-- Modal -->
+    <!-- https://designsystem.dk/kode/komponenter/modal/ -->
+    <button class="button button-tertiary" data-module="modal" data-target="modal-example" aria-haspopup="dialog">
+      Åbn modal
+    </button>
+  </section>
+
+  <button aria-controls="tabpanel17" id="tab17" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Overflow menu</span>
+  </button>
+  <section
+    class="tabnav-panel"
+    aria-hidden="true"
+    role="tabpanel"
+    tabindex="0"
+    id="tabpanel17"
+    aria-labelledby="tab17"
+    style="height: 300px">
+    <!-- Overflow menu -->
+    <!-- https://designsystem.dk/kode/komponenter/overflowmenu/ -->
+    <div class="overflow-menu overflow-menu--open-right">
+      <button
+        appOverflowMenu
+        class="button-overflow-menu js-dropdown"
+        data-js-target="overflow1"
+        aria-haspopup="true"
+        aria-expanded="false">
+        Overflow menu
+        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#more-vert"></use></svg>
+      </button>
+      <div class="overflow-menu-inner" id="overflow1" aria-hidden="true">
+        <ul class="overflow-list">
+          <li><button>Mulighed 1</button></li>
+          <li><button>Mulighed 2</button></li>
+          <li><a href="#">Mulighed 3 er et link</a></li>
+          <li><button>Mulighed 4 er en længere tekst</button></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel18" id="tab18" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Pagination</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel18" aria-labelledby="tab18">
+    <!-- Pagination -->
+    <!-- https://designsystem.dk/kode/komponenter/paginering/ -->
+    <nav class="pagination" id="pagination-ID" aria-label="Pagineringseksempel med 12 sider">
+      <a href="#" class="button button-arrow button-first">
+        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#first-page"></use></svg>
+        <span class="sr-only">Første side</span></a
+      >
+      <a href="#" class="button button-arrow button-previous" aria-label="Forrige side">
+        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#chevron-left"></use></svg>
+        <span class="pagination-nav-link">Forrige</span>
+      </a>
+      <span class="pagination-mobile">Side 8 af 12</span>
+      <ul class="pagination__items">
+        <li class="pagination-item pagination-number">
+          <a href="#" class="button button-secondary" aria-label="Side 1">1</a>
+        </li>
+        <li class="pagination-item pagination-overflow" role="presentation">
+          <span>...</span>
+        </li>
+        <li class="pagination-item pagination-number">
+          <a href="#" class="button button-secondary" aria-label="Side 7">7</a>
+        </li>
+        <li class="pagination-item pagination-number">
+          <a href="#" class="button current-page" aria-label="Side 8" aria-current="page">8</a>
+        </li>
+        <li class="pagination-item pagination-number">
+          <a href="#" class="button button-secondary" aria-label="Side 9">9</a>
+        </li>
+        <li class="pagination-item pagination-overflow" role="presentation">
+          <span>...</span>
+        </li>
+        <li class="pagination-item pagination-number">
+          <a href="#" class="button button-secondary" aria-label="Sidste side, side 12">12</a>
+        </li>
+      </ul>
+      <a href="#" class="button button-arrow button-next" aria-label="Næste side">
+        <span class="pagination-nav-link">Næste</span
+        ><svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#chevron-right"></use></svg>
+      </a>
+      <a href="#" class="button button-arrow button-last">
+        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#last-page"></use></svg>
+        <span class="sr-only">Sidste side</span></a
+      >
+    </nav>
+  </section>
+
+  <button aria-controls="tabpanel19" id="tab19" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Radio button (toggle)</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel19" aria-labelledby="tab19">
+    <!-- Radio button -->
+    <!-- https://designsystem.dk/kode/komponenter/radioknap/ -->
+    <div appRadioToggleGroup class="form-group js-radio-toggle-group">
+      <fieldset role="radiogroup">
+        <legend class="form-label">Vælg en radioknap</legend>
+
+        <div class="form-group-radio">
+          <input
+            type="radio"
+            id="radiogroup-collapse-option1"
+            name="radio-collapse"
+            class="form-radio radio-large"
+            value="1"
+            checked
+            data-controls="#radiogroup-collapse-option1-collapse"
+            data-expanded="true" />
+          <label class="form-label" for="radiogroup-collapse-option1"
+            >Radioknap viser indhold<span class="sr-only"> Udfyld informationer herunder</span></label
+          >
+        </div>
+        <div id="radiogroup-collapse-option1-collapse" aria-hidden="false" class="radio-content radio-content-large">
+          <div class="form-group">
+            <label class="form-label" for="textinput1">Inputfelt med label</label>
+
+            <input type="text" id="textinput1" name="text1" class="form-input input-width-m" required />
+          </div>
+        </div>
+
+        <div class="form-group-radio">
+          <input
+            type="radio"
+            id="radiogroup-collapse-option2"
+            name="radio-collapse"
+            class="form-radio radio-large"
+            value="2"
+            data-controls="#radiogroup-collapse-option2-collapse"
+            data-expanded="false" />
+          <label class="form-label" for="radiogroup-collapse-option2"
+            >Radioknap viser andet indhold<span class="sr-only"> Udfyld informationer herunder</span></label
+          >
+        </div>
+        <div id="radiogroup-collapse-option2-collapse" aria-hidden="true" class="radio-content radio-content-large">
+          <div class="form-group">
+            <label class="form-label" for="textinput2">Inputfelt med anden label</label>
+
+            <input type="text" id="textinput2" name="text2" class="form-input input-width-m" required />
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel20" id="tab20" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Search field</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel20" aria-labelledby="tab20">
+    <!-- Search field -->
+    <!-- https://designsystem.dk/kode/komponenter/search/ -->
+    <div class="form-group search">
+      <label for="input-type-text" class="sr-only">Søg efter indhold</label>
+      <input class="form-input input-char-27" id="input-type-text" name="search-button" type="search" />
+      <button class="button button-search">Søg</button>
+    </div>
+
+    <div class="form-group search">
+      <label for="input-type-text-icon" class="sr-only">Søg efter indhold</label>
+      <input class="form-input input-char-27" id="input-type-text-icon" name="search-icon" type="search" />
+      <button class="button button-search">
+        <svg class="icon-svg m-0" focusable="false" aria-hidden="true"><use xlink:href="#search"></use></svg>
+        <span class="sr-only">Søg</span>
+      </button>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel21" id="tab21" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Tags</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel21" aria-labelledby="tab21">
+    <!-- Tags -->
+    <!-- https://designsystem.dk/kode/komponenter/tags/ -->
+    <button class="tag">Default</button>
+    <button class="tag tag-icon">
+      Default
+      <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#highlight-off"></use></svg>
+    </button>
+  </section>
+
+  <button aria-controls="tabpanel22" id="tab22" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Text area (Limit)</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel22" aria-labelledby="tab22">
+    <!-- Text area -->
+    <!-- https://designsystem.dk/kode/komponenter/tekstomraade/ -->
+    <div appCharacterLimit class="form-group form-limit" data-maxlength="60">
+      <label class="form-label" for="textarea-limit">Tekstområde med karakterbegrænsning</label>
+
+      <textarea
+        class="form-input"
+        id="textarea-limit"
+        name="textarea-limit"
+        rows="5"
+        required
+        aria-describedby="textarea-limit-limit-message"></textarea>
+      <span id="textarea-limit-limit-message" class="sr-only">Du kan indtaste op til 60 tegn</span>
+      <span class="form-hint character-limit" aria-hidden="true">Du har 60 tegn tilbage</span>
+      <span class="character-limit-sr-only sr-only" aria-live="polite">Du har 60 tegn tilbage</span>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel23" id="tab23" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Checkbox (toggle)</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel23" aria-labelledby="tab23">
+    <!-- Checkbox -->
+    <!-- https://designsystem.dk/kode/komponenter/tjekboks/ -->
+    <div class="form-group">
+      <input
+        appCheckboxToggleContent
+        type="checkbox"
+        id="checkbox1"
+        name="checkbox1"
+        class="form-checkbox checkbox-large js-checkbox-toggle-content"
+        value="1"
+        data-aria-controls="checkbox1-collapse"
+        data-aria-expanded="false" />
+      <label class="form-label" for="checkbox1"
+        >Tjekboks viser indhold<span class="sr-only"> Udfyld informationer herunder</span></label
+      >
+    </div>
+    <div id="checkbox1-collapse" aria-hidden="true" class="checkbox-content checkbox-content-large">
+      <div class="form-group">
+        <label class="form-label" for="textinput1">Inputfelt med label</label>
+
+        <input type="text" id="textinput1" name="text1" class="form-input input-width-m" required />
+      </div>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel24" id="tab24" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Toggle switch</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel24" aria-labelledby="tab24">
+    <!-- Toggle switch -->
+    <!-- https://designsystem.dk/kode/komponenter/toggle/ -->
+    <div class="form-group">
+      <input id="toggle-example" type="checkbox" name="toggle-example" value="1" class="form-toggle" />
+      <label for="toggle-example" class="form-toggle-label">Dette er en toggle</label>
+    </div>
+  </section>
+
+  <button aria-controls="tabpanel25" id="tab25" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Tool tip</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel25" aria-labelledby="tab25">
+    <!-- Tool tip -->
+    <!-- https://designsystem.dk/kode/komponenter/tooltip/ -->
+    <button
+      appTooltip
+      class="button button-unstyled js-tooltip"
+      type="button"
+      data-tooltip="Dette er et tooltip"
+      data-tooltip-trigger="click">
+      <svg class="icon-svg mr-0 mt-0" focusable="false" aria-hidden="true"><use xlink:href="#help"></use></svg>
+      <span class="sr-only">Hvad betyder det?</span>
+    </button>
+
+    <!-- Placering: top -->
+    <button appTooltip class="button button-primary js-tooltip" data-tooltip="Top tooltip" data-tooltip-position="top">
+      Top
+    </button>
+
+    <!-- Placering: bund -->
+    <button
+      appTooltip
+      class="button button-primary js-tooltip"
+      data-tooltip="Bund tooltip"
+      data-tooltip-position="bottom">
+      Bund
+    </button>
+  </section>
+
+  <button aria-controls="tabpanel26" id="tab26" class="tabnav-item" role="tab" aria-selected="false">
+    <span>Table</span>
+  </button>
+  <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" id="tabpanel26" aria-labelledby="tab26">
+    <div class="table--responsive-scroll">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Affaldstype</th>
+            <th scope="col">Farvekode</th>
+            <th scope="col">Beskrivelse</th>
+            <th scope="col">Hvor ender det?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dagrenovation</td>
+            <td>Grøn</td>
+            <td>
+              Madaffald, samt papir, pap eller plastik der ikke kan genanvendes, fordi der er madrester eller andet
+              snask på.
+            </td>
+            <td>
+              Alt det affald, du smider ud i din primære skraldespand, som er dagrenovationen, bliver hentet og kørt på
+              forbrændingen.
+            </td>
+          </tr>
+          <tr>
+            <td>Bioaffald og kompost</td>
+            <td>Beige</td>
+            <td>Alt madaffald uden fødevareemballage.</td>
+            <td>Bioaffaldet kommes i bionedbrydelige poser, som bliver komposteret til muld.</td>
+          </tr>
+          <tr>
+            <td>Glas</td>
+            <td>Hvid</td>
+            <td>Alle typer glas og flasker.</td>
+            <td>
+              De hele vinflasker rengøres og genbruges af vinhuse, mens glasskårene bliver smeltet om til nyt glas.
+            </td>
+          </tr>
+          <tr>
+            <td>Elektronik</td>
+            <td>Orange</td>
+            <td>Genstande der har brugt strøm.</td>
+            <td>
+              Det elektroniske affald bliver typisk kørt til et demonteringsanlæg, hvor det bliver skilt ad, så de
+              forskellige dele kan genanvendes separat.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<!-- Modal itself-->
+<div
+  appModal
+  class="fds-modal"
+  id="modal-example"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-example-heading">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modal-example-heading">Lorem ipsum</h2>
+      <button class="modal-close function-link" data-modal-close>
+        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#close"></use></svg>Luk
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sodales turpis nec tincidunt dictum. Aliquam
+        hendrerit nunc nec arcu lobortis fringilla. Sed nulla lectus, mollis eget rhoncus sed, porta eu ipsum.
+      </p>
+      <p>
+        Cras eleifend elementum finibus. Mauris ac magna quis orci dapibus suscipit. Vestibulum accumsan turpis diam, ut
+        pretium quam sollicitudin sed. Pellentesque posuere eget tortor quis imperdiet. Pellentesque gravida, enim vel
+        porttitor sagittis, libero neque efficitur justo, nec gravida orci risus consequat lacus.
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="button button-primary">Primær knap</button
+      ><button class="button button-secondary">Sekundær knap</button>
+    </div>
+  </div>
+</div>

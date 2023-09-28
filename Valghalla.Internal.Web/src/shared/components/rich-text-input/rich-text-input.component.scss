@@ -1,0 +1,12 @@
+
+.single-line {
+    padding: 8px;
+    white-space: pre-wrap;
+    outline: none;
+    font-variant-ligatures: none;
+}
+.single-line input {
+    margin: 0 0 10px;
+    width: 100%;
+    outline: 0 !important;
+}

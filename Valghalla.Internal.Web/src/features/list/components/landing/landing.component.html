@@ -1,0 +1,10 @@
+<div class="flex flex-row gap-8 flex-wrap mt-4 mb-4">
+    <ng-container *ngFor="let routingNode of routingNodes">
+      <app-routing-card
+        [routerLink]="routingNode.routerLink"
+        [title]="routingNode.title"
+        [icon]="routingNode.icon"
+        [bodyMessage]="routingNode.bodyMessage" />
+    </ng-container>
+  </div>
+  

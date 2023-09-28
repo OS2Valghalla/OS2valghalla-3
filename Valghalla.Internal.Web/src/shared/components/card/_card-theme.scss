@@ -1,0 +1,29 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin color($theme) {
+  $color-config: mat.get-color-config($theme);
+  $primary: map.get($color-config, 'primary');
+  $accent: map.get($color-config, 'accent');
+
+  .mat-mdc-card {
+    &.card_accent_header {
+      border-top: 5px solid mat.get-color-from-palette($accent, 700);
+    }
+  }
+
+  .mat-mdc-card {
+    &.card_primary_header {
+      border-top: 5px solid mat.get-color-from-palette($primary, 700);
+    }
+  }
+}
+
+.hover-animation:hover {
+  @include mat.elevation-transition();
+  @include mat.elevation(8);
+}
+
+.pointer {
+  cursor: pointer;
+}

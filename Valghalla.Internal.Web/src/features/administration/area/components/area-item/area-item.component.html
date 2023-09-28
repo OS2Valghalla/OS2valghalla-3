@@ -1,0 +1,23 @@
+<app-form-page class="inline-block w-1/2"
+  [formTitle]="'administration.area.area_item.page_title.create' | transloco"
+  [updateFormTitle]="('administration.area.area_item.page_title.edit' | transloco) + ' - ' + item?.name"
+  [formGroup]="form"
+  (create)="createArea($event)"
+  (update)="updateArea($event)"
+  (delete)="deleteArea($event)"
+  (onCancelClick)="cancel()">
+  <div class="grid grid-cols-1 gap-4">
+    <div class="flex flex-col">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'shared.common.title' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="name" />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'shared.common.description' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="description" />
+      </mat-form-field>
+    </div>
+  </div>
+</app-form-page>

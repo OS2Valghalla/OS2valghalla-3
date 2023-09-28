@@ -1,0 +1,18 @@
+<app-form-page class="inline-block w-1/2"
+  [formTitle]="'app.navigation.web.disclosure_statement.title' | transloco"
+  [formGroup]="form"
+  (onCancelClick)="cancel()"
+  (create)="saveWebPage($event)">
+  <div class="grid grid-cols-1 gap-4">
+    <div class="flex flex-col">
+      <h3>{{ 'administration.web.disclosure_statement.header' | transloco }}</h3>
+      <mat-hint [innerHtml]="'administration.web.disclosure_statement.description' | transloco"></mat-hint>
+    </div>
+    <div class="flex flex-col">
+      <app-rich-text-input
+        [options]="pageContentSettings"
+        [control]="form.controls.pageContent" [hideHeading1]="true"
+        *appShowSkeleton="loading"></app-rich-text-input>
+    </div>
+  </div>
+</app-form-page>

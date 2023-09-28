@@ -1,0 +1,23 @@
+<app-form-page class="inline-block w-1/2"
+  [formTitle]="'app.navigation.web.declaration_of_consent.title' | transloco"
+  [formGroup]="form"
+  (onCancelClick)="cancel()"
+  (create)="saveWebPage($event)">
+  <div class="grid grid-cols-1 gap-4">
+    <div class="flex flex-col">
+      <h3>{{ 'administration.web.declaration_of_consent.header' | transloco }}</h3>
+      <mat-hint [innerHtml]="'administration.web.declaration_of_consent.description' | transloco"></mat-hint>
+    </div>
+    <div class="flex flex-col">
+        <mat-checkbox *appShowSkeleton="loading" formControlName="isActivated">
+            {{ 'administration.web.declaration_of_consent.activate' | transloco }}
+        </mat-checkbox>
+    </div>
+    <div class="flex flex-col">
+        <h3>{{ 'administration.web.declaration_of_consent.content' | transloco }}</h3>
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+            <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="3" cdkAutosizeMaxRows="3" formControlName="pageContent"></textarea>
+        </mat-form-field>
+    </div>
+  </div>
+</app-form-page>

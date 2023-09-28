@@ -1,0 +1,38 @@
+<nav class="pagination" id="pagination-ID" attr.aria-label="{{'app.paginator.pagination' | transloco}}" *ngIf="pageCount > 0">
+    <a href="javascript:void(0)" class="button button-arrow button-first" attr.aria-label="{{'app.paginator.first_page' | transloco}}" (click)="first($event)" *ngIf="currentPage != 1">
+      <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#first-page"></use></svg>
+      <span class="sr-only">{{'app.paginator.first_page' | transloco}}</span></a
+    >
+    <a href="javascript:void(0)" class="button button-arrow button-previous" attr.aria-label="{{'app.paginator.previous_page' | transloco}}" (click)="previous($event)" *ngIf="currentPage != 1">
+      <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#chevron-left"></use></svg>
+      <span class="pagination-nav-link">{{'app.paginator.previous' | transloco}}</span>
+    </a>
+    <span class="pagination-mobile">{{'app.paginator.page' | transloco}} {{currentPage}} {{'app.paginator.of' | transloco}} {{pageCount}}</span>
+    <ul class="pagination__items">
+        <li class="pagination-item pagination-number">
+            <a href="javascript:void(0)" class="button" [ngClass]="currentPage == 1 ? 'current-page' : 'button-secondary'" attr.aria-label="{{'app.paginator.page' | transloco}} 1" (click)="first($event)">1</a>
+        </li>
+        <li class="pagination-item pagination-overflow" role="presentation" *ngIf="pageCount > 7 && currentPage > 4">
+            <span>...</span>
+        </li>
+        <ng-container *ngFor="let item of [].constructor(pageCount > 2 ? pageCount - 2 : 0); let i = index">
+            <li class="pagination-item pagination-number" *ngIf="pageCount <= 7 || ((currentPage - 1 ) <= (i + 2) && (i + 2) <= (currentPage + 1)) || (currentPage < 5 && (i + 2) <= 5) || (currentPage > (pageCount - 4) && (i + 2) >= (pageCount - 4))">
+                <a href="javascript:void(0)" class="button" [ngClass]="(currentPage - 2) == i ? 'current-page' : 'button-secondary'" attr.aria-label="{{'app.paginator.page' | transloco}} {{i + 2}}" (click)="goToPage($event, i + 1)">{{ i + 2 }}</a>
+            </li>
+        </ng-container>        
+        <li class="pagination-item pagination-overflow" role="presentation" *ngIf="pageCount > 7 && currentPage < pageCount - 3">
+            <span>...</span>
+        </li>
+        <li class="pagination-item pagination-number" *ngIf="pageCount > 1">
+            <a href="javascript:void(0)" class="button" [ngClass]="currentPage == pageCount ? 'current-page' : 'button-secondary'" attr.aria-label="{{'app.paginator.page' | transloco}} {{pageCount}}" (click)="last($event)">{{pageCount}}</a>
+        </li> 
+    </ul>
+    <a href="javascript:void(0)" class="button button-arrow button-next" attr.aria-label="{{'app.paginator.next_page' | transloco}}" (click)="next($event)" *ngIf="currentPage != pageCount">
+      <span class="pagination-nav-link">{{'app.paginator.next' | transloco}}</span
+      ><svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#chevron-right"></use></svg>
+    </a>
+    <a href="javascript:void(0)" class="button button-arrow button-last" attr.aria-label="{{'app.paginator.last_page' | transloco}}" (click)="last($event)" *ngIf="currentPage != pageCount">
+      <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#last-page"></use></svg>
+      <span class="sr-only">{{'app.paginator.last_page' | transloco}}</span></a
+    >
+</nav>

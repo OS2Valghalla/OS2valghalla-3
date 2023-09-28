@@ -1,0 +1,127 @@
+<div *ngIf="isDesktopView; then desktop; else mobile"></div>
+
+<ng-template #desktop>
+  <div class="flex flex-1 items-center justify-between bg-white shadow-md">
+    <div class="sm:ml-6 sm:block">
+      <div class="flex space-x-4 items-center">
+        <a role="menuitem" class="pt-1 pb-1" routerLink="/"
+          ><img
+            class="app-logo h-8 w-auto sm:h-10"
+            width="w-auto"
+            height="h-8 sm:h-10"
+            alt="Municipality logo"
+            src="../../assets/images/Logo.png"
+        /></a>
+        <a
+          role="menuitem"
+          href="#"
+          routerLink="/"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active-link"
+          class="text-black px-3 py-2 rounded-md text-sm font-medium"
+          >{{ 'app.navigation.start' | transloco }}</a
+        >
+        <a
+          role="menuitem"
+          href="#"
+          routerLink="/tasks"
+          routerLinkActive="active-link"
+          class="text-black px-3 py-2 rounded-md text-sm font-medium"
+          >{{ 'app.navigation.tasks.title' | transloco }}</a
+        >
+        <a
+          role="menuitem"
+          href="#"
+          routerLink="/participant"
+          routerLinkActive="active-link"
+          class="text-black px-3 py-2 rounded-md text-sm font-medium"
+          >{{ 'app.navigation.participant' | transloco }}</a
+        >
+        <a
+          role="menuitem"
+          href="#"
+          routerLink="/communication"
+          routerLinkActive="active-link"
+          class="cursor-pointer text-black px-3 py-2 rounded-md text-sm font-medium">
+          {{ 'app.navigation.communication.title' | transloco }}
+        </a>
+        <a
+          role="menuitem"
+          href="#"
+          routerLink="/list"
+          routerLinkActive="active-link"
+          class="cursor-pointer text-black px-3 py-2 rounded-md text-sm font-medium">
+          {{ 'app.navigation.list.title' | transloco }}
+        </a>
+        <a
+          role="menuitem"
+          href="#"
+          routerLink="/administration"
+          routerLinkActive="active-link"
+          class="cursor-pointer text-black px-3 py-2 rounded-md text-sm font-medium">
+          {{ 'app.navigation.administration' | transloco }}
+        </a>
+      </div>
+    </div>
+    <div class="flex-initial items-stretch">
+      <a
+        role="menuitem"
+        href="#"
+        routerLink="/administration/election"
+        class="text-black px-3 py-2 rounded-md text-sm font-medium"
+        >{{ activeElection?.title }}</a
+      >
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mobile>
+  <div class="flex flex-1 items-center justify-between bg-white ml-1 shadow-md">
+    <div class="sm:ml-6 sm:block">
+      <div class="flex space-x-4 items-center">
+        <div>
+          <button #menuButton (click)="this.toggleSitenavOpen()">
+            <mat-icon>menu</mat-icon>
+          </button>
+        </div>
+        <a class="pt-1 pb-1" routerLink="/"><img class="h-8 w-auto sm:h-10" src="../../assets/images/Logo.png" /></a>
+      </div>
+    </div>
+    <div class="flex-initial items-stretch">
+      <a
+        href="#"
+        routerLink="/administration"
+        routerLinkActive="active-link"
+        class="text-black px-3 py-2 rounded-md text-sm font-medium"
+        >{{ activeElection?.title }}</a
+      >
+    </div>
+  </div>
+  <app-side-modal
+    [(value)]="isSidenavOpen"
+    position="start"
+    [large]="true"
+    [disableClose]="false"
+    [hideHeader]="false"
+    [hideAction]="true">
+    <ng-container *ngIf="isSidenavOpen">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/" (click)="this.isSidenavOpen = false">
+          <span class="text-black">{{ 'app.navigation.start' | transloco }}</span>
+        </a>
+        <a mat-list-item routerLink="/participant" (click)="this.isSidenavOpen = false">
+          <span class="text-black">{{ 'app.navigation.participant' | transloco }}</span>
+        </a>
+        <a mat-list-item routerLink="/communication" (click)="this.isSidenavOpen = false">
+          <span class="text-black">{{ 'app.navigation.communication.title' | transloco }}</span>
+        </a>
+        <a mat-list-item routerLink="/list" (click)="this.isSidenavOpen = false">
+          <span class="text-black">{{ 'app.navigation.list.title' | transloco }}</span>
+        </a>
+        <a mat-list-item routerLink="/administration" (click)="this.isSidenavOpen = false">
+          <span class="text-black">{{ 'app.navigation.administration' | transloco }}</span>
+        </a>
+      </mat-nav-list>
+    </ng-container>
+  </app-side-modal>
+</ng-template>

@@ -1,0 +1,25 @@
+<app-icon-collection></app-icon-collection>
+
+<header class="header">
+  <app-header></app-header>
+</header>
+
+<main class="container page-container">
+  <div class="toast-container" aria-live="assertive" aria-atomic="false" aria-relevant="additions">
+    <!-- Toast components dynamically injected here -->
+    <div #toastContainer hidden></div>
+  </div>
+
+  <ng-container *ngIf="nonActiveElectionMsgVisible" [ngTemplateOutlet]="deactivatedWeb"></ng-container>
+
+  <router-outlet></router-outlet>
+</main>
+
+<footer>
+  <app-footer></app-footer>
+</footer>
+
+<ng-template #deactivatedWeb>
+  <h1>{{ 'app.deactivated_web.header' | transloco }}</h1>
+  <span>{{ 'app.deactivated_web.content' | transloco }}</span>
+</ng-template>
