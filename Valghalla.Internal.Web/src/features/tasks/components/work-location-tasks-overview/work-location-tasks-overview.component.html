@@ -1,0 +1,190 @@
+
+
+<app-card
+  [cardTitle]="(this.workLocation ? ('tasks.work_location_tasks.page_title' | transloco) + ' - ' + this.workLocation.title : (invalidWorkLocationId ? ('tasks.error.invalid_work_location' | transloco) : ''))"
+  [actionTitle]="invalidWorkLocationId ? '' : 'tasks.work_location_tasks.actions.distribute_tasks' | transloco"
+  [actionIcon]="invalidWorkLocationId ? '' : 'edit_note'" (action)="openDistributeTasks()">
+    <mat-form-field class="pb-4">
+    <mat-select [(ngModel)]="selectedDateIndex" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.all_dates' | transloco" (selectionChange)="onDateChanged()">
+      <mat-option>{{'tasks.labels.all_dates' | transloco}}</mat-option>
+      <mat-option *ngFor="let dailyWorkLocationTask of dailyWorkLocationTasks" [value]="dailyWorkLocationTask.index">
+          {{ dailyWorkLocationTask.tasksDate | date }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="w-full transition-[width] duration-500 overflow-auto max-h-[500px]">
+    <mat-table [dataSource]="selectedDateIndex != undefined && selectedDateIndex > -1 ? dailyWorkLocationTasks[selectedDateIndex].teams : allDatesWorkLocationTasks.teams" *ngIf="!loading">
+        <ng-container matColumnDef="team" sticky>
+            <mat-header-cell *matHeaderCellDef class="min-w-[200px]">{{'tasks.labels.team' | transloco}}</mat-header-cell>
+            <mat-cell *matCellDef="let taskInfo" class="min-w-[200px]">{{taskInfo.teamName}}</mat-cell>
+            <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[200px] font-semibold">{{'shared.common.total' | transloco}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="total" stickyEnd>
+            <mat-header-cell *matHeaderCellDef class="min-w-[100px] font-semibold">{{'shared.common.total' | transloco}}</mat-header-cell>
+            <mat-cell *matCellDef="let taskInfo" class="min-w-[100px] font-semibold">
+                {{getTeamAssignedTasksCount(taskInfo)}}/{{getTeamAllTasksCount(taskInfo)}}
+            </mat-cell>
+            <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[100px] font-semibold">
+                {{getSumAssignedTasksCount()}}/{{getSumAllTasksCount()}}
+            </mat-cell>
+        </ng-container>
+        <ng-container *ngFor="let taskType of workLocationTasksSummary.taskTypes" [matColumnDef]="taskType.id">
+            <mat-header-cell *matHeaderCellDef class="min-w-[125px]"><span [matTooltip]="taskType.title" matTooltipPosition="above">{{taskType.shortName}}</span></mat-header-cell>
+            <mat-cell *matCellDef="let taskInfo" class="min-w-[125px]">  
+                <span class="p-2" [ngClass]="taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].allTasksCount > 0 ? (taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].assignedTasksCount == taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].allTasksCount ? 'allAcceptedTasks' : (taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].awaitingTasksCount > 0 ? 'awaitingAcceptedTasks' : '')) : ''">
+                  {{taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].assignedTasksCount}}/{{taskInfo.taskTypes[workLocationTasksSummary.taskTypes.indexOf(taskType)].allTasksCount}}
+                </span>
+            </mat-cell>
+            <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[125px] font-semibold">
+              <span class="p-2">
+                {{getTaskTypeAssignedTasksCount(taskType)}}/{{getTaskTypeAllTasksCount(taskType)}}
+              </span>
+            </mat-cell>
+        </ng-container>
+        
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></mat-footer-row>
+    </mat-table>  
+  </div>
+  <div class="w-full" *appShowSkeleton="loading">
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let team of workLocationTasksSummary.teams; let teamIndex = index">
+        <mat-expansion-panel-header class="bg-gray-100">
+          <mat-panel-title>
+            <div class="font-semibold pr-12">{{team.name}}</div>
+            <div *ngFor="let taskType of (selectedDateIndex != undefined && selectedDateIndex > -1 ? dailyWorkLocationTasks[selectedDateIndex].teams[teamIndex].taskTypes : allDatesWorkLocationTasks.teams[teamIndex].taskTypes); let taskTypeIndex = index">
+              <span class="pr-8" *ngIf="taskType.allTasksCount > 0">
+                {{taskType.allTasksCount > 0 ? workLocationTasksSummary.taskTypes[taskTypeIndex].shortName + ': ' + taskType.assignedTasksCount + '/' + taskType.allTasksCount : ''}}
+              </span>
+            </div>
+          </mat-panel-title>          
+        </mat-expansion-panel-header>
+        <div *appShowSkeleton="loading || (dailyTeamTasks && dailyTeamTasks[teamIndex] && dailyTeamTasks[teamIndex].loadingTasks)" class="pt-2 transition-[width] duration-500 overflow-auto">
+          <mat-table [dataSource]="dailyTeamTasks[teamIndex].displayingTasks">
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef class="max-w-[70px] place-content-center"></mat-header-cell>
+              <mat-cell *matCellDef="let task" class="max-w-[70px] place-content-center">  
+                <mat-icon class="text-base text-red-600" *ngIf="!task.participantId">circle</mat-icon>
+                <mat-icon class="text-base text-yellow-300" *ngIf="task.participantId && !task.accepted">circle</mat-icon>
+                <mat-icon class="text-base text-green-600" *ngIf="task.participantId && task.accepted">circle</mat-icon>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="taskType">
+              <mat-header-cell *matHeaderCellDef class="flex-none min-w-[180px]">{{'tasks.labels.task_type' | transloco}}</mat-header-cell>
+              <mat-cell *matCellDef="let task" class="flex-none min-w-[180px]"> 
+                  {{task.taskTypeName}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <mat-header-cell *matHeaderCellDef class="flex-none min-w-[125px] max-w-[125px]">{{'tasks.labels.task_date' | transloco}}</mat-header-cell>
+              <mat-cell *matCellDef="let task" class="flex-none min-w-[125px] max-w-[125px]">  
+                  {{task.taskDate | date}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="participant">
+              <mat-header-cell *matHeaderCellDef class="flex-none min-w-[200px]">{{'tasks.labels.participant' | transloco}}</mat-header-cell>
+              <mat-cell *matCellDef="let task" class="flex-none min-w-[200px]">  
+                  {{task.participantName ? task.participantName : ('tasks.labels.missing' | transloco)}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let task" class="place-content-end task-buttons">
+                <div class="flex flex-wrap">
+                  <button *ngIf="!task.participantId" mat-flat-button extended color="primary" class="mt-2 mb-2 mr-2 task-button" [disabled]="task.isUpdating" (click)="copyTaskLink(task.taskDetailsPageUrl)">
+                    <mat-icon *ngIf="!task.isUpdating">link</mat-icon>
+                    <span *ngIf="!task.isUpdating">{{ 'tasks.actions.copy_task_link' | transloco }}</span>
+                    <mat-icon *ngIf="task.isUpdating">
+                      <mat-spinner color="primary" diameter="18"></mat-spinner>
+                    </mat-icon>
+                  </button>
+                  <button *ngIf="!task.participantId" mat-flat-button extended color="primary" class="mt-2 mb-2 mr-2 task-button" [disabled]="task.isUpdating" (click)="openParticipantCreating(task.id)">
+                    <mat-icon *ngIf="!task.isUpdating">add_circle</mat-icon>
+                    <span *ngIf="!task.isUpdating">{{ 'tasks.actions.create_participant' | transloco }}</span>
+                    <mat-icon *ngIf="task.isUpdating">
+                      <mat-spinner color="primary" diameter="18"></mat-spinner>
+                    </mat-icon>
+                  </button>
+                  <button *ngIf="!task.participantId" mat-flat-button extended color="primary" class="mt-2 mb-2 mr-2 task-button" [disabled]="task.isUpdating" (click)="openAssignParticipantDialog(task, teamIndex)">
+                    <mat-icon *ngIf="!task.isUpdating">add_circle</mat-icon>
+                    <span *ngIf="!task.isUpdating">{{ 'tasks.actions.assign_participant' | transloco }}</span>
+                    <mat-icon *ngIf="task.isUpdating">
+                      <mat-spinner color="primary" diameter="18"></mat-spinner>
+                    </mat-icon>
+                  </button>
+                  <button *ngIf="task.participantId && !task.accepted" mat-flat-button extended color="accent" class="mt-2 mb-2 mr-2 task-button" [disabled]="task.isUpdating" (click)="openReplyForParticipant(task.id)">
+                    <mat-icon *ngIf="!task.isUpdating">edit_note</mat-icon>
+                    <span *ngIf="!task.isUpdating">{{ 'tasks.actions.reply_for_participant' | transloco }}</span>
+                    <mat-icon *ngIf="task.isUpdating">
+                      <mat-spinner color="primary" diameter="18"></mat-spinner>
+                    </mat-icon>
+                  </button>
+                  <button *ngIf="task.participantId" mat-flat-button extended color="primary" class="mt-2 mb-2 mr-2 task-button" [disabled]="task.isUpdating" (click)="openParticipantEditing(task.participantId)">
+                    <mat-icon *ngIf="!task.isUpdating">person</mat-icon>
+                    <span *ngIf="!task.isUpdating">{{ 'tasks.actions.edit_participant' | transloco }}</span>
+                    <mat-icon *ngIf="task.isUpdating">
+                      <mat-spinner color="primary" diameter="18"></mat-spinner>
+                    </mat-icon>
+                  </button>
+                  <button *ngIf="task.participantId" mat-flat-button extended color="warn" class="mt-2 mb-2 mr-2 task-button" [disabled]="task.isUpdating"  (click)="removeParticipant(task, teamIndex)">
+                    <mat-icon *ngIf="!task.isUpdating">remove_circle</mat-icon>
+                    <span *ngIf="!task.isUpdating">{{ 'tasks.actions.remove_participant' | transloco }}</span>
+                    <mat-icon *ngIf="task.isUpdating">
+                      <mat-spinner color="primary" diameter="18"></mat-spinner>
+                    </mat-icon>
+                  </button>
+                </div>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="teamTasksColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: teamTasksColumns;"></mat-row>
+          </mat-table>          
+        </div>
+        <div *appShowSkeleton="loading || (dailyTeamTasks && dailyTeamTasks[teamIndex] && dailyTeamTasks[teamIndex].loadingRejectedTasks)" class="pt-2 transition-[width] duration-500 overflow-auto">
+          <h3 class="pb-2">{{'tasks.labels.rejected_invitations' | transloco}}</h3>
+          <mat-table [dataSource]="dailyTeamTasks[teamIndex].rejectedDisplayingTasks">
+            <ng-container matColumnDef="status">
+              <mat-header-cell *matHeaderCellDef class="max-w-[70px] place-content-center"></mat-header-cell>
+              <mat-cell *matCellDef="let task; let rejectedTaskIndex = index" class="max-w-[70px] place-content-center">
+                {{ rejectedTaskIndex + 1 }}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="taskType">
+              <mat-header-cell *matHeaderCellDef class="flex-none min-w-[180px]">{{'tasks.labels.task_type' | transloco}}</mat-header-cell>
+              <mat-cell *matCellDef="let task" class="flex-none min-w-[180px]">
+                  {{task.taskTypeName}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <mat-header-cell *matHeaderCellDef class="flex-none min-w-[125px] max-w-[125px]">{{'tasks.labels.task_date' | transloco}}</mat-header-cell>
+              <mat-cell *matCellDef="let task" class="flex-none min-w-[125px] max-w-[125px]">  
+                  {{task.taskDate | date}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="participant">
+              <mat-header-cell *matHeaderCellDef class="flex-none min-w-[200px]">{{'tasks.labels.participant' | transloco}}</mat-header-cell>
+              <mat-cell *matCellDef="let task" class="flex-none min-w-[200px]">  
+                  {{task.participantName ? task.participantName : ('tasks.labels.missing' | transloco)}}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let task" class="place-content-end">
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="teamTasksColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: teamTasksColumns;"></mat-row>
+          </mat-table>
+      </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="hidden">
+    <form [formGroup]="form">
+      <app-participant-picker (closeEvent)="onParticipantPickerClose()" (submitEvent)="onParticipantSelected()"
+        [label]="('tasks.actions.assign_participant' | transloco) + (assigningTask ? ' - ' + assigningTask.taskTypeName + ' - ' + (assigningTask.taskDate | date): '')"
+        [multiple]="false" [visible]="this.openAddParticipant" formControlName="selectedParticipantIds"></app-participant-picker>
+    </form>
+  </div>
+</app-card>

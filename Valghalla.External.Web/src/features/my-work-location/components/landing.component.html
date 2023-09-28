@@ -1,0 +1,147 @@
+<h1>{{ 'my_work_location.landing.page_title' | transloco}}</h1>
+<h2 *ngIf="workLocations && workLocations.length == 1">
+    {{ workLocations[0].title }}
+</h2>
+<div class="container">
+    <div class="spinner mt-4" *ngIf="loading"></div>
+    <div class="row" *ngIf="!loading">
+        <div appFormGroup class="col-12 col-sm-12 col-md-9 col-lg-6 form-control xl-select mb-5" *ngIf="workLocations && workLocations.length > 1">
+            <span appFormError></span>
+            <select appFormSelect [formControl]="form.controls.selectedWorkLocationId" (change)="onFilterChanged()" *ngIf="!loading" [ngClass]="!form.controls.selectedWorkLocationId.value ? 'empty-select' : ''">
+                <option *ngFor="let workLocation of workLocations" [value]="workLocation.id" class="select-option">
+                    {{ workLocation.title }}
+                </option>
+            </select>
+        </div>        
+    </div>  
+    <div class="row pl-4" id="tabsDates">
+        <div class="tabnav" role="tablist">
+            <ng-container *ngFor="let workLocationDate of workLocationDates; let i = index">
+                <button [attr.aria-controls]="'tabpanel_' + workLocationDate.taskDate" [attr.id]="'tab_' + workLocationDate.taskDate" class="tabnav-item" role="tab" aria-selected="true">
+                    <span>{{ getTaskDateFriendlyText(workLocationDate.taskDate, true, false) }}</span>
+                </button>
+                <section class="tabnav-panel" aria-hidden="true" role="tabpanel" tabindex="0" [attr.id]="'tabpanel_' + workLocationDate.taskDate" [attr.aria-labelledby]="'tab_' + workLocationDate.taskDate">
+                    {{ 'my_work_location.labels.work_location_date_description' | transloco}} {{ getTaskDateFriendlyText(workLocationDate.taskDate, true, true) }}
+                    <div class="spinner mt-4 mb-4" *ngIf="!workLocationDate.detailsLoaded"></div>
+                    <h3 class="mt-5 mb-3" *ngIf="workLocationDate.detailsLoaded">{{ 'my_work_location.labels.work_location_tasks_header' | transloco}} {{ getTaskDateFriendlyText(workLocationDate.taskDate) }}</h3>                    
+                    <div *ngIf="workLocationDate.detailsLoaded">
+                        {{ 'my_work_location.labels.number_of_tasks' | transloco}} <strong>{{workLocationDate.taskDetails.allTasksCount}}</strong>
+                        <div class="table--responsive-scroll">
+                            <table class="table table--borderless" id="taskTypesTable" aria-live="polite">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" aria-sort="ascending">
+                                            {{ 'my_work_location.labels.task_name' | transloco}}
+                                            <button class="button button-unstyled ml-2" type="button" (click)="sortByTaskName($event, workLocationDate)">
+                                                <svg class="icon-svg mr-0" focusable="false" aria-hidden="true"><use xlink:href="#sort-table-ascending"></use></svg>
+                                                <span class="sr-only">{{ 'my_work_location.labels.task_name_sort_header' | transloco}}</span>
+                                            </button>
+                                        </th>
+                                        <th scope="col">{{ 'my_work_location.labels.start_time' | transloco}}</th>
+                                        <th scope="col">{{ 'my_work_location.labels.end_time' | transloco}}</th>
+                                        <th scope="col">{{ 'my_work_location.labels.task_status' | transloco}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let taskType of workLocationDate.taskDetails.taskTypes">
+                                        <th scope="row">
+                                            {{taskType.title}}
+                                        </th>
+                                        <td>
+                                            {{taskType.startTime.substring(0, 5)}}
+                                        </td>
+                                        <td>
+                                            {{taskType.endTime.substring(0, 5)}}
+                                        </td>
+                                        <td>
+                                            {{taskType.acceptedTasksCount}}/{{taskType.allTasksCount}} {{ 'my_work_location.labels.accepted' | transloco}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <h3 class="mt-5 mb-3" *ngIf="workLocationDate.detailsLoaded">{{ 'my_work_location.labels.work_location_participants_header' | transloco}} {{ getTaskDateFriendlyText(workLocationDate.taskDate) }}</h3>
+                    <div *ngIf="workLocationDate.detailsLoaded">
+                        <label class="form-label" for="inputSearchTable">{{ 'my_work_location.labels.find_participant' | transloco}}</label>                        
+                        <form novalidate="" [formGroup]="form" method="get" id="formSearchTable" (ngSubmit)="searchParticipants(workLocationDate)"> 
+                            <div class="form-group search d-print-none"> 
+                                <input class="form-input input-char-27" [formControl]="form.controls.keyword" id="inputSearchTable" name="participantsTable" type="search"> 
+                                <button class="button button-search" id="btnSearchTable" type="submit">                    
+                                    <svg class="icon-svg m-0" focusable="false" aria-hidden="true">
+                                        <use xlink:href="#search"></use>
+                                    </svg>
+                                    <span class="sr-only">{{ 'shared.common.search' | transloco}}</span>
+                                </button> 
+                            </div> 
+                        </form>
+                        <div class="mt-4 mb-2">
+                            {{ 'my_work_location.labels.number_of_participants' | transloco}} <strong>{{workLocationDate.taskDetails.participants.length}}</strong>
+                        </div>
+                        <div class="table--responsive-scroll">
+                            <table class="table table--borderless" [attr.id]="'participantsTable_' + workLocationDate.taskDate" aria-live="polite">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" aria-sort="ascending" sort-by="fullName">
+                                            {{ 'my_work_location.labels.full_name' | transloco}}
+                                            <button class="button button-unstyled ml-2" type="button" (click)="sortParticipants($event, 'fullName', workLocationDate)">
+                                                <svg class="icon-svg mr-0" focusable="false" aria-hidden="true"><use xlink:href="#sort-table-ascending"></use></svg>
+                                                <span class="sr-only">{{ 'my_work_location.labels.full_name_sort_header' | transloco}}</span>
+                                            </button>
+                                        </th>
+                                        <th scope="col" sort-by="taskTypes">
+                                            {{ 'my_work_location.labels.task_types' | transloco}}
+                                            <button class="button button-unstyled ml-2" type="button" (click)="sortParticipants($event, 'taskTypes', workLocationDate)">
+                                                <svg class="icon-svg mr-0" focusable="false" aria-hidden="true"><use xlink:href="#sort-table-none"></use></svg>
+                                                <span class="sr-only">{{ 'my_work_location.labels.task_types_sort_header' | transloco}}</span>
+                                            </button>
+                                        </th>
+                                        <th scope="col" sort-by="teams">
+                                            {{ 'my_work_location.labels.team' | transloco}}
+                                            <button class="button button-unstyled ml-2" type="button" (click)="sortParticipants($event, 'teams', workLocationDate)">
+                                                <svg class="icon-svg mr-0" focusable="false" aria-hidden="true"><use xlink:href="#sort-table-none"></use></svg>
+                                                <span class="sr-only">{{ 'my_work_location.labels.team_sort_header' | transloco}}</span>
+                                            </button>
+                                        </th>
+                                        <th scope="col" sort-by="age">
+                                            {{ 'my_work_location.labels.age' | transloco}}
+                                            <button class="button button-unstyled ml-2" type="button" (click)="sortParticipants($event, 'age', workLocationDate)">
+                                                <svg class="icon-svg mr-0" focusable="false" aria-hidden="true"><use xlink:href="#sort-table-none"></use></svg>
+                                                <span class="sr-only">{{ 'my_work_location.labels.age_sort_header' | transloco}}</span>
+                                            </button>
+                                        </th>
+                                        <th scope="col">{{ 'my_work_location.labels.email' | transloco}}</th>
+                                        <th scope="col">{{ 'my_work_location.labels.phone' | transloco}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let participant of displayParticipants | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+                                        <th scope="row">
+                                            {{participant.fullName}}
+                                        </th>
+                                        <td>
+                                            {{participant.taskTypes}}
+                                        </td>
+                                        <td>
+                                            {{participant.teams}}
+                                        </td>
+                                        <td>
+                                            {{participant.age}}
+                                        </td>
+                                        <td>
+                                            {{participant.email}}
+                                        </td>
+                                        <td>
+                                            {{participant.mobileNumber}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <app-pagination [pageCount]="pageCount" [(currentPage)]="currentPage"></app-pagination>
+                        </div>
+                    </div>
+                </section>
+            </ng-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<app-card cardTitle="participant.work_location_responsible.title">
+  <div class="flex flex-col">
+    <div class="flex flex-row" *ngFor="let workLocationId of workLocationResponsibleRights">
+      <div class="basis-full self-center" *appShowSkeleton="loading">{{ renderWorkLocationTitle(workLocationId) }}</div>
+      <div class="basis-8">
+        <button mat-icon-button (click)="openEditWorkLocation(workLocationId)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</app-card>

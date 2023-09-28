@@ -1,0 +1,47 @@
+<div
+  #toastDirective="appToast"
+  appToast
+  class="toast hide d-print-none"
+  [ngClass]="{
+    'toast-success': type == 'success',
+    'toast-warning': type == 'warning',
+    'toast-error': type == 'error',
+    'toast-info': type == 'info'
+  }"
+  aria-atomic="true">
+  <div class="toast-icon"></div>
+  <div class="toast-message">
+    <p>
+      <span class="sr-only"
+        >{{
+          type == 'success'
+            ? ('shared.toast.success' | transloco)
+            : type == 'warning'
+            ? ('shared.toast.warning' | transloco)
+            : type == 'error'
+            ? ('shared.toast.error' | transloco)
+            : type == 'info'
+            ? ('shared.toast.information' | transloco)
+            : ''
+        }}: </span
+      ><strong [attr.id]="id">{{
+        heading
+          ? heading
+          : type == 'success'
+          ? ('shared.toast.success' | transloco)
+          : type == 'warning'
+          ? ('shared.toast.warning' | transloco)
+          : type == 'error'
+          ? ('shared.toast.error' | transloco)
+          : type == 'info'
+          ? ('shared.toast.information' | transloco)
+          : ''
+      }}</strong>
+    </p>
+    <p *ngIf="!parseAsHtml">{{ message }}</p>
+    <div *ngIf="parseAsHtml" [innerHtml]="message"></div>
+    <button class="toast-close" [attr.aria-describedby]="id" (click)="hide()">
+      {{ 'shared.toast.close' | transloco }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<app-card
+  cardTitle="{{ title }}"
+  minWidth="300px"
+  maxWidth="300px"
+  minHeight="270px"
+  [useAnimation]="true"
+  [isLink]="true"
+  color="accent">
+  <p class="min-h-[100px]">{{ bodyMessage | transloco }}</p>
+  <div class="mt-12 flex justify-center">
+    <mat-icon class="icon-display material-icons-outlined">{{ icon }}</mat-icon>
+  </div>
+</app-card>

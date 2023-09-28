@@ -1,0 +1,12 @@
+<ng-container *appSpinner="loading">
+  <div *appSpinner="loading" [innerHTML]="page?.pageContent"></div>
+
+  <div class="mt-8">
+    <button class="button button-primary mr-5" (click)="continue()">
+      <span>{{ 'registration.label.continue' | transloco }}</span>
+    </button>
+    <button class="button button-secondary" (click)="cancelRegistration()">
+      {{ 'registration.label.cancel_registration' | transloco }}
+    </button>
+  </div>
+</ng-container>

@@ -1,0 +1,30 @@
+<div class="flex flex-col space-y-8">
+  <div class="flex w-full justify-end">
+    <button mat-raised-button color="warn" [disabled]="deleting" (click)="deleteParticipant()">
+      <mat-icon *ngIf="!deleting">delete</mat-icon>
+      <span *ngIf="!deleting">{{ 'participant.action.delete_participant' | transloco }}</span>
+      <mat-icon *ngIf="deleting">
+        <mat-spinner color="primary" diameter="18"></mat-spinner>
+      </mat-icon>
+    </button>
+  </div>
+  <div class="flex flex-row space-x-8">
+    <app-participant-information class="basis-1/2" [participant]="participant"></app-participant-information>
+    <app-participant-validation-information
+      class="basis-1/2"
+      [participant]="participant"></app-participant-validation-information>
+  </div>
+  <div class="flex flex-row space-x-8">
+    <app-team-responsible-rights class="basis-1/2" [participantId]="participantId"></app-team-responsible-rights>
+    <app-work-location-responsible-rights
+      class="basis-1/2"
+      [participantId]="participantId"></app-work-location-responsible-rights>
+  </div>
+  <app-participant-event-log-listing class="w-full" [participantId]="participantId"></app-participant-event-log-listing>
+  <app-participant-task-status-listing
+    class="w-full"
+    [participantId]="participantId"></app-participant-task-status-listing>
+  <app-participant-communication-log-listing
+    class="w-full hidden"
+    [participantId]="participantId"></app-participant-communication-log-listing>
+</div>

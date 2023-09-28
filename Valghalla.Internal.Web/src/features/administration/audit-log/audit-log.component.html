@@ -1,0 +1,114 @@
+<div class="flex flex-row justify-between">
+  <app-page-title>{{ 'administration.audit_log.page_title' | transloco }}</app-page-title>
+</div>
+
+<app-card [cardTitle]="'administration.audit_log.audit_log_listing.title' | transloco">
+  <app-table
+    *appTableCtx="data; let typing"
+    [pageSizeOptions]="[50]"
+    [pageSize]="50"
+    defaultSortColumn="eventDate"
+    defaultSortDirection="desc">
+    <app-query-container
+      [label]="'shared.action.search' | transloco"
+      [(model)]="data"
+      [hideFreeTextSearch]="true"
+      (queryEvent)="onQuery($event)"
+      (queryPrepareEvent)="onPrepareQuery($event)"
+      (queryFormEvent)="onQueryForm($event)">
+      <mat-accordion multi *appQueryContainerContent>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{
+              'administration.audit_log.audit_log_listing.columns.event_table' | transloco
+            }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-dynamic-query
+            [typing]="queryTyping"
+            [localized]="true"
+            label="administration.audit_log.audit_log_listing.columns.event_table"
+            name="eventTable"></app-dynamic-query>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{
+              'administration.audit_log.audit_log_listing.columns.event_type' | transloco
+            }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-dynamic-query
+            [typing]="queryTyping"
+            [localized]="true"
+            label="administration.audit_log.audit_log_listing.columns.event_type"
+            name="eventType"></app-dynamic-query>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [columns]="['eventDate', 'eventType', 'eventTable', 'col2value', 'col3value', 'eventDescription', 'doneBy']"
+      [mobileColumns]="['eventDate', 'doneBy']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="eventDate">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.audit_log.audit_log_listing.columns.event_date' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.eventDate | appAuditLogDateTime }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="eventType">
+      <ng-container *appHeaderCellDef="typing">{{
+        'administration.audit_log.audit_log_listing.columns.event_type' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ renderEventType(row.eventType) | transloco }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="eventTable">
+      <ng-container *appHeaderCellDef="typing">{{
+        'administration.audit_log.audit_log_listing.columns.event_table' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ renderEventTable(row.eventTable) | transloco }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="col2value">
+      <ng-container *appHeaderCellDef="typing">{{
+        'administration.audit_log.audit_log_listing.columns.participant' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">
+        <a
+          *ngIf="row.pk2value && row.col2value"
+          class="hover:underline"
+          href=""
+          (click)="$event.preventDefault(); openParticipantProfile(row.pk2value)"
+          >{{ row.col2value }}</a
+        >
+      </ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="col3value">
+      <ng-container *appHeaderCellDef="typing">{{
+        'administration.audit_log.audit_log_listing.columns.birthdate' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">
+        {{ row.col3value }}
+      </ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="eventDescription">
+      <ng-container *appHeaderCellDef="typing">{{
+        'administration.audit_log.audit_log_listing.columns.event_description' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.eventDescription }}</ng-container>
+    </ng-container>
+    <ng-container [appTableTyping]="typing" appColumnDef="doneBy">
+      <ng-container *appHeaderCellDef="typing">{{
+        'administration.audit_log.audit_log_listing.columns.done_by' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.doneBy }}</ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

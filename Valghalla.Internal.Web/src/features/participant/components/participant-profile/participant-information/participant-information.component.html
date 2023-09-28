@@ -1,0 +1,51 @@
+<app-card
+  cardTitle="participant.participant_details.information"
+  actionTitle="shared.action.edit"
+  actionIcon="edit"
+  (action)="openEditParticipant()">
+  <div class="flex flex-col space-y-2">
+    <div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.full_name' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">
+        {{ participant.firstName }} {{ participant.lastName }}
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.address' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">
+        {{ participant.streetAddress }}, {{ participant.postalCode }} {{ participant.city }}
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.cpr_number' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">{{ participant.cpr }}</div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.mobile_number' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">{{ participant.mobileNumber }}</div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.email' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">{{ participant.email }}</div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.team' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">
+        {{ renderTeamNames(participant.memberTeamIds) }}
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.special_diet' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">
+        {{ renderSpecialDietTitles(participant.specialDietIds) }}
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.digital_post' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">
+        <mat-icon *ngIf="!participant.exemptDigitalPost" fontIcon="check_circle" class="text-green-600"></mat-icon>
+        <mat-icon *ngIf="participant.exemptDigitalPost" fontIcon="cancel" class="text-red-600"></mat-icon>
+      </div>
+    </div>
+  </div>
+</app-card>

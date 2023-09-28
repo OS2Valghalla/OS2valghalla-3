@@ -1,0 +1,1105 @@
+{
+  "app": {
+    "error": {
+      "election": {
+        "get_all_elections": "Fejl ved hentning af alle valg"
+      },
+      "http": {
+        "get_app_context": "Fejl opstod under hentning af app-kontekst",
+        "get_elections_to_work_on": "Fejl ved hentning af valg"
+      }
+    },
+    "navigation": {
+      "header": "Velkommen til Valghalla online",
+      "welcome": "Velkommen",
+      "start": "Start",
+      "participant": "Deltagere",
+      "list:{": {
+        "title": "Lister",
+        "participant_list": {
+          "title:": "Deltagerlister",
+          "description": "Opret deltagerlister til eksport fra OS2valghalla"
+        }
+      },
+      "administration": "Administration",
+      "election_type": {
+        "title": "Valgtyper",
+        "description": "Administrer valgtyper og deres valideringsindstillinger"
+      },
+      "election": {
+        "title": "Valg",
+        "description": "Administrer valg og deres kommunikationskonfiguration"
+      },
+      "teams": {
+        "title": "Teams",
+        "description": "Administrer teams og teamansvarlige"
+      },
+      "web": {
+        "title": "Ekstern hjemmeside",
+        "description": "Administrer den eksterne hjemmeside rettet mod deltagere",
+        "disclosure_statement": {
+          "title": "Oplysningserklæring",
+          "description": "Administrer oplysningserklæringen"
+        },
+        "declaration_of_consent": {
+          "title": "Samtykkeerklæring",
+          "description": "Administrer samtykkeerklæringen"
+        },
+        "front": {
+          "title": "Forside",
+          "description": "Administrer forsiden"
+        },
+        "faq": {
+          "title": "FAQ-side",
+          "description": "Administrer FAQ-siden"
+        },
+        "contact_information": {
+          "title": "Kontaktinformation",
+          "description": "Administrer din kommunes kontaktoplysninger"
+        }
+      },
+      "users": {
+        "title": "Brugere",
+        "description": "Her kan du administrere alle interne brugere"
+      },
+      "specialdiet": {
+        "title": "Specialkost",
+        "description": "Administrer den specialkost, der tilbydes deltagerne til valget"
+      },
+      "area": {
+        "title": "Områder",
+        "description": "Administrer områder i kommunen - valgkredse, geografiske eller lignende"
+      },
+      "task_type": {
+        "title": "Opgavetyper",
+        "description": "Administrer opgavetyper, herunder beskrivelse, betaling og starttidspunkter"
+      },
+      "work_location": {
+        "title": "Arbejdssteder",
+        "description": "Administrer arbejdssteder inklusive relevante opgavetyper og teams"
+      },
+      "communication": {
+        "title": "Kommunikation",
+        "communication_templates": {
+          "title": "Beskedskabeloner",
+          "description": "Administrer beskedskabeloner og se previews"
+        },
+        "communication_logs": {
+          "title": "Kommunikationslog",
+          "description": "Undersøg status for afsendelse af beskeder"
+        },
+        "send_message": {
+          "title": "Send besked",
+          "description": "Send Digital post, SMS eller e-mail til deltagere"
+        }
+      },
+      "tasks": {
+        "title": "Opgaver",
+        "tasks_overview_title": "Oversigt over opgaver",
+        "tasks_overview_description": "Få overblik over alle opgaver i det valgte valg",
+        "create_task_link_title": "Opret opgavelink",
+        "create_task_link_description": "Opret et link til valgte opgaver",
+        "work_location_tasks_title": "Opgaver på arbejdssted",
+        "work_location_tasks_distribution_title": "Fordel opgaver",
+        "reply_for_participant": "Svar for deltager"
+      }
+    },
+    "footer": {
+      "welcome": "Velkommen",
+      "change_election": "Skift valg",
+      "logout": "Log ud",
+      "translate": "Oversæt",
+      "online_manual": "Online manual",
+      "url_online_manual": "https://viden.os2valghalla.dk",
+      "link_to_external_web": "Link til ekstern hjemmeside",
+      "url_link_to_external_web": "https://oiosaml-net.dk:4600/",
+      "technical_documentation": "Teknisk dokumentation",
+      "url_technical_documentation": "https://os2valghalla.readthedocs.io"
+    },
+    "change_election": {
+      "title": "Skift valg",
+      "elections": "Valg"
+    },
+    "gdpr_confirmation_dialog": {
+      "help_text": "For at slette de valgte deltagere skal du indtaste ordet \"DELETE\" og derefter klikke på slet-knappen. Bemærk, at dette ikke kan fortrydes!"
+    }
+  },
+  "shared": {
+    "notification": {
+      "close": "Luk"
+    },
+    "quick_menu": {
+      "label": "Hurtigmenu"
+    },
+    "dialog": {
+      "label": "Dialog",
+      "ok": "OK",
+      "cancel": "Annuller",
+      "areyousure": "Er du sikker?",
+      "confirm": "Bekræft",
+      "send": "Send"
+    },
+    "error": {
+      "invalid_file_extension": "Ugyldig filtypenavn",
+      "invalid_file_extension_details": "Vælg venligst filen med understøttet filtypenavn: ",
+      "validation": "Valideringsfejl",
+      "message": "Fejl opstod fra serveren",
+      "message_no_item": "Der er intet element på denne liste",
+      "error_getting_task_types": "Fejl ved hentning af tilgængelige opgavetyper",
+      "text_message": {
+        "sender_invalid_characters": "Afsenderens navn må kun indeholde alfabetiske tegn og tal",
+        "sender_invalid_length": "Afsenderens navn må maksimalt være 11 tegn langt",
+        "recipients_invalid_length": "SMS-besked kræver mindst én modtager"
+      },
+      "common": {
+        "not_found": "Element ikke fundet"
+      },
+      "upload_file": "Fejl opstod ved upload af fil",
+      "delete_file": "Fejl opstod ved sletning af fil",
+      "get_elections_shared": "Fejl ved hentning af valg",
+      "get_areas_shared": "Fejl ved hentning af områder",
+      "get_election_types_shared": "Fejl ved hentning af valgtyper",
+      "get_work_locations_shared": "Fejl ved hentning af arbejdssteder",
+      "get_communication_templates_shared": "Fejl ved hentning af beskedskabeloner",
+      "get_task_types_shared": "Fejl ved hentning af opgavetyper",
+      "get_teams_shared": "Fejl ved hentning af teams",
+      "get_special_diets_shared": "Fejl ved hentning af specielkost",
+      "get_participants_shared": "Fejl ved hentning af deltagere"
+    },
+    "page_title": "Valghalla online",
+    "common": {
+      "name": "Navn",
+      "title": "Titel",
+      "description": "Beskrivelse",
+      "short_name": "Forkortelse",
+      "start_time": "Starttidspunkt",
+      "end_time": "Sluttidspunkt",
+      "number": "Nummer",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "yes": "Ja",
+      "no": "Nej",
+      "text": "Tekst",
+      "date": "Dato",
+      "type_to_search": "Skriv for at søge...",
+      "total": "Total",
+      "link": "Link",
+      "all": "Alle",
+      "created_at": "Oprettet den",
+      "select_all": "Vælg alle"
+    },
+    "task:status": {
+      "available": "Ledig",
+      "unanswered": "Ubesvaret",
+      "rejected": "Afvist",
+      "accepted": "Accepteret"
+    },
+    "action": {
+      "edit": "Rediger",
+      "delete": "Slet",
+      "save": "Gem",
+      "search": "Søg",
+      "drop_file": "Træk fil hertil for at uploade",
+      "back": "Tilbage",
+      "next": "Næste"
+    },
+    "validation": {
+      "email": "Ikke en gyldig e-mail"
+    },
+    "end_time_must_be_later_than_start_time": "Sluttidspunkt skal være senere end starttidspunkt",
+    "user": {
+      "role": {
+        "administrator": "Administrator",
+        "participant": "Deltager",
+        "team_responsible": "Teamansvarlig",
+        "work_location_responsible": "Arbejdsstedsansvarlig"
+      },
+      "error": {
+        "role_id_not_valid": "Rolle-ID'et er ikke tilgængeligt i systemet"
+      }
+    },
+    "query_engine": {
+      "search": "Søg",
+      "filter": "Filtrer",
+      "clear_filter": "Ryd",
+      "boolean": {
+        "all": "Alle",
+        "yes": "Ja",
+        "no": "Nej"
+      },
+      "error": {
+        "query": "Der opstod en fejl under udførelsen af forespørgslen",
+        "get_query_form": "Der opstod en fejl under hentning af forespørgselsformularen"
+      }
+    },
+    "side_modal": {
+      "ok": "OK",
+      "close": "Luk"
+    },
+    "participant_picker": {
+      "name": "Navn",
+      "birthdate": "Fødselsdato",
+      "team": "Team",
+      "select_participant": "Vælg deltager"
+    },
+    "communication_log": {
+      "status": {
+        "awaiting": "Afventer",
+        "success": "Succes",
+        "error": "Fejl"
+      },
+      "message_type": {
+        "digital_post": "Digital Post",
+        "email": "E-mail",
+        "sms": "SMS"
+      },
+      "send_type": {
+        "automatic": "Automatisk",
+        "manual": "Manuel"
+      }
+    }
+  },
+  "list": {
+    "page_title": "Lister",
+    "participant_list": {
+      "page_title": "Deltagerlister",
+      "labels": {
+        "show_preview": "Vis preview",
+        "export_to_excel": "Eksportér som Excel-fil",
+        "export_to_csv": "Eksportér som CSV-fil",
+        "select_columns": "Vælg kolonner",
+        "full_name": "Fuldt navn",
+        "cpr_number": "CPR-nummer",
+        "participant_age": "Alder",
+        "participant_phone": "Mobilnummer",
+        "participant_email": "E-mail adresse",
+        "participant_address": "Adresse",
+        "participant_special_diet": "Specialkost",
+        "team_association": "Team",
+        "task_status": "Opgavestatus",
+        "task_date": "Opgavedato",
+        "task_type": "Opgavetype",
+        "task_area": "Område",
+        "task_start_time": "Starttidspunkt",
+        "task_payment": "Betaling",
+        "receipt": "Kvittering"
+      },
+      "error": {},
+      "success": {}
+    }
+  },
+  "administration": {
+    "page_title": "Administration",
+    "error": {
+      "user": {
+        "email_exists": "Denne e-mail bruges allerede af en anden bruger",
+        "get_user_roles": "Fejl ved hentning af brugerroller",
+        "invite_user": "Fejl ved oprettelse af brugerinvitation",
+        "get_all_users": "Fejl ved hentning af alle brugere",
+        "update_user": "Fejl ved opdatering af bruger",
+        "delete_user": "Fejl ved sletning af bruger"
+      },
+      "link": {
+        "create_task_link_failed": "Fejl opstod ved oprettelse af opgavelink",
+        "create_filtered_tasks_link_failed": "Fejl opstod ved oprettelse af filtreret opgavelink"
+      }
+    },
+    "success": {
+      "user": {
+        "invite_user": "Brugerinvitation er blevet sendt!",
+        "update_user": "Bruger opdateret med succes"
+      }
+    },
+    "election_type": {
+      "validation_rule": {
+        "age_18": "Valider, at deltageren er mindst 18 år gammel",
+        "municipal_requirement": "Valider, at deltageren har bopæl i kommunen",
+        "danish_citizen": "Valider, at deltageren er dansk statsborger",
+        "disempowered": "Valider, at deltageren er myndig",
+        "note_is_alive": "Bemærk, at det altid valideres, om en deltager er i live"
+      },
+      "error": {
+        "create_election_type": "Fejl opstod ved oprettelse af valgtype",
+        "update_election_type": "Fejl opstod ved opdatering af valgtype",
+        "delete_election_type": "Fejl opstod ved sletning af valgtype",
+        "get_election_type": "Fejl opstod ved hentning af valgtype",
+        "check_election_type_can_delete": "Fejl opstod ved tjek af om valgtype kan slettes",
+        "existing_election_connection_when_delete": "Valgtypen bruges i et valg (aktivt eller inaktivt)"
+      },
+      "success": {
+        "create_election_type": "Valgtype oprettet med succes",
+        "update_election_type": "Valgtype opdateret med succes",
+        "delete_election_type": "Valgtype slettet med succes"
+      },
+      "page_title": "Valgtype",
+      "create_page_title": "Opret valgtype",
+      "edit_page_title": "Rediger valgtype",
+      "validation_requirements": "Valideringskrav:",
+      "election_type_listing": {
+        "title": "Valgtyper",
+        "search": "Søg i valgtyper"
+      },
+      "action": {
+        "create_election_type": "Opret valgtype",
+        "edit_election_type": "Rediger valgtype",
+        "delete_confirmation": {
+          "title": "Slet valgtype",
+          "content": "Er du sikker på, at du vil slette denne valgtype?"
+        }
+      }
+    },
+    "teams": {
+      "page_title": "Teams",
+      "create_page_title": "Opret team",
+      "edit_page_title": "Rediger team",
+      "teams_listing": {
+        "title": "Teams"
+      },
+      "columns": {
+        "short_name": "Forkortelse",
+        "responsible_count": "Antal ansvarlige",
+        "responsibles": "Ansvarlige"
+      },
+      "action": {
+        "create_team": "Opret team",
+        "edit_team": "Rediger hold",
+        "delete_confirmation": {
+          "title": "Slet team",
+          "content_no_task": "Er du sikker på, at du vil slette dette team?",
+          "content_has_task": "Der er opgaver forbundet med dette team. Er du sikker på, at du vil slette det? De tilknyttede opgaver vil også blive slettet"
+        }
+      },
+      "error": {
+        "create_team": "Fejl opstod ved oprettelse af team",
+        "update_team": "Fejl opstod ved opdatering af team",
+        "delete_team": "Fejl opstod ved sletning af team",
+        "get_team": "Fejl opstod ved hentning af team",
+        "get_all_teams": "Fejl opstod ved hentning af alle team",
+        "team_exist": "Der findes allerede et team med dette navn",
+        "check_team_used_in_active_election": "Fejl opstod ved tjek af om teamet bruges i aktivt valg",
+        "team_used_in_active_election": "Team brugt i et aktivt valg kan ikke slettes"
+      },
+      "success": {
+        "create_team": "Team oprettet med succes",
+        "update_team": "Team opdateret med succes",
+        "delete_team": "Team slettet med succes"
+      }
+    },
+    "election": {
+      "page_title": "Valg",
+      "create_page_title": "Opret valg",
+      "edit_page_title": "Rediger valg",
+      "duplicate_page_title": "Duplikér valg",
+      "edit_communication_configuration_page_title": "Rediger valgkommunikationskonfiguration",
+      "error": {
+        "create_election": "Fejl opstod ved oprettelse af valg",
+        "update_election": "Fejl opstod ved opdatering af valg",
+        "activate_election": "Fejl opstod ved aktivering af valg",
+        "deactivate_election": "Fejl opstod ved deaktivering af valg",
+        "get_election": "Fejl opstod ved hentning af valg",
+        "get_election_communication_configurations": "Fejl opstod ved hentning af valgkommunikationskonfiguration",
+        "update_election_communication_configurations": "Fejl opstod ved opdatering af valgkommunikationskonfiguration",
+        "election_exist": "Der findes allerede et valg med dette navn og valgdato",
+        "delete_election": "Fejl opstod ved sletning af valg",
+        "duplicate_election": "Fejl opstod ved duplikering af valg"
+      },
+      "success": {
+        "create_election": "Valg oprettet med succes",
+        "update_election": "Valg opdateret med succes",
+        "update_election_communication_configurations": "Valgkommunikationskonfiguration opdateret med succes",
+        "activate_election": "Valg aktiveret med succes",
+        "deactivate_election": "Valg deaktiveret med succes",
+        "delete_election": "Valg slettet med succes",
+        "duplicate_election": "Valg duplikeret med succes"
+      },
+      "election_listing": {
+        "title": "Valg",
+        "search": "Søg i valg",
+        "edit_election": "Rediger valg",
+        "edit_communication_config": "Rediger kommunikationskonfiguration",
+        "delete_election": "Slet valg",
+        "duplicate_election": "Dupliker valg",
+        "activate_election": "Aktiver valg",
+        "deactivate_election": "Deaktiver valg"
+      },
+      "action": {
+        "create_election": "Opret valg",
+        "edit_election": "Rediger valg",
+        "duplicate_election": "Duplikér valg"
+      },
+      "label": {
+        "step_form_info": "Titel og type",
+        "step_form_date": "Datoer",
+        "step_form_work_location": "Arbejdssteder",
+        "step_form_communication": "Kommunikation",
+        "election_type": "Valgtype",
+        "lock_period": "Låseperiode før opgavedag",
+        "lock_period_hint": "Angiv hvor mange dage før datoen for en opgave, deltagere ikke selv må annullere deres deltagelse",
+        "election_date_range": "Datointerval",
+        "election_date_range_hint": "Angiv datointervallet, hvor opgaver skal oprettes",
+        "election_date": "Valgdato",
+        "election_date_hint": "Indtast datoen, hvor valget afholdes",
+        "days_before_election": "Days before election date with tasks",
+        "days_before_election_hint": "If you make the number less than <strong>[[number]]</strong>, dates with task distribution might be deleted",
+        "days_after_election": "Days after election date with tasks",
+        "days_after_election_hint": "If you make the number less than <strong>[[number]]</strong>, dates with task distribution might be deleted",
+        "work_location": "Relevante arbejdssteder",
+        "work_location_hint": "Angiv de arbejdssteder, der skal bruges til valget",
+        "standard_messages": "Standardbeskeder",
+        "standard_messages_hint": "Angiv hvilke skabeloner, der automatisk sendes til deltagere",
+        "task_specific_messages": "Opgavespecifikke beskeder",
+        "confirmation_of_registration": "Bekræftelse af registrering",
+        "confirmation_of_cancellation": "Bekræftelse af annullering",
+        "invitation": "Invitation",
+        "invitation_reminder": "Påmindelse om invitation",
+        "invitation_reminder_hint": "Sendes hver fjerde dag efter invitationen er sendt indtil der modtages svar",
+        "task_reminder": "Opgavepåmindelse",
+        "task_reminder_hint": "Sendetidspunktet angives på den individuelle opgavetype",
+        "retracted_invitation": "Tilbagetrukket invitation",
+        "retracted_invitation_hint": "Udstedes, hvis en invitation ikke længere er gyldig. For eksempel hvis ledige opgaver flyttes fra et team til et andet"
+      },
+      "messages": {
+        "invalid_election_start_date": "Ugyldig startdag",
+        "invalid_election_end_date": "Ugyldig slutdag",
+        "invalid_election_date_within_date_range": "Valgdagen skal være inden for det valgte datointerval",
+        "cannot_delete_active_election": "Aktivt valg kan ikke slettes",
+        "cannot_delete_selected_election": "Valgt valg kan ikke slettes. Skift til et andet og prøv igen"
+      },
+      "activate_election_confirmation": {
+        "title": "Aktivering af valg",
+        "content": "Hvis der ikke allerede er et andet valg aktivt, vil aktivering af dette valg også aktivere den eksterne hjemmeside"
+      },
+      "deactivate_election_confirmation": {
+        "title": "Deaktivering af valg",
+        "content": "Hvis der ikke allerede er et andet valg aktivt, vil deaktivering af dette valg også deaktivere den eksterne hjemmeside, så ingen deltagere kan håndtere deres invitationer og opgaver."
+      },
+      "delete_election_confirmation": {
+        "title": "Slet valg",
+        "content": "Når du sletter valget, slettes alle oplysninger om tilknyttede opgaver også. Du bør sikre dig, at du har eksporteret oplysninger om valget, som du måske får brug for senere. Er du sikker på, at du vil slette?"
+      }
+    },
+    "user": {
+      "page_title": "Bruger",
+      "edit_user": "Rediger bruger",
+      "email": "E-mail",
+      "role": "Rolle",
+      "help_text": "Når du klikker på OK, sendes der en e-mail til brugeren med en aktiveringskode. E-mailen bliver ikke gemt.",
+      "connections": "Fjern forbindelser først",
+      "remove_yourself": "Kan ikke fjerne dig selv",
+      "users": {
+        "card_title": "Brugere",
+        "card_action_title": "Inviter",
+        "columns": {
+          "role": "Rolle",
+          "activated": "Aktiveret"
+        }
+      },
+      "error": {
+        "user_exists": "Denne bruger findes allerede"
+      }
+    },
+    "link": {
+      "page_title": "Links"
+    },
+    "specialdiet": {
+      "page_title": "Specialkost",
+      "create_page_title": "Opret specialkost",
+      "edit_page_title": "Rediger specialkost",
+      "specialdiet_listing": {
+        "title": "Specialkost",
+        "search": "Søg i specialkost"
+      },
+      "action": {
+        "create_specialdiet": "Opret specialkost",
+        "edit_specialdiet": "Rediger specialkost",
+        "delete_confirmation": {
+          "title": "Slet specialkost",
+          "content_hasActiveElection": "Der er mindst ét aktivt valg, er du sikker på, at du vil slette denne specialkost?",
+          "content_noActiveElection": "Er du sikker på, at du vil slette denne specialkost?"
+        }
+      },
+      "error": {
+        "create_specialdiet": "Fejl opstod ved oprettelse af specialkost",
+        "update_specialdiet": "Fejl opstod ved opdatering af specialkost",
+        "delete_specialdiet": "Fejl opstod ved sletning af specialkost",
+        "get_specialdiet": "Fejl opstod ved hentning af specialkost",
+        "specialdiet_exist": "Der findes allerede en specialkost med samme titel",
+        "check_has_active_election": "Fejl opstod ved tjek af om der er et aktivt valg"
+      },
+      "success": {
+        "create_specialdiet": "Specialkost oprettet med succes",
+        "update_specialdiet": "Specialdiet opdateret med succes",
+        "delete_specialdiet": "Specialkost slettet med succes"
+      }
+    },
+    "area": {
+      "page_title": "Område",
+      "error": {
+        "get_area_details": "Fejl ved hentning af områdedetaljer",
+        "get_all_areas": "Fejl ved hentning af alle områder",
+        "create_area": "Fejl opstod ved oprettelse af område",
+        "update_area": "Fejl opstod ved opdatering af område",
+        "delete_area": "Fejl opstod ved sletning af område",
+        "area_exist": "Der findes allerede et område med samme navn",
+        "work_location_used": "Område bruges i et eller flere arbejdssteder og kan ikke slettes",
+        "minimum_area_required": "Mindst et område er påkrævet"
+      },
+      "success": {
+        "create_area": "Område er oprettet med succes",
+        "update_area": "Område er opdateret med succes",
+        "delete_area": "Område er slettet med succes"
+      },
+      "action": {
+        "create_area": "Opret område",
+        "edit_area": "Rediger område",
+        "delete_area": "Slet område"
+      },
+      "area_listing": {
+        "title": "Områder"
+      },
+      "area_item": {
+        "page_title": {
+          "create": "Opret område",
+          "edit": "Rediger område"
+        }
+      },
+      "delete_area_dialog": {
+        "title": "Slet område",
+        "content": "Er du sikker på, at du vil slette dette område?"
+      }
+    },
+    "web": {
+      "page_title": "Ekstern hjemmeside",
+      "disclosure_statement": {
+        "header": "Vedligehold oplysningserklæring",
+        "content": "Indhold",
+        "description": "Alle deltagere får vist oplysningserklæringen, når de opretter en bruger.<br/><br/>Den forklarer deltagerne, hvordan kommunen har lovhjemmel til at behandle deres personoplysninger for at gennemføre det aktuelle valg.<br/><br/>Hvis I ønsker at bruge deltagernes personlige oplysninger til andet end afvikling af det aktuelle valg, skal I indhente  deres samtykke. Dette gøres ved at aktivere <a href='/administration/web/declaration-of-consent'><u>samtykkeerklæringen</u></a>"
+      },
+      "declaration_of_consent": {
+        "header": "Administrér samtykkeerklæring",
+        "activate": "Aktivér",
+        "content": "Indhold",
+        "description": "Alle deltagere bliver vist <a href='/administration/web/disclosure-statement'>oplysningenserklæringen</a>, når de opretter en bruger.<br/><br/>Hvis du ønsker at behandle deltagernes personoplysninger udover til at gennemføre det nuværende valg, kan det være nødvendigt at indhente deres samtykke. Hvis I f.eks. gerne vil kunne kontakte deltagerne igen ved næste valg, skal I have deres samtykke til dette.<br/><br/>Her kan du indsætte en samtykkeerklæring og aktivere, at deltagerne skal give deres samtykke ved oprettelse af en bruger"
+      },
+      "front": {
+        "header": "Administrér forsiden",
+        "title": "Titel",
+        "content": "Indhold",
+        "description": "Forsiden er altid tilgængelig for brugere og indeholder som udgangspunkt kun mulighed for at logge ind.<br/><br/>Du kan tilføje en titel og ekstra information til forsiden, hvis du ønsker det"
+      },
+      "faq": {
+        "header": "Administrér FAQ-side",
+        "activate": "Aktivér",
+        "content": "Indhold",
+        "description": "Du kan aktivere en FAQ-side, hvor det er muligt at angive svar på ofte stillede spørgsmål. Når den er aktiveret, bliver den synlig for deltagerne på den eksterne hjemmeside "
+      },
+      "contact_information": {
+        "municipality_name": "Kommune",
+        "election_responsible_apartment": "Valgansvarlig afdeling",
+        "address": "Adresse",
+        "postal_code": "Postnummer",
+        "city": "By",
+        "telephone_number": "Telefonnummer",
+        "email": "E-mail",
+        "digital_post": "Link til sikker Digital Post",
+        "logo": "Logo",
+        "email_or_digital_post_header": "Udfyld mindst én mulighed",
+        "email_or_digital_post_description": "Deltagerne kan sende jer personoplysninger, så kontakt bør ske via Digital Post. Du skal udfylde mindst et link til sikker Digital Post eller en e-mailadresse",
+        "logo_help_text": "Format: SVG. Vælg venligst en vandret version af jeres logo"
+      },
+      "error": {
+        "get_disclosure_statement": "Fejl opstod ved hentning af Oplysningserklæringsside",
+        "get_declaration_of_consent": "Fejl opstod ved hentning af samtykkeerklæringsside",
+        "get_front": "Fejl opstod ved hentning af forsiden",
+        "get_faq": "Fejl opstod ved hentning af FAQ-side",
+        "get_contact_information": "Fejl opstod ved hentning af kontaktinformation",
+        "update_disclosure_statement": "Fejl opstod ved opdatering af oplysningserklærinsside",
+        "update_declaration_of_consent": "Fejl opstod ved opdatering af samtykkeerklæringsside",
+        "update_front": "Fejl opstod ved opdatering af forsiden",
+        "update_faq": "Fejl opstod ved opdatering af FAQ-side",
+        "update_contact_information": "Fejl opstod ved opdatering af kontaktinformation",
+        "max_file_size_limit": "Maksimal filstørrelse er 10 MB"
+      },
+      "success": {
+        "update_disclosure_statement": "Oplysningserklæringsside opdateret med succes",
+        "update_declaration_of_consent": "Samtykkeerklæringsside opdateret med succes",
+        "update_front": "Forside opdateret med succes",
+        "update_faq": "FAQ-side opdateret med succes",
+        "update_contact_information": "Kontaktinformation opdateret med succes"
+      }
+    },
+    "task_type": {
+      "page_title": "Opgavetype",
+      "error": {
+        "task_type_exist": "Der findes allerede en opgavetype med samme navn",
+        "get_all_task_types": "Der opstod en fejl under hentning af alle opgavetyper",
+        "get_task_type_details": "Der opstod en fejl under hentning af opgavetype-detaljer",
+        "create_task_type": "Der opstod en fejl under oprettelse af opgavetype",
+        "update_task_type": "Der opstod en fejl under opdatering af opgavetype",
+        "delete_task_type": "Der opstod en fejl under sletning af opgavetype",
+        "max_file_size_limit": "Maksimal filstørrelse er 10 MB"
+      },
+      "success": {
+        "create_task_type": "Opgavetype er blevet oprettet med succes",
+        "update_task_type": "Opgavetype er blevet opdateret med succes",
+        "delete_task_type": "Opgavetype er blevet slettet med succes"
+      },
+      "action": {
+        "create_task_type": "Opret opgavetype"
+      },
+      "update_task_type_confirmation": {
+        "title": "Er du sikker på, at du vil opdatere denne opgavetype?",
+        "validation_not_required_turn_on": "Vær opmærksom på, at dette fjerner validering af accepterede opgaver i aktive valg",
+        "validation_not_required_turn_off": "Vær opmærksom på, at dette vil starte validering af alle accepterede opgaver i aktive valg. Hvis nogen brugere ikke lever op til valideringskravene, vil de blive afmeldt opgaven",
+        "trusted_turn_on": "Vær opmærksom på, at dette måske fjerner synligheden af opgaver af denne opgavetype for deltagere i aktive valg",
+        "trusted_turn_off": "Vær opmærksom på, at dette måske gør opgaver af denne opgavetype synlige for deltagere i aktive valg"
+      },
+      "delete_task_type_confirmation": {
+        "title": "Slet opgavetype",
+        "content": "Er du sikker på, at du vil slette denne opgavetype?",
+        "has_tasks_connected_to_work_location": "Der er opgaver af denne type i et valg. De vil blive slettet, når du sletter opgavetypen, og deltagere med accepterede opgaver i aktive valg vil blive afmeldt. Vil du fortsætte?"
+      },
+      "task_type_listing": {
+        "title": "Opgavetyper",
+        "trusted": "Betroet opgave"
+      },
+      "task_type_item": {
+        "page_title": {
+          "create": "Opret opgavetype",
+          "edit": "Rediger opgavetype"
+        },
+        "payment": "Betaling",
+        "validation_not_required": "Deaktiver validering",
+        "attach_files_hint": "Tilladt filtype: pdf.<br/>Husk, at filen skal være webtilgængelig!<br/>Maks. 10MB.",
+        "trusted": "Betroet opgave",
+        "sending_reminder_enabled": "Send påmindelse"
+      }
+    },
+    "work_location": {
+      "page_title": "Arbejdssted",
+      "error": {
+        "work_location_exist": "Et arbejdssted med samme navn eksisterer allerede",
+        "get_work_location": "Der opstod en fejl under hentning af arbejdssted",
+        "create_work_location": "Der opstod en fejl under oprettelse af arbejdssted",
+        "update_work_location": "Der opstod en fejl under opdatering af arbejdssted",
+        "delete_work_location": "Der opstod en fejl under sletning af arbejdssted",
+        "check_work_location_used_in_active_election": "Der opstod en fejl under kontrol af om arbejdssted bruges i aktivt valg",
+        "work_location_used_in_active_election": "Et arbejdssted, der bruges i et aktivt valg, kan ikke slettes",
+        "active_election_warning": "Opgavetyper og teams kan ikke redigeres, da dette arbejdssted er en del af et aktivt valg. Deaktivér valget for at redigere"
+      },
+      "success": {
+        "create_work_location": "Arbejdssted er blevet oprettet med succes",
+        "update_work_location": "Arbejdssted er blevet opdateret med succes",
+        "delete_work_location": "Arbejdssted er blevet slettet med succes"
+      },
+      "action": {
+        "create_work_location": "Opret arbejdssted",
+        "delete_confirmation": {
+          "title": "Slet arbejdssted",
+          "content_no_task": "Er du sikker på, at du vil slette dette arbejdssted?",
+          "content_has_task": "Der er opgaver forbundet med dette arbejdssted. Er du sikker på, at du vil slette det? De tilknyttede opgaver vil også blive slettet"
+        }
+      },
+      "columns": {
+        "area": "Område",
+        "address": "Adresse",
+        "postal_code": "Postnummer",
+        "city": "By",
+        "relevant_task_types": "Relevante opgavetyper",
+        "relevant_teams": "Relevante teams"
+      },
+      "work_location_item": {
+        "page_title": {
+          "create": "Opret arbejdssted",
+          "edit": "Rediger arbejdssted"
+        }
+      },
+      "work_location_listing": {
+        "title": "Arbejdssteder",
+        "area": "Område"
+      }
+    }
+  },
+  "communication": {
+    "page_title": "Kommunikation",
+    "filters": {
+      "modal_title": "Filtrér beskedskabeloner"
+    },
+    "error": {
+      "communication_exist": "Kommunikation med denne titel eksisterer allerede",
+      "get_participants": "Der opstod en fejl under hentning af deltagere",
+      "get_communication_template": "Der opstod en fejl under hentning af beskedskabelon",
+      "create_communication_template": "Der opstod en fejl under oprettelse af beskedskabelon",
+      "update_communication_template": "Der opstod en fejl under opdatering af beskedskabelon",
+      "delete_communication_template": "Der opstod en fejl under sletning af beskedskabelon",
+      "communication_template_exist": "En beskedskabelon med denne titel eksisterer allerede",
+      "max_file_size_limit": "Maksimal filstørrelse er 10 MB",
+      "cannot_delete_default_communication_template": "Standard beskedskabelon kan ikke slettes"
+    },
+    "success": {
+      "create_communication_template": "Beskedskabelon er blevet oprettet med succes",
+      "update_communication_template": "Beskedskabelon er blevet opdateret med succes",
+      "delete_communication_template": "Beskedskabelon er blevet slettet med succes"
+    },
+    "action": {
+      "create_communication_template": "Opret beskedskabelon"
+    },
+    "columns": {
+      "token": "Token",
+      "replace_with": "Erstat med"
+    },
+    "tokens_description": {
+      "name": "Deltagerens fulde navn",
+      "election": "Valgtitel",
+      "work_location": "Arbejdssted",
+      "work_location_address": "Adresse på arbejdssted",
+      "task_type": "Opgavetype",
+      "task_date": "Opgavedag",
+      "task_start": "Starttidspunkt på opgave",
+      "task_type_description": "Beskrivelse af opgavetype",
+      "payment": "Betaling for opgave",
+      "days": "Antal dage indtil opgavedag",
+      "municipality": "Kommune",
+      "invitation": "URL til invitation til opgave",
+      "contact": "Link til kontaktside på ekstern hjemmeside",
+      "external_web": "Link til ekstern hjemmeside"
+    },
+    "tokens_preview": {
+      "name": "Mads Skjern",
+      "election": "Folketingsvalg 1939",
+      "work_location": "Forsamlingshuset",
+      "work_location_address": "Jernbanegade 15, 1000 Korsbæk",
+      "task_type": "Tilforordnet",
+      "task_date": "03.04.1939",
+      "task_start": "07:00",
+      "task_type_description": "Som tilforordnet hjælper du med at tage imod vælgerne, scanne deres valgkort og udlevere stemmesedler.<br/><br/>Du er også med til at hjælpe vælgerne med at afgive deres stemme og sikre, at stemmesedlerne kommer i valgurnerne. Sammen med andre frivillige er du med til at sikre, at det hele forløber efter reglerne, og sammen skaber vi den gode stemning på valgstederne.<br/><br/>Når du møder ind om morgenen, vil du få en nærmere introduktion til opgaverne. Du behøver ikke kende til reglerne eller lovgivningen på forhånd.<br/><br/>Hvis der opstår tvivl i løbet af dagen, er der en valgsekretær på valgstedet, som kan afklare alle spørgsmål.",
+      "payment": 850,
+      "days": 5,
+      "municipality": "Korsbæk",
+      "invitation": "https://korsbaek.os2valghalla.dk/invitation?id=1234",
+      "contact": "https://korsbaek.os2valghalla.dk/kontakt",
+      "external_web": "https://korsbaek.os2valghalla.dk"
+    },
+    "communication_template_item": {
+      "page_title": {
+        "create": "Opret beskedskabelon",
+        "edit": "Rediger beskedskabelon"
+      },
+      "steps": {
+        "title_and_type": "Titel og type",
+        "content": "Indhold",
+        "preview": "Preview"
+      },
+      "template_type": "Skabelontype",
+      "subject": "Emne",
+      "required_content": "Indhold*",
+      "content": "Indhold",
+      "tokens_header": "Automatisk udskiftning af tekst:",
+      "tokens_note": "Du kan bruge disse tokens til automatisk udskiftning af tekst. I listen nedenfor kan du se de tilgængelige tokens, og hvad de vil blive udskiftet med. Vær opmærksom på, at der kan være situationer, hvor tokens ikke kan udskiftes.",
+      "attach_files": "Vedhæft filer",
+      "attach_files_hint": "Tilladte filtyper: pdf, doc, docx, txt, odt, xls og xlsx.<br/>Husk, at filen skal være webtilgængelig!<br/>Maks. 10MB.",
+      "preview_description": "Her kan du se, hvordan beskeden vil se ud for modtageren. Tokens erstattes med data fra et fiktivt valg og afspejler ikke dine indtastede data.",
+      "subject_max_length_error": "Subject max length should be 256"
+    },
+    "communication_template_listing": {
+      "title": "Beskedskabeloner"
+    },
+    "delete_communication_template_dialog": {
+      "title": "Slet beskedskabelon",
+      "content": "Er du sikker på, at du vil slette denne beskedskabelon?",
+      "delete_communication_template_used_in_election": "Denne beskedskabelon bruges i kommunikationskonfigurationen af et valg. At slette den vil ændre konfigurationen til standardindstillingen. Er du sikker på, at du vil slette denne beskedskabelon?"
+    },
+    "template_type": {
+      "digital_post": "Digital Post",
+      "email": "E-mail",
+      "sms": "SMS",
+      "standard": "Standard"
+    },
+    "communication_log": {
+      "page_title": "Kommunikationlog",
+      "error": {
+        "get_communication_log_details": "Fejl under hentning af kommunikationslogsdetaljer"
+      },
+      "communication_log_listing": {
+        "title": "Kommunikationslog"
+      },
+      "label": {
+        "message_type": "Beskedtype",
+        "send_type": "Udsendelse",
+        "status": "Status",
+        "recipient": "Modtager",
+        "message": "Besked"
+      }
+    },
+    "communication_log_details": {
+      "page_title": "Kommunikationslogsdetaljer",
+      "label": {
+        "id": "ID",
+        "message_type": "Beskedtype",
+        "send_type": "Udsendelsestype",
+        "status": "Status",
+        "recipient": "Modtager",
+        "message": "Besked",
+        "error": "Fejl"
+      }
+    },
+    "send_message": {
+      "page_title": "Send besked",
+      "steps": {
+        "message_type": "Beskedtype",
+        "content": "Indhold",
+        "recipients": "Modtagere",
+        "preview_and_send": "Preview og send"
+      },
+      "labels": {
+        "team": "Team",
+        "select_template": "Vælg beskedskabelon",
+        "select_template_hint": "Vælg beskedskabelon eller skriv en ny besked nedenfor",
+        "select_recipients": "Vælg modtagere",
+        "select_recipients_hint": "Modtagere er baseret på valget <strong>[[election]]</strong>.<br>Hvis der ikke bruges filtre, vil alle deltagere med en tilknyttet opgave modtage beskeden",
+        "filtered_participants_result": "Valgte modtagere baseret på filtrering",
+        "preview_send_message_header": "Denne besked sendes til [[count]] deltagere",
+        "preview_send_message_hint": "Beskeden sendes, når du klikker på knappen Send besked"
+      }
+    }
+  },
+  "tasks": {
+    "page_title": "Opgaver",
+    "labels": {
+      "task": "Opgave",
+      "team": "Team",
+      "area": "Område",
+      "work_location": "Arbejdssted",
+      "status": "Status:",
+      "date": "Dato",
+      "task_details": "Opgavedetaljer",
+      "task_type": "Opgavetype",
+      "task_status": "Opgavestatus",
+      "task_date": "Opgavedag",
+      "participant": "Deltager",
+      "status_total": "Samlet status",
+      "all_dates": "Alle datoer",
+      "all_teams": "Alle teams",
+      "all_types": "Alle typer",
+      "status_all": "Status",
+      "status_missing": "Ledig",
+      "status_awaiting": "Ubesvaret",
+      "missing": "LEDIG",
+      "rejected_invitations": "Afviste invitationer",
+      "reply_on_behalf_of_user": "Svar på vegne af deltager",
+      "participant_information_header": "Deltageroplysninger",
+      "participant_information_description": "Opdater oplysninger om nødvendigt",
+      "trusted_task_types": "Betroede opgavetyper",
+      "trusted_task": "Betroet opgave",
+      "available_tasks": "Tilgængelige opgaver",
+      "link_description": "Deling af dette link med deltagere vil gøre det muligt for dem at se og tilmelde sig de valgte opgaver",
+      "filtered_tasks_list_header": "Valgte opgaver baseret på filtre"
+    },
+    "actions": {
+      "copy_task_link": "Kopier opgavelink",
+      "copy_link": "Kopier link",
+      "create_participant": "Opret deltager",
+      "assign_participant": "Tilføj deltager",
+      "edit_participant": "Rediger deltager",
+      "remove_participant": "Fjern deltager",
+      "reply_for_participant": "Svar for deltager",
+      "remove_participant_confirmation": "Deltageren vil blive fjernet fra opgaven. Hvis der er et aktivt valg, sendes der en besked for at informere deltageren om aflysningen"
+    },
+    "error": {
+      "invalid_work_location": "Ugyldigt arbejdssted-ID eller det valgte valg indeholder ikke dette arbejdssted",
+      "get_areas_general_info": "Fejl opstod ved hentning af områders generelle oplysninger",
+      "get_area_tasks_summary": "Fejl opstod ved hentning af resumé af områdets opgaver",
+      "get_work_location": "Fejl opstod ved hentning af arbejdssted",
+      "get_work_location_tasks_summary": "Fejl opstod ved hentning af resumé af arbejdsstedets opgaver",
+      "no_updated_work_location_tasks": "Opdatér venligst mindst ét opgavetal",
+      "distribute_work_location_tasks": "Fejl opstod ved fordeling af opgaver for arbejdssted",
+      "assign_participant_to_task": "Fejl opstod ved tildeling af deltager til opgave",
+      "remove_participant_from_task": "Fejl opstod ved afmelding af deltager fra opgave",
+      "reply_for_participant": "Fejl opstod ved svar til deltager",
+      "get_team_tasks": "Fejl opstod ved hentning af team-opgaver",
+      "get_task_assignment": "Fejl opstod ved hentning af opgavetildeling",
+      "validation_rules_alive": "Deltager er ikke i live",
+      "validation_rules_age": "Deltager er ikke 18 år på valgdagen",
+      "validation_rules_municipality": "Deltager bor ikke i den påkrævede kommune",
+      "validation_rules_citizenship": "Deltager er ikke statsborger i det påkrævede land",
+      "validation_rules_legal_adult": "Deltager er ikke myndig",
+      "task_conflict": "Deltager er allerede tilmeldt en anden opgave på dette tidspunkt",
+      "get_tasks_filtered_options": "Fejl opstod ved hentning af opgavefiltre"
+    },
+    "success": {
+      "distribute_work_location_tasks": "Opgaver er blevet fordelt på arbejdsstedet med succes",
+      "assign_participant_to_task": "Deltager er blevet tilføjet til opgaven med succes",
+      "remove_participant_from_task": "Deltager er blevet fjernet fra opgaven med succes",
+      "reply_for_participant": "Svar for deltager er gennemført med succes",
+      "task_link_copied": "Opgavelink er blevet kopieret til udklipsholderen med succes",
+      "filtered_tasks_link_copied": "Link til filtrerede opgaver er blevet kopieret til udklipsholderen med succes"
+    },
+    "work_location_tasks": {
+      "page_title": "Opgaver på arbejdsstedet",
+      "tasks_on": "Opgaver den",
+      "actions": {
+        "distribute_tasks": "Fordel opgaver"
+      }
+    }
+  },
+  "participant": {
+    "page_title": "Deltager",
+    "error": {
+      "participant_exists": "Der findes allerede en deltager med samme CPR-nummer",
+      "create_participant": "Fejl opstod ved oprettelse af deltager",
+      "update_participant": "Fejl opstod ved opdatering af deltager",
+      "get_participant_details": "Fejl ved hentning af deltageroplysninger",
+      "get_team_responsible_rights": "Fejl ved hentning af rettigheder for team-ansvarlige",
+      "get_participant_personal_record": "Fejl ved hentning af deltagerens personlige oplysninger",
+      "cpr_invalid": "CPR-nummer er ugyldigt. CPR-nummer skal være 10 tegn (kun tal) - de første 2 tal skal være 1 til 31, og de næste 2 tal skal være 1 til 12",
+      "cvr_invalid": "CVR-nummer er ugyldigt. CVR-nummer skal være 8 tegn (kun tal)",
+      "participant_has_associated_tasks": "Deltager kan ikke fjernes fra teamet, fordi han/hun er tilføjet en opgave i det team",
+      "create_participant_event_log": "Fejl opstod ved oprettelse af kommentar",
+      "update_participant_event_log": "Fejl opstod ved opdatering af kommentar",
+      "delete_participant_event_log": "Fejl opstod ved sletning af kommentar",
+      "get_work_location_responsible_rights": "Fejl ved hentning af rettigheder for arbejdsstedsansvarlige",
+      "get_participant_tasks": "Fejl ved hentning af deltageropgaver",
+      "delete_participant": "Fejl opstod ved sletning af deltager",
+      "bulk_delete_participants": "Fejl opstod ved massesletning af deltagere"
+    },
+    "success": {
+      "create_participant": "Deltager er blevet oprettet med succes",
+      "update_participant": "Deltager er blevet opdateret med succes",
+      "create_participant_event_log": "Kommentar er blevet oprettet med succes",
+      "update_participant_event_log": "Kommentar er blevet opdateret med succes",
+      "delete_participant_event_log": "Kommentar er blevet slettet med succes",
+      "delete_participant": "Deltager er blevet slettet med succes",
+      "bulk_delete_participants": "Deltagere er blevet slettet med succes"
+    },
+    "action": {
+      "create_participant": "Opret deltager",
+      "delete_participant": "Slet deltager",
+      "delete_participants": "Slet deltagere"
+    },
+    "participant_listing": {
+      "title": "Deltagere",
+      "columns": {
+        "team": "Team",
+        "birthdate": "Fødselsdato",
+        "digital_post": "Digital Post",
+        "assigned_task": "Accepteret opgave",
+        "task_type": "Opgavetype"
+      }
+    },
+    "participant_item": {
+      "page_title": {
+        "create": "Opret deltager",
+        "edit": "Redigér deltager"
+      },
+      "check_cpr": "Tjek",
+      "fields": {
+        "cpr": "CPR",
+        "mobile_number": "Mobilnummer",
+        "email": "E-mail",
+        "team": "Team",
+        "special_diet": "Specialkost",
+        "first_name": "Fornavn",
+        "last_name": "Efternavn",
+        "street_address": "Vej + nummer",
+        "postal_code": "Postnummer",
+        "city": "By",
+        "birthdate": "Fødselsdato"
+      },
+      "headers": {
+        "get_information": "Hent information",
+        "other_information": "Anden information",
+        "other_cpr_information": "Information fra CPR-registeret"
+      }
+    },
+    "participant_details": {
+      "full_name": "Fulde navn",
+      "information": "Information",
+      "address": "Adresse",
+      "cpr_number": "CPR-nummer",
+      "mobile_number": "Mobilnummer",
+      "email": "E-mail",
+      "team": "Team",
+      "special_diet": "Specialkost",
+      "digital_post": "Digital Post"
+    },
+    "participant_validation_information": {
+      "title": "Valideringsoplysninger",
+      "age": "Alder",
+      "municipality": "Kommune",
+      "citizenship": "Statsborgerskab",
+      "legal_adult": "Myndig",
+      "alive": "Levende",
+      "date_of_last_validation": "Dato for sidste validering"
+    },
+    "team_responsible": {
+      "title": "Teamansvarlig"
+    },
+    "event_log": {
+      "title": "Kommentarer",
+      "add_event_log": "Tilføj kommentar",
+      "edit_event_log": "Redigér kommentar"
+    },
+    "participant_profile": {
+      "title": "Profil"
+    },
+    "work_location_responsible": {
+      "title": "Arbejdsstedsansvarlig"
+    },
+    "task_status": {
+      "title": "Opgavestatus",
+      "election_title": "Valg",
+      "change_election_confirmation": {
+        "title": "Advarsel",
+        "content": "Du er ved at ændre valgt valg til"
+      }
+    },
+    "communication_log": {
+      "title": "Kommunikationslog"
+    },
+    "delete_participant_confirmation": {
+      "title": "Slet deltager",
+      "content": "Deltageren og alle data om denne deltager vil blive fjernet",
+      "has_assigned_tasks_in_active_election": "Deltager er tilmeldt en opgave i et aktivt valg og vil blive fjernet ved sletning",
+      "is_team_responsible": "Denne deltager er teamansvarlig og vil blive fjernet fra teamet ved sletning",
+      "is_work_location_responsible": "Denne deltager er arbejdsstedsansvarlig og vil blive fjernet fra teamet ved sletning"
+    },
+    "bulk_delete_participants_confirmation": {
+      "title": "Slet deltagere",
+      "content": "Deltagerne og alle data om dem vil blive fjernet",
+      "contain_assigned_tasks_in_active_election": "En eller flere deltagere er tilføjet en opgave i et aktivt valg og vil blive fjernet ved sletning",
+      "contain_team_responsible": "En eller flere deltagere er teamansvarlige og vil blive fjernet fra teamet ved sletning",
+      "contain_work_location_responsible": "En eller flere deltagere er arbejdsstedsansvarlige og vil blive fjernet fra arbejdsstedet ved sletning"
+    }
+  },
+  "start": {
+    "page_title": "Start"
+  },
+  "unprotected": {
+    "page_title": null,
+    "unauthorized": {
+      "page_title": "Uautoriseret",
+      "content": "Du har ikke adgang til denne ressource"
+    },
+    "logout": {
+      "page_title": "Log ud",
+      "content": "Du er logget ud af systemet med succes. Du kan nu lukke vinduet"
+    },
+    "registration": {
+      "page_title": "Tilmelding",
+      "welcome_message": "Velkommen til Valghalla online",
+      "instruction_message": "For at aktivere din konto skal du klikke på aktiveringsknappen og fuldføre processen",
+      "activate": "Aktivér"
+    },
+    "error": {
+      "registration": {
+        "get_authorize_url": "Der opstod en fejl ved aktivering af brugeren. Prøv igen",
+        "registration_token_not_found": "Tilmeldingstoken er ikke tilgængelig",
+        "duplicated_user": "Kontoen kan ikke aktiveres, da kontoen allerede er tilmeldt"
+      }
+    },
+    "notfound": {
+      "page_title": "404! Kan ikke finde den søgte ressource",
+      "content": "404! Kan ikke finde den søgte ressource"
+    }
+  }
+}

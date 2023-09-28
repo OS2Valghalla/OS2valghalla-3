@@ -1,0 +1,54 @@
+<form [formGroup]="formGroup" class="pt-4">
+    <mat-label><strong>{{ this.label | transloco }}</strong></mat-label>
+    <mat-hint class="pl-2 block" *ngIf="this.hint">{{ this.hint | transloco }}</mat-hint>
+    <mat-radio-group class="block" (change)="onTemplateTypeChanged($event)" [(ngModel)]="selectedTemplateType" [ngModelOptions]="{standalone: true}">
+        <mat-radio-button
+        class="pr-4"
+        *ngFor="let templateType of templateTypes"
+        [value]="templateType.id">{{ templateType.title | transloco }}</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field class="pl-2 w-full" appearance="fill" *ngIf="selectedTemplateType == 0 && !this.inputControlName">
+        <mat-select (selectionChange)="onTemplateChanged($event)" [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+        <mat-option *ngFor="let template of communicationTemplates_DigitalPost" [value]="template">
+            {{ template.title }}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="pl-2 w-full" appearance="fill" *ngIf="selectedTemplateType == 1 && !this.inputControlName">
+        <mat-select (selectionChange)="onTemplateChanged($event)" [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+        <mat-option *ngFor="let template of communicationTemplates_Email" [value]="template">
+            {{ template.title }}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="pl-2 w-full" appearance="fill" *ngIf="selectedTemplateType == 2 && !this.inputControlName">
+        <mat-select (selectionChange)="onTemplateChanged($event)" [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+        <mat-option *ngFor="let template of communicationTemplates_SMS" [value]="template">
+            {{ template.title }}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="pl-2 w-full" appearance="fill" *ngIf="selectedTemplateType == 0 && this.inputControlName">
+        <mat-select [formControlName]="this.inputControlName">
+        <mat-option *ngFor="let template of communicationTemplates_DigitalPost" [value]="template">
+            {{ template.title }}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="pl-2 w-full" appearance="fill" *ngIf="selectedTemplateType == 1 && this.inputControlName">
+        <mat-select [formControlName]="this.inputControlName">
+        <mat-option *ngFor="let template of communicationTemplates_Email" [value]="template">
+            {{ template.title }}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="pl-2 w-full" appearance="fill" *ngIf="selectedTemplateType == 2 && this.inputControlName">
+        <mat-select [formControlName]="this.inputControlName">
+        <mat-option *ngFor="let template of communicationTemplates_SMS" [value]="template">
+            {{ template.title }}
+        </mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>

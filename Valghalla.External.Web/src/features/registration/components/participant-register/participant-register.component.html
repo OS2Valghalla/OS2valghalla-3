@@ -1,0 +1,70 @@
+<h1>{{ 'registration.label.steps.profile_input' | transloco }}</h1>
+
+<form novalidate [formGroup]="form" *appSpinner="loading">
+  <div appFormGroup>
+    <label appFormLabel>{{ 'registration.label.mobile_number.title' | transloco }} *</label>
+    <span appFormHint>{{ 'registration.label.mobile_number.hint' | transloco }}</span>
+    <span appFormError></span>
+    <input appFormInput type="text" [formControl]="form.controls.mobileNumber" />
+  </div>
+  <div appFormGroup>
+    <label appFormLabel>{{ 'registration.label.email.title' | transloco }} *</label>
+    <span appFormHint>{{ 'registration.label.email.hint' | transloco }}</span>
+    <span appFormError></span>
+    <input appFormInput type="text" [formControl]="form.controls.email" />
+  </div>
+
+  <div appFormGroup>
+    <fieldset appFormCheckboxGroup>
+      <legend appFormLabel>{{ 'registration.label.special_diets.title' | transloco }}</legend>
+      <span appFormHint>{{ 'registration.label.special_diets.hint' | transloco }}</span>
+      <span appFormError></span>
+
+      <div appFormCheckbox *ngFor="let item of specialDiets">
+        <input
+          appFormCheckboxOption
+          type="checkbox"
+          [value]="item.id"
+          [disabled]="saving"
+          [checked]="form.value.specialDietIds.includes(item.id)"
+          (change)="onSpecialDietsChanged($event)" />
+        <label appFormCheckboxLabel>{{ item.title }}</label>
+      </div>
+    </fieldset>
+  </div>
+
+  <div appFormGroup *ngIf="page && page.isActivated">
+    <fieldset appFormCheckboxGroup>
+      <legend appFormLabel>{{ 'registration.label.declaration_of_consent' | transloco }}</legend>
+      <div appFormCheckbox>
+        <input
+          appFormCheckboxOption
+          type="checkbox"
+          [formControl]="form.controls.consentApproved"
+          [disabled]="saving" />
+        <label appFormCheckboxLabel>
+          <div [innerHTML]="page.pageContent"></div>
+        </label>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="mt-8">
+    <button
+      class="button button-primary mr-5"
+      (click)="register()"
+      [disabled]="saving || !form.controls.consentApproved.value || !form.valid">
+      <span *ngIf="!saving">{{
+        type == 'task'
+          ? ('registration.label.save_and_continue' | transloco)
+          : type == 'team'
+          ? ('registration.label.complete_registration' | transloco)
+          : ''
+      }}</span>
+      <span *ngIf="saving">{{ 'shared.common.saving' | transloco }}</span>
+    </button>
+    <button class="button button-secondary" (click)="cancelRegistration()" [disabled]="saving">
+      {{ 'registration.label.cancel_registration' | transloco }}
+    </button>
+  </div>
+</form>

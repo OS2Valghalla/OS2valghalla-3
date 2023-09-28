@@ -1,0 +1,97 @@
+<app-form-page
+  class="inline-block w-full"
+  [formTitle]="'participant.participant_item.page_title.create' | transloco"
+  [updateFormTitle]="
+    ('participant.participant_item.page_title.edit' | transloco) + ' - ' + item?.firstName + ' ' + item?.lastName
+  "
+  [formGroup]="form"
+  (create)="createParticipant($event)"
+  (update)="updateParticipant($event)"
+  (delete)="deleteParticipant($event)"
+  (onCancelClick)="cancel()">
+  <div class="flex flex-row space-x-12">
+    <div class="basis-1/3 space-y-8">
+      <div class="space-y-2">
+        <span class="text-xl">{{ 'participant.participant_item.headers.get_information' | transloco }}</span>
+        <div class="flex flex-row space-x-4">
+          <mat-form-field class="basis-full" appearance="fill" *appShowSkeleton="loading">
+            <mat-label>{{ 'participant.participant_item.fields.cpr' | transloco }}</mat-label>
+            <input matInput type="text" formControlName="cpr" />
+          </mat-form-field>
+          <div class="basis-16">
+            <button
+              style="height: 100%"
+              mat-raised-button
+              color="accent"
+              (click)="checkCprNumber()"
+              [disabled]="!cprCheckEnabled || cprChecking">
+              <mat-icon>search</mat-icon>
+              <span *ngIf="!cprChecking">{{ 'participant.participant_item.check_cpr' | transloco }}</span>
+              <mat-icon *ngIf="cprChecking">
+                <mat-spinner color="primary" diameter="18"></mat-spinner>
+              </mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <span class="text-xl">{{ 'participant.participant_item.headers.other_information' | transloco }}</span>
+        <div class="flex flex-col space-y-4">
+          <mat-form-field appearance="fill" *appShowSkeleton="loading">
+            <mat-label>{{ 'participant.participant_item.fields.mobile_number' | transloco }}</mat-label>
+            <input matInput type="text" formControlName="mobileNumber" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" *appShowSkeleton="loading">
+            <mat-label>{{ 'participant.participant_item.fields.email' | transloco }}</mat-label>
+            <input matInput type="text" formControlName="email" />
+          </mat-form-field>
+          <app-multiple-selection
+            *appShowSkeleton="loading"
+            formControlName="memberTeamIds"
+            [label]="'participant.participant_item.fields.team' | transloco"
+            [items]="teams"
+            valueProperty="id"
+            displayProperty="name"></app-multiple-selection>
+          <app-multiple-selection
+            *appShowSkeleton="loading"
+            formControlName="specialDietIds"
+            [label]="'participant.participant_item.fields.special_diet' | transloco"
+            [items]="specialDiets"
+            valueProperty="id"
+            displayProperty="title"></app-multiple-selection>
+        </div>
+      </div>
+    </div>
+    <div class="space-y-2 basis-2/3">
+      <span class="text-xl">{{ 'participant.participant_item.headers.other_cpr_information' | transloco }}</span>
+      <div class="flex flex-col space-y-4" [formGroup]="recordForm">
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'participant.participant_item.fields.first_name' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="firstName" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'participant.participant_item.fields.last_name' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="lastName" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'participant.participant_item.fields.street_address' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="streetAddress" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'participant.participant_item.fields.postal_code' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="postalCode" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'participant.participant_item.fields.city' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="city" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'participant.participant_item.fields.birthdate' | transloco }}</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="birthdate" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</app-form-page>

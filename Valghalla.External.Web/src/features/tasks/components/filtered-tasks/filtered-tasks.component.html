@@ -1,0 +1,118 @@
+<h1>{{ 'tasks.landing.page_title' | transloco }}</h1>
+
+<div class="container">
+  <div class="row">
+    <div appFormGroup class="col-12 col-sm-12 col-md-6 col-lg-3 form-control">
+      <label appFormLabel>{{ 'tasks.labels.work_location' | transloco }}</label>
+      <span appFormError></span>
+      <select
+        appFormSelect
+        [formControl]="form.controls.selectedWorkLocationId"
+        (change)="onFiltersChanged($event)"
+        *ngIf="!loading"
+        [ngClass]="!form.controls.selectedWorkLocationId.value ? 'empty-select' : ''">
+        <option value="" selected class="empty-select">{{ 'tasks.labels.select_a_location' | transloco }}</option>
+        <option *ngFor="let workLocation of workLocations" [value]="workLocation.id" class="select-option">
+          {{ workLocation.title }}
+        </option>
+      </select>
+      <div class="spinner" style="margin-top: 20px; font-size: 4px" *ngIf="loading"></div>
+    </div>
+    <div appFormGroup class="col-12 col-sm-12 col-md-6 col-lg-3 form-control">
+      <label appFormLabel>{{ 'tasks.labels.date' | transloco }}</label>
+      <span appFormError></span>
+      <select
+        appFormSelect
+        [formControl]="form.controls.selectedDate"
+        (change)="onFiltersChanged($event)"
+        *ngIf="!loading"
+        [ngClass]="!form.controls.selectedDate.value ? 'empty-select' : ''">
+        <option value="" selected class="empty-select">{{ 'tasks.labels.select_a_date' | transloco }}</option>
+        <option *ngFor="let taskDate of taskDates" [value]="taskDate" class="select-option">
+          {{ taskDate | date }}
+        </option>
+      </select>
+      <div class="spinner" style="margin-top: 20px; font-size: 4px" *ngIf="loading"></div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row" *ngIf="!loadingTasks">
+    <div
+      class="col-12 col-sm-12 col-md-4 col-lg-3 mt-5"
+      *ngFor="let task of tasks | paginate : { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+      <div class="card card-align-height">
+        <div class="card-header">
+          <h4 class="header-title">{{ task.taskTypeName }}</h4>
+          <span>{{ task.availableTasksCount }} {{ 'tasks.labels.free_tasks' | transloco }}</span>
+        </div>
+        <div class="card-text">
+          <p>
+            {{ task.workLocationName }}<br />
+            {{ task.workLocationAddress }}, {{ task.workLocationPostalCode }} {{ task.workLocationCity }}
+          </p>
+          <p>{{ task.taskDate | date }}, {{ task.taskTypeStartTime.substring(0, 5) }}</p>
+          <p
+            class="line-clamp-2"
+            [ngClass]="{ 'line-clamp-webkit': webkitDetected }"
+            [innerHtml]="task.taskTypeDescription"></p>
+          <span *ngIf="webkitDetected">...</span>
+        </div>
+        <div class="card-footer card-action">
+          <div class="action-buttons">
+            <button
+              class="button button-secondary"
+              (click)="showRegisterDialog(task)"
+              data-module="modal"
+              [attr.data-target]="'modal-register-task-' + task.hashValue"
+              aria-haspopup="dialog">
+              {{ 'tasks.labels.register' | transloco }}
+            </button>
+            <button class="button button-tertiary" (click)="openTaskDetailsPage(task)">
+              {{ 'tasks.labels.more_info' | transloco }}
+            </button>
+
+            <div
+              appModal
+              [attr.id]="'modal-register-task-' + task.hashValue"
+              class="fds-modal"
+              aria-hidden="true"
+              role="dialog"
+              aria-modal="true"
+              [attr.aria-labelledby]="'modal-heading-' + task.hashValue">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2 class="modal-title" [attr.id]="'modal-heading-' + task.hashValue">
+                    {{ 'tasks.labels.register' | transloco }}: {{ selectedTask && selectedTask.taskTypeName }}?
+                  </h2>
+                  <button class="modal-close function-link" data-modal-close>
+                    <svg class="icon-svg" focusable="false" aria-hidden="true">
+                      <use xlink:href="#close"></use>
+                    </svg>
+                    {{ 'shared.common.close' | transloco }}
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    {{ 'tasks.labels.register_confirmation_text' | transloco }}
+                    {{ selectedTask && selectedTask.taskDate | date }}?
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button class="button button-primary" (click)="register()" data-modal-close>
+                    {{ 'tasks.labels.confirmation_registration' | transloco }}
+                  </button>
+                  <button class="button button-secondary" data-modal-close>
+                    {{ 'shared.common.cancel' | transloco }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-pagination [pageCount]="pageCount" [(currentPage)]="currentPage"></app-pagination>
+</div>
+<div class="spinner" style="margin-top: 20px" *ngIf="loading || loadingTasks"></div>

@@ -1,0 +1,157 @@
+<h1>{{ 'my_team.landing.page_title' | transloco }}</h1>
+
+<div class="container">
+  <div class="spinner" style="margin-top: 20px" *ngIf="loading"></div>
+  <div class="row" *ngIf="!loading">
+    <div appFormGroup class="col-12 col-sm-12 col-md-9 col-lg-6 form-control xl-select">
+      <span appFormError></span>
+      <select
+        appFormSelect
+        [formControl]="form.controls.selectedTeamId"
+        (change)="onFilterChanged()"
+        *ngIf="!loading"
+        [ngClass]="!form.controls.selectedTeamId.value ? 'empty-select' : ''">
+        <option *ngFor="let team of teams" [value]="team.id" class="select-option">
+          {{ team.name }}
+        </option>
+      </select>
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-3 mt-4 mt-lg-0 mt-xl-0 align-self-end d-print-none">
+      <button class="button button-secondary" (click)="ensureTeamLink()" [disabled]="generating">
+        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#link"></use></svg>
+        {{
+          generating
+            ? ('shared.common.generating' | transloco)
+            : !isSafariBrowser()
+            ? ('my_team.labels.copy_link_to_team' | transloco)
+            : generatedLink && generatedLink.length > 0
+            ? ('my_team.labels.copy_link_to_team' | transloco)
+            : ('my_team.labels.generate_link_to_team' | transloco)
+        }}
+      </button>
+    </div>
+  </div>
+  <div class="row" *ngIf="generatedLink && generatedLink.length > 0">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-5">
+      <strong>{{ 'my_team.labels.link' | transloco }}</strong
+      >: {{ generatedLink }}
+    </div>
+  </div>
+  <div class="row">
+    <div
+      class="col-12 col-sm-12 col-md-12 col-lg-12 mt-5"
+      [innerHTML]="'my_team.labels.link_description' | transloco"></div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-9 col-lg-9">
+      <h2>{{ 'my_team.labels.team_members' | transloco }}</h2>
+      <div class="spinner" style="margin-top: 20px" *ngIf="loadingMembers"></div>
+      <form novalidate="" [formGroup]="form" method="get" id="formSearchTable" (ngSubmit)="searchMembers()">
+        <div class="form-group search d-print-none">
+          <label for="inputSearchTable" class="sr-only">
+            {{ 'my_team.labels.search_for_name' | transloco }}
+          </label>
+          <input
+            class="form-input input-char-27"
+            [formControl]="form.controls.keyword"
+            id="inputSearchTable"
+            name="searchtable"
+            type="search" />
+          <button class="button button-search" id="btnSearchTable" type="submit">
+            <svg class="icon-svg m-0" focusable="false" aria-hidden="true">
+              <use xlink:href="#search"></use>
+            </svg>
+            <span class="sr-only">{{ 'shared.common.search' | transloco }}</span>
+          </button>
+        </div>
+      </form>
+      <div class="table--responsive-scroll" *ngIf="!loadingMembers">
+        <table class="table table--borderless" id="searchTable" aria-live="polite">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'my_team.labels.name' | transloco }}</th>
+              <th scope="col">{{ 'my_team.labels.number_of_tasks' | transloco }}</th>
+              <th scope="col" class="d-print-none align-text-md-right">
+                {{ 'my_team.labels.remove_member' | transloco }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let member of displayTeamMembers | paginate : { itemsPerPage: itemsPerPage, currentPage: currentPage }
+              ">
+              <th scope="row">
+                {{ member.name }}
+              </th>
+              <td>
+                {{ member.assignedTasksCount }}
+                {{ (member.assignedTasksCount > 1 ? 'my_team.labels.tasks' : 'my_team.labels.task') | transloco }}
+              </td>
+              <td class="d-print-none align-text-md-right">
+                <a
+                  href="javascript:void(0)"
+                  (click)="showRemoveMemberDialog(member)"
+                  *ngIf="member.canBeRemoved"
+                  data-module="modal"
+                  [attr.data-target]="'modal-remove-member-' + member.id"
+                  aria-haspopup="dialog">
+                  {{ 'shared.common.remove' | transloco }}
+                </a>
+                <span
+                  class="badge badge-small badge-error d-print-none"
+                  appTooltip
+                  [attr.data-tooltip]="'my_team.labels.cannot_be_removed_tooltip' | transloco"
+                  data-tooltip-position="top"
+                  *ngIf="!member.canBeRemoved">
+                  {{ 'my_team.labels.cannot_be_removed' | transloco }}
+                </span>
+
+                <div
+                  appModal
+                  [attr.id]="'modal-remove-member-' + member.id"
+                  class="fds-modal"
+                  aria-hidden="true"
+                  role="dialog"
+                  aria-modal="true"
+                  [attr.aria-labelledby]="'modal-heading-' + member.id">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h2 class="modal-title" [attr.id]="'modal-heading-' + member.id">
+                        {{ 'shared.common.remove' | transloco }} {{ selectedTeamMember && selectedTeamMember.name }}?
+                      </h2>
+                      <button class="modal-close function-link" data-modal-close>
+                        <svg class="icon-svg" focusable="false" aria-hidden="true">
+                          <use xlink:href="#close"></use>
+                        </svg>
+                        {{ 'shared.common.close' | transloco }}
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>
+                        {{ selectedTeamMember && selectedTeamMember.name }}
+                        {{ 'my_team.labels.remove_member_confirmation' | transloco }}
+                      </p>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="button button-primary" (click)="removeMember()" data-modal-close>
+                        <svg class="icon-svg" focusable="false" aria-hidden="true">
+                          <use xlink:href="#trash-can"></use>
+                        </svg>
+                        {{ 'my_team.labels.remove_member' | transloco }}
+                      </button>
+                      <button class="button button-secondary" data-modal-close>
+                        {{ 'shared.common.cancel' | transloco }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <app-pagination [pageCount]="pageCount" [(currentPage)]="currentPage"></app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

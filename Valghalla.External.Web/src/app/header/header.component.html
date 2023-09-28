@@ -1,0 +1,149 @@
+<ng-container [ngTemplateOutlet]="portalHeader"></ng-container>
+<ng-container [ngTemplateOutlet]="solutionHeader"></ng-container>
+<ng-container [ngTemplateOutlet]="navHeader"></ng-container>
+
+<ng-template #portalHeader>
+  <div class="portal-header portal-header-compact">
+    <div class="container portal-header-inner">
+      <img [src]="municipalityLogoUrl" [ariaLabel]="webPage?.municipalityName" />
+      <button class="function-link button-menu-open js-menu-open ml-auto d-print-none" aria-haspopup="dialog">
+        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#menu"></use></svg>
+        {{ 'app.header.menu' | transloco }}
+      </button>
+
+      <div class="portal-info">
+        <p class="user" *ngIf="currentUser">
+          <span class="username weight-semibold">{{ currentUser.name }}</span>
+          <br/>
+          <span *ngIf="userTeamNames">{{ userTeamNames }}</span>
+        </p>
+
+        <button *ngIf="!signedIn && !focused" class="button button-secondary d-print-none" (click)="login()">
+          {{ 'app.header.login' | transloco }}
+        </button>
+
+        <button *ngIf="signedIn" class="button button-secondary d-print-none" (click)="logout()">
+          {{ 'app.header.logout' | transloco }}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #solutionHeader>
+  <div class="solution-header">
+    <div class="container solution-header-inner">
+      <div class="solution-heading">
+        <a href="#"> {{ webPage?.municipalityName }}</a>
+      </div>
+
+      <div class="solution-info">
+        <p>
+          <strong class="authority-name">{{ webPage?.electionResponsibleApartment }}</strong>
+        </p>
+
+        <p class="d-print-none">
+          <span *ngIf="webPage && webPage.telephoneNumber"
+            >{{ 'app.header.support' | transloco }}:
+            <a href="tel:{{ webPage.telephoneNumber }}" class="function-link">{{ webPage.telephoneNumber }}</a></span
+          >
+          <span class="d-block d-lg-inline-block d-print-none mt-2 mt-lg-0">
+            <span class="d-none d-lg-inline-block ml-2 mr-2" *ngIf="webPage && webPage.telephoneNumber">·</span>
+            <a href="#" [routerLink]="contactUsUrl" class="icon-link function-link">
+              {{ 'app.header.contact' | transloco }}
+            </a>
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #navHeader>
+  <div class="overlay"></div>
+  <nav class="nav">
+    <button class="function-link button-menu-close js-menu-close" [ariaLabel]="'shared.common.close' | transloco">
+      <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#close"></use></svg>
+      {{ 'shared.common.close' | transloco }}
+    </button>
+
+    <div class="navbar navbar-primary" *ngIf="signedIn">
+      <div class="navbar-inner container">
+        <ul class="nav-primary">
+          <li routerLinkActive="current active" *ngIf="participantPermission">
+            <a [routerLink]="links.tasks" class="nav-link" ariaCurrentWhenActive="page">
+              <span>{{ 'app.navigation.tasks' | transloco }}</span>
+            </a>
+          </li>
+          <li routerLinkActive="current active" *ngIf="participantPermission">
+            <a [routerLink]="links.myTasks" class="nav-link" ariaCurrentWhenActive="page">
+              <span>{{ 'app.navigation.my_tasks' | transloco }}</span>
+            </a>
+          </li>
+          <li routerLinkActive="current active" *ngIf="participantPermission">
+            <a [routerLink]="links.myProfile" class="nav-link" ariaCurrentWhenActive="page">
+              <span>{{ 'app.navigation.my_profile' | transloco }}</span>
+            </a>
+          </li>
+          <li routerLinkActive="current active" *ngIf="teamResponsiblePermission">
+            <a [routerLink]="links.myTeam" class="nav-link" ariaCurrentWhenActive="page">
+              <span>{{ 'app.navigation.my_team' | transloco }}</span>
+            </a>
+          </li>
+          <li routerLinkActive="current active" *ngIf="teamResponsiblePermission">
+            <a [routerLink]="links.taskDistribution" class="nav-link" ariaCurrentWhenActive="page">
+              <span>{{ 'app.navigation.task_distribution' | transloco }}</span>
+            </a>
+          </li>
+          <li routerLinkActive="current active" *ngIf="worklocationResponsiblePermission">
+            <a [routerLink]="links.myWorkLocation" class="nav-link" ariaCurrentWhenActive="page">
+              <span>{{ 'app.navigation.my_work_location' | transloco }}</span>
+            </a>
+          </li>
+          <li routerLinkActive="current active" *ngIf="participantPermission && faqPageActivated">
+            <a [routerLink]="links.faq" class="nav-link" ariaCurrentWhenActive="page">
+              <span>{{ 'app.navigation.faq' | transloco }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="portal-info-mobile">
+      <p class="user" *ngIf="currentUser">
+        <span class="username weight-semibold">{{ currentUser?.name }}</span>
+        <br/>
+        <span *ngIf="userTeamNames">{{ userTeamNames }}</span>
+      </p>
+
+      <button *ngIf="!signedIn && !focused" class="button button-secondary d-print-none mt-3" (click)="login()">
+        {{ 'app.header.login' | transloco }}
+      </button>
+
+      <button *ngIf="signedIn" class="button button-secondary d-print-none mt-3" (click)="logout()">
+        {{ 'app.header.logout' | transloco }}
+      </button>
+    </div>
+
+    <div class="solution-info-mobile">
+      <p class="mb-2">
+        <strong class="authority-name">{{ webPage?.municipalityName }}</strong>
+      </p>
+
+      <p class="d-print-none">
+        <span *ngIf="webPage && webPage.telephoneNumber"
+          >{{ 'app.header.support' | transloco }}:
+          <a href="tel:{{ webPage.telephoneNumber }}" class="function-link d-inline-block">{{
+            webPage.telephoneNumber
+          }}</a></span
+        >
+        <span class="d-block d-lg-inline-block d-print-none mt-2 mt-lg-0">
+          <span class="d-none d-lg-inline-block mr-2">· </span>
+          <a href="#" [routerLink]="contactUsUrl" class="icon-link function-link"
+            >{{ 'app.header.contact' | transloco }}
+          </a>
+        </span>
+      </p>
+    </div>
+  </nav>
+</ng-template>

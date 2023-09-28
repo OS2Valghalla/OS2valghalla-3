@@ -1,0 +1,7 @@
+.communication-log-error {
+    background-color: tomato !important;
+}
+
+.communication-log-error.mat-mdc-row:hover .mat-mdc-cell {
+    background-color: darksalmon !important;
+}

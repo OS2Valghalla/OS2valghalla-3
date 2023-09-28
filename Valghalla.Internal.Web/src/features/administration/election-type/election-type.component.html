@@ -1,0 +1,39 @@
+<div class="flex flex-row justify-between">
+  <app-page-title>{{ 'administration.election_type.page_title' | transloco }}</app-page-title>
+</div>
+
+<app-card
+  [cardTitle]="'administration.election_type.election_type_listing.title' | transloco"
+  actionTitle="administration.election_type.action.create_election_type"
+  actionIcon="add"
+  (action)="openAddElectionType()">
+  <app-table
+    #tableElectionTypes
+    *appTableCtx="data; let typing"
+    defaultSortColumn="title"
+    (editEvent)="openEditElectionType($event)"
+    (deleteEvent)="deleteElectionType($event)">
+    <app-query-container
+      [hideFilterBtn]="true"
+      cacheKey="electiontype"
+      [label]="'administration.election_type.election_type_listing.search' | transloco"
+      [(model)]="data"
+      (queryEvent)="onQuery($event)">
+      <mat-accordion multi *appQueryContainerContent> </mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [columns]="['title', '$actionsEditDelete']"
+      [mobileColumns]="['title']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="title">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.title' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.title }}</ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

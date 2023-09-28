@@ -1,0 +1,141 @@
+<h1>{{ 'my_profile.label.my_information' | transloco }}</h1>
+
+<ng-container *appSpinner="loading">
+  <div class="pt-8 pb-4">
+    <ng-container [ngTemplateOutlet]="nonEditable"></ng-container>
+  </div>
+  <div class="py-4">
+    <ng-container [ngTemplateOutlet]="editable"></ng-container>
+  </div>
+  <div class="pt-4">
+    <ng-container [ngTemplateOutlet]="deletable"></ng-container>
+  </div>
+</ng-container>
+
+<ng-template #nonEditable>
+  <div class="pb-3">
+    <span class="bold">{{ 'my_profile.label.name' | transloco }}</span> <br />
+    <span>{{ profile.firstName }} {{ profile.lastName }}</span>
+  </div>
+  <div class="py-3">
+    <span class="bold">{{ 'my_profile.label.cpr' | transloco }}</span> <br />
+    <span>{{ profile.cpr }}</span>
+  </div>
+  <div class="py-3">
+    <span class="bold">{{ 'my_profile.label.address' | transloco }}</span> <br />
+    <span>{{ profile.streetAddress }}</span> <br />
+    <span>{{ profile.postalCode }} {{ profile.city }}</span>
+  </div>
+  <div class="py-3">
+    <span class="bold">{{ 'my_profile.label.municipality' | transloco }}</span> <br />
+    <span>{{ profile.municipalityName }}</span>
+  </div>
+  <div class="pt-3">
+    <span>{{ 'my_profile.label.cpr_help_text' | transloco }}</span>
+  </div>
+</ng-template>
+
+<ng-template #editable>
+  <form  [formGroup]="form">
+    <div appFormGroup>
+      <label appFormLabel>{{ 'my_profile.label.mobile_number.title' | transloco }}</label>
+      <span appFormHint>{{ 'my_profile.label.mobile_number.hint' | transloco }}</span>
+      <span appFormError></span>
+      <input appFormInput type="text" [formControl]="form.controls.mobileNumber" />
+    </div>
+    <div appFormGroup>
+      <label appFormLabel>{{ 'my_profile.label.email.title' | transloco }}</label>
+      <span appFormHint>{{ 'my_profile.label.email.hint' | transloco }}</span>
+      <span appFormError></span>
+      <input appFormInput type="text" [formControl]="form.controls.email" />
+    </div>
+
+    <div appFormGroup>
+      <fieldset appFormCheckboxGroup>
+        <legend appFormLabel>{{ 'my_profile.label.special_diets.title' | transloco }}</legend>
+        <span appFormHint>{{ 'my_profile.label.special_diets.hint' | transloco }}</span>
+        <span appFormError></span>
+
+        <div appFormCheckbox *ngFor="let item of specialDiets">
+          <input
+            appFormCheckboxOption
+            type="checkbox"
+            [value]="item.id"
+            [disabled]="saving || deleting"
+            [checked]="form.value.specialDietIds.includes(item.id)"
+            (change)="onSpecialDietsChanged($event)" />
+          <label appFormCheckboxLabel>{{ item.title }}</label>
+        </div>
+      </fieldset>
+    </div>
+
+    <button class="button button-primary mt-8" (click)="save()" [disabled]="saving || deleting || !form.valid">
+      <span *ngIf="!saving">{{ 'my_profile.label.save_information' | transloco }}</span>
+      <span *ngIf="saving">{{ 'shared.common.saving' | transloco }}</span>
+    </button>
+  </form>
+</ng-template>
+
+<ng-template #deletable>
+  <h2>{{ 'my_profile.label.delete_my_profile' | transloco }}</h2>
+  <div>{{ 'my_profile.label.delete_help_text' | transloco }}</div>
+  <div class="alert alert--show-icon alert-warning" role="alert" *ngIf="permission.taskLocked">
+    <div class="alert-body">
+      <h3 class="alert-heading">
+        {{ 'my_profile.label.has_locked_task_1' | transloco }}
+        <a href="#" [routerLink]="contactUsUrl" class="function-link">{{ 'my_profile.label.contact_us' | transloco }}</a
+        >, {{ 'my_profile.label.has_locked_task_2' | transloco }}
+      </h3>
+    </div>
+  </div>
+  <div class="alert alert--show-icon alert-warning" role="alert" *ngIf="permission.taskCompleted">
+    <div class="alert-body">
+      <h3 class="alert-heading">
+        {{ 'my_profile.label.has_completed_task_1' | transloco }}
+        <a href="#" [routerLink]="contactUsUrl" class="function-link">{{ 'my_profile.label.contact_us' | transloco }}</a
+        >, {{ 'my_profile.label.has_completed_task_2' | transloco }}
+      </h3>
+    </div>
+  </div>
+  <button
+    class="button button-secondary mt-4"
+    data-module="modal"
+    [attr.data-target]="modalId"
+    aria-haspopup="dialog"
+    [disabled]="saving || deleting || permission.taskLocked || permission.taskCompleted">
+    <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#trash-can"></use></svg>
+    <span *ngIf="!deleting">{{ 'my_profile.label.delete_my_profile' | transloco }}</span>
+    <span *ngIf="deleting">{{ 'shared.common.deleting' | transloco }}</span>
+  </button>
+
+  <div
+    appModal
+    class="fds-modal"
+    [attr.id]="modalId"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="modalHeadingId">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" [attr.id]="modalHeadingId">
+          {{ 'my_profile.label.delete_my_profile_modal.title' | transloco }}
+        </h2>
+        <button class="modal-close function-link" data-modal-close>
+          <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#close"></use></svg>
+          {{ 'shared.common.close' | transloco }}
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ 'my_profile.label.delete_my_profile_modal.content' | transloco }}
+      </div>
+
+      <div class="modal-footer">
+        <button class="button button-primary" (click)="delete()" data-modal-close>
+          {{ 'my_profile.label.delete_my_profile_modal.ok' | transloco }}
+        </button>
+        <button class="button button-secondary" data-modal-close>{{ 'shared.common.cancel' | transloco }}</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

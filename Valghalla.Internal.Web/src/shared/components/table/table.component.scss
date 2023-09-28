@@ -1,0 +1,38 @@
+.mat-mdc-header-row {
+  background-color: #f5f5f5 !important;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top: 5px solid transparent;
+}
+
+.mat-mdc-paginator {
+  background-color: #f5f5f5;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom: 5px solid transparent;
+}
+
+.mat-mdc-paginator-page-size-select {
+  background-color: white;
+}
+
+.cdk-column--selection {
+  max-width: 4rem;
+}
+
+.cdk-column--actionsEditDelete {
+  max-width: 8rem;
+}
+
+.cdk-column--actionEdit {
+  max-width: 6rem;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  background-color: #e8e8e8;
+}
+
+.table-wrapper {
+  height: 34.5rem;
+  overflow-y: auto;
+}

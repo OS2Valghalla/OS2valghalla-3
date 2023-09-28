@@ -1,0 +1,29 @@
+<ng-template #ref>
+  <mat-card class="h-full">
+    <mat-card-header class="flex" *ngIf="!hideHeader">
+      <div class="grow text-xl">{{ label }}</div>
+      <button (click)="close()" mat-icon-button class="flex-none">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-divider *ngIf="!hideHeader"></mat-divider>
+    <ng-content></ng-content>
+    <mat-divider *ngIf="!hideAction"></mat-divider>
+    <mat-card-actions align="end" class="gap-4" *ngIf="!hideAction">
+      <button
+        *ngIf="!hideSubmit"
+        mat-flat-button
+        color="primary"
+        (click)="submit()"
+        [disabled]="loading || submitDisabled">
+        <span>{{ this.submitLabel ? (this.submitLabel | transloco) : ('shared.side_modal.ok' | transloco) }}</span>
+        <mat-icon *ngIf="loading">
+          <mat-spinner color="primary" diameter="18"></mat-spinner>
+        </mat-icon>
+      </button>
+      <button mat-button (click)="close()">
+        {{ 'shared.side_modal.close' | transloco }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</ng-template>

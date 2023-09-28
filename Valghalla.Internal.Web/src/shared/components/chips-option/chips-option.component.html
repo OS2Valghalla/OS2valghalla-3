@@ -1,0 +1,45 @@
+<div class="field-value mb-2">
+  <div>
+    <span>
+      <label class="font-bold">
+        {{ chipsLabel }}
+      </label>
+    </span>
+    <span>
+      <button mat-button (click)="onEditClick()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </span>
+  </div>
+
+  <div *ngIf="isEditting">
+    <mat-form-field class="chips-list" appearance="outline">
+      <mat-chip-grid #chipGrid>
+        <mat-chip-row *ngFor="let option of selectedOptions" (removed)="removeItem(option.id)">
+          {{ option.name }}
+          <button matChipRemove [attr.aria-label]="'remove ' + option.id">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </mat-chip-grid>
+      <input
+        placeholder="{{ 'shared.common.type_to_search' | transloco }}"
+        [matChipInputFor]="chipGrid"
+        [matAutocomplete]="auto"
+        [formControl]="formCtrl" />
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedItem($event)">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{ option.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="!isEditting">
+    <mat-chip-listbox class="chips-list">
+      <mat-chip *ngFor="let option of selectedOptions">
+        {{ option.name }}
+      </mat-chip>
+    </mat-chip-listbox>
+  </div>
+</div>

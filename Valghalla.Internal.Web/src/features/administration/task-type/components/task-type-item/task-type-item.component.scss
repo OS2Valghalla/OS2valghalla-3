@@ -1,0 +1,3 @@
+.invalid-control mat-form-field.ng-touched .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+    border-bottom-color: var(--mdc-theme-error, #f44336)    
+}

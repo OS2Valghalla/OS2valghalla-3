@@ -1,0 +1,57 @@
+<mat-card class="flex">
+  <mat-card-header class="flex justify-between mb-4">
+    <mat-card-title>
+      <h2 *ngIf="!isUpdateWizard()">{{ wizardTitle }}</h2>
+      <h2 *ngIf="isUpdateWizard()">{{ updateWizardTitle }}</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-stepper (selectionChange)="onStepChange($event)">
+      <mat-step *ngFor="let step of wizardSteps; let isFirst = first; let isLast = last" [stepControl]="step.formGroup">
+        <div class="flex flex-col space-y-4 pt-2">
+          <form [formGroup]="step.formGroup">
+            <ng-template matStepLabel>{{ step.stepTitle }}</ng-template>
+            <ng-container [ngTemplateOutlet]="step.directive.templateRef"></ng-container>
+          </form>
+          <div class="flex justify-start">
+            <button mat-button matStepperPrevious *ngIf="!isFirst">{{ 'shared.action.back' | transloco }}</button>
+            <button mat-button matStepperNext *ngIf="!isLast">{{ 'shared.action.next' | transloco }}</button>
+          </div>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </mat-card-content>
+  <mat-card-actions mat-dialog-actions>
+    <div class="flex w-1/2 pl-2">
+      <div [matTooltip]="deleteButtonTooltip">
+        <button
+          mat-raised-button
+          *ngIf="isUpdateWizard() && !hideDeleteButton"
+          (click)="onDelete()"
+          color="warn"
+          [disabled]="submitting || deleting || disableDeleteButton">
+          <span *ngIf="!deleting">{{ 'shared.action.delete' | transloco }}</span>
+          <mat-icon *ngIf="deleting">
+            <mat-spinner color="primary" diameter="18"></mat-spinner>
+          </mat-icon>
+        </button>
+      </div>      
+    </div>
+    <div class="flex w-1/2 pr-2 gap-4 place-content-end">
+      <button
+        mat-raised-button
+        *ngIf="!hideOkButton"
+        (click)="onSubmit()"
+        color="primary"
+        [disabled]="submitting || deleting || !isWizardValid() || isWizardPristine()">
+        <span *ngIf="!submitting">{{ this.submitButtonText && this.submitButtonText.length > 0 ? this.submitButtonText : 'shared.dialog.ok' | transloco }}</span>
+        <mat-icon *ngIf="submitting">
+          <mat-spinner color="primary" diameter="18"></mat-spinner>
+        </mat-icon>
+      </button>
+      <button mat-raised-button (click)="onCancel()" [disabled]="submitting || deleting">
+        {{ 'shared.dialog.cancel' | transloco }}
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>

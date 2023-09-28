@@ -1,0 +1,293 @@
+<h3 *ngIf="!election" [innerHtml]="'start.no_election_message' | transloco">  
+</h3>
+<app-card *ngIf="election" cardTitle="app.navigation.list.participant_list.description">
+    <div class="w-full print:hidden" *appShowSkeleton="loading">
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedDates" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.task_date' | transloco" multiple="true">
+                <mat-option *ngFor="let electionDate of electionDates" [value]="electionDate">
+                    {{ electionDate | date }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedAreaIds" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.area' | transloco" multiple="true">            
+                <mat-option *ngFor="let area of areas" [value]="area.id">
+                {{ area.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedWorkLocationIds" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.work_location' | transloco" multiple="true">            
+                <mat-option *ngFor="let workLocation of workLocations" [value]="workLocation.id">
+                {{ workLocation.title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedTeamIds" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.team' | transloco" multiple="true">            
+                <mat-option *ngFor="let team of teams" [value]="team.id">
+                {{ team.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedTaskTypeIds" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.task_type' | transloco" multiple="true">            
+                <mat-option *ngFor="let taskType of taskTypes" [value]="taskType.id">
+                {{ taskType.title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pb-4 pr-4">
+            <mat-select [(ngModel)]="selectedTaskStatusId" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.task_status' | transloco"> 
+                <mat-option>{{'shared.common.all' | transloco}}</mat-option>               
+                <mat-option [value]="0">{{'shared.task_status.accepted' | transloco}}</mat-option>
+                <mat-option [value]="1">{{'shared.task_status.unanswered' | transloco}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="w-full pb-4 print:hidden">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <strong>{{ 'list.participant_list.labels.select_columns' | transloco }}</strong>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-selection-list #selectedColumns *ngIf="!loading" [multiple]="true" [disabled]="loading || loadingTasks || exporting" class="flex flex-wrap">
+                <mat-checkbox [(ngModel)]="allColumnsSelected" [indeterminate]="displayedColumns.length < columns.length"
+                        [ngModelOptions]="{standalone: true}"
+                        (change)="toggleAllColumns()" class="min-w-full pb-2"><strong>{{ 'shared.common.select_all' | transloco }}</strong></mat-checkbox>
+                <mat-list-option checkboxPosition="before" *ngFor="let column of columns" [value]="column.name" (click)="$event.stopPropagation(); changeSelectedColumns();" [disabled]="column.disabled" [selected]="column.isSelected" class="min-w-[350px] max-w-[350px]">
+                    {{column.displayName}}
+                </mat-list-option>
+            </mat-selection-list>
+        </mat-expansion-panel>
+    </div>
+    <div class="w-full flex gap-4 print:hidden">
+        <button class="min-h-[48px] max-h-[48px] pr-4"
+                mat-raised-button
+                color="primary"
+                (click)="loadParticipantsTasks()"
+                [disabled]="loading || loadingTasks || exporting">
+                <span *ngIf="!loadingTasks && !exporting">{{ 'list.participant_list.labels.show_preview' | transloco }}</span>
+                <mat-icon *ngIf="loadingTasks || exporting">
+                    <mat-spinner color="primary" diameter="18"></mat-spinner>
+                </mat-icon>
+        </button>
+        <button class="min-h-[48px] max-h-[48px] pr-4"
+                mat-raised-button
+                color="primary"
+                (click)="exportAsExcel()"
+                [disabled]="loading || loadingTasks || exporting">
+                <span *ngIf="!loadingTasks && !exporting">{{ 'list.participant_list.labels.export_to_excel' | transloco }}</span>
+                <mat-icon *ngIf="loadingTasks || exporting">
+                    <mat-spinner color="primary" diameter="18"></mat-spinner>
+                </mat-icon>
+        </button>
+        <button class="min-h-[48px] max-h-[48px]"
+                mat-raised-button
+                color="primary"   
+                (click)="exportAsExcel(true)"               
+                [disabled]="loading || loadingTasks || exporting">
+                <span *ngIf="!loadingTasks && !exporting">{{ 'list.participant_list.labels.export_to_csv' | transloco }}</span>
+                <mat-icon *ngIf="loadingTasks || exporting">
+                    <mat-spinner color="primary" diameter="18"></mat-spinner>
+                </mat-icon>
+        </button>        
+    </div>
+    <div class="w-full transition-[width] duration-500 overflow-auto pt-4 print:hidden">
+        <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="participantName" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-[175px]">{{'list.participant_list.labels.full_name' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[175px]">
+                    {{ row.participantName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantCpr">
+                <th mat-header-cell *matHeaderCellDef class="min-w-[125px]">{{'list.participant_list.labels.cpr_number' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[125px]">
+                    {{ row.participantCpr }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantAge">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.participant_age' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.participantAge }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantPhoneNumber">
+                <th mat-header-cell *matHeaderCellDef class="min-w-[125px]">{{'list.participant_list.labels.participant_phone' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[125px]">
+                    {{ row.participantPhoneNumber }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantEmail">
+                <th mat-header-cell *matHeaderCellDef class="min-w-[175px]">{{'list.participant_list.labels.participant_email' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[175px]">
+                    {{ row.participantEmail }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantAddress">
+                <th mat-header-cell *matHeaderCellDef class="min-w-[175px]">{{'list.participant_list.labels.participant_address' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[175px]">
+                    {{ row.participantAddress }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantSpecialDiets">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.participant_special_diet' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.participantSpecialDiets }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="teamName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.team_association' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.teamName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskStatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-[125px]">{{'list.participant_list.labels.task_status' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[125px]">
+                    {{ row.taskStatus }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-[125px]">{{'list.participant_list.labels.task_date' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[125px]">
+                    {{ row.taskDate | date }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskTypeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.task_type' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.taskTypeName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="areaName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.task_area' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.areaName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskStartTime">
+                <th mat-header-cell *matHeaderCellDef>{{'list.participant_list.labels.task_start_time' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.taskStartTime.substring(0, 5) }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskPayment">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.task_payment' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.taskPayment }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="receipt">
+                <th mat-header-cell *matHeaderCellDef>{{'list.participant_list.labels.receipt' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table> 
+        <mat-paginator [pageSize]="50" [pageSizeOptions]="[20, 50, 100]">
+        </mat-paginator>       
+    </div>    
+
+    <div class="w-full transition-[width] duration-500 overflow-auto pt-4 hidden print:block" #TABLE>
+        <table mat-table #table [dataSource]="printDataSource" matSort>
+            <ng-container matColumnDef="participantName" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-[175px]">{{'list.participant_list.labels.full_name' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[175px]">
+                    {{ row.participantName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantCpr">
+                <th mat-header-cell *matHeaderCellDef class="min-w-[125px]">{{'list.participant_list.labels.cpr_number' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[125px]">
+                    {{ row.participantCpr }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantAge">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.participant_age' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.participantAge }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantPhoneNumber">
+                <th mat-header-cell *matHeaderCellDef class="min-w-[125px]">{{'list.participant_list.labels.participant_phone' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[125px]">
+                    {{ row.participantPhoneNumber }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantEmail">
+                <th mat-header-cell *matHeaderCellDef class="min-w-[175px]">{{'list.participant_list.labels.participant_email' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[175px]">
+                    {{ row.participantEmail }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantAddress">
+                <th mat-header-cell *matHeaderCellDef class="min-w-[175px]">{{'list.participant_list.labels.participant_address' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[175px]">
+                    {{ row.participantAddress }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="participantSpecialDiets">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.participant_special_diet' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.participantSpecialDiets }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="teamName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.team_association' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.teamName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskStatus">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-[125px]">{{'list.participant_list.labels.task_status' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[125px]">
+                    {{ 'shared.task_status.' + row.taskStatus?.toLowerCase() | transloco }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="min-w-[125px]">{{'list.participant_list.labels.task_date' | transloco}}</th>
+                <td mat-cell *matCellDef="let row" class="min-w-[125px]">
+                    {{ row.taskDate | date }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskTypeName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.task_type' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.taskTypeName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="areaName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.task_area' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.areaName }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskStartTime">
+                <th mat-header-cell *matHeaderCellDef>{{'list.participant_list.labels.task_start_time' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.taskStartTime.substring(0, 5) }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="taskPayment">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'list.participant_list.labels.task_payment' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                    {{ row.taskPayment }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="receipt">
+                <th mat-header-cell *matHeaderCellDef>{{'list.participant_list.labels.receipt' | transloco}}</th>
+                <td mat-cell *matCellDef="let row">
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>        
+    </div>
+</app-card>

@@ -1,0 +1,50 @@
+@use '../../global-variables.scss' as global;
+
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-supporting-text-color: #1a1a1a !important;
+}
+
+.mdc-snackbar__surface,
+.mdc-snackbar__label {
+  padding: 0 !important;
+}
+
+.toast-actions .mdc-icon-button {
+  line-height: 20px;
+}
+
+.success-snackbar {
+  --mdc-snackbar-container-color: #eeffe2;
+}
+
+.success-snackbar .toast-icon {
+  background-color: global.$successColor;
+  color: white !important;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #ffe0e0;
+}
+
+.error-snackbar .toast-icon {
+  background-color: global.$errorColor;
+  color: white !important;
+}
+
+.warning-snackbar {
+  --mdc-snackbar-container-color: #fec;
+}
+
+.warning-snackbar .toast-icon {
+  background-color: global.$warningColor;
+  color: black !important;
+}
+
+.info-snackbar {
+  --mdc-snackbar-container-color: #e2f2fb;
+}
+
+.info-snackbar .toast-icon {
+  background-color: global.$infoColor;
+  color: white !important;
+}

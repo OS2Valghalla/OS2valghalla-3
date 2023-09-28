@@ -1,0 +1,8 @@
+<h1 *ngIf="!loading && page && page.title">{{page.title}}</h1>
+<div [innerHTML]="page.pageContent" *ngIf="!loading && page && page.pageContent"></div>
+<div *ngIf="!loading && electionActivated">
+    <button *ngIf="!signedIn" class="button button-secondary d-print-none" (click)="login()">
+        {{ 'app.header.login' | transloco }}
+    </button>
+</div>
+<div class="spinner" style="margin-top: 20px;" *ngIf="loading"></div>

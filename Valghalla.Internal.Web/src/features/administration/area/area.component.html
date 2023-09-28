@@ -1,0 +1,35 @@
+<div class="flex flex-row justify-between">
+  <app-page-title>{{ 'administration.area.page_title' | transloco }}</app-page-title>
+</div>
+
+<app-card
+  [cardTitle]="'administration.area.area_listing.title' | transloco"
+  actionTitle="administration.area.action.create_area"
+  actionIcon="add"
+  (action)="openAddArea()">
+  <app-table *appTableCtx="data; let typing" defaultSortColumn="name" (editEvent)="openEditArea($event)" (deleteEvent)="deleteArea($event)">
+    <app-query-container
+      [hideFilterBtn]="true"
+      cacheKey="election"
+      [label]="'administration.election.election_listing.search' | transloco"
+      [(model)]="data"
+      (queryFormEvent)="onQueryForm($event)"
+      (queryEvent)="onQuery($event)">
+      <mat-accordion multi *appQueryContainerContent> </mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [columns]="['name', '$actionsEditDelete']"
+      [mobileColumns]="['name']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="name">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.name' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.name }}</ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

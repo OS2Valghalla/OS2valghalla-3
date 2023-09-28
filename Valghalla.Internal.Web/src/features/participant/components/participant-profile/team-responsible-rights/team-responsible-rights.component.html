@@ -1,0 +1,12 @@
+<app-card cardTitle="participant.team_responsible.title">
+  <div class="flex flex-col">
+    <div class="flex flex-row" *ngFor="let teamId of teamResponsibleRights">
+      <div class="basis-full self-center" *appShowSkeleton="loading">{{ renderTeamName(teamId) }}</div>
+      <div class="basis-8">
+        <button mat-icon-button (click)="openEditTeam(teamId)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</app-card>

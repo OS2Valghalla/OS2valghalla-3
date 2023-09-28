@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="EntityConfiguration\**" />
+    <Compile Remove="Modules\Administration\Template\**" />
+    <Compile Remove="Modules\Shared\ElectionBased\**" />
+    <Compile Remove="Modules\Start\**" />
+    <EmbeddedResource Remove="EntityConfiguration\**" />
+    <EmbeddedResource Remove="Modules\Administration\Template\**" />
+    <EmbeddedResource Remove="Modules\Shared\ElectionBased\**" />
+    <EmbeddedResource Remove="Modules\Start\**" />
+    <None Remove="EntityConfiguration\**" />
+    <None Remove="Modules\Administration\Template\**" />
+    <None Remove="Modules\Shared\ElectionBased\**" />
+    <None Remove="Modules\Start\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Valghalla.Infrastructure\Valghalla.Infrastructure.csproj" />
+    <ProjectReference Include="..\Valghalla.Internal.Application\Valghalla.Internal.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+	  <_Parameter1>Valghalla.Internal.Infrastructure.Tests</_Parameter1>
+	</AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

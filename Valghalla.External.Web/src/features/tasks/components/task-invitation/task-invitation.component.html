@@ -1,0 +1,44 @@
+<div class="d-flex flex-row justify-content-end">
+  <a href="javascript:if(window.print)window.print()" class="function-link">
+    <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#print"></use></svg>
+    {{ 'shared.common.print' | transloco }}
+  </a>
+</div>
+<ng-container *appSpinner="loading">
+  <div class="alert alert-warning" role="alert" *ngIf="!taskPreview">
+    <div class="alert-body">
+      <h3 class="alert-heading">{{ 'tasks.task_details.alert.header' | transloco }}</h3>
+      <p class="alert-text">
+        {{ 'tasks.task_details.alert.content' | transloco }}
+      </p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="taskPreview">
+    <h1>{{ 'tasks.task_invitation.header' | transloco }}</h1>
+    <div class="w-percent-70">
+      <div class="alert alert-warning" role="alert">
+        <div class="alert-body">
+          <h3 class="alert-heading">{{ 'tasks.task_invitation.alert.header' | transloco }}</h3>
+          <p class="alert-text">
+            {{ 'tasks.task_invitation.alert.content' | transloco }}
+          </p>
+        </div>
+      </div>
+      <h2>{{ 'tasks.task_preview.header' | transloco}}</h2>
+      <p class="displayheading-1 pb-4">{{ 'tasks.task_preview.labels.task' | transloco}}: {{taskPreview.taskType.title}}</p>
+      <app-task-preview [model]="taskPreview"></app-task-preview>
+      <div class="py-2" [innerHTML]="taskPreview.taskType.description"></div>
+      <div>
+        <h3>{{ 'tasks.task_invitation.confirmation.header' | transloco }}</h3>
+        <p>{{ 'tasks.task_invitation.confirmation.content' | transloco }}</p>
+        <button class="button button-primary" (click)="acceptTask()">
+          {{ 'tasks.task_invitation.confirmation.primary_button' | transloco }}
+        </button>
+        <button class="button button-secondary ml-6" (click)="rejectTask()">
+          {{ 'tasks.task_invitation.confirmation.secondary_button' | transloco }}
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,151 @@
+<div class="flex flex-row justify-between">
+  <app-page-title>{{ 'participant.page_title' | transloco }}</app-page-title>
+</div>
+
+<app-card
+  [cardTitle]="'participant.participant_listing.title' | transloco"
+  actionTitle="participant.action.create_participant"
+  actionIcon="add"
+  (action)="openAddParticipant()">
+  <button
+    *appCardButton
+    mat-raised-button
+    color="warn"
+    [disabled]="bulkDeleting || selectedParticipantIds.length == 0"
+    (click)="bulkDeleteParticipants()">
+    <mat-icon *ngIf="!bulkDeleting">delete</mat-icon>
+    <span *ngIf="!bulkDeleting">{{ 'participant.action.delete_participants' | transloco }}</span>
+    <mat-icon *ngIf="bulkDeleting">
+      <mat-spinner color="primary" diameter="18"></mat-spinner>
+    </mat-icon>
+  </button>
+
+  <app-table
+    *appTableCtx="data; let typing"
+    [pageSizeOptions]="[50]"
+    defaultSortColumn="name"
+    (editEvent)="openEditParticipant($event)"
+    (selectEvent)="onSelectParticipants($event)">
+    <app-query-container
+      [label]="'shared.action.search' | transloco"
+      [(model)]="data"
+      (queryEvent)="onQuery($event)"
+      (queryFormEvent)="onQueryForm($event)">
+      <mat-accordion multi *appQueryContainerContent>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ 'participant.participant_listing.columns.birthdate' | transloco }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-dynamic-query
+            [typing]="queryTyping"
+            label="participant.participant_listing.columns.birthdate"
+            name="birthdate"></app-dynamic-query>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ 'participant.participant_listing.columns.team' | transloco }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-dynamic-query
+            [typing]="queryTyping"
+            label="participant.participant_listing.columns.team"
+            name="teams"></app-dynamic-query>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ 'participant.participant_listing.columns.digital_post' | transloco }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-dynamic-query
+            [typing]="queryTyping"
+            label="participant.participant_listing.columns.digital_post"
+            name="digitalPost"></app-dynamic-query>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ 'participant.participant_listing.columns.assigned_task' | transloco }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-dynamic-query
+            [typing]="queryTyping"
+            label="participant.participant_listing.columns.assigned_task"
+            name="assignedTask"></app-dynamic-query>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ 'participant.participant_listing.columns.task_type' | transloco }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-dynamic-query
+            [typing]="queryTyping"
+            label="participant.participant_listing.columns.task_type"
+            name="taskTypes"></app-dynamic-query>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </app-query-container>
+
+    <ng-container
+      [appTableTyping]="typing"
+      appHeaderRowDef
+      key="id"
+      [sticky]="true"
+      [columns]="[
+        '$selection',
+        'name',
+        'birthdate',
+        'teamIds',
+        'digitalPost',
+        'assignedTask',
+        'taskTypeIds',
+        '$actionEdit'
+      ]"
+      [mobileColumns]="['$selection', 'name']">
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="name">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{ 'shared.common.name' | transloco }}</ng-container>
+      <ng-container *appCellDef="typing; let row">
+        <a class="hover:underline" href="" (click)="$event.preventDefault(); openParticipantProfile(row.id)">{{
+          row.name
+        }}</a>
+      </ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="teamIds">
+      <ng-container *appHeaderCellDef="typing">{{
+        'participant.participant_listing.columns.team' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ renderTeamNames(row.teamIds) }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="birthdate">
+      <ng-container *appHeaderCellDef="typing">{{
+        'participant.participant_listing.columns.birthdate' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.birthdate | date }}</ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="digitalPost">
+      <ng-container *appHeaderCellDef="typing">{{
+        'participant.participant_listing.columns.digital_post' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">
+        <mat-icon *ngIf="!row.digitalPost" fontIcon="cancel" class="text-red-600"></mat-icon>
+      </ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="assignedTask">
+      <ng-container *appHeaderCellDef="typing">{{
+        'participant.participant_listing.columns.assigned_task' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">
+        <mat-icon *ngIf="row.assignedTask && !row.hasUnansweredTask" fontIcon="check_circle" class="text-green-600"></mat-icon>
+        <mat-icon *ngIf="row.assignedTask && row.hasUnansweredTask" fontIcon="check_circle" class="text-yellow-300"></mat-icon>
+        <mat-icon *ngIf="!row.assignedTask" fontIcon="cancel" class="text-red-600"></mat-icon>
+      </ng-container>
+    </ng-container>
+
+    <ng-container [appTableTyping]="typing" appColumnDef="taskTypeIds">
+      <ng-container *appHeaderCellDef="typing">{{
+        'participant.participant_listing.columns.task_type' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ renderTaskTypeTitles(row.taskTypeIds) }}</ng-container>
+    </ng-container>
+  </app-table>
+</app-card>

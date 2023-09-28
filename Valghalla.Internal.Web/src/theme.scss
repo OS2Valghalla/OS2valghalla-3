@@ -1,0 +1,69 @@
+@use '@angular/material' as mat;
+@use 'shared/components/card/_card-theme.scss' as card;
+@include mat.core();
+
+$primary-palette: (
+  50: #eeefef,
+  100: #d5d6d7,
+  200: #b9bbbd,
+  300: #9c9fa2,
+  400: #878b8e,
+  500: #72767a,
+  600: #6a6e72,
+  700: #5f6367,
+  800: #55595d,
+  900: #42464a,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+  ),
+);
+
+$accent-palette: (
+  50: #fcf5e1,
+  100: #f6e5b5,
+  200: #f1d484,
+  300: #ebc253,
+  400: #e6b52e,
+  500: #e2a809,
+  600: #dfa008,
+  700: #da9706,
+  800: #d68d05,
+  900: #cf7d02,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #000000,
+  ),
+);
+
+$primary: mat.define-palette($primary-palette);
+$accent: mat.define-palette($accent-palette);
+
+$fallback-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+    ),
+    density: 0,
+  )
+);
+
+@include mat.all-component-themes($fallback-theme);
+@include card.color($fallback-theme);

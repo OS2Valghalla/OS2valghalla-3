@@ -1,0 +1,36 @@
+<app-card cardTitle="participant.participant_validation_information.title">
+  <div class="flex flex-col space-y-2">
+    <div class="flex flex-row">
+      <div class="basis-52">{{ 'participant.participant_validation_information.age' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="!participant">{{ participant.age }}</div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-52">{{ 'participant.participant_validation_information.municipality' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="!participant">{{ participant.municipalityName }}</div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-52">{{ 'participant.participant_validation_information.citizenship' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="!participant">{{ participant.countryName }}</div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-52">{{ 'participant.participant_validation_information.legal_adult' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="!participant">
+        <mat-icon *ngIf="!participant.disenfranchised" fontIcon="check_circle" class="text-green-600"></mat-icon>
+        <mat-icon *ngIf="participant.disenfranchised" fontIcon="cancel" class="text-red-600"></mat-icon>
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-52">{{ 'participant.participant_validation_information.alive' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="!participant">
+        <mat-icon *ngIf="!participant.deceased" fontIcon="check_circle" class="text-green-600"></mat-icon>
+        <mat-icon *ngIf="participant.deceased" fontIcon="cancel" class="text-red-600"></mat-icon>
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="basis-52">
+        {{ 'participant.participant_validation_information.date_of_last_validation' | transloco }} :
+      </div>
+      <div class="basis-full" *appShowSkeleton="!participant">{{ participant.lastValidationDate | date }}</div>
+    </div>
+  </div>
+</app-card>

@@ -1,0 +1,15 @@
+<app-form-dialog
+  label="app.change_election.title"
+  [formGroup]="form"
+  (submitEvent)="submit($event)">
+  <div class="flex">
+    <mat-form-field class="grow" appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'app.change_election.elections' | transloco }}</mat-label>
+        <mat-select formControlName="electionId">
+          <mat-option *ngFor="let election of allElections" [value]="election.id">
+            {{ election.title }} ({{ election.electionDate | date }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  </div>
+</app-form-dialog>

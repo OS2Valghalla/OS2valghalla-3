@@ -1,0 +1,28 @@
+<div class="d-flex flex-row justify-content-between d-print-none">
+  <a href="javascript:void(0);" class="back-link" (click)="back()">{{ 'shared.common.back' | transloco }}</a>
+  <a href="javascript:if(window.print)window.print()" class="function-link">
+    <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#print"></use></svg>
+    {{ 'shared.common.print' | transloco }}
+  </a>
+</div>
+<ng-container *appSpinner="loading">
+  <div class="alert alert-warning" role="alert" *ngIf="!taskPreview">
+    <div class="alert-body">
+      <h3 class="alert-heading">{{ 'tasks.task_details.alert.header' | transloco }}</h3>
+      <p class="alert-text">
+        {{ 'tasks.task_details.alert.content' | transloco }}
+      </p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="taskPreview">
+    <h1>{{ taskPreview.taskType.title }}</h1>
+    <button class="button button-primary d-print-none" (click)="register()">
+      {{ signedIn ? ('tasks.task_details.register' | transloco) : ('tasks.task_details.login_register' | transloco) }}
+    </button>
+    <div class="w-percent-100 w-percent-md-70 py-4">
+      <app-task-preview [model]="taskPreview"></app-task-preview>
+      <div class="py-2" [innerHTML]="taskPreview.taskType.description"></div>
+    </div>
+  </ng-container>
+</ng-container>

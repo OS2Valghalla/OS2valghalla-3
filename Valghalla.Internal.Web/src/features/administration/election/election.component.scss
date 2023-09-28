@@ -1,0 +1,22 @@
+.mat-mdc-header-cell {
+  font-weight: 700;
+}
+
+.mat-column-index {
+  width: 50px;
+  text-align: center;
+}
+
+.mat-column-electionDate {
+  width: 300px;
+}
+
+.mat-column-active,
+.mat-column-edit {
+  width: 150px;
+  text-align: center;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  background-color: rgb(226 232 240);
+}

@@ -1,0 +1,26 @@
+<mat-sidenav-container>
+  <mat-sidenav mode="over" position="end" #sidenav>
+    <ng-container #sideModal></ng-container>
+  </mat-sidenav>
+
+  <div class="flex flex-col h-screen justify">
+    <div
+      role="menubar"
+      class="h-15">
+      <app-navbar [isDesktopView]="!mobileQuery.matches"></app-navbar>
+    </div>
+
+    <div role="main" class="mb-auto m-4 md:ml-12 md:mr-12">
+      <xng-breadcrumb class="pb-2">
+        <ng-container *xngBreadcrumbItem="let breadcrumb">
+          <ng-container>{{ breadcrumb | transloco }}</ng-container>
+        </ng-container>
+      </xng-breadcrumb>
+      <router-outlet></router-outlet>
+    </div>
+
+    <footer class="h-15" [ngClass]="{ hidden: isUnprotectedRoute }">
+      <app-footer [isDesktopView]="!mobileQuery.matches"></app-footer>
+    </footer>
+  </div>
+</mat-sidenav-container>

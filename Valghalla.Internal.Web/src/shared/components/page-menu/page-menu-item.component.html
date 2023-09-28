@@ -1,0 +1,17 @@
+<mat-menu #menu="matMenu">
+  <div *ngFor="let item of items">
+    <div *ngIf="!item.children || item.children.length === 0; else subMenu">
+      <button mat-menu-item color="primary" (click)="!!item.onSelectItem && item.onSelectItem()">
+        <mat-icon>{{ item.matIcon }}</mat-icon>
+        <span>{{ item.title | transloco }}</span>
+      </button>
+    </div>
+    <ng-template #subMenu>
+      <button mat-menu-item color="primary" [matMenuTriggerFor]="nestedMenu.menu" (click)="!!item.onSelectItem && item.onSelectItem()">
+        <mat-icon>{{ item.matIcon }}</mat-icon>
+        <span>{{ item.title | transloco }}</span>
+      </button>
+      <app-page-menu-item #nestedMenu [items]="item.children"></app-page-menu-item>
+    </ng-template>
+  </div>
+</mat-menu>

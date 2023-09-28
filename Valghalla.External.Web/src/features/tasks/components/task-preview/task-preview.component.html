@@ -1,0 +1,54 @@
+<div class="w-percent-100 w-percent-md-80 py-2">
+  <div class="row row-bordered no-gutters">
+    <div class="col">
+      <span class="bold">{{ 'tasks.task_preview.labels.date' | transloco }}</span>
+    </div>
+    <div class="col">
+      <span>{{ model.taskDate | date }}</span>
+    </div>
+  </div>
+  <div class="row row-bordered no-gutters">
+    <div class="col">
+      <span class="bold">{{ 'tasks.task_preview.labels.time' | transloco }}</span>
+    </div>
+    <div class="col">
+      <span>{{ model.taskType.startTime | appTimeSpan }}</span>
+    </div>
+  </div>
+  <div class="row row-bordered no-gutters">
+    <div class="col">
+      <span class="bold">{{ 'tasks.task_preview.labels.work_location' | transloco }}</span>
+    </div>
+    <div class="col">
+      <span>{{ model.workLocation.title }}</span>
+      <br />
+      <span>{{ model.workLocation.address }}</span>
+      <br />
+      <span>{{ model.workLocation.postalCode }} {{ model.workLocation.city }}</span>
+    </div>
+  </div>
+  <div class="row row-bordered no-gutters">
+    <div class="col">
+      <span class="bold">{{ 'tasks.task_preview.labels.team' | transloco }}</span>
+    </div>
+    <div class="col">
+      <span>{{ model.team.name }}</span>
+    </div>
+  </div>
+  <div class="row row-bordered no-gutters">
+    <div class="col">
+      <span class="bold mr-2">{{ 'tasks.task_preview.labels.payment' | transloco }}</span>
+      <span
+        appTooltip
+        [attr.data-tooltip]="'tasks.task_preview.labels.payment_tooltip' | transloco"
+        data-tooltip-position="top" class="d-print-none">
+        <svg class="icon-svg js-tooltip" focusable="false" aria-hidden="true">
+          <use xlink:href="#help"></use>
+        </svg>
+      </span>
+    </div>
+    <div class="col">
+      <span>{{ model.taskType.payment }}</span>
+    </div>
+  </div>
+</div>

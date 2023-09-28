@@ -1,0 +1,66 @@
+<app-form-page class="inline-block w-1/2"
+  [formTitle]="'app.navigation.web.contact_information.title' | transloco"
+  [formGroup]="form" (onCancelClick)="onCancel()" (create)="saveWebPage($event)">
+  <div class="grid grid-cols-2 gap-4">
+    <div class="flex flex-col col-span-2">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'administration.web.contact_information.municipality_name' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="municipalityName" />
+      </mat-form-field>
+    </div>
+    <div class="flex flex-col col-span-2">
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'administration.web.contact_information.election_responsible_apartment' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="electionResponsibleApartment" />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col col-span-2">
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'administration.web.contact_information.address' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="address" />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'administration.web.contact_information.postal_code' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="postalCode" />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col">
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'administration.web.contact_information.city' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="city" />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col col-span-2">
+        <mat-form-field appearance="fill" *appShowSkeleton="loading">
+          <mat-label>{{ 'administration.web.contact_information.telephone_number' | transloco }}</mat-label>
+          <input matInput type="text" formControlName="telephoneNumber" />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-col col-span-2">
+        <h3 [ngClass]="this.isEmptyEmailAndDigitalPost() ? 'text-red-600' : ''">{{ 'administration.web.contact_information.email_or_digital_post_header' | transloco }}</h3>
+        <mat-hint>{{ 'administration.web.contact_information.email_or_digital_post_description' | transloco }}</mat-hint>
+        <div class="flex flex-col pl-3 pt-3">
+            <mat-form-field appearance="fill" *appShowSkeleton="loading">
+                <mat-label>{{ 'administration.web.contact_information.digital_post' | transloco }}</mat-label>
+                <input matInput type="text" formControlName="digitalPost" />
+            </mat-form-field>
+        </div>
+        <div class="flex flex-col pl-3 pt-2">
+            <mat-form-field appearance="fill" *appShowSkeleton="loading">
+                <mat-label>{{ 'administration.web.contact_information.email' | transloco }}</mat-label>
+                <input matInput type="text" formControlName="email" />
+            </mat-form-field>
+        </div>
+      </div>
+      <div class="flex flex-col col-span-2">
+        <h3 class="pb-2">{{ 'administration.web.contact_information.logo' | transloco }}</h3>
+        <app-file-storage
+          type="contactinfo" helpText="administration.web.contact_information.logo_help_text"
+          [model]="logoFileReferences"
+          [extensions]="['svg']"
+          [multiple]="false"></app-file-storage>
+      </div>
+  </div>
+</app-form-page>

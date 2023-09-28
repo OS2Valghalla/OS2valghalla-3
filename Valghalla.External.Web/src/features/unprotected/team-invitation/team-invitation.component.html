@@ -1,0 +1,27 @@
+<div class="spinner" style="margin-top: 20px;" *ngIf="loading"></div>
+<h1 *ngIf="!loading">{{ 'my_team.labels.team_invitation_header' | transloco}} "{{team.name}}"</h1>
+
+<ng-container *ngIf="!loading">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-9 col-lg-9">
+            {{ 'my_team.labels.team_invitation_description' | transloco}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-9 col-lg-9">
+            <h2>{{ 'my_team.labels.team_invitation_confirmation' | transloco}}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-9 col-lg-9">
+            {{ 'my_team.labels.team_invitation_confirmation_description' | transloco}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-9 col-lg-9 mt-4">
+            <button class="button button-primary" (click)="goToCreateUser()">
+                {{ 'my_team.labels.team_invitation_confirmation_button' | transloco }}
+            </button>            
+        </div>
+    </div>
+</ng-container>

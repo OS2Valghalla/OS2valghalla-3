@@ -1,0 +1,45 @@
+<app-card cardTitle="participant.task_status.title">
+  <mat-table [dataSource]="dataSource" matSort> 
+    <ng-container matColumnDef="electionName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'participant.task_status.election_title' | transloco}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ row.electionName }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="taskDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'tasks.labels.task_date' | transloco}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ row.taskDate | date }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="workLocationName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'tasks.labels.work_location' | transloco}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ row.workLocationName }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="taskTypeName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'tasks.labels.task_type' | transloco}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ row.taskTypeName }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="teamName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'tasks.labels.team' | transloco}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ row.teamName }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="status" >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>{{'participant.task_status.title' | transloco}}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{ 'shared.task_status.' + row.status?.toLowerCase() | transloco }}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['electionName', 'taskDate', 'workLocationName', 'taskTypeName', 'teamName', 'status']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['electionName', 'taskDate', 'workLocationName', 'taskTypeName', 'teamName', 'status'];" (click)="openTaskDistribution(row)" class="hover:cursor-pointer"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[10, 25, 50]">
+  </mat-paginator>
+</app-card>
