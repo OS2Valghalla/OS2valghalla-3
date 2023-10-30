@@ -1,118 +1,118 @@
 {
   "app": {
     "weekday_name": {
-      "sun": "Sunday",
-      "mon": "Monday",
-      "tue": "Tuesday",
-      "wed": "Wednesday",
-      "thu": "Thursday",
-      "fri": "Friday",
-      "sat": "Saturday"
+      "sun": "Søndag",
+      "mon": "Mandag",
+      "tue": "Tirsdag",
+      "wed": "Onsdag",
+      "thu": "Torsdag",
+      "fri": "Fredag",
+      "sat": "Lørdag"
     },
     "month_name": {
-      "jan": "january",
-      "feb": "february",
-      "mar": "march",
+      "jan": "januar",
+      "feb": "februar",
+      "mar": "marts",
       "apr": "april",
-      "may": "may",
-      "jun": "june",
-      "jul": "july",
+      "may": "maj",
+      "jun": "juni",
+      "jul": "juli",
       "aug": "august",
       "sep": "september",
-      "oct": "october",
+      "oct": "oktober",
       "nov": "november",
       "dec": "december"
     },
     "navigation": {
-      "tasks": "Tasks",
-      "my_tasks": "My tasks",
-      "my_profile": "My profile",
-      "my_team": "My team",
-      "task_distribution": "Task distribution",
-      "my_work_location": "My work location",
+      "tasks": "Opgaver",
+      "my_tasks": "Mine opgaver",
+      "my_profile": "Min profil",
+      "my_team": "Mit team",
+      "task_distribution": "Opgavefordeling",
+      "my_work_location": "Mit arbejdssted",
       "faq": "FAQ"
     },
     "header": {
       "login": "Login",
-      "logout": "Logout",
+      "logout": "Log ud",
       "menu": "Menu",
       "support": "Support",
-      "contact": "Contact"
+      "contact": "Kontakt"
     },
     "footer": {
-      "contact": "Contact",
-      "contact_us": "Contact us",
-      "send_digital_post": "Send secure Digital Post",
-      "privacy_policy": "Privacy policy",
-      "cookie_settings": "Cookie settings",
-      "accessibility_statement": "Accessibility statement",
+      "contact": "Kontakt",
+      "contact_us": "Kontakt os",
+      "send_digital_post": "Send sikker Digital Post",
+      "privacy_policy": "Privatlivspolitik",
+      "cookie_settings": "Cookie-indstillinger",
+      "accessibility_statement": "Tilgængelighedserklæring",
       "links": "Links"
     },
     "paginator": {
-      "pagination": "Pagination",
-      "first_page": "First page",
-      "last_page": "Last page",
-      "previous": "Previous",
-      "next": "Next",
-      "previous_page": "Previous page",
-      "next_page": "Next page",
-      "page": "Page",
-      "of": "of"
+      "pagination": "Paginering",
+      "first_page": "Første side",
+      "last_page": "Sidste side",
+      "previous": "Forrige",
+      "next": "Næste",
+      "previous_page": "Forrige side",
+      "next_page": "Næste side",
+      "page": "Side",
+      "of": "af"
     },
     "error": {
-      "get_app_context": "Error fetching app context",
-      "get_user_teams": "Error fetching user teams"
+      "get_app_context": "Fejl ved hentning af app-kontekst",
+      "get_user_teams": "Fejl ved hentning af deltagerteams"
     },
     "deactivated_web": {
-      "header": "No active elections",
-      "content": "We are not planning any elections at the moment."
+      "header": "Ingen aktive valg",
+      "content": "Vi planlægger ikke nogen valg i øjeblikket"
     }
   },
   "shared": {
     "page_title": "Valghalla online",
     "common": {
-      "close": "Close",
-      "cancel": "Cancel",
-      "yes": "Yes",
-      "no": "No",
-      "day": "Day",
-      "month": "Month",
-      "year": "Year",
+      "close": "Luk",
+      "cancel": "Annuller",
+      "yes": "Ja",
+      "no": "Nej",
+      "day": "Dag",
+      "month": "Måned",
+      "year": "År",
       "print": "Print",
-      "back": "Back",
-      "loading": "Loading",
-      "remove": "Remove",
-      "search": "Search",
-      "saving": "Saving...",
-      "deleting": "Deleting...",
-      "generating": "Generating..."
+      "back": "Tilbage",
+      "loading": "Indlæser",
+      "remove": "Fjern",
+      "search": "Søg",
+      "saving": "Gemmer...",
+      "deleting": "Sletter...",
+      "generating": "Genererer..."
     },
     "accessibility": {
-      "error": "Error",
+      "error": "Fejl",
       "date_input": {
-        "day_title": "Enter the day of the month as a number",
-        "month_title": "Enter the number of the month",
-        "year_title": "Enter year"
+        "day_title": "Indtast månedsdagen som et tal",
+        "month_title": "Indtast månedens nummer",
+        "year_title": "Indtast år"
       }
     },
     "validation": {
-      "required": "This field is required",
-      "email": "Email is invalid"
+      "required": "Dette felt er påkrævet",
+      "email": "E-mail er ugyldig"
     },
     "toast": {
-      "close": "Close",
-      "success": "Success",
-      "warning": "Warning",
-      "error": "Error",
+      "close": "Luk",
+      "success": "Succes",
+      "warning": "Advarsel",
+      "error": "Fejl",
       "information": "Information"
     },
     "error": {
-      "validation": "Validation errors",
-      "get_special_diets_shared": "Errors occurred when fetching special diets",
-      "get_webpage_disclosurestatement": "Error fetching Disclosure Statement page",
-      "get_webpage_declarationofconsent": "Error fetching Declareation Of Consent page",
-      "get_webpage_front": "Error fetching Front page",
-      "get_webpage_faq": "Error fetching FAQ page"
+      "validation": "Valideringsfejl",
+      "get_special_diets_shared": "Der opstod fejl under hentning af Specialkost-siden",
+      "get_webpage_disclosurestatement": "Fejl ved hentning af Oplysningserklæring",
+      "get_webpage_declarationofconsent": "Fejl ved hentning af Samtykkeerklæring",
+      "get_webpage_front": "Fejl ved hentning af Forsiden",
+      "get_webpage_faq": "Fejl ved hentning af FAQ-siden"
     }
   },
   "unprotected": {
@@ -120,313 +120,313 @@
       "page_title": "Start"
     },
     "menu": "Menu",
-    "close": "Close",
-    "login": "Login",
-    "logout": "Logout",
+    "close": "Luk",
+    "login": "Log ind",
+    "logout": "Log ud",
     "support": "Support",
-    "contact": "Contact"
+    "contact": "Kontakt"
   },
   "tasks": {
     "landing": {
-      "page_title": "Tasks",
+      "page_title": "Opgaver",
       "error": {
-        "get_task_overview_filter_options": "Errors occurred when fetching task overview filter options",
-        "get_task_overview": "Errors occurred when fetching task overview"
+        "get_task_overview_filter_options": "Fejl opstod under hentning af filtermuligheder for opgaveoversigt",
+        "get_task_overview": "Fejl opstod under hentning af opgaveoversigt"
       }
     },
     "task_overview": {
-      "page_title": "Task overview"
+      "page_title": "Opgaveoversigt"
     },
     "labels": {
       "team": "Team",
-      "select_a_team": "Select a team",
-      "work_location": "Work location",
-      "select_a_location": "Select a location",
-      "task_type": "Task type",
-      "select_a_task_type": "Select a task type",
-      "date": "Date",
-      "select_a_date": "Select a date",
-      "free_tasks": "free task(s)",
-      "more_info": "More info",
-      "register": "Register",
-      "unregister": "Unregister",
-      "view_more_filters": "View more filters",
-      "view_less_filters": "View less filters",
-      "register_confirmation_text": "Do you want to register for this task on",
-      "confirmation_registration": "Confirm registration",
-      "task_link_copied": "Task link has been copied to clipboard successfully."
+      "select_a_team": "Alle teams",
+      "work_location": "Arbejdssted",
+      "select_a_location": "Alle arbejdssteder",
+      "task_type": "Opgavetype",
+      "select_a_task_type": "Alle opgavetyper",
+      "date": "Dato",
+      "select_a_date": "Alle datoer",
+      "free_tasks": "ledig(e) opgave(r)",
+      "more_info": "Mere info",
+      "register": "Tilmeld",
+      "unregister": "Afmeld",
+      "view_more_filters": "Vis flere filtre",
+      "view_less_filters": "Se færre filtre",
+      "register_confirmation_text": "Vil du tilmelde dig denne opgave den",
+      "confirmation_registration": "Bekræft tilmelding",
+      "task_link_copied": "Opgavelink er blevet kopieret til udklipsholderen."
     },
     "error": {
-      "get_tasks_filters_options": "Error fetching tasks filters options",
-      "get_tasks": "Error fetching tasks"
+      "get_tasks_filters_options": "Fejl ved hentning af opgavefiltreringsmuligheder",
+      "get_tasks": "Fejl ved hentning af opgaver"
     },
     "my_tasks": {
-      "header": "My tasks",
+      "header": "Mine opgaver",
       "labels": {
-        "task_description": "Task description",
-        "you_are_registered": "You are registered",
-        "you_are_invited": "You are invited",
-        "unregister_from": "Unregister from",
-        "unregister_dialog_content": "You will be unregistered from the task and will not receive payment. The task becomes possible for others to register. Once you confirm, you can no longer undo it.",
-        "task_locked_warning": "It is not possible to unregister from this task, because it takes place soon. Please <a href='/contact-us'>contact us</a>, if you do not have the opportunity to participate."
+        "task_description": "Opgavebeskrivelse",
+        "you_are_registered": "Du er tilmeldt",
+        "you_are_invited": "Du er inviteret",
+        "unregister_from": "Afmeld fra",
+        "unregister_dialog_content": "Du vil blive afmeldt fra opgaven og vil ikke modtage betaling. Det bliver muligt for andre at tilmelde sig opgaven. Når du bekræfter, kan du ikke længere fortryde det",
+        "task_locked_warning": "Det er ikke muligt at afmelde sig fra denne opgave, da den finder sted snart. <a href='/contact-us'>Kontakt os</a> venligst, hvis du ikke har mulighed for at deltage"
       },
       "error": {
-        "get_my_tasks": "An error occurred when fetching my tasks"
+        "get_my_tasks": "Der opstod en fejl ved hentning af mine opgaver"
       }
     },
     "task_preview": {
       "error": {
-        "get_task_preview": "An error occurred when fetching task preview"
+        "get_task_preview": "Der opstod en fejl ved hentning af opgave-preview"
       },
-      "header": "Task description",
+      "header": "Opgavebeskrivelse",
       "labels": {
-        "task": "Task",
-        "date": "Date",
-        "time": "Time",
-        "work_location": "Work location",
+        "task": "Opgave",
+        "date": "Dato",
+        "time": "Tid",
+        "work_location": "Arbejdssted",
         "team": "Team",
-        "payment": "Payment",
-        "files": "Files",
-        "trusted": "Trusted",
-        "assigned": "Assigned",
-        "payment_tooltip": "Citizens are paid per diems. Municipal employees who have a role in accordance with the election agreement are remunerated with a fee.",
-        "task_distribution_description": "Invite participants to register for this task by clicking the “Copy link to task” button. This will give you a link in the clipboard that you can share. Using the link, the recipent can register for this particular task."
+        "payment": "Betaling",
+        "files": "Filer",
+        "trusted": "Betroet",
+        "assigned": "Tildelt",
+        "payment_tooltip": "Borgere får udbetalt diæter. Kommunale medarbejdere, som har en rolle i henhold til valgaftalen honoreres med et vederlag",
+        "task_distribution_description": "Inviter deltagerne til at tilmelde sig denne opgave ved at klikke på knappen 'Kopier link til opgave'. Dette giver dig et link i udklipsholderen, som du kan dele. Ved hjælp af linket kan modtageren tilmelde sig denne specifikke opgave-"
       }
     },
     "task_details": {
-      "page_title": "Task details",
-      "login_register": "Log in and register",
-      "register": "Register",
-      "copy_link_to_task": "Copy link to task",
+      "page_title": "Opgavedetaljer",
+      "login_register": "Log ind og tilmeld",
+      "register": "Tilmeld",
+      "copy_link_to_task": "Kopier link til opgave",
       "link": "Link",
-      "register_yourself": "Register yourself",
+      "register_yourself": "Tilmeld dig selv",
       "alert": {
-        "header": "Not available!",
-        "content": "The task may not exist or all slots have been taken"
+        "header": "Ikke tilgængelig!",
+        "content": "Opgaven findes ikke, eller alle pladser er optaget"
       }
     },
     "task_invitation": {
-      "page_title": "Task invitation",
-      "header": "You have been assigned a task",
+      "page_title": "Opgaveinvitation",
+      "header": "Du er blevet tildelt en opgave",
       "alert": {
-        "header": "Important!",
-        "content": "Remember to accept or reject the task on this page"
+        "header": "Vigtigt!",
+        "content": "Husk at acceptere eller afvise opgaven på denne side"
       },
       "confirmation": {
-        "header": "Do you accept the task?",
-        "content": "To accept, you must log in with MitID when you press Accept and register",
-        "primary_button": "Accept and register",
-        "secondary_button": "Reject"
+        "header": "Vil du acceptere opgaven?",
+        "content": "For at acceptere skal du logge ind med MitID, når du trykker på \"Acceptér og tilmeld\"",
+        "primary_button": "Acceptér og tilmeld",
+        "secondary_button": "Afvis"
       },
       "error": {
-        "accept_task": "An error occurred when processing task acceptance",
-        "reject_task": "An error occurred when processing task rejection",
-        "unregister_task": "An error occurred when unregistering from the task"
+        "accept_task": "Der opstod en fejl under behandlingen af opgaveaccept",
+        "reject_task": "Der opstod en fejl under behandlingen af opgaveafvisning",
+        "unregister_task": "Der opstod en fejl ved afmelding fra opgaven"
       },
       "success": {
-        "unregister_task": "You are now unregistered from the task"
+        "unregister_task": "Du er nu afmeldt fra opgaven"
       }
     },
     "task_rejection_confirmation": {
-      "page_title": "Task rejection confirmation",
-      "header": "Task not accepted",
+      "page_title": "Opgave ikke accepteret",
+      "header": "Opgaven ikke accepteret",
       "alert": {
-        "header": "You have rejected the task",
-        "content": "The task will be assigned to another participant"
+        "header": "Du har afvist opgaven",
+        "content": "Opgaven frigives og vil blive tildelt en anden deltager"
       },
-      "contact_us": "contact us",
-      "content_1": "You have chosen not to accept the task. Thank you for your feedback. If you would like to register for another task in the election, please",
-      "content_2": "or your party secretary, if you are member of a political party."
+      "contact_us": "kontakt os",
+      "content_1": "Du har valgt ikke at acceptere opgaven. Tak for din feedback. Hvis du ønsker at tilmelde dig en anden opgave i valget, kan du",
+      "content_2": "eller din partisekretær, hvis du er medlem af et politisk parti"
     },
     "task_acceptance_cpr_invalid": {
-      "page_title": "Task acceptance cpr invalid",
-      "header": "Error during registration",
+      "page_title": "Ugyldig CPR ved opgaveaccept",
+      "header": "Fejl under tilmelding",
       "alert": {
-        "header": "Error!",
-        "content": "CPR number does not match"
+        "header": "Fejl!",
+        "content": "CPR-nummeret stemmer ikke overens"
       },
-      "contact_us": "contact us",
-      "content_1": "Your CPR number does not match the CPR number of the invited participant.",
-      "content_2": "If you believe this is an error, please",
-      "content_3": "You can also look at tasks where it might be possible to register for another task at the election."
+      "contact_us": "kontakte os",
+      "content_1": "Dit CPR-nummer stemmer ikke overens med CPR-nummeret for den inviterede deltager",
+      "content_2": "Hvis du mener, at dette er en fejl, bedes du",
+      "content_3": "Du kan også kigge på opgaver, hvor det er muligt at tilmelde dig en anden opgave ved valget"
     },
     "task_acceptance_conflict": {
-      "page_title": "Task acceptance conflict",
-      "header": "Error during registration",
+      "page_title": "Konflikt ved opgaveaccept",
+      "header": "Fejl under tilmelding",
       "alert": {
-        "header": "Error!",
-        "content": "Conflicting task"
+        "header": "Fejl!",
+        "content": "Konfliktende opgave"
       },
-      "contact_us": "contact us",
-      "content_1": "You are already registered for another task at the time of this task.",
-      "content_2": "If you believe this is an error, please",
-      "content_3": "You can also look at tasks where it might be possible to register for another task at the election."
+      "contact_us": "kontakte os",
+      "content_1": "Du er allerede tilmeldt en anden opgave på samme tidspunkt som denne opgave",
+      "content_2": "Hvis du mener, at dette er en fejl, bedes du",
+      "content_3": "Du kan også kigge på opgaver, hvor det er muligt at tilmelde dig en anden opgave ved valget"
     },
     "task_acceptance_validation_failure": {
-      "page_title": "Task acceptance validation error",
-      "header": "Error during registration",
+      "page_title": "Valideringsfejl ved opgaveaccept",
+      "header": "Fejl under tilmelding",
       "alert": {
-        "header": "Error!",
-        "content": "Your data does not match the task"
+        "header": "Fejl!",
+        "content": "Dine data stemmer ikke overens med opgaven"
       },
-      "contact_us": "contact us",
-      "age_rule": "You cannot register for this task, because you will not be 18 years old on the day of the election",
-      "municipality_rule": "You cannot register for this task, because you are not living in the required municipality",
-      "citizenship_rule": "You cannot register for this task, because you are not a citizen of the required country",
-      "legal_adult_rule": "You cannot register for this task, because you are not a legal adult",
-      "alive_rule": "You cannot register for this task, because we cannot find a person with this CPR-number",
-      "content": "If you believe this is an error, please"
+      "contact_us": "kontakte os",
+      "age_rule": "Du kan ikke tilmelde dig denne opgave, fordi du ikke er fyldt 18 år på valgdagen",
+      "municipality_rule": "Du kan ikke tilmelde dig denne opgave, fordi du ikke bor i den påkrævede kommune",
+      "citizenship_rule": "Du kan ikke tilmelde dig denne opgave, fordi du ikke har statsborgerskab i det påkrævede land",
+      "legal_adult_rule": "Du kan ikke tilmelde dig denne opgave, fordi du ikke er myndig",
+      "alive_rule": "Du kan ikke tilmelde dig denne opgave, da vi ikke kan finde en person med dette CPR-nummer",
+      "content": "Hvis du mener, at dette er en fejl, bedes du"
     },
     "task_acceptance_confirmation": {
-      "page_title": "Task acceptance confirmation",
-      "header": "Confirmation of registration",
+      "page_title": "Bekræftelse af opgaveaccept",
+      "header": "Bekræftelse af tilmelding",
       "alert": {
-        "header": "You are now registered for the task"
+        "header": "Du er nu tilmeldt opgaven"
       },
-      "save_confirmation_pdf": "Save confirmation as PDF",
-      "print_confirmation": "Print confirmation"
+      "save_confirmation_pdf": "Gem bekræftelse som PDF",
+      "print_confirmation": "Print bekræftelse"
     }
   },
   "task_distribution": {
     "landing": {
-      "page_title": "Task distribution"
+      "page_title": "Opgavefordeling"
     },
     "labels": {
-      "total_assigned_tasks": "Total assigned tasks",
-      "of": "of",
-      "assigned": "assigned",
-      "filled": "Filled",
-      "awaiting_answer": "Awaiting answer"
+      "total_assigned_tasks": "Tilmeldte i alt",
+      "of": "af",
+      "assigned": "tildelte",
+      "filled": "Fyldt",
+      "awaiting_answer": "Afventer svar"
     },
     "error": {
-      "get_team_responsible_tasks": "Error fetching team responsible tasks",
-      "get_team_responsible_tasks_filters_options": "Error fetching team responsible tasks filters options"
+      "get_team_responsible_tasks": "Fejl ved hentning af Opgavefordeling",
+      "get_team_responsible_tasks_filters_options": "Fejl ved hentning af filtreringsmuligheder for Opgavefordeling"
     }
   },
   "my_work_location": {
     "landing": {
-      "page_title": "My work location"
+      "page_title": "Mit arbejdssted"
     },
     "labels": {
-      "work_location_date_description": "The overview shows the participants who have tasks at this workplace on",
-      "work_location_tasks_header": "Work location tasks on",
-      "work_location_participants_header": "Work location participants on",
-      "number_of_tasks": "Number of tasks at the work location:",
-      "number_of_participants": "Number of people at the work location:",
-      "task_name": "Task name",
-      "task_name_sort_header": "Sort by Task name",
-      "start_time": "Start time",
-      "end_time": "End time",
-      "task_status": "Task status",
-      "accepted": "accepted",
-      "full_name": "Full name",
-      "full_name_sort_header": "Sort by Full name",
-      "task_types": "Task type(s) assigned on selected date",
-      "task_types_sort_header": "Sort by Task types",
+      "work_location_date_description": "Oversigten viser de deltagere, der har opgaver på dette arbejdssted",
+      "work_location_tasks_header": "Opgaver på arbejdsstedet",
+      "work_location_participants_header": "Deltagere på arbejdsstedet",
+      "number_of_tasks": "Antal opgaver på arbejdsstedet:",
+      "number_of_participants": "Antal personer på arbejdsstedet:",
+      "task_name": "Opgavenavn",
+      "task_name_sort_header": "Sortér efter opgavenavn",
+      "start_time": "Starttidspunkt",
+      "end_time": "Sluttidspunkt",
+      "task_status": "Opgavestatus",
+      "accepted": "accepteret",
+      "full_name": "Fulde navn",
+      "full_name_sort_header": "Sortér efter fulde navn",
+      "task_types": "Opgavetype(r) tildelt på valgt dato",
+      "task_types_sort_header": "Sortér efter opgavetyper",
       "team": "Team",
-      "team_sort_header": "Sort by Team",
-      "age": "Age",
-      "age_sort_header": "Sort by Age",
-      "email": "Mail address",
-      "phone": "Phone number",
-      "find_participant": "Find participant"
+      "team_sort_header": "Sortér efter team",
+      "age": "Alder",
+      "age_sort_header": "Sortér efter alder",
+      "email": "E-mailadresse",
+      "phone": "Telefonnummer",
+      "find_participant": "Find deltager"
     },
     "error": {
-      "get_my_work_locations": "Error fetching my work locations",
-      "get_work_loctaion_dates": "Error fetching work location dates",
-      "get_work_location_details": "Error fetching work location details"
+      "get_my_work_locations": "Fejl ved hentning af mine arbejdssteder",
+      "get_work_location_dates": "Fejl ved hentning af arbejdsstedets datoer",
+      "get_work_location_details": "Fejl ved hentning af arbejdsstedets detaljer"
     }
   },
   "my_team": {
     "landing": {
-      "page_title": "My team"
+      "page_title": "Mit team"
     },
     "labels": {
-      "team_invitation": "Team invitation",
-      "team_invitation_header": "You have been invited to the team",
-      "team_invitation_description": "A team responsible has invited you to join this team. By joining, you can help run the upcoming election. Once you have created a user, you will have access to view and register for the team's available tasks.",
-      "team_invitation_confirmation": "Do you want to help with the election?",
-      "team_invitation_confirmation_description": "To become a member of the team, you must log in with your MitID when you press the button.",
-      "team_invitation_confirmation_button": "Create user and join team",
-      "name": "Name",
-      "number_of_tasks": "Number of tasks",
-      "remove_member": "Remove member",
-      "task": "task",
-      "tasks": "tasks",
-      "team_members": "Team members",
-      "copy_link_to_team": "Copy link to team",
-      "generate_link_to_team": "Generate link to team",
+      "team_invitation": "Teaminvitation",
+      "team_invitation_header": "Du er blevet inviteret til teamet",
+      "team_invitation_description": "En teamansvarlig har inviteret dig til at blive medlem af dette team. Ved at deltage kan du hjælpe med at gennemføre det kommende valg. Når du har oprettet en bruger, vil du have adgang til at se og tilmelde dig teamets tilgængelige opgaver.",
+      "team_invitation_confirmation": "Vil du hjælpe med valget?",
+      "team_invitation_confirmation_description": "For at blive medlem af teamet skal du logge ind med dit MitID, når du trykker på knappen.",
+      "team_invitation_confirmation_button": "Opret bruger og bliv medlem af teamet",
+      "name": "Navn",
+      "number_of_tasks": "Antal opgaver",
+      "remove_member": "Fjern medlem",
+      "task": "opgave",
+      "tasks": "opgaver",
+      "team_members": "Teammedlemmer",
+      "copy_link_to_team": "Kopier link til teamet",
+      "generate_link_to_team": "Generer link til teamet",
       "link": "Link",
-      "link_description": "Invite members to your team by pressing the \"Copy link to team\" button. This will give you a link in the clipboard that you can share.<br><br>Using the link, the recipient can create a user and will automatically be added to the team. A team member can view and sign up for all open tasks that are not trusted.",
-      "remove_member_confirmation": "will no longer be part of the team and all assigned tasks will be removed.",
-      "search_for_name": "Search for name",
-      "cannot_be_removed": "Cannot be removed",
-      "cannot_be_removed_tooltip": "It is not possible to remove this member, because we need their information for their payment for a previous task."
+      "link_description": "Inviter medlemmer til dit team ved at klikke på knappen \"Kopier link til teamet\". Dette giver dig et link i udklipsholderen, som du kan dele.<br><br>Ved hjælp af linket kan modtageren oprette en bruger og bliver automatisk tilføjet til teamet. Et teammedlem kan se og tilmelde sig alle ledige opgaver, der ikke er betroet.",
+      "remove_member_confirmation": "vil ikke længere være en del af teamet, og alle tildelte opgaver fjernes.",
+      "search_for_name": "Søg efter navn",
+      "cannot_be_removed": "Kan ikke fjernes",
+      "cannot_be_removed_tooltip": "Det er ikke muligt at fjerne dette medlem, da vi har brug for deres oplysninger til betaling for en tidligere opgave."
     },
     "error": {
-      "get_team_by_team_link": "Error fetching team info",
-      "get_my_teams": "Error fetching my teams",
-      "get_team_members": "Error fetching team members",
-      "remove_member": "An error occurred when removing team member",
-      "create_team_link": "Error occurred when creating team link"
+      "get_team_by_team_link": "Fejl ved hentning af teamoplysninger",
+      "get_my_teams": "Fejl ved hentning af mit team",
+      "get_team_members": "Fejl ved hentning af teammedlemmer",
+      "remove_member": "Der opstod en fejl under fjernelse af teammedlem",
+      "create_team_link": "Der opstod en fejl under oprettelse af teamlink"
     },
     "success": {
-      "remove_member": "Team member is removed successfully",
-      "create_team_link": "Team link has been copied to clipboard successfully"
+      "remove_member": "Teammedlem er fjernet med succes",
+      "create_team_link": "Team-link er kopieret til udklipsholder med succes"
     }
   },
   "my_tasks": {
     "landing": {
-      "page_title": "My tasks"
+      "page_title": "Mine opgaver"
     }
   },
   "my_profile": {
     "landing": {
-      "page_title": "My profile"
+      "page_title": "Min profil"
     },
     "error": {
-      "has_assigned_task_locked": "It is not possible to delete your profile, because you have a task that takes place soon",
-      "has_completed_task": "It is not possible to delete your profile, because you have completed earlier tasks. We therefore need your information for your payment",
-      "get_my_profile": "An error occurred when getting your profile",
-      "update_my_profile": "An error occurred when updating your profile",
-      "delete_my_profile": "An error occurred when deleting your profile",
-      "get_my_profile_permission": "An error occurred when getting your profile permission"
+      "has_assigned_task_locked": "Det er ikke muligt at slette din profil, fordi du har en opgave, der snart finder sted",
+      "has_completed_task": "Det er ikke muligt at slette din profil, fordi du tidligere har fuldført opgaver. Vi har derfor brug for dine oplysninger til din betaling",
+      "get_my_profile": "Der opstod en fejl under hentning af din profil",
+      "update_my_profile": "Der opstod en fejl under opdatering af din profil",
+      "delete_my_profile": "Der opstod en fejl under sletning af din profil",
+      "get_my_profile_permission": "Der opstod en fejl under hentning af dine profilrettigheder"
     },
     "success": {
-      "update_my_profile": "Your profile has been updated successfully.",
-      "delete_my_profile": "Your profile has been deleted successfully."
+      "update_my_profile": "Din profil er blevet opdateret med succes.",
+      "delete_my_profile": "Din profil er blevet slettet med succes."
     },
     "label": {
-      "my_information": "My information",
-      "name": "Name",
-      "cpr": "CPR number",
-      "address": "Address",
-      "municipality": "Municipality",
-      "cpr_help_text": " If the above information is incorrect, you must contact the municipality or parish that handles the registration.",
+      "my_information": "Min profil",
+      "name": "Navn",
+      "cpr": "CPR-nummer",
+      "address": "Adresse",
+      "municipality": "Kommune",
+      "cpr_help_text": "Disse oplysninger stammer fra CPR-registret. Hvis de er forkerte, skal du kontakte den kommune eller det sogn, der håndterer registreringen.",
       "mobile_number": {
-        "title": "Mobile number",
-        "hint": "For example 20304050"
+        "title": "Mobilnummer",
+        "hint": "Indtast et dansk telefonnummer"
       },
       "email": {
-        "title": "Email",
-        "hint": "For example name@domain.dk"
+        "title": "E-mail",
+        "hint": "For eksempel navn@domæne.dk"
       },
       "special_diets": {
-        "title": "Dietary requirements",
-        "hint": "Choose from the options for special diets"
+        "title": "Specialkost",
+        "hint": "Vælg mellem mulighederne for særlig kost"
       },
-      "save_information": "Save information",
-      "delete_my_profile": "Delete my profile",
-      "delete_help_text": "If you delete your profile, you are automatically unregistered from your registered tasks.",
-      "has_locked_task_1": "It is not possible to delete your profile, because you have a task that takes place soon. Please",
-      "contact_us": "contact us",
-      "has_locked_task_2": "if you do not have the opportunity to participate.",
-      "has_completed_task_1": "It is not possible to delete your profile, because you have completed earlier tasks. We therefore need your information for your payment. Please",
-      "has_completed_task_2": "if you need more information.",
+      "save_information": "Gem information",
+      "delete_my_profile": "Slet min profil",
+      "delete_help_text": "Hvis du sletter din profil, bliver du automatisk afmeldt fra de opgaver, du er tilmeldt.",
+      "has_locked_task_1": "Det er ikke muligt at slette din profil, fordi du har en opgave, der snart finder sted. Kontakt os venligst, hvis du ikke har mulighed for at deltage.",
+      "contact_us": "kontakt os",
+      "has_locked_task_2": "hvis du ikke har mulighed for at deltage.",
+      "has_completed_task_1": "Det er ikke muligt at slette din profil, fordi du har fuldført tidligere opgaver. Vi har derfor brug for dine oplysninger til din betaling. Venligst",
+      "has_completed_task_2": "hvis du har brug for mere information.",
       "delete_my_profile_modal": {
-        "title": "Do you want to delete your profile?",
-        "content": "You will be unregistered from tasks and your information will be deleted from our system.",
-        "ok": "Yes, delete my profile"
+        "title": "Ønsker du at slette din profil?",
+        "content": "Du vil blive afmeldt fra opgaver, og dine oplysninger vil blive slettet fra vores system.",
+        "ok": "Ja, slet min profil"
       }
     }
   },
@@ -436,33 +436,33 @@
     }
   },
   "contact": {
-    "page_header": "Contact",
-    "contact_description": "See how you can contact us",
-    "digital_post_link": "Write us in a secure way (Digital Post) ",
-    "email_description": "Write us an e-mail at: ",
-    "phone_description": "Call us: "
+    "page_header": "Kontakt",
+    "contact_description": "Se hvordan du kan kontakte os",
+    "digital_post_link": "Skriv til os på en sikker måde (Digital Post)",
+    "email_description": "Skriv til os på e-mail: ",
+    "phone_description": "Ring til os: "
   },
   "registration": {
     "landing": {
-      "page_title": "Registration"
+      "page_title": "Tilmelding"
     },
     "label": {
       "mobile_number": {
-        "title": "Mobile number",
-        "hint": "For example 20304050"
+        "title": "Mobilnummer",
+        "hint": "Indtast et dansk telefonnummer"
       },
       "email": {
-        "title": "Email",
-        "hint": "For example name@domain.dk"
+        "title": "E-mail",
+        "hint": "For eksempel navn@domæne.dk"
       },
       "special_diets": {
-        "title": "Dietary requirements",
-        "hint": "Choose from the options for special diets"
+        "title": "Specialkost",
+        "hint": "Vælg mellem mulighederne for særlig kost"
       },
-      "continue": "Continue",
-      "save_and_continue": "Save and continue",
-      "complete_registration": "Complete registration",
-      "cancel_registration": "Cancel registration",
+      "continue": "Fortsæt",
+      "save_and_continue": "Gem og fortsæt",
+      "complete_registration": "Fuldfør tilmelding",
+      "cancel_registration": "Annuller tilmelding",
       "steps": {
         "disclosure_statement": "Behandling af personoplysninger",
         "profile_input": "Indtast dine oplysninger",
@@ -470,43 +470,43 @@
         "receipt_for_registration": "Kvittering for tilmelding"
       },
       "profile": {
-        "name": "Name (From MitID)",
-        "cpr": "CPR number",
-        "address": "Address",
-        "municipality": "Municipality",
-        "cpr_help_text": "If the above information is incorrect, you must contact the municipality or parish that handles the registration.",
+        "name": "Navn (Fra MitID)",
+        "cpr": "CPR-nummer",
+        "address": "Adresse",
+        "municipality": "Kommune",
+        "cpr_help_text": "Disse oplysninger stammer fra CPR-registret. Hvis de er forkerte, skal du kontakte den kommune eller det sogn, der håndterer registreringen.",
         "team": "Team",
         "alert": {
           "title": "Dine oplysninger blev valideret",
           "content": "Din bruger er oprettet med følgende informationer"
         }
       },
-      "declaration_of_consent": "Declaration of consent",
-      "go_to_available_tasks": "Go to available tasks"
+      "declaration_of_consent": "Samtykkeerklæring",
+      "go_to_available_tasks": "Gå til tilgængelige opgaver"
     },
     "error": {
-      "team_not_exist": "The team you registered to does not exist",
-      "register_participant": "Errors occurred when creating your account",
-      "get_my_profile_registration": "Errors occurred when fetching your profile registration",
-      "task_not_exist": "The task you are registering no longer exist",
-      "get_team_access_status": "Errors occurred when fetching team access status",
-      "join_team": "Errors occurred when joining team",
-      "participant_exists": "A participant already exists in the system with the same CPR number"
+      "team_not_exist": "Det team, du tilmeldte dig, eksisterer ikke",
+      "register_participant": "Der opstod fejl under oprettelsen af din konto",
+      "get_my_profile_registration": "Der opstod fejl under hentning af din profilregistrering",
+      "task_not_exist": "Den opgave, du registrerer dig til, findes ikke længere",
+      "get_team_access_status": "Der opstod fejl under hentning af teamadgangsstatus",
+      "join_team": "Der opstod fejl under tilmelding til teamet",
+      "participant_exists": "En deltager eksisterer allerede i systemet med det samme CPR-nummer"
     },
     "success": {
-      "join_team": "You have joined the team"
+      "join_team": "Du har tilmeldt dig teamet"
     }
   },
   "logout": {
     "alert": {
-      "title": "Is this computer public?",
-      "content": "So remember to close and switch off the machine completely before leaving it."
+      "title": "Er denne computer offentlig?",
+      "content": "Så husk at lukke og slukke maskinen helt, inden du forlader den."
     },
     "profile_removal_alert": {
-      "title": "Your profile has been removed successfully."
+      "title": "Din profil er blevet slettet med succes."
     },
-    "header": "You are now logged out of the system",
-    "bold_text": "Thank you for your contribution to the election process",
-    "text": "It is your contribution and that of the other volunteers that helps to ensure a good election process for everyone."
+    "header": "Du er nu logget ud af systemet",
+    "bold_text": "Tak for dit bidrag til valgafviklingen",
+    "text": "Det er din og andre frivilliges indsats, der hjælper med at sikre en god valgproces for alle."
   }
 }

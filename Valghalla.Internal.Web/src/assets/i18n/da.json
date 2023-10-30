@@ -14,10 +14,10 @@
       "welcome": "Velkommen",
       "start": "Start",
       "participant": "Deltagere",
-      "list:{": {
+      "list": {
         "title": "Lister",
         "participant_list": {
-          "title:": "Deltagerlister",
+          "title": "Deltagerlister",
           "description": "Opret deltagerlister til eksport fra OS2valghalla"
         }
       },
@@ -102,6 +102,10 @@
         "work_location_tasks_title": "Opgaver på arbejdssted",
         "work_location_tasks_distribution_title": "Fordel opgaver",
         "reply_for_participant": "Svar for deltager"
+      },
+      "audit_log": {
+        "title": "Revisionslog",
+        "description": "Find revisionsinformation om brugeradgang til personlige data og andre aktiviteter i systemet"
       }
     },
     "footer": {
@@ -188,7 +192,7 @@
       "created_at": "Oprettet den",
       "select_all": "Vælg alle"
     },
-    "task:status": {
+    "task_status": {
       "available": "Ledig",
       "unanswered": "Ubesvaret",
       "rejected": "Afvist",
@@ -259,7 +263,7 @@
       }
     }
   },
-  "list": {
+  "lister": {
     "page_title": "Lister",
     "participant_list": {
       "page_title": "Deltagerlister",
@@ -278,8 +282,8 @@
         "team_association": "Team",
         "task_status": "Opgavestatus",
         "task_date": "Opgavedato",
-        "task_type": "Opgavetype",
-        "task_area": "Område",
+        "task_type": "Opgavetyper",
+        "task_area": "Områder",
         "task_start_time": "Starttidspunkt",
         "task_payment": "Betaling",
         "receipt": "Kvittering"
@@ -331,7 +335,7 @@
         "update_election_type": "Valgtype opdateret med succes",
         "delete_election_type": "Valgtype slettet med succes"
       },
-      "page_title": "Valgtype",
+      "page_title": "Valgtyper",
       "create_page_title": "Opret valgtype",
       "edit_page_title": "Rediger valgtype",
       "validation_requirements": "Valideringskrav:",
@@ -362,7 +366,7 @@
       },
       "action": {
         "create_team": "Opret team",
-        "edit_team": "Rediger hold",
+        "edit_team": "Rediger team",
         "delete_confirmation": {
           "title": "Slet team",
           "content_no_task": "Er du sikker på, at du vil slette dette team?",
@@ -467,11 +471,13 @@
       },
       "activate_election_confirmation": {
         "title": "Aktivering af valg",
-        "content": "Hvis der ikke allerede er et andet valg aktivt, vil aktivering af dette valg også aktivere den eksterne hjemmeside"
+        "content": "Når dette valg aktiveres, sendes invitationer til tildelte opgaver automatisk til deltagerne.",
+        "subcontent": "Hvis der ikke allerede er et andet valg aktivt, vil aktivering af dette valg også aktivere den eksterne hjemmeside."
       },
       "deactivate_election_confirmation": {
         "title": "Deaktivering af valg",
-        "content": "Hvis der ikke allerede er et andet valg aktivt, vil deaktivering af dette valg også deaktivere den eksterne hjemmeside, så ingen deltagere kan håndtere deres invitationer og opgaver."
+        "content": "Når valget deaktiveres, kan der ikke sendes automatisk kommunikation, herunder invitationer til opgaver. Manuelle beskeder kan sendes.",
+  "sub_content": "Hvis der ikke allerede er et andet valg aktivt, vil deaktivering af dette valg også deaktivere den eksterne hjemmeside, så ingen deltagere kan håndtere deres invitationer og opgaver."
       },
       "delete_election_confirmation": {
         "title": "Slet valg",
@@ -533,7 +539,7 @@
       }
     },
     "area": {
-      "page_title": "Område",
+      "page_title": "Områder",
       "error": {
         "get_area_details": "Fejl ved hentning af områdedetaljer",
         "get_all_areas": "Fejl ved hentning af alle områder",
@@ -579,7 +585,7 @@
         "header": "Administrér samtykkeerklæring",
         "activate": "Aktivér",
         "content": "Indhold",
-        "description": "Alle deltagere bliver vist <a href='/administration/web/disclosure-statement'>oplysningenserklæringen</a>, når de opretter en bruger.<br/><br/>Hvis du ønsker at behandle deltagernes personoplysninger udover til at gennemføre det nuværende valg, kan det være nødvendigt at indhente deres samtykke. Hvis I f.eks. gerne vil kunne kontakte deltagerne igen ved næste valg, skal I have deres samtykke til dette.<br/><br/>Her kan du indsætte en samtykkeerklæring og aktivere, at deltagerne skal give deres samtykke ved oprettelse af en bruger"
+        "description": "Alle deltagere får vist <a href='/administration/web/disclosure-statement'>oplysningserklæringen</a>, når de opretter en bruger.<br/><br/>Hvis du ønsker at behandle deltagernes personoplysninger udover til at gennemføre det nuværende valg, kan det være nødvendigt at indhente deres samtykke. Hvis I f.eks. gerne vil kunne kontakte deltagerne igen ved næste valg, skal I have deres samtykke til dette.<br/><br/>Her kan du indsætte en samtykkeerklæring og aktivere, at deltagerne skal give deres samtykke ved oprettelse af en bruger"
       },
       "front": {
         "header": "Administrér forsiden",
@@ -629,7 +635,7 @@
       }
     },
     "task_type": {
-      "page_title": "Opgavetype",
+      "page_title": "Opgavetyper",
       "error": {
         "task_type_exist": "Der findes allerede en opgavetype med samme navn",
         "get_all_task_types": "Der opstod en fejl under hentning af alle opgavetyper",
@@ -676,7 +682,7 @@
       }
     },
     "work_location": {
-      "page_title": "Arbejdssted",
+      "page_title": "Arbejdssteder",
       "error": {
         "work_location_exist": "Et arbejdssted med samme navn eksisterer allerede",
         "get_work_location": "Der opstod en fejl under hentning af arbejdssted",
@@ -718,6 +724,39 @@
         "title": "Arbejdssteder",
         "area": "Område"
       }
+    },
+    "audit_log": {
+      "page_title": "Revisionsoversigt",
+      "event_type": {
+        "create": "Opret",
+        "view": "Vis",
+        "edit": "Rediger",
+        "delete": "Slet",
+        "look_up_cpr": "Slå CPR op",
+        "generate": "Generer",
+        "export": "Eksportér",
+        "request": "Anmod"
+      },
+      "event_table": {
+          "participant": "Deltager",
+          "list": "Liste",
+          "team_responsible": "Teamansvarlig",
+          "work_location_responsible": "Arbejdsstedansvarlig",
+          "api": "API",
+          "others": "Andre"
+      },
+      "audit_log_listing": {
+        "title": "Revisionslog",
+        "columns": {
+          "event_date": "Tidspunkt",
+          "event_table": "Type",
+          "event_type": "Handling",
+          "event_description": "Beskrivelse",
+          "done_by": "Bruger",
+          "participant": "Deltager",
+          "birthdate": "Fødselsdato"
+        }
+      }
     }
   },
   "communication": {
@@ -728,6 +767,7 @@
     "error": {
       "communication_exist": "Kommunikation med denne titel eksisterer allerede",
       "get_participants": "Der opstod en fejl under hentning af deltagere",
+      "send_group_message": "Der opstod en fejl under afsendelse af besked",
       "get_communication_template": "Der opstod en fejl under hentning af beskedskabelon",
       "create_communication_template": "Der opstod en fejl under oprettelse af beskedskabelon",
       "update_communication_template": "Der opstod en fejl under opdatering af beskedskabelon",
@@ -739,7 +779,8 @@
     "success": {
       "create_communication_template": "Beskedskabelon er blevet oprettet med succes",
       "update_communication_template": "Beskedskabelon er blevet opdateret med succes",
-      "delete_communication_template": "Beskedskabelon er blevet slettet med succes"
+      "delete_communication_template": "Beskedskabelon er blevet slettet med succes",
+      "send_group_message": "Beskeden er blevet sendt med succes"
     },
     "action": {
       "create_communication_template": "Opret beskedskabelon"
@@ -936,14 +977,14 @@
     },
     "work_location_tasks": {
       "page_title": "Opgaver på arbejdsstedet",
-      "tasks_on": "Opgaver den",
+      "tasks_on": "Opgaver på",
       "actions": {
         "distribute_tasks": "Fordel opgaver"
       }
     }
   },
   "participant": {
-    "page_title": "Deltager",
+    "page_title": "Deltagere",
     "error": {
       "participant_exists": "Der findes allerede en deltager med samme CPR-nummer",
       "create_participant": "Fejl opstod ved oprettelse af deltager",
@@ -1072,7 +1113,8 @@
     }
   },
   "start": {
-    "page_title": "Start"
+    "page_title": "Start",
+    "no_election_message": "Ingen valg tilgængelige. Gå venligst til <a href='/administration/election'>Valg</a> for at oprette et."
   },
   "unprotected": {
     "page_title": null,
