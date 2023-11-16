@@ -1,5 +1,6 @@
 ﻿using Digst.OioIdws.OioWsTrustCore;
 using Digst.OioIdws.WscCore.OioWsTrust;
+using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
@@ -12,13 +13,20 @@ namespace Valghalla.Integration.DigitalPost
     internal class DigitalPostService : IDigitalPostService
     {
         private readonly AppConfiguration appConfiguration;
+        private readonly SecretConfiguration secretConfiguration;
         private readonly ISecretService secretService;
         private readonly HttpClient httpClient;
         private readonly DigitalPostMessageHelper helper;
 
-        public DigitalPostService(AppConfiguration appConfiguration, ISecretService secretService, HttpClient httpClient, DigitalPostMessageHelper helper)
+        public DigitalPostService(
+            AppConfiguration appConfiguration,
+            IOptions<SecretConfiguration> secretConfigurationOptions,
+            ISecretService secretService,
+            HttpClient httpClient,
+            DigitalPostMessageHelper helper)
         {
             this.appConfiguration = appConfiguration;
+            this.secretConfiguration = secretConfigurationOptions.Value;
             this.secretService = secretService;
             this.httpClient = httpClient;
             this.helper = helper;
@@ -69,19 +77,19 @@ namespace Valghalla.Integration.DigitalPost
                 StsCertificate = new Certificate()
                 {
                     FromFileSystem = true,
-                    FilePath = config.StsCertificateFilePath,
+                    FilePath = GetCertFilePath(config.StsCertificateFilePath),
                     Password = config.StsCertificatePassword,
                 },
                 ServiceCertificate = new Certificate()
                 {
                     FromFileSystem = true,
-                    FilePath = config.ServiceCertificateFilePath,
+                    FilePath = GetCertFilePath(config.ServiceCertificateFilePath),
                     Password = config.ServiceCertificatePassword,
                 },
                 ClientCertificate = new Certificate()
                 {
                     FromFileSystem = true,
-                    FilePath = config.ClientCertificateFilePath,
+                    FilePath = GetCertFilePath(config.ClientCertificateFilePath),
                     Password = config.ClientCertificatePassword,
                 }
             };
@@ -89,6 +97,11 @@ namespace Valghalla.Integration.DigitalPost
             var stsTokenConfig = TokenServiceConfigurationFactory.CreateConfiguration(wscConfig);
             IStsTokenService stsTokenService = new StsTokenServiceCache(stsTokenConfig);
             return (GenericXmlSecurityToken)stsTokenService.GetToken();
+        }
+
+        private string GetCertFilePath(string path)
+        {
+            return Path.Combine(AppContext.BaseDirectory, Path.GetDirectoryName(secretConfiguration.Path)!, path);
         }
 
         private async Task<DigitalPostAccessToken> GetAccessTokenAsync(DigitalPostConfiguration config, GenericXmlSecurityToken securityToken, CancellationToken cancellationToken)
