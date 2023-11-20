@@ -61,7 +61,7 @@ export class ParticipantListComponent implements OnInit {
 
   displayedColumns: Array<string> = ['participantName', 'participantCpr', 'teamName', 'taskDate', 'taskTypeName'];
 
-  @ViewChild('TABLE') table: ElementRef;
+  @ViewChild('TABLE') table: ElementRef<HTMLElement>;
 
   @ViewChild(MatPaginator) readonly paginator: MatPaginator;
 
@@ -187,7 +187,7 @@ export class ParticipantListComponent implements OnInit {
   exportAsExcel(toCSV?: boolean) {
     this.subs.sink = this.filteredTasksHttpService.auditLogExport().subscribe(() => {
       this.exporting = true;
-      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table.nativeElement);
+      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table.nativeElement.firstElementChild);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Participants');
       toCSV ? XLSX.writeFile(wb, 'Participants.csv', { bookType: 'csv' }) : XLSX.writeFile(wb, 'Participants.xlsx');

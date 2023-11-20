@@ -23,7 +23,12 @@
       "dom"
     ],
     "useDefineForClassFields": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "xlsx": [
+        "src/package/xlsx"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
