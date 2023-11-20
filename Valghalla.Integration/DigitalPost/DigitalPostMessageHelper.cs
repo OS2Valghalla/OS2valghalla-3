@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.StaticFiles;
 using SF1601;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -38,10 +39,14 @@ namespace Valghalla.Integration.DigitalPost
             var startserializer = new XmlSerializer(typeof(kombi_request));
             var startXML = "";
 
-            using var sww1 = new StringWriter();
-            using var writer1 = XmlWriter.Create(sww1, settings);
-            startserializer.Serialize(writer1, kombiRequest, xns);
-            startXML = sww1.ToString();
+            using (var sww1 = new StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(sww1, settings))
+                {
+                    startserializer.Serialize(writer, kombiRequest, xns);
+                    startXML = sww1.ToString();
+                }
+            }
 
             var startdocument = new XmlDocument();
             startdocument.LoadXml(startXML);
@@ -59,10 +64,14 @@ namespace Valghalla.Integration.DigitalPost
             var xsSubmit1 = new XmlSerializer(typeof(Message));
             var xml1 = "";
 
-            using var sww2 = new StringWriter();
-            using var writer2 = XmlWriter.Create(sww2, settings);
-            xsSubmit1.Serialize(writer2, kombiRequest.Message);
-            xml1 = sww1.ToString();
+            using (var sww1 = new StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(sww1, settings))
+                {
+                    xsSubmit1.Serialize(writer, kombiRequest.Message);
+                    xml1 = sww1.ToString();
+                }
+            }
 
             var xfrag = startdocument.CreateDocumentFragment();
             xfrag.InnerXml = xml1;
@@ -133,7 +142,10 @@ namespace Valghalla.Integration.DigitalPost
                 createdDateTime = timestamp,
                 MainDocument = new MainDocument()
                 {
-                    label = content,
+                    File = new SF1601.File[]
+                    {
+                        new SF1601.File("text/html", "content.html", "da", Encoding.UTF8.GetBytes(content))
+                    }
                 }
             };
 
@@ -146,7 +158,13 @@ namespace Valghalla.Integration.DigitalPost
                 files.Add(file);
             }
 
-            kombiMessageBody.MainDocument.File = files.ToArray();
+            kombiMessageBody.AdditionalDocument = new AdditionalDocument[]
+            {
+                new AdditionalDocument()
+                {
+                    File = files.ToArray()
+                }
+            };
 
             return kombiMessageBody;
         }

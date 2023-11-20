@@ -66,6 +66,11 @@ namespace Valghalla.Integration
             services.AddHttpClient<ITextMessageService, TextMessageService>();
             services.AddScoped<IMailMessageService, MailMessageService>();
             services.AddScoped<DigitalPostMessageHelper>();
+
+            services
+                .AddHttpClient<IDigitalPostService, DigitalPostService>()
+                .ConfigurePrimaryHttpMessageHandler(sp => DigitalPostHttpClientHandler.Initialize(sp));
+
             services.AddHttpClient<IDigitalPostService, DigitalPostService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IExcelService, ExcelService>();
