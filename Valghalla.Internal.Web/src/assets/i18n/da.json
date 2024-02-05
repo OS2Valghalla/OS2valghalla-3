@@ -472,12 +472,12 @@
       "activate_election_confirmation": {
         "title": "Aktivering af valg",
         "content": "Når dette valg aktiveres, sendes invitationer til tildelte opgaver automatisk til deltagerne.",
-        "subcontent": "Hvis der ikke allerede er et andet valg aktivt, vil aktivering af dette valg også aktivere den eksterne hjemmeside."
+        "sub_content": "Hvis der ikke allerede er et andet valg aktivt, vil aktivering af dette valg også aktivere den eksterne hjemmeside."
       },
       "deactivate_election_confirmation": {
         "title": "Deaktivering af valg",
         "content": "Når valget deaktiveres, kan der ikke sendes automatisk kommunikation, herunder invitationer til opgaver. Manuelle beskeder kan sendes.",
-  "sub_content": "Hvis der ikke allerede er et andet valg aktivt, vil deaktivering af dette valg også deaktivere den eksterne hjemmeside, så ingen deltagere kan håndtere deres invitationer og opgaver."
+        "sub_content": "Hvis der ikke allerede er et andet valg aktivt, vil deaktivering af dette valg også deaktivere den eksterne hjemmeside, så ingen deltagere kan håndtere deres invitationer og opgaver."
       },
       "delete_election_confirmation": {
         "title": "Slet valg",
