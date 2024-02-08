@@ -443,10 +443,10 @@
         "election_date_range_hint": "Angiv datointervallet, hvor opgaver skal oprettes",
         "election_date": "Valgdato",
         "election_date_hint": "Indtast datoen, hvor valget afholdes",
-        "days_before_election": "Days before election date with tasks",
-        "days_before_election_hint": "If you make the number less than <strong>[[number]]</strong>, dates with task distribution might be deleted",
-        "days_after_election": "Days after election date with tasks",
-        "days_after_election_hint": "If you make the number less than <strong>[[number]]</strong>, dates with task distribution might be deleted",
+        "days_before_election": "Antal dage med opgaver før valgdatoen",
+        "days_before_election_hint": "Hvis du gør antallet mindre end <strong>[[number]]</strong>, kan datoer med opgavefordeling blive slettet",
+        "days_after_election": "Antal dage med opgaver efter valgdatoen",
+        "days_after_election_hint": "Hvis du gør antallet mindre end <strong>[[number]]</strong>, kan datoer med opgavefordeling blive slettet",
         "work_location": "Relevante arbejdssteder",
         "work_location_hint": "Angiv de arbejdssteder, der skal bruges til valget",
         "standard_messages": "Standardbeskeder",
@@ -840,7 +840,7 @@
       "attach_files": "Vedhæft filer",
       "attach_files_hint": "Tilladte filtyper: pdf, doc, docx, txt, odt, xls og xlsx.<br/>Husk, at filen skal være webtilgængelig!<br/>Maks. 10MB.",
       "preview_description": "Her kan du se, hvordan beskeden vil se ud for modtageren. Tokens erstattes med data fra et fiktivt valg og afspejler ikke dine indtastede data.",
-      "subject_max_length_error": "Subject max length should be 256"
+      "subject_max_length_error": "Emne må max være 256 tegn"
     },
     "communication_template_listing": {
       "title": "Beskedskabeloner"
