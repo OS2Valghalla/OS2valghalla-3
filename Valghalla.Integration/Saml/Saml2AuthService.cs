@@ -10,10 +10,13 @@ using System.Diagnostics;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml.Serialization;
 using Valghalla.Application.Authentication;
 using Valghalla.Application.Cache;
+using Valghalla.Application.Configuration;
 using Valghalla.Application.Saml;
 using Valghalla.Application.Tenant;
+using Valghalla.Integration.Auth;
 
 namespace Valghalla.Integration.Saml
 {
@@ -29,6 +32,7 @@ namespace Valghalla.Integration.Saml
         private readonly IAppMemoryCache appMemoryCache;
         private readonly ITenantContextProvider tenantContextProvider;
         private readonly ISaml2AuthContextProvider saml2AuthContextProvider;
+        private readonly InternalAuthConfiguration configuration;
 
         private HttpContext HttpContext
         {
@@ -52,7 +56,8 @@ namespace Valghalla.Integration.Saml
             IWebHostEnvironment environment,
             IAppMemoryCache appMemoryCache,
             ITenantContextProvider tenantContextProvider,
-            ISaml2AuthContextProvider saml2AuthContextProvider)
+            ISaml2AuthContextProvider saml2AuthContextProvider,
+            InternalAuthConfiguration configuration)
         {
             this.authConfigOptions = authConfigOptions;
             this.httpContextAccessor = httpContextAccessor;
@@ -60,6 +65,7 @@ namespace Valghalla.Integration.Saml
             this.appMemoryCache = appMemoryCache;
             this.tenantContextProvider = tenantContextProvider;
             this.saml2AuthContextProvider = saml2AuthContextProvider;
+            this.configuration = configuration;
         }
 
         public bool IsAuthenticated()
@@ -212,6 +218,7 @@ namespace Valghalla.Integration.Saml
 
             await saml2AuthnResponse.CreateSession(HttpContext, claimsTransform: (claimsPrincipal) =>
             {
+                CheckJobRoleDefinition(claimsPrincipal);
                 CheckAssurance(claimsPrincipal);
                 return transform(claimsPrincipal);
             });
@@ -228,6 +235,27 @@ namespace Valghalla.Integration.Saml
             }
 
             return claimsPrincipal;
+        }
+
+        private void CheckJobRoleDefinition(ClaimsPrincipal claimsPrincipal)
+        {
+            if (string.IsNullOrEmpty(configuration.JobRoleDescription))
+                throw new UnauthorizedAccessException("Missing authentication configuration");
+
+            var privilegeClaim = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "dk:gov:saml:attribute:Privileges_intermediate" && !string.IsNullOrEmpty(x.Value));
+
+            if (privilegeClaim is null)
+                throw new UnauthorizedAccessException("You are not authorized to the system");
+
+            byte[] data = Convert.FromBase64String(privilegeClaim.Value);
+            string decodedString = System.Text.Encoding.UTF8.GetString(data);
+
+            var serializer = new XmlSerializer(typeof(AuthObjects.PrivilegeList));
+
+            var serializedObject = (AuthObjects.PrivilegeList)serializer.Deserialize(new StringReader(decodedString));
+
+            if (configuration.JobRoleDescription != serializedObject.PrivilegeGroup.Privilege)
+                throw new UnauthorizedAccessException("You are not authorized to the system");
         }
 
         private async Task<Saml2Configuration> GetSaml2ConfigurationAsync(CancellationToken cancellationToken)

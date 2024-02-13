@@ -57,5 +57,11 @@ namespace Valghalla.Database.Schema.Data
                 insert into ""Configuration"" values('{nameof(ExternalAuthConfiguration)}.{nameof(ExternalAuthConfiguration.SigningCertificatePassword)}', '')
                 on conflict do nothing;
                 ";
+
+        internal static string AddJobRoleDescriptionConfiguraitonData()
+            => $@"
+                 insert into ""Configuration"" values('{nameof(InternalAuthConfiguration)}.{nameof(InternalAuthConfiguration.JobRoleDescription)}', '')
+                 on conflict do nothing;
+                 ";
     }
 }
