@@ -122,7 +122,7 @@ namespace Valghalla.Integration.Saml
             return binding.RedirectLocation.OriginalString;
         }
 
-        public async Task<string> SetupAssertionConsumerServiceAsync(Func<ClaimsPrincipal, ClaimsPrincipal> transform, CancellationToken cancellationToken)
+        public async Task<string> SetupAssertionConsumerServiceAsync(Func<ClaimsPrincipal, ClaimsPrincipal> transform, bool isInternal, CancellationToken cancellationToken)
         {
             var saml2Config = await GetSaml2ConfigurationAsync(cancellationToken);
             var binding = new Saml2PostBinding();
@@ -138,7 +138,7 @@ namespace Valghalla.Integration.Saml
 
             binding.Unbind(HttpContext.Request.ToGenericHttpRequest(), saml2AuthnResponse);
 
-            await CreateSession(saml2AuthnResponse, transform);
+            await CreateSession(saml2AuthnResponse, transform, isInternal);
 
             var relayStateQuery = binding.GetRelayStateQuery();
 
@@ -208,7 +208,7 @@ namespace Valghalla.Integration.Saml
             }
         }
 
-        private async Task CreateSession(Saml2AuthnResponse saml2AuthnResponse, Func<ClaimsPrincipal, ClaimsPrincipal> transform)
+        private async Task CreateSession(Saml2AuthnResponse saml2AuthnResponse, Func<ClaimsPrincipal, ClaimsPrincipal> transform, bool isInternal)
         {
             if (HttpContext.Request.Cookies.Any())
             {
@@ -218,7 +218,9 @@ namespace Valghalla.Integration.Saml
 
             await saml2AuthnResponse.CreateSession(HttpContext, claimsTransform: (claimsPrincipal) =>
             {
-                CheckJobRoleDefinition(claimsPrincipal);
+                if(isInternal)
+                    CheckJobRoleDefinition(claimsPrincipal);
+
                 CheckAssurance(claimsPrincipal);
                 return transform(claimsPrincipal);
             });
