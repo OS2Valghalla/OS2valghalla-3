@@ -42,6 +42,7 @@ namespace Valghalla.Integration
                 options.LoginPath = new PathString("/api/auth/login");
                 options.SlidingExpiration = true;
                 options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 
                 options.Events.OnRedirectToLogin = async (c) =>
                 {
