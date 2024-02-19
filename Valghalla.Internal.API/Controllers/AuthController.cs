@@ -58,7 +58,7 @@ namespace Valghalla.Internal.API.Controllers
         [HttpPost("AssertionConsumerService")]
         public async Task<IActionResult> SetupAssertionConsumerServiceAsync(CancellationToken cancellationToken)
         {
-            var redirectUrl = await saml2AuthService.SetupAssertionConsumerServiceAsync(TransformClaims, cancellationToken);
+            var redirectUrl = await saml2AuthService.SetupAssertionConsumerServiceAsync(TransformClaims, true, cancellationToken);
             return Redirect(redirectUrl);
         }
 

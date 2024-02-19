@@ -10,7 +10,7 @@ namespace Valghalla.Application.Saml
         void SaveClientSession();
         Task<string> GetLoginRedirectUrlAsync(CancellationToken cancellationToken);
         Task<string> LogoutAsync(bool profileDeleted, CancellationToken cancellationToken);
-        Task<string> SetupAssertionConsumerServiceAsync(Func<ClaimsPrincipal, ClaimsPrincipal> transform, CancellationToken cancellationToken);
+        Task<string> SetupAssertionConsumerServiceAsync(Func<ClaimsPrincipal, ClaimsPrincipal> transform, bool isInternal, CancellationToken cancellationToken);
         Task<string> SetupLogoutResponseAsync(string logoutPath, CancellationToken cancellationToken);
     }
 }
