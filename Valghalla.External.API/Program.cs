@@ -108,7 +108,7 @@ namespace Valghalla.External.API
                 {
                     if (builder.Environment.IsDevelopment())
                     {
-                        var origins = builder.Configuration.GetValue<string[]>("AllowedOrigins") ?? Array.Empty<string>();
+                        var origins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
 
                         policy
                             .WithOrigins(origins)
