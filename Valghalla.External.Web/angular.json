@@ -73,7 +73,13 @@
               "index": {
                 "input": "src/index.dev.html",
                 "output": "src/index.html"
-              }
+              },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -88,11 +94,7 @@
               "browserTarget": "Valghalla.External.Web:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "host": "<local domain>",
-            "port": 4600
-          }
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

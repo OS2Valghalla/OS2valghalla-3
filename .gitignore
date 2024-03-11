@@ -371,3 +371,6 @@ Valghalla.External.Web/package-lock.json
 .angular
 packages.lock.json
 Environment
+appsettings.Development.json
+Valghalla.Internal.Web/src/environments/environment.development.ts
+Valghalla.External.Web/src/environments/environment.development.ts
