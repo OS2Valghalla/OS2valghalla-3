@@ -7,6 +7,8 @@
         TaskCancellation,
         TaskInvitationReminder,
         TaskReminder,
-        TaskRetractedInvitation
+        TaskRetractedInvitation,
+        RemovedFromTask,
+        RemovedByValidation,
     }
 }

@@ -1,4 +1,5 @@
-<app-form-page class="inline-block w-1/2"
+<app-form-page
+  class="inline-block w-1/2"
   [formTitle]="'administration.task_type.task_type_item.page_title.create' | transloco"
   [updateFormTitle]="('administration.task_type.task_type_item.page_title.edit' | transloco) + ' - ' + item?.title"
   [formGroup]="form"
@@ -11,26 +12,28 @@
       <mat-form-field appearance="fill" *appShowSkeleton="loading">
         <mat-label>{{ 'shared.common.title' | transloco }}</mat-label>
         <input matInput type="text" formControlName="title" />
-      </mat-form-field>      
+      </mat-form-field>
     </div>
     <div class="flex flex-col col-span-6">
       <mat-form-field appearance="fill" *appShowSkeleton="loading">
         <mat-label>{{ 'shared.common.short_name' | transloco }}</mat-label>
         <input matInput type="text" formControlName="shortName" />
-      </mat-form-field>      
+      </mat-form-field>
     </div>
     <div class="flex flex-col col-span-3">
       <mat-label>{{ 'shared.common.start_time' | transloco }}*</mat-label>
-      <ngx-mat-timepicker-field [ngClass]="form.controls.startTime.errors ? 'invalid-control': ''"
+      <ngx-mat-timepicker-field
+        [ngClass]="form.controls.startTime.errors ? 'invalid-control' : ''"
         *appShowSkeleton="loading"
         (timeChanged)="setStartTime($event)"
         formControlName="startTime"
         [format]="24"
-        [defaultTime]="form.value.startTime"></ngx-mat-timepicker-field>      
+        [defaultTime]="form.value.startTime"></ngx-mat-timepicker-field>
     </div>
     <div class="flex flex-col col-span-3">
       <mat-label>{{ 'shared.common.end_time' | transloco }}*</mat-label>
-      <ngx-mat-timepicker-field [ngClass]="form.controls.endTime.errors ? 'invalid-control': ''"
+      <ngx-mat-timepicker-field
+        [ngClass]="form.controls.endTime.errors ? 'invalid-control' : ''"
         *appShowSkeleton="loading"
         (timeChanged)="setEndTime($event)"
         formControlName="endTime"
@@ -38,7 +41,7 @@
         [defaultTime]="form.value.endTime"></ngx-mat-timepicker-field>
       <mat-error *ngIf="form.errors && form.errors['invalidEndTime']">{{
         'shared.end_time_must_be_later_than_start_time' | transloco
-      }}</mat-error>      
+      }}</mat-error>
     </div>
     <div class="flex flex-col col-start-1 col-end-3">
       <mat-form-field appearance="fill" *appShowSkeleton="loading">
@@ -56,22 +59,24 @@
         'administration.task_type.task_type_item.trusted' | transloco
       }}</mat-checkbox>
     </div>
-    <div class="flex flex-col col-span-2 hidden">
+    <div class="flex flex-col col-span-2">
       <mat-checkbox formControlName="sendingReminderEnabled" *appShowSkeleton="loading">{{
         'administration.task_type.task_type_item.sending_reminder_enabled' | transloco
-      }}</mat-checkbox>      
+      }}</mat-checkbox>
     </div>
     <div class="flex flex-col col-span-6">
       <h3 [ngClass]="this.isEmptyContent() ? 'text-red-600' : ''">{{ 'shared.common.description' | transloco }}*</h3>
       <app-rich-text-input
         [options]="rtfOptions"
-        [control]="form.controls.description" [hideHeading1]="true"
-        *appShowSkeleton="loading"></app-rich-text-input>      
+        [control]="form.controls.description"
+        [hideHeading1]="true"
+        *appShowSkeleton="loading"></app-rich-text-input>
     </div>
     <div class="flex flex-col col-span-6">
       <app-file-storage
         type="tasktype"
-        [model]="item?.fileReferences" helpText="administration.task_type.task_type_item.attach_files_hint"
+        [model]="item?.fileReferences"
+        helpText="administration.task_type.task_type_item.attach_files_hint"
         [extensions]="['pdf']"
         [multiple]="true"></app-file-storage>
     </div>

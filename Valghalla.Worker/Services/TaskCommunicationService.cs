@@ -12,8 +12,12 @@ namespace Valghalla.Worker.Services
     internal interface ITaskCommunicationService
     {
         Task SendTaskInvitationAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
+        Task SendRemovedFromTaskAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
+        Task SendTaskReminderAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
+        Task SendTaskInvitationReminderAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendTaskRegistrationAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendTaskCancellationAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
+        Task SendTaskInvitationRetractedAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendGroupMessageAsync(Guid logId, Guid participantId, Guid taskAssignmentId, bool isRejectedTask, int templateType, string templateSubject, string templateContent, List<Guid> fileReferenceIds, CancellationToken cancellationToken);
     }
 
@@ -72,6 +76,44 @@ namespace Valghalla.Worker.Services
             await communicationCommandRepository.SetTaskAssignmentInvitationSentAsync(taskAssignmentId, cancellationToken);
         }
 
+        public async Task SendRemovedFromTaskAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var valid = await communicationHelper.ValidateRemovedFromTaskAsync(participantId, taskAssignmentId, cancellationToken);
+
+            if (!valid) return;
+
+            var template = await communicationQueryRepository.GetRemovedFromTaskCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Errors occurred when fetching removed from task communication template (taskAssignmentId = {taskAssignmentId})");
+
+            await SendAsync(logId, participantId, taskAssignmentId, template, cancellationToken);
+        }
+
+        public async Task SendTaskInvitationReminderAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var valid = await communicationHelper.ValidateTaskInvitationReminderAsync(participantId, taskAssignmentId, cancellationToken);
+
+            if (!valid) return;
+
+            var template = await communicationQueryRepository.GetTaskInvitationReminderCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Errors occurred when fetching task invitation reminder communication template (taskAssignmentId = {taskAssignmentId})");
+
+            await SendAsync(logId, participantId, taskAssignmentId, template, cancellationToken);
+            await communicationCommandRepository.SetTaskAssignmentInvitationReminderSentAsync(taskAssignmentId, cancellationToken);
+        }
+
+        public async Task SendTaskReminderAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var valid = await communicationHelper.ValidateTaskReminderAsync(participantId, taskAssignmentId, cancellationToken);
+
+            if (!valid) return;
+
+            var template = await communicationQueryRepository.GetTaskReminderCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Errors occurred when fetching task reminder communication template (taskAssignmentId = {taskAssignmentId})");
+
+            await SendAsync(logId, participantId, taskAssignmentId, template, cancellationToken);
+            await communicationCommandRepository.SetTaskAssignmentReminderSentAsync(taskAssignmentId, cancellationToken);
+        }
+
         public async Task SendTaskRegistrationAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             var valid = await communicationHelper.ValidateTaskRegistrationAsync(participantId, taskAssignmentId, cancellationToken);
@@ -80,7 +122,7 @@ namespace Valghalla.Worker.Services
 
             var template = await communicationQueryRepository.GetTaskRegistrationCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
                 ?? throw new Exception($"Errors occurred when fetching task registration communication template (taskAssignmentId = {taskAssignmentId})");
-             
+
             await SendAsync(logId, participantId, taskAssignmentId, template, cancellationToken);
             await communicationCommandRepository.SetTaskAssignmentRegistrationSentAsync(taskAssignmentId, cancellationToken);
         }
@@ -93,9 +135,21 @@ namespace Valghalla.Worker.Services
             await communicationCommandRepository.SetTaskAssignmentCancellationSentAsync(taskAssignmentId, cancellationToken);
         }
 
+        public async Task SendTaskInvitationRetractedAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var valid = await communicationHelper.ValidateTaskInvitationRetractedAsync(taskAssignmentId, cancellationToken);
+
+            if (!valid) return;
+
+            var template = await communicationQueryRepository.GetTaskRetractedInvitationCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Errors occurred when fetching task retracted invitation communication template (taskAssignmentId = {taskAssignmentId})");
+
+            await SendAsync(logId, participantId, taskAssignmentId, template, cancellationToken);
+        }
+
         public async Task SendGroupMessageAsync(Guid logId, Guid participantId, Guid taskAssignmentId, bool isRejectedTask, int templateType, string templateSubject, string templateContent, List<Guid> fileReferenceIds, CancellationToken cancellationToken)
         {
-            var info = await (isRejectedTask ? communicationQueryRepository.GetRejectedTaskInfoAsync(taskAssignmentId, cancellationToken) : communicationQueryRepository.GetTaskAssignmentInfoAsync(taskAssignmentId, cancellationToken))
+            var info = await (isRejectedTask ? communicationQueryRepository.GetRejectedTaskInfoAsync(taskAssignmentId, cancellationToken) : communicationQueryRepository.GetCommunicationRelatedInfoAsync(participantId, taskAssignmentId, cancellationToken))
                 ?? (isRejectedTask ? throw new Exception($"Errors occurred when fetching rejected task related information (taskId = {taskAssignmentId})") : throw new Exception($"Errors occurred when fetching assigned task related information (taskId = {taskAssignmentId})"));
 
             var subject = communicationHelper.ReplaceTokens(templateSubject, info);

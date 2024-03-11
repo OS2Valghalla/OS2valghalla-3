@@ -137,6 +137,7 @@ namespace Valghalla.Integration.DigitalPost
 
         private MessageBody CreateMessageBody(string content, string timestamp, IEnumerable<(Stream, string)> attachments)
         {
+           
             var kombiMessageBody = new MessageBody
             {
                 createdDateTime = timestamp,
@@ -149,23 +150,35 @@ namespace Valghalla.Integration.DigitalPost
                 }
             };
 
-            var files = new List<SF1601.File>();
-            foreach (var (stream, fileName) in attachments)
+            if (attachments.Count() > 0)
             {
-                contentTypeProvider.TryGetContentType(fileName, out var contentType);
-                var bytes = ((MemoryStream)stream).ToArray();
-                var file = new SF1601.File(contentType, fileName, "da", bytes);
-                files.Add(file);
-            }
-
-            kombiMessageBody.AdditionalDocument = new AdditionalDocument[]
-            {
-                new AdditionalDocument()
+                var files = new List<SF1601.File>();
+                foreach (var (stream, fileName) in attachments)
                 {
-                    File = files.ToArray()
+                    contentTypeProvider.TryGetContentType(fileName, out var contentType);
+                    var bytes = ((MemoryStream)stream).ToArray();
+                    var file = new SF1601.File(contentType, fileName, "da", bytes);
+                    files.Add(file);
                 }
-            };
 
+                
+                List<SF1601.AdditionalDocument>aditionalDocumentobjectList = new List<SF1601.AdditionalDocument>();
+                var index = 1;
+                foreach (SF1601.File file in files)
+                {
+                    SF1601.File[] additionalFiles = new SF1601.File[] {file};
+                    aditionalDocumentobjectList.Add(
+                        new AdditionalDocument()
+                        {
+                            additionalDocumentID = index.ToString(),
+                            label = Path.GetFileNameWithoutExtension(file.filename),
+                            File = additionalFiles
+                        });
+                    
+                        index++;
+                }
+                kombiMessageBody.AdditionalDocument = aditionalDocumentobjectList.ToArray();
+            }
             return kombiMessageBody;
         }
     }

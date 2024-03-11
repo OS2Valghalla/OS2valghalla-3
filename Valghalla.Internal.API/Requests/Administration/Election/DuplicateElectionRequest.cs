@@ -17,6 +17,8 @@ namespace Valghalla.Internal.API.Requests.Administration.Election
         public Guid? InvitationReminderCommunicationTemplateId { get; set; }
         public Guid? TaskReminderCommunicationTemplateId { get; set; }
         public Guid? RetractedInvitationCommunicationTemplateId { get; set; }
+        public Guid? RemovedFromTaskCommunicationTemplateId { get; set; }
+        public Guid? RemovedByValidationCommunicationTemplateId { get; set; }
         public IEnumerable<Guid> WorkLocationIds { get; init; } = Array.Empty<Guid>();
         public IEnumerable<CreateElectionTaskTypeCommunicationTemplateRequest> ElectionTaskTypeCommunicationTemplates { get; init; } = Array.Empty<CreateElectionTaskTypeCommunicationTemplateRequest>();
     }

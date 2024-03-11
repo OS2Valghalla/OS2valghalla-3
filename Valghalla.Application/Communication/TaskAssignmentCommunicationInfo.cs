@@ -9,5 +9,6 @@
         public bool Responsed { get; init; }
         public bool Accepted { get; init; }
         public bool Active { get; init; }
+        public DateTime? ReminderDate { get; set; }
     }
 }

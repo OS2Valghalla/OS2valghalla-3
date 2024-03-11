@@ -11,6 +11,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
         private readonly DataContext dataContext;
         private readonly DbSet<TeamEntity> teams;
         private readonly DbSet<TeamResponsibleEntity> teamResponsibles;
+        private readonly DbSet<TeamMemberEntity> teamMembers;
+        private readonly DbSet<WorkLocationTeamEntity> workLocationTeams;
         private readonly DbSet<TaskAssignmentEntity> taskAssignments;
 
         public TeamCommandRepository(DataContext dataContext)
@@ -18,6 +20,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
             this.dataContext = dataContext;
             teams = dataContext.Set<TeamEntity>();
             teamResponsibles = dataContext.Set<TeamResponsibleEntity>();
+            teamMembers = dataContext.Set<TeamMemberEntity>();
+            workLocationTeams = dataContext.Set<WorkLocationTeamEntity>();
             taskAssignments = dataContext.Set<TaskAssignmentEntity>();
         }
 
@@ -49,8 +53,10 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
         public async Task<(IEnumerable<Guid>, string)> DeleteTeamAsync(DeleteTeamCommand command, CancellationToken cancellationToken)
         {
             var entity = await teams
-                .Include(i => i.TeamResponsibles)
-                .SingleAsync(i => i.Id == command.Id, cancellationToken);
+                    .Include(i => i.TeamResponsibles)
+                    .Include(i => i.TeamMembers)
+                    .Include(i => i.WorkLocationTeams)
+                    .SingleAsync(i => i.Id == command.Id, cancellationToken);
 
             var teamName = entity.Name;
 
@@ -61,6 +67,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
             var existingTaskAssignments = await taskAssignments.Where(x => x.TeamId == command.Id).ToListAsync(cancellationToken);
 
             taskAssignments.RemoveRange(existingTaskAssignments);
+            teamResponsibles.RemoveRange(entity.TeamResponsibles);
+            teamMembers.RemoveRange(entity.TeamMembers);
+            workLocationTeams.RemoveRange(entity.WorkLocationTeams);
             teams.Remove(entity);
 
             await dataContext.SaveChangesAsync(cancellationToken);

@@ -1,6 +1,7 @@
 using MassTransit;
 using MassTransit.EntityFrameworkCoreIntegration;
 using MassTransit.Internals;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Reflection;
@@ -20,6 +21,13 @@ using Valghalla.Worker.Jobs;
 using Valghalla.Worker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+});
 
 builder.Services.AddHostedService<Worker>();
 
@@ -57,8 +65,6 @@ builder.Services.AddOptions<MassTransitHostOptions>()
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddMemoryCache();
-builder.Services.AddSingleton<IAppMemoryCache, AppMemoryCache>();
 builder.Services.AddScoped<IQueueService, QueueService>();
 builder.Services.AddScoped<IParticipantSyncService, ParticipantSyncService>();
 builder.Services.AddScoped<ITaskCommunicationService, TaskCommunicationService>();
@@ -95,8 +101,14 @@ builder.Services.AddMassTransit(mt =>
     mt.AddConsumer<CommunicationLogClearJobConsumer, CommunicationLogClearJobConsumerDefinition>();
     // Task notification jobs
     mt.AddConsumer<TaskInvitationJobConsumer, TaskInvitationJobConsumerDefinition>();
+    mt.AddConsumer<RemovedFromTaskJobConsumer, RemovedFromTaskJobConsumerDefinition>();
+    mt.AddConsumer<TaskGetInvitationReminderJobConsumer, TaskGetInvitationReminderJobConsumerDefinition>();
+    mt.AddConsumer<TaskSendInvitationReminderJobConsumer, TaskSendInvitationReminderJobConsumerDefinition>();
+    mt.AddConsumer<TaskGetReminderJobConsumer, TaskGetReminderJobConsumerDefinition>();
+    mt.AddConsumer<TaskSendReminderJobConsumer, TaskSendReminderJobConsumerDefinition>();
     mt.AddConsumer<TaskRegistrationJobConsumer, TaskRegistrationJobConsumerDefinition>();
     mt.AddConsumer<TaskCancellationJobConsumer, TaskCancellationJobConsumerDefinition>();
+    mt.AddConsumer<TaskInvitationRetractedJobConsumer, TaskInvitationRetractedJobConsumerDefinition>();
     mt.AddConsumer<SendGroupMessageJobConsumer, SendGroupMessageJobConsumerDefinition>();
 
     mt.UsingRabbitMq((ctx, config) =>
@@ -134,9 +146,15 @@ builder.Services.AddMassTransit(mt =>
                 f.Include<ElectionDeactivationJobConsumer>();
                 f.Include<AuditLogClearJobConsumer>();
                 f.Include<CommunicationLogClearJobConsumer>();
+                f.Include<RemovedFromTaskJobConsumer>();
                 f.Include<TaskInvitationJobConsumer>();
                 f.Include<TaskRegistrationJobConsumer>();
+                f.Include<TaskGetInvitationReminderJobConsumer>();
+                f.Include<TaskSendInvitationReminderJobConsumer>();
+                f.Include<TaskGetReminderJobConsumer>();
+                f.Include<TaskSendReminderJobConsumer>();
                 f.Include<TaskCancellationJobConsumer>();
+                f.Include<TaskInvitationRetractedJobConsumer>();
                 f.Include<SendGroupMessageJobConsumer>();
             });
         });
@@ -193,6 +211,20 @@ try
     });
 
     var app = builder.Build();
+
+    app.Use((context, next) =>
+    {
+        if (context.Request.Headers.ContainsKey("X-Forwarded-Proto"))
+        {
+            if (!string.IsNullOrEmpty(context.Request.Headers["X-Forwarded-Proto"]))
+            {
+                context.Request.Scheme = context.Request.Headers["X-Forwarded-Proto"];
+            }
+        }
+
+        return next(context);
+    });
+
     app.MapGet("/", () => "Hello World!");
 
     app.Run();

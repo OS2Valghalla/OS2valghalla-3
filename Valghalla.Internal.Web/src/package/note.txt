@@ -1,2 +1,0 @@
-The SheetJS package from NPM is outdated.
-The one using in Valghalla is taken directly from official source https://cdn.sheetjs.com/ (version 0.20.0) that has security patches applied.

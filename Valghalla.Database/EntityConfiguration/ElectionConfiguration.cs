@@ -37,6 +37,8 @@ namespace Valghalla.Database.EntityConfiguration
                 entity.HasOne(e => e.InvitationReminderCommunicationTemplate).WithMany().HasForeignKey(x => x.InvitationReminderCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
                 entity.HasOne(e => e.TaskReminderCommunicationTemplate).WithMany().HasForeignKey(x => x.TaskReminderCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
                 entity.HasOne(e => e.RetractedInvitationCommunicationTemplate).WithMany().HasForeignKey(x => x.RetractedInvitationCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
+                entity.HasOne(e => e.RemovedFromTaskCommunicationTemplate).WithMany().HasForeignKey(x => x.RemovedFromTaskCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
+                entity.HasOne(e => e.RemovedByValidationCommunicationTemplate).WithMany().HasForeignKey(x => x.RemovedByValidationCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<ElectionTypeEntity>(entity =>
@@ -105,6 +107,8 @@ namespace Valghalla.Database.EntityConfiguration
                 entity.HasOne(e => e.InvitationReminderCommunicationTemplate).WithMany().HasForeignKey(x => x.InvitationReminderCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
                 entity.HasOne(e => e.TaskReminderCommunicationTemplate).WithMany().HasForeignKey(x => x.TaskReminderCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
                 entity.HasOne(e => e.RetractedInvitationCommunicationTemplate).WithMany().HasForeignKey(x => x.RetractedInvitationCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
+                entity.HasOne(e => e.RemovedFromTaskCommunicationTemplate).WithMany().HasForeignKey(x => x.RemovedFromTaskCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
+                entity.HasOne(e => e.RemovedByValidationCommunicationTemplate).WithMany().HasForeignKey(x => x.RemovedByValidationCommunicationTemplateId).OnDelete(DeleteBehavior.SetNull);
             });
         }
     }

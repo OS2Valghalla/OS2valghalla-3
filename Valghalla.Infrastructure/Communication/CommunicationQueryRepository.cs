@@ -58,11 +58,7 @@ namespace Valghalla.Infrastructure.Communication
 
             if (participantEntity == null) return null;
 
-            var contactInfo = await electionCommitteeContacts
-                .Select(i => new { i.MunicipalityName })
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (contactInfo == null) return null;
+            var municipalityName = await GetMunicipalityNameAsync(cancellationToken);
 
             return new CommunicationRelatedInfo()
             {
@@ -76,7 +72,7 @@ namespace Valghalla.Infrastructure.Communication
                     Cpr = participantEntity.Cpr,
                     ExemptDigitalPost = participantEntity.ExemptDigitalPost,
                 },
-                MunicipalityName = contactInfo.MunicipalityName,
+                MunicipalityName = municipalityName,
                 ElectionTitle = entity.Election.Title,
                 WorkLocation = new CommunicationWorkLocationInfo()
                 {
@@ -92,105 +88,6 @@ namespace Valghalla.Infrastructure.Communication
                 },
                 TaskDate = entity.TaskDate,
                 InvitationCode = entity.InvitationCode
-            };
-        }
-        public async Task<CommunicationRelatedInfo?> GetTaskAssignmentInfoAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
-        {
-            var entity = await taskAssignments
-                .Include(i => i.Election)
-                .Include(i => i.WorkLocation)
-                .Include(i => i.TaskType)
-                .Include(i => i.Participant)
-                .Where(i => i.Id == taskAssignmentId && i.ParticipantId.HasValue)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (entity == null) return null;
-
-            var contactInfo = await electionCommitteeContacts
-                .Select(i => new { i.MunicipalityName })
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (contactInfo == null) return null;
-
-            return new CommunicationRelatedInfo()
-            {
-                HashValue = entity.HashValue,
-                Participant = new CommunicationParticipantInfo()
-                {
-                    Id = entity.Participant.Id,
-                    Name = entity.Participant.FirstName + " " + entity.Participant.LastName,
-                    MobileNumber = entity.Participant.MobileNumber,
-                    Email = entity.Participant.Email,
-                    Cpr = entity.Participant.Cpr,
-                    ExemptDigitalPost = entity.Participant.ExemptDigitalPost
-                },
-                MunicipalityName = contactInfo.MunicipalityName,
-                ElectionTitle = entity.Election.Title,
-                WorkLocation = new CommunicationWorkLocationInfo()
-                {
-                    Title = entity.WorkLocation.Title,
-                    Address = entity.WorkLocation.Address,
-                },
-                TaskType = new CommunicationTaskTypeInfo()
-                {
-                    Title = entity.TaskType.Title,
-                    Description = entity.TaskType.Description,
-                    Payment = entity.TaskType.Payment,
-                    StartTime = entity.TaskType.StartTime,
-                },
-                TaskDate = entity.TaskDate,
-                InvitationCode = entity.InvitationCode
-            };
-        }
-
-        public async Task<CommunicationRelatedInfo?> GetTaskAssignmentInfoAsync(Guid taskAssignmentId, Guid participantId, CancellationToken cancellationToken)
-        {
-            var entity = await taskAssignments
-                .Include(i => i.Election)
-                .Include(i => i.WorkLocation)
-                .Include(i => i.TaskType)
-                .Where(i => i.Id == taskAssignmentId)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            var participantEntity = await participants
-               .Where(i => i.Id == participantId)
-               .Select(i => new { i.Id, i.FirstName, i.LastName, i.MobileNumber, i.Email, i.Cpr, i.ExemptDigitalPost })
-               .SingleOrDefaultAsync(cancellationToken);
-
-            if (entity == null || participantEntity == null) return null;
-
-            var contactInfo = await electionCommitteeContacts
-                .Select(i => new { i.MunicipalityName })
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (contactInfo == null) return null;
-
-            return new CommunicationRelatedInfo()
-            {
-                Participant = new CommunicationParticipantInfo()
-                {
-                    Id = participantEntity.Id,
-                    Name = participantEntity.FirstName + " " + participantEntity.LastName,
-                    MobileNumber = participantEntity.MobileNumber,
-                    Email = participantEntity.Email,
-                    Cpr = participantEntity.Cpr,
-                    ExemptDigitalPost = participantEntity.ExemptDigitalPost
-                },
-                MunicipalityName = contactInfo.MunicipalityName,
-                ElectionTitle = entity.Election.Title,
-                WorkLocation = new CommunicationWorkLocationInfo()
-                {
-                    Title = entity.WorkLocation.Title,
-                    Address = entity.WorkLocation.Address,
-                },
-                TaskType = new CommunicationTaskTypeInfo()
-                {
-                    Title = entity.TaskType.Title,
-                    Description = entity.TaskType.Description,
-                    Payment = entity.TaskType.Payment,
-                    StartTime = entity.TaskType.StartTime,
-                },
-                TaskDate = entity.TaskDate
             };
         }
 
@@ -206,11 +103,7 @@ namespace Valghalla.Infrastructure.Communication
 
             if (entity == null) return null;
 
-            var contactInfo = await electionCommitteeContacts
-                .Select(i => new { i.MunicipalityName })
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (contactInfo == null) return null;
+            var municipalityName = await GetMunicipalityNameAsync(cancellationToken);
 
             return new CommunicationRelatedInfo()
             {
@@ -223,7 +116,7 @@ namespace Valghalla.Infrastructure.Communication
                     Cpr = entity.Participant.Cpr,
                     ExemptDigitalPost = entity.Participant.ExemptDigitalPost
                 },
-                MunicipalityName = contactInfo.MunicipalityName,
+                MunicipalityName = municipalityName,
                 ElectionTitle = entity.Election.Title,
                 WorkLocation = new CommunicationWorkLocationInfo()
                 {
@@ -244,6 +137,11 @@ namespace Valghalla.Infrastructure.Communication
         public async Task<CommunicationTemplate?> GetTaskInvitationCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             return await GetCommunicationTemplateAsync(CommunicationType.TaskInvitation, taskAssignmentId, cancellationToken);
+        }
+
+        public async Task<CommunicationTemplate?> GetRemovedFromTaskCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            return await GetCommunicationTemplateAsync(CommunicationType.RemovedFromTask, taskAssignmentId, cancellationToken);
         }
 
         public async Task<CommunicationTemplate?> GetTaskRegistrationCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
@@ -278,6 +176,20 @@ namespace Valghalla.Infrastructure.Communication
                 .SingleOrDefaultAsync(cancellationToken);
 
             return mapper.Map<CommunicationTemplate>(communicationTemplate);
+        }
+
+        private async Task<string> GetMunicipalityNameAsync(CancellationToken cancellationToken)
+        {
+            var contactInfo = await electionCommitteeContacts
+                .Select(i => new { i.MunicipalityName })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (contactInfo == null || string.IsNullOrEmpty(contactInfo.MunicipalityName))
+            {
+                return string.Empty;
+            }
+
+            return contactInfo.MunicipalityName;
         }
 
         private async Task<CommunicationTemplate?> GetCommunicationTemplateAsync(CommunicationType type, Guid taskAssignmentId, CancellationToken cancellationToken)
@@ -333,6 +245,8 @@ namespace Valghalla.Infrastructure.Communication
                 CommunicationType.TaskInvitationReminder => binding.InvitationReminderCommunicationTemplateId,
                 CommunicationType.TaskReminder => binding.TaskReminderCommunicationTemplateId,
                 CommunicationType.TaskRetractedInvitation => binding.RetractedInvitationCommunicationTemplateId,
+                CommunicationType.RemovedFromTask => binding.RemovedFromTaskCommunicationTemplateId,
+                CommunicationType.RemovedByValidation => binding.RemovedByValidationCommunicationTemplateId,
                 _ => null
             };
 
@@ -345,6 +259,8 @@ namespace Valghalla.Infrastructure.Communication
                 CommunicationType.TaskInvitationReminder => election.InvitationReminderCommunicationTemplateId,
                 CommunicationType.TaskReminder => election.TaskReminderCommunicationTemplateId,
                 CommunicationType.TaskRetractedInvitation => election.RetractedInvitationCommunicationTemplateId,
+                CommunicationType.RemovedFromTask => election.RemovedFromTaskCommunicationTemplateId,
+                CommunicationType.RemovedByValidation => election.RemovedByValidationCommunicationTemplateId,
                 _ => null
             };
     }

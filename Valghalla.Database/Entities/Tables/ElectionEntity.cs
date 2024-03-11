@@ -18,6 +18,8 @@ public partial class ElectionEntity : IChangeTrackingEntity
     public Guid? InvitationReminderCommunicationTemplateId { get; set; }
     public Guid? TaskReminderCommunicationTemplateId { get; set; }
     public Guid? RetractedInvitationCommunicationTemplateId { get; set; }
+    public Guid? RemovedFromTaskCommunicationTemplateId { get; set; }
+    public Guid? RemovedByValidationCommunicationTemplateId { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public Guid CreatedBy { get; set; }
@@ -36,5 +38,7 @@ public partial class ElectionEntity : IChangeTrackingEntity
     public virtual CommunicationTemplateEntity? InvitationReminderCommunicationTemplate { get; set; }
     public virtual CommunicationTemplateEntity? TaskReminderCommunicationTemplate { get; set; }
     public virtual CommunicationTemplateEntity? RetractedInvitationCommunicationTemplate { get; set; }
+    public virtual CommunicationTemplateEntity? RemovedFromTaskCommunicationTemplate { get; set; }
+    public virtual CommunicationTemplateEntity? RemovedByValidationCommunicationTemplate { get; set; }
     public virtual ICollection<ElectionTaskTypeCommunicationTemplateEntity> ElectionTaskTypeCommunicationTemplates { get; } = new List<ElectionTaskTypeCommunicationTemplateEntity>();
 }

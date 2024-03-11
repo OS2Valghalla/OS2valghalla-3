@@ -1,6 +1,9 @@
-<app-form-page class="inline-block w-1/2"
+<app-form-page
+  class="inline-block w-1/2"
   [formTitle]="'administration.work_location.work_location_item.page_title.create' | transloco"
-  [updateFormTitle]="('administration.work_location.work_location_item.page_title.edit' | transloco) + ' - ' + item?.title"
+  [updateFormTitle]="
+    ('administration.work_location.work_location_item.page_title.edit' | transloco) + ' - ' + item?.title
+  "
   [formGroup]="form"
   (create)="createWorkLocation($event)"
   (update)="updateWorkLocation($event)"
@@ -8,38 +11,38 @@
   (onCancelClick)="cancel()">
   <div class="grid grid-cols-2 gap-4">
     <div class="flex flex-col col-span-2">
-        <mat-form-field appearance="fill" *appShowSkeleton="loading">
-            <mat-label>{{ 'shared.common.title' | transloco }}</mat-label>
-            <input matInput type="text" formControlName="title" />
-        </mat-form-field>
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'shared.common.title' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="title" />
+      </mat-form-field>
     </div>
     <div class="flex flex-col col-span-2">
-        <mat-form-field appearance="fill" *appShowSkeleton="loading">
-            <mat-label>{{ 'administration.work_location.columns.area' | transloco }}</mat-label>
-            <mat-select formControlName="areaId">
-              <mat-option *ngFor="let area of areas" [value]="area.id">
-                {{ area.name }}
-              </mat-option>
-            </mat-select>
-        </mat-form-field>
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'administration.work_location.columns.area' | transloco }}</mat-label>
+        <mat-select formControlName="areaId">
+          <mat-option *ngFor="let area of areas" [value]="area.id">
+            {{ area.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div class="flex flex-col col-span-2">
-        <mat-form-field appearance="fill" *appShowSkeleton="loading">
-          <mat-label>{{ 'administration.work_location.columns.address' | transloco }}</mat-label>
-          <input matInput type="text" formControlName="address" />
-        </mat-form-field>
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'administration.work_location.columns.address' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="address" />
+      </mat-form-field>
     </div>
     <div class="flex flex-col col-span-2">
-        <mat-form-field appearance="fill" *appShowSkeleton="loading">
-          <mat-label>{{ 'administration.work_location.columns.postal_code' | transloco }}</mat-label>
-          <input matInput type="text" formControlName="postalCode" />
-        </mat-form-field>
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'administration.work_location.columns.postal_code' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="postalCode" />
+      </mat-form-field>
     </div>
     <div class="flex flex-col col-span-2">
-        <mat-form-field appearance="fill" *appShowSkeleton="loading">
-          <mat-label>{{ 'administration.work_location.columns.city' | transloco }}</mat-label>
-          <input matInput type="text" formControlName="city" />
-        </mat-form-field>
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'administration.work_location.columns.city' | transloco }}</mat-label>
+        <input matInput type="text" formControlName="city" />
+      </mat-form-field>
     </div>
     <div class="flex flex-col col-span-2">
       <app-participant-picker
@@ -47,24 +50,32 @@
         [multiple]="true"
         formControlName="responsibleIds"></app-participant-picker>
     </div>
-    <div class="flex flex-col">
-        <h3>{{ 'administration.work_location.columns.relevant_task_types' | transloco }}</h3>
-        <mat-selection-list #selectedTaskTypes *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
-            <mat-list-option checkboxPosition="before" *ngFor="let taskType of taskTypes" [value]="taskType.id" (click)="$event.stopPropagation(); changeSelectedTaskTypes()">
-                {{taskType.title}}
-            </mat-list-option>
-        </mat-selection-list>
-    </div>
-    <div class="flex flex-col">
-        <h3>{{ 'administration.work_location.columns.relevant_teams' | transloco }}</h3>
-        <mat-selection-list #selectedTeams *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
-            <mat-list-option checkboxPosition="before" *ngFor="let team of teams" [value]="team.id" (click)="$event.stopPropagation(); changeSelectedTeams()">
-                {{team.name}}
-            </mat-list-option>
-        </mat-selection-list>
-    </div>
     <div class="flex flex-col col-span-2" *ngIf="item?.hasActiveElection">
       <mat-hint>{{ 'administration.work_location.error.active_election_warning' | transloco }}</mat-hint>
+    </div>
+    <div class="flex flex-col">
+      <h3>{{ 'administration.work_location.columns.relevant_task_types' | transloco }}</h3>
+      <mat-selection-list #selectedTaskTypes *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
+        <mat-list-option
+          checkboxPosition="before"
+          *ngFor="let taskType of taskTypes"
+          [value]="taskType.id"
+          (click)="$event.stopPropagation(); changeSelectedTaskTypes()">
+          {{ taskType.title }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div class="flex flex-col">
+      <h3>{{ 'administration.work_location.columns.relevant_teams' | transloco }}</h3>
+      <mat-selection-list #selectedTeams *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
+        <mat-list-option
+          checkboxPosition="before"
+          *ngFor="let team of teams"
+          [value]="team.id"
+          (click)="$event.stopPropagation(); changeSelectedTeams()">
+          {{ team.name }}
+        </mat-list-option>
+      </mat-selection-list>
     </div>
   </div>
 </app-form-page>

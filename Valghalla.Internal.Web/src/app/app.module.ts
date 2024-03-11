@@ -18,6 +18,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { TranslocoRootModule } from './transloco-root.module';
 import { AppHttpInterceptor } from './app-http.interceptor';
 import { GdprConfirmationDialogComponent } from './gdpr-confirmation-dialog.component';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginationIntlService } from './mat-pagination-intl.service';
 
 @Injectable()
 export class AppPageTitleStrategy extends TitleStrategy {
@@ -69,6 +71,7 @@ export class AppPageTitleStrategy extends TitleStrategy {
       provide: SIDE_MODAL,
       useValue: new ReplaySubject(1),
     },
+    { provide: MatPaginatorIntl, useClass: MatPaginationIntlService },
   ],
   bootstrap: [AppComponent],
 })

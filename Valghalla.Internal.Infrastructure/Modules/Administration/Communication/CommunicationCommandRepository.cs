@@ -89,9 +89,17 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Communication
 
         public async Task DeleteCommunicationTemplateAsync(DeleteCommunicationTemplateCommand command, CancellationToken cancellationToken)
         {
-            var electionsUsingTemplate = await elections.Where(i => i.ConfirmationOfRegistrationCommunicationTemplateId == command.Id || i.ConfirmationOfCancellationCommunicationTemplateId == command.Id
-               || i.InvitationCommunicationTemplateId == command.Id || i.InvitationReminderCommunicationTemplateId == command.Id
-               || i.TaskReminderCommunicationTemplateId == command.Id || i.RetractedInvitationCommunicationTemplateId == command.Id).ToArrayAsync(cancellationToken);
+            var electionsUsingTemplate = await elections
+                .Where(i =>
+                    i.ConfirmationOfRegistrationCommunicationTemplateId == command.Id ||
+                    i.ConfirmationOfCancellationCommunicationTemplateId == command.Id ||
+                    i.InvitationCommunicationTemplateId == command.Id ||
+                    i.InvitationReminderCommunicationTemplateId == command.Id ||
+                    i.TaskReminderCommunicationTemplateId == command.Id ||
+                    i.RetractedInvitationCommunicationTemplateId == command.Id ||
+                    i.RemovedFromTaskCommunicationTemplateId == command.Id ||
+                    i.RemovedByValidationCommunicationTemplateId == command.Id)
+                .ToArrayAsync(cancellationToken);
 
             foreach(var electionUsingTemplate in electionsUsingTemplate)
             {
@@ -118,6 +126,14 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Communication
                 if (electionUsingTemplate.RetractedInvitationCommunicationTemplateId == command.Id)
                 {
                     electionUsingTemplate.RetractedInvitationCommunicationTemplateId = new Guid(Constants.DefaultCommunicationTemplates.RetractedInvitationStringId);
+                }
+                if (electionUsingTemplate.RemovedFromTaskCommunicationTemplateId == command.Id)
+                {
+                    electionUsingTemplate.RemovedFromTaskCommunicationTemplateId = new Guid(Constants.DefaultCommunicationTemplates.RemovedFromTaskStringId);
+                }
+                if (electionUsingTemplate.RemovedByValidationCommunicationTemplateId == command.Id)
+                {
+                    electionUsingTemplate.RemovedByValidationCommunicationTemplateId = new Guid(Constants.DefaultCommunicationTemplates.RemovedByValidationStringId);
                 }
 
                 elections.Update(electionUsingTemplate);

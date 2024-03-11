@@ -2,6 +2,6 @@
 {
     public interface IMailMessageService
     {
-        Task<bool> SendWithAttachmentsAsync(MailDataWithAttachments mailData, CancellationToken cancellationToken);
+        Task SendWithAttachmentsAsync(MailDataWithAttachments mailData, CancellationToken cancellationToken);
     }
 }

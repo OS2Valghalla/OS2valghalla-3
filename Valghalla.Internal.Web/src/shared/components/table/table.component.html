@@ -18,7 +18,11 @@
 
 <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
 <ng-template #table>
-  <mat-table [dataSource]="dataSource" matSort [matSortActive]="defaultSortColumn" [matSortDirection]="defaultSortDirection">
+  <mat-table
+    [dataSource]="dataSource"
+    matSort
+    [matSortActive]="defaultSortColumn"
+    [matSortDirection]="defaultSortDirection">
     <!-- Optional selection column -->
     <ng-container matColumnDef="$selection">
       <mat-header-cell *matHeaderCellDef>
@@ -86,13 +90,13 @@
         <ng-container *ngFor="let customAction of customActions">
           <div [matTooltip]="customAction.hoverText">
             <button
-            mat-icon-button
-            (click)="customAction.onClick && customAction.onClick(row)"            
-            [disabled]="customAction.disabled"
-            *ngIf="!customAction.checkIfVisible || customAction.checkIfVisible(row)">
-            <mat-icon>{{ customAction.icon }}</mat-icon>
-          </button>
-          </div>          
+              mat-icon-button
+              (click)="customAction.onClick && customAction.onClick(row)"
+              [disabled]="customAction.disabled"
+              *ngIf="!customAction.checkIfVisible || customAction.checkIfVisible(row)">
+              <mat-icon>{{ customAction.icon }}</mat-icon>
+            </button>
+          </div>
         </ng-container>
       </mat-cell>
     </ng-container>
@@ -154,7 +158,7 @@
     <mat-row *matRowDef="let row; columns: visibleColumns" [ngClass]="!!rowNgClass && rowNgClass(row)"></mat-row>
 
     <!-- No Data Row -->
-    <tr class="mat-row" *matNoDataRow>
+    <tr class="mat-row h-12 flex items-center" *matNoDataRow>
       <td class="mat-cell pl-3" colspan="4">
         {{ 'shared.error.message_no_item' | transloco }}
       </td>

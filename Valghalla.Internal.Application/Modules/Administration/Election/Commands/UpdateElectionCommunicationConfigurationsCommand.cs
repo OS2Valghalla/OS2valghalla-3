@@ -14,6 +14,8 @@ namespace Valghalla.Internal.Application.Modules.Administration.Election.Command
         public Guid? InvitationReminderCommunicationTemplateId { get; set; }
         public Guid? TaskReminderCommunicationTemplateId { get; set; }
         public Guid? RetractedInvitationCommunicationTemplateId { get; set; }
+        public Guid? RemovedFromTaskCommunicationTemplateId { get; set; }
+        public Guid? RemovedByValidationCommunicationTemplateId { get; set; }
         public IList<UpdateElectionTaskTypeCommunicationTemplateRequest> ElectionTaskTypeCommunicationTemplates { get; set; } = new List<UpdateElectionTaskTypeCommunicationTemplateRequest>();
     }
 

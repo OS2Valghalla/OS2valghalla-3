@@ -15,7 +15,7 @@
           </form>
           <div class="flex justify-start">
             <button mat-button matStepperPrevious *ngIf="!isFirst">{{ 'shared.action.back' | transloco }}</button>
-            <button mat-button matStepperNext *ngIf="!isLast">{{ 'shared.action.next' | transloco }}</button>
+            <button mat-button matStepperNext *ngIf="!isLast" [disabled]="!step.formGroup.valid">{{ 'shared.action.next' | transloco }}</button>
           </div>
         </div>
       </mat-step>
@@ -43,7 +43,7 @@
         *ngIf="!hideOkButton"
         (click)="onSubmit()"
         color="primary"
-        [disabled]="submitting || deleting || !isWizardValid() || isWizardPristine()">
+        [disabled]="submitting || deleting || !isWizardValid() || isWizardPristine() || isLastStepRequired()">
         <span *ngIf="!submitting">{{ this.submitButtonText && this.submitButtonText.length > 0 ? this.submitButtonText : 'shared.dialog.ok' | transloco }}</span>
         <mat-icon *ngIf="submitting">
           <mat-spinner color="primary" diameter="18"></mat-spinner>

@@ -63,7 +63,10 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
                                 Accepted = false,
                                 InvitationSent = false,
                                 RegistrationSent = false,
-                                HashValue = hashValue
+                                HashValue = hashValue,
+                                InvitationDate = null,
+                                InvitationReminderDate = null,
+                                TaskReminderDate = null
                             };
 
                             await taskAssignments.AddAsync(newTask, cancellationToken);
@@ -100,6 +103,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
             task.InvitationCode = Guid.NewGuid();
             task.InvitationSent = false;
             task.RegistrationSent = false;
+            task.InvitationDate = null;
+            task.InvitationReminderDate = null;
+            task.TaskReminderDate = null;
 
             taskAssignments.Update(task);
 
@@ -126,6 +132,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
             task.InvitationCode = Guid.NewGuid();
             task.InvitationSent = false;
             task.RegistrationSent = false;
+            task.InvitationDate= null;
+            task.InvitationReminderDate = null;
+            task.TaskReminderDate = null;
 
             taskAssignments.Update(task);
 
@@ -153,6 +162,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
             task.InvitationCode = null;
             task.InvitationSent = false;
             task.RegistrationSent = false;
+            task.InvitationDate = null;
+            task.InvitationReminderDate = null;
+            task.TaskReminderDate = null;
 
             taskAssignments.Update(task);
 
@@ -186,6 +198,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
                 task.InvitationCode = null;
                 task.InvitationSent = false;
                 task.RegistrationSent = false;
+                task.InvitationDate = null;
+                task.InvitationReminderDate = null;
+                task.TaskReminderDate = null;
             }
             else
             {

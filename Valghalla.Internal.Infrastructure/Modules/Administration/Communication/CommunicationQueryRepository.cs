@@ -47,18 +47,34 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Communication
 
         public async Task<bool> CheckIfCommunicationTemplateUsedInElectionAsync(DeleteCommunicationTemplateCommand command, CancellationToken cancellationToken)
         {
-            var usedInElection = await elections.AnyAsync(i => i.ConfirmationOfRegistrationCommunicationTemplateId == command.Id || i.ConfirmationOfCancellationCommunicationTemplateId == command.Id
-                || i.InvitationCommunicationTemplateId == command.Id || i.InvitationReminderCommunicationTemplateId == command.Id
-                || i.TaskReminderCommunicationTemplateId == command.Id || i.RetractedInvitationCommunicationTemplateId == command.Id);
+            var usedInElection = await elections
+                .Where(i =>
+                    i.ConfirmationOfRegistrationCommunicationTemplateId == command.Id ||
+                    i.ConfirmationOfCancellationCommunicationTemplateId == command.Id ||
+                    i.InvitationCommunicationTemplateId == command.Id ||
+                    i.InvitationReminderCommunicationTemplateId == command.Id ||
+                    i.TaskReminderCommunicationTemplateId == command.Id ||
+                    i.RetractedInvitationCommunicationTemplateId == command.Id ||
+                    i.RemovedFromTaskCommunicationTemplateId == command.Id ||
+                    i.RemovedByValidationCommunicationTemplateId == command.Id)
+                .AnyAsync(cancellationToken);
 
             if (usedInElection)
             {
                 return usedInElection;
             }
 
-            return await electionTaskTypeCommunicationTemplates.AnyAsync(i => i.ConfirmationOfRegistrationCommunicationTemplateId == command.Id || i.ConfirmationOfCancellationCommunicationTemplateId == command.Id
-                || i.InvitationCommunicationTemplateId == command.Id || i.InvitationReminderCommunicationTemplateId == command.Id
-                || i.TaskReminderCommunicationTemplateId == command.Id || i.RetractedInvitationCommunicationTemplateId == command.Id);
+            return await electionTaskTypeCommunicationTemplates
+                .Where(i =>
+                    i.ConfirmationOfRegistrationCommunicationTemplateId == command.Id ||
+                    i.ConfirmationOfCancellationCommunicationTemplateId == command.Id ||
+                    i.InvitationCommunicationTemplateId == command.Id ||
+                    i.InvitationReminderCommunicationTemplateId == command.Id ||
+                    i.TaskReminderCommunicationTemplateId == command.Id ||
+                    i.RetractedInvitationCommunicationTemplateId == command.Id ||
+                    i.RemovedFromTaskCommunicationTemplateId == command.Id ||
+                    i.RemovedByValidationCommunicationTemplateId == command.Id)
+                .AnyAsync(cancellationToken);
         }
 
         public async Task<CommunicationTemplateDetailsResponse?> GetCommunicationTemplateAsync(GetCommunicationTemplateQuery query, CancellationToken cancellationToken)

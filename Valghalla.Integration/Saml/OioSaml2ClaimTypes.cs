@@ -9,6 +9,8 @@
         /// the old OIO SAML 2 AssuranceLevel attribute in the produced SAML Assertion. 
         /// </summary>
         public const string AssuranceLevel = "dk:gov:saml:attribute:AssuranceLevel";
+        public const string SpecVersion = "dk:gov:saml:attribute:specVersion";
+        public const string PrivilegesIntermediate = "dk:gov:saml:attribute:Privileges_intermediate";
         //public const string AssuranceLevel = "dk:gov:saml:attribute:AssuranceLevel";
     }
 }

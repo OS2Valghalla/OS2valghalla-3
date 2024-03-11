@@ -5,8 +5,6 @@ using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Administration.Election.Commands;
 using Valghalla.Internal.Application.Modules.Administration.Election.Interfaces;
-using Valghalla.Internal.Application.Modules.Tasks.Commands;
-using Valghalla.Internal.Application.Modules.Tasks.Requests;
 
 namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
 {
@@ -44,7 +42,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                 InvitationCommunicationTemplateId = command.InvitationCommunicationTemplateId,
                 InvitationReminderCommunicationTemplateId = command.InvitationReminderCommunicationTemplateId,
                 TaskReminderCommunicationTemplateId = command.TaskReminderCommunicationTemplateId,
-                RetractedInvitationCommunicationTemplateId = command.RetractedInvitationCommunicationTemplateId
+                RetractedInvitationCommunicationTemplateId = command.RetractedInvitationCommunicationTemplateId,
+                RemovedFromTaskCommunicationTemplateId = command.RemovedFromTaskCommunicationTemplateId,
+                RemovedByValidationCommunicationTemplateId = command.RemovedByValidationCommunicationTemplateId
             };
 
             var electionWorkLocationEntities = command.WorkLocationIds.Select(workLocationId => new ElectionWorkLocationEntity()
@@ -62,7 +62,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                 InvitationCommunicationTemplateId = electionTaskTypeCommunicationTemplate.InvitationCommunicationTemplateId,
                 InvitationReminderCommunicationTemplateId = electionTaskTypeCommunicationTemplate.InvitationReminderCommunicationTemplateId,
                 TaskReminderCommunicationTemplateId = electionTaskTypeCommunicationTemplate.TaskReminderCommunicationTemplateId,
-                RetractedInvitationCommunicationTemplateId = electionTaskTypeCommunicationTemplate.RetractedInvitationCommunicationTemplateId
+                RetractedInvitationCommunicationTemplateId = electionTaskTypeCommunicationTemplate.RetractedInvitationCommunicationTemplateId,
+                RemovedFromTaskCommunicationTemplateId = electionTaskTypeCommunicationTemplate.RemovedFromTaskCommunicationTemplateId,
+                RemovedByValidationCommunicationTemplateId = electionTaskTypeCommunicationTemplate.RemovedByValidationCommunicationTemplateId
             });
 
             await elections.AddAsync(entity, cancellationToken);
@@ -82,6 +84,23 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
 
             elections.Update(entity);
 
+            if (command.WorkLocationIds.Any())
+            {
+                var workLocationIds = command.WorkLocationIds;
+                var existingElectionWorkLocations = await electionWorkLocations.Where(item => item.ElectionId == entity.Id).ToListAsync(cancellationToken);
+
+                workLocationIds = workLocationIds.Where(workLocationId => !existingElectionWorkLocations.Any(item => item.WorkLocationId == workLocationId));
+
+                var electionWorkLocationEntities = workLocationIds.Select(workLocationId => new ElectionWorkLocationEntity()
+                {
+                    ElectionId = entity.Id,
+                    WorkLocationId = workLocationId,
+                });
+
+                if (electionWorkLocationEntities.Any())
+                    await electionWorkLocations.AddRangeAsync(electionWorkLocationEntities, cancellationToken);
+            }
+
             await dataContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -90,7 +109,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
             var sourceElection = await elections.SingleAsync(i => i.Id == command.SourceElectionId, cancellationToken);
 
             var sourceElectionTasks = await taskAssignments
-                .Where(i => i.ElectionId == command.SourceElectionId && command.WorkLocationIds.Contains(i.WorkLocationId) 
+                .Where(i => i.ElectionId == command.SourceElectionId && command.WorkLocationIds.Contains(i.WorkLocationId)
                 && i.TaskDate >= sourceElection.ElectionDate.AddDays(-1 * command.DaysBeforeElectionDate)
                 && i.TaskDate <= sourceElection.ElectionDate.AddDays(command.DaysAfterElectionDate))
                 .OrderBy(x => x.TaskDate).ThenBy(x => x.Id).ToListAsync(cancellationToken);
@@ -112,7 +131,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                 InvitationCommunicationTemplateId = command.InvitationCommunicationTemplateId,
                 InvitationReminderCommunicationTemplateId = command.InvitationReminderCommunicationTemplateId,
                 TaskReminderCommunicationTemplateId = command.TaskReminderCommunicationTemplateId,
-                RetractedInvitationCommunicationTemplateId = command.RetractedInvitationCommunicationTemplateId
+                RetractedInvitationCommunicationTemplateId = command.RetractedInvitationCommunicationTemplateId,
+                RemovedFromTaskCommunicationTemplateId = command.RemovedFromTaskCommunicationTemplateId,
+                RemovedByValidationCommunicationTemplateId = command.RemovedByValidationCommunicationTemplateId,
             };
 
             var electionWorkLocationEntities = command.WorkLocationIds.Select(workLocationId => new ElectionWorkLocationEntity()
@@ -130,10 +151,12 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                 InvitationCommunicationTemplateId = electionTaskTypeCommunicationTemplate.InvitationCommunicationTemplateId,
                 InvitationReminderCommunicationTemplateId = electionTaskTypeCommunicationTemplate.InvitationReminderCommunicationTemplateId,
                 TaskReminderCommunicationTemplateId = electionTaskTypeCommunicationTemplate.TaskReminderCommunicationTemplateId,
-                RetractedInvitationCommunicationTemplateId = electionTaskTypeCommunicationTemplate.RetractedInvitationCommunicationTemplateId
+                RetractedInvitationCommunicationTemplateId = electionTaskTypeCommunicationTemplate.RetractedInvitationCommunicationTemplateId,
+                RemovedFromTaskCommunicationTemplateId = electionTaskTypeCommunicationTemplate.RemovedFromTaskCommunicationTemplateId,
+                RemovedByValidationCommunicationTemplateId = electionTaskTypeCommunicationTemplate.RemovedByValidationCommunicationTemplateId,
             });
 
-            foreach(var sourceElectionTask in sourceElectionTasks)
+            foreach (var sourceElectionTask in sourceElectionTasks)
             {
                 var taskDate = command.ElectionDate.AddDays(sourceElectionTask.TaskDate.Subtract(sourceElection.ElectionDate).Days);
                 var hashValue = await CreateTaskAssignmentHashValueAsync(newElectionId, sourceElectionTask.WorkLocationId, sourceElectionTask.TeamId, sourceElectionTask.TaskTypeId, taskDate);
@@ -150,7 +173,10 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                     Accepted = false,
                     InvitationSent = false,
                     RegistrationSent = false,
-                    HashValue = hashValue
+                    HashValue = hashValue,
+                    InvitationDate = null,
+                    InvitationReminderDate = null,
+                    TaskReminderDate = null
                 };
                 await taskAssignments.AddAsync(newTask, cancellationToken);
             }
@@ -173,6 +199,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
             entity.InvitationReminderCommunicationTemplateId = command.InvitationReminderCommunicationTemplateId;
             entity.TaskReminderCommunicationTemplateId = command.TaskReminderCommunicationTemplateId;
             entity.RetractedInvitationCommunicationTemplateId = command.RetractedInvitationCommunicationTemplateId;
+            entity.RemovedFromTaskCommunicationTemplateId = command.RemovedFromTaskCommunicationTemplateId;
+            entity.RemovedByValidationCommunicationTemplateId = command.RemovedByValidationCommunicationTemplateId;
 
             var existingElectionTaskTypeCommunicationTemplates = await electionTaskTypeCommunicationTemplates.Where(i => i.ElectionId == command.Id).ToArrayAsync(cancellationToken);
 
@@ -191,7 +219,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                      InvitationCommunicationTemplateId = i.InvitationCommunicationTemplateId,
                      InvitationReminderCommunicationTemplateId = i.InvitationReminderCommunicationTemplateId,
                      TaskReminderCommunicationTemplateId = i.TaskReminderCommunicationTemplateId,
-                     RetractedInvitationCommunicationTemplateId = i.RetractedInvitationCommunicationTemplateId
+                     RetractedInvitationCommunicationTemplateId = i.RetractedInvitationCommunicationTemplateId,
+                     RemovedFromTaskCommunicationTemplateId = i.RemovedFromTaskCommunicationTemplateId,
+                     RemovedByValidationCommunicationTemplateId = i.RemovedByValidationCommunicationTemplateId,
                  });
 
             elections.Update(entity);
@@ -215,6 +245,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                 electionTaskTypeCommunicationTemplateEntityToUpdate.InvitationReminderCommunicationTemplateId = commandElectionTaskTypeCommunicationTemplate.InvitationReminderCommunicationTemplateId;
                 electionTaskTypeCommunicationTemplateEntityToUpdate.TaskReminderCommunicationTemplateId = commandElectionTaskTypeCommunicationTemplate.TaskReminderCommunicationTemplateId;
                 electionTaskTypeCommunicationTemplateEntityToUpdate.RetractedInvitationCommunicationTemplateId = commandElectionTaskTypeCommunicationTemplate.RetractedInvitationCommunicationTemplateId;
+                electionTaskTypeCommunicationTemplateEntityToUpdate.RemovedFromTaskCommunicationTemplateId = commandElectionTaskTypeCommunicationTemplate.RemovedFromTaskCommunicationTemplateId;
+                electionTaskTypeCommunicationTemplateEntityToUpdate.RemovedByValidationCommunicationTemplateId = commandElectionTaskTypeCommunicationTemplate.RemovedByValidationCommunicationTemplateId;
                 electionTaskTypeCommunicationTemplates.Update(electionTaskTypeCommunicationTemplateEntityToUpdate);
             }
 

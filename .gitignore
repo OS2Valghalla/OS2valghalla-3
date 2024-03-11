@@ -365,4 +365,9 @@ FodyWeavers.xsd
 # package-lock.json
 Valghalla.Internal.Web/package-lock.json
 Valghalla.External.Web/package-lock.json
-/Valghalla.Internal.API/appsettings.json
+
+# custom
+.vscode
+.angular
+packages.lock.json
+Environment

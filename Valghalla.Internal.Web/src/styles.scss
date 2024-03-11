@@ -42,6 +42,11 @@ body {
 ngx-mat-timepicker-time-control .mat-mdc-form-field {
   min-width: 70px !important;
 }
+
+ngx-editor a {
+  @apply text-blue-300;
+}
+
 .mat-mdc-dialog-container .mdc-dialog__content .mat-mdc-select-min-line {
   line-height: var(--mdc-dialog-supporting-text-line-height, 16px) !important;
 }
@@ -56,6 +61,6 @@ ngx-mat-timepicker-time-control .mat-mdc-form-field {
 
 @media print {
   .h-screen {
-    height: auto !important; 
+    height: auto !important;
   }
 }

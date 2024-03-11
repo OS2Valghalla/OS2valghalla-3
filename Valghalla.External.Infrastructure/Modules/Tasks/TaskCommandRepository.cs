@@ -90,6 +90,9 @@ namespace Valghalla.External.Infrastructure.Modules.Tasks
             entity.InvitationCode = null;
             entity.InvitationSent = false;
             entity.RegistrationSent = false;
+            entity.InvitationDate = null;
+            entity.InvitationReminderDate = null;
+            entity.TaskReminderDate = null;
 
             taskAssignments.Update(entity);
             await rejectedTaskAssignments.AddAsync(rejectedTaskAssignmentEntity, cancellationToken);
@@ -122,6 +125,9 @@ namespace Valghalla.External.Infrastructure.Modules.Tasks
             entity.InvitationCode = null;
             entity.InvitationSent = false;
             entity.RegistrationSent = false;
+            entity.InvitationDate = null;
+            entity.InvitationReminderDate = null;
+            entity.TaskReminderDate = null;
 
             taskAssignments.Update(entity);
             await rejectedTaskAssignments.AddAsync(rejectedTaskAssignmentEntity, cancellationToken);

@@ -20,22 +20,22 @@ namespace Valghalla.External.Application.Modules.App.Queries
     internal class GetExternalUserQueryHandler : IQueryHandler<GetExternalUserQuery>
     {
         private readonly IAppQueryRepository appQueryRepository;
-        private readonly IAppMemoryCache appMemoryCache;
+        private readonly ITenantMemoryCache tenantMemoryCache;
 
-        public GetExternalUserQueryHandler(IAppQueryRepository appQueryRepository, IAppMemoryCache appMemoryCache)
+        public GetExternalUserQueryHandler(IAppQueryRepository appQueryRepository, ITenantMemoryCache tenantMemoryCache)
         {
             this.appQueryRepository = appQueryRepository;
-            this.appMemoryCache = appMemoryCache;
+            this.tenantMemoryCache = tenantMemoryCache;
         }
 
         public async Task<Response> Handle(GetExternalUserQuery query, CancellationToken cancellationToken)
         {
             var cacheKey = UserContext.GetCacheKey(query.CprNumber);
-            var cachedValue = await appMemoryCache.GetOrCreateAsync(cacheKey, () => appQueryRepository.GetUserAsync(query, cancellationToken));
+            var cachedValue = await tenantMemoryCache.GetOrCreateAsync(cacheKey, () => appQueryRepository.GetUserAsync(query, cancellationToken));
 
             if (cachedValue == null)
             {
-                appMemoryCache.Remove(cacheKey);
+                tenantMemoryCache.Remove(cacheKey);
             }
 
             return Response.Ok(cachedValue);

@@ -1,9 +1,9 @@
-import { Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
+import { Component, ContentChildren, EventEmitter, Input, Output, QueryList, ViewChild } from '@angular/core';
 import { SubSink } from 'subsink';
 import { ReplaySubject, finalize } from 'rxjs';
 import { WizardEvent } from 'src/shared/models/ux/wizard';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { CdkStepper, StepperSelectionEvent } from '@angular/cdk/stepper';
 import { GlobalStateService } from 'src/app/global-state.service';
 import { RoutingNodes } from 'src/shared/constants/routing-nodes';
 import { ElectionShared } from 'src/shared/models/election/election-shared';
@@ -41,6 +41,8 @@ export class WizardComponent {
 
   @Input() hideOkButton?: boolean;
 
+  @Input() submitOnLastStep?: boolean;
+
   submitting: boolean = false;
   deleting: boolean = false;
 
@@ -49,6 +51,7 @@ export class WizardComponent {
   state$ = this.state.asObservable();
 
   @ContentChildren(WizardStepComponent, { descendants: false }) readonly wizardSteps!: QueryList<WizardStepComponent>;
+  @ViewChild(CdkStepper) readonly stepper: CdkStepper;
 
   constructor(
     private readonly router: Router,
@@ -81,6 +84,10 @@ export class WizardComponent {
     return !this.wizardSteps.some((step) => !step.formGroup.pristine);
   }
 
+  isLastStepRequired() {
+    return this.submitOnLastStep && this.stepper.selectedIndex != this.wizardSteps.length - 1;
+  }
+
   navigate(path?: any[]) {
     if (path) {
       this.router.navigate(path);
@@ -95,7 +102,7 @@ export class WizardComponent {
   }
 
   onSubmit() {
-    if (!this.isWizardValid()) return;
+    if (!this.isWizardValid() || this.isLastStepRequired()) return;
 
     this.submitting = true;
     this.wizardSteps.forEach((step) => {

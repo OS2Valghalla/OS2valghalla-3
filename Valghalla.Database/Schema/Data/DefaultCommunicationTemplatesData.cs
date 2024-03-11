@@ -43,5 +43,20 @@ namespace Valghalla.Database.Schema.Data
                 " + (byte)CommunicationTemplateType.DigitalPost + @", true, '" + DateTime.MinValue.AddYears(1970).ToUniversalTime() + @"', '6504020c-3261-41f4-9ba7-ec380f7ad200')
                 on conflict do nothing;
                 ";
+
+        internal static string InitData2()
+            => $@"
+                insert into ""CommunicationTemplate""(""Id"", ""Title"", ""Subject"", ""Content"", ""TemplateType"", ""IsDefaultTemplate"", ""CreatedAt"", ""CreatedBy"") 
+                values('" + Constants.DefaultCommunicationTemplates.RemovedFromTaskStringId + @"', 'Standard - Fjernet fra opgave', 'Fjernet som !task_type ved !election',
+                '<p>Kære !name</p><p>Du er blevet fjernet fra opgaven som !task_type d. !task_date i forbindelse med !election. Det skyldes, at en medarbejder eller teamansvarlig har fjernet dig fra den.</p><p>Hvis du mener, at det er en fejl, kan du kontakte os. Find kontaktoplysninger her: !contact</p><p>Med venlig hilsen<br />Valgsekretariatet<br />!municipality</p>',
+                " + (byte)CommunicationTemplateType.DigitalPost + @", true, '" + DateTime.MinValue.AddYears(1970).ToUniversalTime() + @"', '6504020c-3261-41f4-9ba7-ec380f7ad200')
+                on conflict do nothing;
+
+                insert into ""CommunicationTemplate""(""Id"", ""Title"", ""Subject"", ""Content"", ""TemplateType"", ""IsDefaultTemplate"", ""CreatedAt"", ""CreatedBy"") 
+                values('" + Constants.DefaultCommunicationTemplates.RemovedByValidationStringId + @"', 'Standard - Fjernet pga. nye CPR-oplysninger', 'Fjernet som !task_type ved !election',
+                '<p>Kære !name</p><p>Du er blevet fjernet fra opgaven som !task_type d. !task_date i forbindelse med !election. Det skyldes, at vi har modtaget nye oplysninger fra CPR-registeret, som gør, at du ikke længere overholder kravene til denne opgave.</p><p>Hvis du mener, at det er en fejl, kan du kontakte os. Find kontaktoplysninger her: !contact</p><p>Med venlig hilsen<br />Valgsekretariatet<br />!municipality</p>',
+                " + (byte)CommunicationTemplateType.DigitalPost + @", true, '" + DateTime.MinValue.AddYears(1970).ToUniversalTime() + @"', '6504020c-3261-41f4-9ba7-ec380f7ad200')
+                on conflict do nothing;
+                ";
     }
 }

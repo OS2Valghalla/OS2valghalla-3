@@ -8,11 +8,11 @@ namespace Valghalla.External.Application.Modules.App.Commands
 
     internal class ClearExternalUserCacheCommandHandler : ICommandHandler<ClearExternalUserCacheCommand, Response>
     {
-        private readonly IAppMemoryCache appMemoryCache;
+        private readonly ITenantMemoryCache tenantMemoryCache;
 
-        public ClearExternalUserCacheCommandHandler(IAppMemoryCache appMemoryCache)
+        public ClearExternalUserCacheCommandHandler(ITenantMemoryCache tenantMemoryCache)
         {
-            this.appMemoryCache = appMemoryCache;
+            this.tenantMemoryCache = tenantMemoryCache;
         }
 
         public async Task<Response> Handle(ClearExternalUserCacheCommand command, CancellationToken cancellationToken)
@@ -20,7 +20,7 @@ namespace Valghalla.External.Application.Modules.App.Commands
             foreach (var cpr in command.CprNumbers)
             {
                 var cacheKey = UserContext.GetCacheKey(cpr);
-                appMemoryCache.Remove(cacheKey);
+                tenantMemoryCache.Remove(cacheKey);
             }
 
             return await Task.FromResult(Response.Ok());

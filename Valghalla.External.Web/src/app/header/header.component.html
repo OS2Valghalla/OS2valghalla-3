@@ -5,26 +5,32 @@
 <ng-template #portalHeader>
   <div class="portal-header portal-header-compact">
     <div class="container portal-header-inner">
-      <img [src]="municipalityLogoUrl" [ariaLabel]="webPage?.municipalityName" />
-      <button class="function-link button-menu-open js-menu-open ml-auto d-print-none" aria-haspopup="dialog">
-        <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#menu"></use></svg>
-        {{ 'app.header.menu' | transloco }}
-      </button>
-
-      <div class="portal-info">
-        <p class="user" *ngIf="currentUser">
-          <span class="username weight-semibold">{{ currentUser.name }}</span>
-          <br/>
-          <span *ngIf="userTeamNames">{{ userTeamNames }}</span>
-        </p>
-
-        <button *ngIf="!signedIn && !focused" class="button button-secondary d-print-none" (click)="login()">
-          {{ 'app.header.login' | transloco }}
-        </button>
-
-        <button *ngIf="signedIn" class="button button-secondary d-print-none" (click)="logout()">
-          {{ 'app.header.logout' | transloco }}
-        </button>
+      <div class="row no-gutters w-percent-100">
+        <div class="col-4 d-flex">
+          <img [src]="municipalityLogoUrl" [ariaLabel]="webPage?.municipalityName" />
+        </div>
+        <div class="col-8 d-flex">
+          <button class="function-link button-menu-open js-menu-open ml-auto d-print-none" aria-haspopup="dialog">
+            <svg class="icon-svg" focusable="false" aria-hidden="true"><use xlink:href="#menu"></use></svg>
+            {{ 'app.header.menu' | transloco }}
+          </button>
+    
+          <div class="portal-info">
+            <p class="user" *ngIf="currentUser">
+              <span class="username weight-semibold">{{ currentUser.name }}</span>
+              <br/>
+              <span *ngIf="userTeamNames">{{ userTeamNames }}</span>
+            </p>
+    
+            <button *ngIf="!signedIn && !focused" class="button button-secondary d-print-none" (click)="login()">
+              {{ 'app.header.login' | transloco }}
+            </button>
+    
+            <button *ngIf="signedIn" class="button button-secondary d-print-none" (click)="logout()">
+              {{ 'app.header.logout' | transloco }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

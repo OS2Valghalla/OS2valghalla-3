@@ -1,5 +1,4 @@
 ﻿using Valghalla.Internal.Application.Modules.Administration.Communication.Responses;
-using Valghalla.Internal.Application.Modules.Administration.Election.Requests;
 
 namespace Valghalla.Internal.Application.Modules.Administration.Election.Responses
 {
@@ -13,6 +12,8 @@ namespace Valghalla.Internal.Application.Modules.Administration.Election.Respons
         public CommunicationTemplateListingItemResponse? InvitationReminderCommunicationTemplate { get; set; }
         public CommunicationTemplateListingItemResponse? TaskReminderCommunicationTemplate { get; set; }
         public CommunicationTemplateListingItemResponse? RetractedInvitationCommunicationTemplate { get; set; }
+        public CommunicationTemplateListingItemResponse? RemovedFromTaskCommunicationTemplate { get; set; }
+        public CommunicationTemplateListingItemResponse? RemovedByValidationCommunicationTemplate { get; set; }
         public IList<ElectionTaskTypeCommunicationTemplateResponse> ElectionTaskTypeCommunicationTemplates { get; set; } = new List<ElectionTaskTypeCommunicationTemplateResponse>();
 
     }

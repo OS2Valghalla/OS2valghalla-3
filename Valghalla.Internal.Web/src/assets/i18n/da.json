@@ -116,7 +116,6 @@
       "online_manual": "Online manual",
       "url_online_manual": "https://viden.os2valghalla.dk",
       "link_to_external_web": "Link til ekstern hjemmeside",
-      "url_link_to_external_web": "https://oiosaml-net.dk:4600/",
       "technical_documentation": "Teknisk dokumentation",
       "url_technical_documentation": "https://os2valghalla.readthedocs.io"
     },
@@ -129,6 +128,9 @@
     }
   },
   "shared": {
+    "paginator": {
+      "items_per_page": "Antal pr. side"
+    },
     "notification": {
       "close": "Luk"
     },
@@ -738,12 +740,12 @@
         "request": "Anmod"
       },
       "event_table": {
-          "participant": "Deltager",
-          "list": "Liste",
-          "team_responsible": "Teamansvarlig",
-          "work_location_responsible": "Arbejdsstedansvarlig",
-          "api": "API",
-          "others": "Andre"
+        "participant": "Deltager",
+        "list": "Liste",
+        "team_responsible": "Teamansvarlig",
+        "work_location_responsible": "Arbejdsstedansvarlig",
+        "api": "API",
+        "others": "Andre"
       },
       "audit_log_listing": {
         "title": "Revisionslog",
