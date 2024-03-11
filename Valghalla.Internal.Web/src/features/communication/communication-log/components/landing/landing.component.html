@@ -63,9 +63,7 @@
         'communication.communication_log.label.message' | transloco
       }}</ng-container>
       <ng-container *appCellDef="typing; let row">
-        <a class="hover:underline" href="" (click)="$event.preventDefault(); openDetails(row)">{{
-          row.shortMessage
-        }}</a>
+        {{ row.shortMessage }}
       </ng-container>
     </ng-container>
 
@@ -80,7 +78,11 @@
       <ng-container *appHeaderCellDef="typing">{{
         'communication.communication_log.label.status' | transloco
       }}</ng-container>
-      <ng-container *appCellDef="typing; let row">{{ row.status?.text | transloco }} </ng-container>
+      <ng-container *appCellDef="typing; let row"
+        ><a class="hover:underline" href="" (click)="$event.preventDefault(); openDetails(row)">{{
+          row.status?.text | transloco
+        }}</a></ng-container
+      >
     </ng-container>
   </app-table>
 </app-card>

@@ -1,5 +1,4 @@
-﻿using Valghalla.Application.Cache;
-using Valghalla.Application.Secret;
+﻿using Valghalla.Application.Secret;
 using Valghalla.Application.Tenant;
 using Valghalla.External.API.Auth;
 
@@ -11,20 +10,17 @@ namespace Valghalla.External.API.Middlewares
         private readonly IConfiguration configuration;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly ISecretService secretService;
-        private readonly IAppMemoryCache memoryCache;
 
         public TenantContextHandlingMiddleware(
             TenantContextInternalProvider internalProvider,
             IConfiguration configuration,
             IWebHostEnvironment webHostEnvironment,
-            ISecretService secretService,
-            IAppMemoryCache memoryCache)
+            ISecretService secretService)
         {
             this.internalProvider = internalProvider;
             this.configuration = configuration;
             this.webHostEnvironment = webHostEnvironment;
             this.secretService = secretService;
-            this.memoryCache = memoryCache;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)

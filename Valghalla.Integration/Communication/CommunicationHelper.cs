@@ -44,6 +44,86 @@ namespace Valghalla.Integration.Communication
             return true;
         }
 
+        public async Task<bool> ValidateRemovedFromTaskAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Task assignment no longer exists (taskAssignmentId = {taskAssignmentId})");
+
+            if (!taskAssignment.Active) return false;
+
+            return true;
+        }
+
+        public async Task<bool> ValidateTaskInvitationReminderAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Task assignment no longer exists (taskAssignmentId = {taskAssignmentId})");
+
+            if (!taskAssignment.Active) return false;
+
+            if (!taskAssignment.ParticipantId.HasValue)
+            {
+                throw new Exception($"Task assignment has no participant assigned (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            if (taskAssignment.ParticipantId.Value != participantId)
+            {
+                throw new Exception($"Task assignment's participant and target participant are not the same (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            if (!taskAssignment.InvitationSent)
+            {
+                throw new Exception($"Task assignment invitation hasn't been sent (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            if (taskAssignment.Responsed)
+            {
+                throw new Exception($"Task assignment already responded (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            return true;
+        }
+
+        public async Task<bool> ValidateTaskReminderAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Task assignment no longer exists (taskAssignmentId = {taskAssignmentId})");
+
+            if (!taskAssignment.Active) return false;
+
+            if (!taskAssignment.ParticipantId.HasValue)
+            {
+                throw new Exception($"Task assignment has no participant assigned (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            if (taskAssignment.ParticipantId.Value != participantId)
+            {
+                throw new Exception($"Task assignment's participant and target participant are not the same (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            if (!taskAssignment.InvitationSent)
+            {
+                throw new Exception($"Task assignment invitation hasn't been sent (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            if (!taskAssignment.Responsed)
+            {
+                throw new Exception($"Task assignment hasn't been responded (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            if (!taskAssignment.Accepted)
+            {
+                throw new Exception($"Task assignment hasn't been accepted (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            if (taskAssignment.ReminderDate.HasValue)
+            {
+                throw new Exception($"Task assignment reminder has been sent (taskAssignmentId = {taskAssignmentId})");
+            }
+
+            return true;
+        }
+
         public async Task<bool> ValidateTaskRegistrationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
@@ -70,6 +150,16 @@ namespace Valghalla.Integration.Communication
             {
                 throw new Exception($"Task assignment is not responsed or not accepted (taskAssignmentId = {taskAssignmentId})");
             }
+
+            return true;
+        }
+
+        public async Task<bool> ValidateTaskInvitationRetractedAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Task assignment no longer exists (taskAssignmentId = {taskAssignmentId})");
+
+            if (!taskAssignment.Active) return false;
 
             return true;
         }

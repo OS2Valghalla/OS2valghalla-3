@@ -22,22 +22,22 @@ namespace Valghalla.Internal.Application.Modules.App.Queries
     internal sealed class GetInternalUserQueryHandler : IQueryHandler<GetInternalUserQuery>
     {
         private readonly IAppUserQueryRepository appUserQueryRepository;
-        private readonly IAppMemoryCache memoryCache;
+        private readonly ITenantMemoryCache tenantMemoryCache;
 
-        public GetInternalUserQueryHandler(IAppUserQueryRepository appUserQueryRepository, IAppMemoryCache memoryCache)
+        public GetInternalUserQueryHandler(IAppUserQueryRepository appUserQueryRepository, ITenantMemoryCache tenantMemoryCache)
         {
             this.appUserQueryRepository = appUserQueryRepository;
-            this.memoryCache = memoryCache;
+            this.tenantMemoryCache = tenantMemoryCache;
         }
 
         public async Task<Response> Handle(GetInternalUserQuery query, CancellationToken cancellationToken)
         {
             var cacheKey = $"Valghalla-Internal-User-{query.CvrNumber}__{query.Serial}";
-            var cachedValue = await memoryCache.GetOrCreateAsync(cacheKey, () => appUserQueryRepository.GetUserAsync(query, cancellationToken));
+            var cachedValue = await tenantMemoryCache.GetOrCreateAsync(cacheKey, () => appUserQueryRepository.GetUserAsync(query, cancellationToken));
 
             if (cachedValue == null)
             {
-                memoryCache.Remove(cacheKey);
+                tenantMemoryCache.Remove(cacheKey);
             }
 
             return Response.Ok(cachedValue);

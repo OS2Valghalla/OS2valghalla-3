@@ -57,7 +57,13 @@
               "index": {
                 "input": "src/index.dev.html",
                 "output": "src/index.html"
-              }
+              },
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -72,11 +78,7 @@
               "browserTarget": "Valghalla.Internal.Web:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "host": "oiosaml-net.dk",
-            "port": 4200
-          }
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

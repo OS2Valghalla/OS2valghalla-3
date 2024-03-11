@@ -12,6 +12,8 @@ namespace Valghalla.Database.Entities.Tables
         public Guid? InvitationReminderCommunicationTemplateId { get; set; }
         public Guid? TaskReminderCommunicationTemplateId { get; set; }
         public Guid? RetractedInvitationCommunicationTemplateId { get; set; }
+        public Guid? RemovedFromTaskCommunicationTemplateId { get; set; }
+        public Guid? RemovedByValidationCommunicationTemplateId { get; set; }
         public DateTime CreatedAt { get; set; }
         public Guid CreatedBy { get; set; }
         public DateTime? ChangedAt { get; set; }
@@ -26,5 +28,7 @@ namespace Valghalla.Database.Entities.Tables
         public virtual CommunicationTemplateEntity? InvitationReminderCommunicationTemplate { get; set; }
         public virtual CommunicationTemplateEntity? TaskReminderCommunicationTemplate { get; set; }
         public virtual CommunicationTemplateEntity? RetractedInvitationCommunicationTemplate { get; set; }
+        public virtual CommunicationTemplateEntity? RemovedFromTaskCommunicationTemplate { get; set; }
+        public virtual CommunicationTemplateEntity? RemovedByValidationCommunicationTemplate { get; set; }
     }
 }

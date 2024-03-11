@@ -12,13 +12,13 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
     internal class TeamQueryRepository : ITeamQueryRepository
     {
         private readonly IQueryable<TeamEntity> teams;
-        private readonly IQueryable<TaskAssignmentEntity> taskAssignments;
+        private readonly IQueryable<TeamMemberEntity> teamMembers;
         private readonly IMapper mapper;
 
         public TeamQueryRepository(DataContext dataContext, IMapper mapper)
         {
             teams = dataContext.Set<TeamEntity>().AsNoTracking();
-            taskAssignments = dataContext.Set<TaskAssignmentEntity>().AsNoTracking();
+            teamMembers = dataContext.Set<TeamMemberEntity>().AsNoTracking();
             this.mapper = mapper;
         }
 
@@ -57,6 +57,25 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
               .ToListAsync(cancellationToken);
 
             return entities.Select(mapper.Map<ListTeamsItemResponse>).ToList();
+        }
+
+        public async Task<bool> CheckIfTeamHasAbandonedParticipantsAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var team = await teams
+                .Include(i => i.TeamMembers)
+                .Where(i => i.Id == id)
+                .Select(i => new { i.Id, i.TeamMembers })
+                .SingleAsync(cancellationToken);
+
+            var participantIds = team.TeamMembers.Select(i => i.ParticipantId).ToArray();
+
+            var relatedTeamMembers = await teamMembers
+                .Where(i => participantIds.Contains(i.ParticipantId))
+                .ToArrayAsync(cancellationToken);
+
+            var invalid = participantIds.Any(participantId => !relatedTeamMembers.Any(i => i.ParticipantId == participantId && i.TeamId != id));
+
+            return invalid;
         }
     }
 }

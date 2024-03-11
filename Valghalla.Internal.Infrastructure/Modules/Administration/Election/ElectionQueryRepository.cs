@@ -62,14 +62,23 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
 
         public async Task<ElectionCommunicationConfigurationsResponse?> GetElectionCommunicationConfigurationsAsync(GetElectionCommunicationConfigurationsQuery query, CancellationToken cancellationToken)
         {
-            var entity = await elections.Include(i => i.ConfirmationOfRegistrationCommunicationTemplate).Include(i => i.ConfirmationOfCancellationCommunicationTemplate).Include(i => i.InvitationCommunicationTemplate)
-                .Include(i => i.InvitationReminderCommunicationTemplate).Include(i => i.TaskReminderCommunicationTemplate).Include(i => i.RetractedInvitationCommunicationTemplate)
+            var entity = await elections
+                .Include(i => i.ConfirmationOfRegistrationCommunicationTemplate)
+                .Include(i => i.ConfirmationOfCancellationCommunicationTemplate)
+                .Include(i => i.InvitationCommunicationTemplate)
+                .Include(i => i.InvitationReminderCommunicationTemplate)
+                .Include(i => i.TaskReminderCommunicationTemplate)
+                .Include(i => i.RetractedInvitationCommunicationTemplate)
+                .Include(i => i.RemovedFromTaskCommunicationTemplate)
+                .Include(i => i.RemovedByValidationCommunicationTemplate)
                 .Include(i => i.ElectionTaskTypeCommunicationTemplates).ThenInclude(i => i.ConfirmationOfRegistrationCommunicationTemplate)
                 .Include(i => i.ElectionTaskTypeCommunicationTemplates).ThenInclude(i => i.ConfirmationOfCancellationCommunicationTemplate)
                 .Include(i => i.ElectionTaskTypeCommunicationTemplates).ThenInclude(i => i.InvitationCommunicationTemplate)
                 .Include(i => i.ElectionTaskTypeCommunicationTemplates).ThenInclude(i => i.InvitationReminderCommunicationTemplate)
                 .Include(i => i.ElectionTaskTypeCommunicationTemplates).ThenInclude(i => i.TaskReminderCommunicationTemplate)
                 .Include(i => i.ElectionTaskTypeCommunicationTemplates).ThenInclude(i => i.RetractedInvitationCommunicationTemplate)
+                .Include(i => i.ElectionTaskTypeCommunicationTemplates).ThenInclude(i => i.RemovedFromTaskCommunicationTemplate)
+                .Include(i => i.ElectionTaskTypeCommunicationTemplates).ThenInclude(i => i.RemovedByValidationCommunicationTemplate)
                 .SingleOrDefaultAsync(x => x.Id == query.Id, cancellationToken);
 
             if (entity == null) return null;
@@ -86,8 +95,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                     InvitationReminderCommunicationTemplate = electionTaskTypeCommunicationTemplate.InvitationReminderCommunicationTemplate != null ? mapper.Map<CommunicationTemplateListingItemResponse>(electionTaskTypeCommunicationTemplate.InvitationReminderCommunicationTemplate) : null,
                     TaskReminderCommunicationTemplate = electionTaskTypeCommunicationTemplate.TaskReminderCommunicationTemplate != null ? mapper.Map<CommunicationTemplateListingItemResponse>(electionTaskTypeCommunicationTemplate.TaskReminderCommunicationTemplate) : null,
                     RetractedInvitationCommunicationTemplate = electionTaskTypeCommunicationTemplate.RetractedInvitationCommunicationTemplate != null ? mapper.Map<CommunicationTemplateListingItemResponse>(electionTaskTypeCommunicationTemplate.RetractedInvitationCommunicationTemplate) : null,
-                }
-                );
+                    RemovedFromTaskCommunicationTemplate = electionTaskTypeCommunicationTemplate.RemovedFromTaskCommunicationTemplate != null ? mapper.Map<CommunicationTemplateListingItemResponse>(electionTaskTypeCommunicationTemplate.RemovedFromTaskCommunicationTemplate) : null,
+                    RemovedByValidationCommunicationTemplate = electionTaskTypeCommunicationTemplate.RemovedByValidationCommunicationTemplate != null ? mapper.Map<CommunicationTemplateListingItemResponse>(electionTaskTypeCommunicationTemplate.RemovedByValidationCommunicationTemplate) : null,
+                });
             }
 
             return mappedEntity;

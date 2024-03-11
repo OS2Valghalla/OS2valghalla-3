@@ -9,14 +9,14 @@ namespace Valghalla.External.Application.Modules.App.Queries
 
     internal class GetAppLogoQueryHandler : IQueryHandler<GetAppLogoQuery>
     {
-        private readonly IAppMemoryCache appMemoryCache;
+        private readonly ITenantMemoryCache tenantMemoryCache;
         private readonly IFileStorageService fileStorageService;
 
         public GetAppLogoQueryHandler(
-            IAppMemoryCache appMemoryCache,
+            ITenantMemoryCache tenantMemoryCache,
             IFileStorageService fileStorageService)
         {
-            this.appMemoryCache = appMemoryCache;
+            this.tenantMemoryCache = tenantMemoryCache;
             this.fileStorageService = fileStorageService;
         }
 
@@ -24,7 +24,7 @@ namespace Valghalla.External.Application.Modules.App.Queries
         {
             var key = "MunicipalityLogo";
 
-            var content = await appMemoryCache.GetOrCreateAsync(key, async () =>
+            var content = await tenantMemoryCache.GetOrCreateAsync(key, async () =>
             {
                 try
                 {
@@ -44,7 +44,7 @@ namespace Valghalla.External.Application.Modules.App.Queries
 
             if (content == null)
             {
-                appMemoryCache.Remove(key);
+                tenantMemoryCache.Remove(key);
             }
 
             return Response.Ok(content);

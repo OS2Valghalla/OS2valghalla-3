@@ -116,7 +116,6 @@
       "online_manual": "Online manual",
       "url_online_manual": "https://valghalla.dk",
       "link_to_external_web": "Link to external web",
-      "url_link_to_external_web": "https://oiosaml-net.dk:4600/",
       "technical_documentation": "Technical documentation",
       "url_technical_documentation": "https://os2valghalla.readthedocs.io"
     },
@@ -129,6 +128,9 @@
     }
   },
   "shared": {
+    "paginator": {
+      "items_per_page": "Items per page"
+    },
     "notification": {
       "close": "Close"
     },
@@ -381,7 +383,8 @@
         "get_all_teams": "Error occurred when fetching all teams",
         "team_exist": "A team exists with the same name",
         "check_team_used_in_active_election": "Error occurred when checking if team used in active election",
-        "team_used_in_active_election": "Team used in an active election cannot be deleted"
+        "team_used_in_active_election": "Team used in an active election cannot be deleted",
+        "team_has_abandoned_participants": "Team will have abandoned participants if it's deleted. Please ensure affected participants move to another team before removal"
       },
       "success": {
         "create_team": "Team created successfully",
@@ -460,7 +463,11 @@
         "task_reminder": "Task reminder",
         "task_reminder_hint": "The send time is indicated on the individual task type",
         "retracted_invitation": "Retracted invitation",
-        "retracted_invitation_hint": "Issued if an invitation is no longer valid. For example if unassigned assignments are moved from one team to another"
+        "retracted_invitation_hint": "Issued if an invitation is no longer valid. For example if unassigned assignments are moved from one team to another",
+        "removed_from_task": "Removed from task",
+        "removed_from_task_hint": "Will be sent if a participant is removed from a task by a team responsible or a administrative user",
+        "removed_by_validation": "Removed by validation",
+        "removed_by_validation_hint": "Will be sent if a participant is removed from a task because of new CPR information not matching the validation requirements"
       },
       "messages": {
         "invalid_election_start_date": "Invalid start date",

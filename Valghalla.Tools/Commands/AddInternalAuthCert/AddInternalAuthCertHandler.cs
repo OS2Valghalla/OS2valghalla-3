@@ -78,13 +78,6 @@ namespace Valghalla.Tools.Commands.AddInternalAuthCert
                 .Where(i => i.Id == _identifier)
                 .FirstOrDefault();
 
-
-            if (fileReferenceEntity != null && fileReferenceEntity.FileId.HasValue)
-            {
-                Console.WriteLine("Certificate already exists");
-                return;
-            }
-
             using var stream = new MemoryStream(cert);
             var hash = CertificateUtils.ComputeSha256Hash(stream);
             var bytes = CertificateUtils.ConvertToBytes(stream);

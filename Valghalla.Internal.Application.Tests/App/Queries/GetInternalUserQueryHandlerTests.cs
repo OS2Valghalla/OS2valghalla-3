@@ -22,7 +22,7 @@ namespace Valghalla.Internal.Application.Tests.App.Queries
 
             var handler = new GetInternalUserQueryHandler(
                 _mockAppUserQueryRepository,
-                new MockAppMemoryCache());
+                new MockTenantMemoryCache());
 
             await handler.Handle(query, default);
 

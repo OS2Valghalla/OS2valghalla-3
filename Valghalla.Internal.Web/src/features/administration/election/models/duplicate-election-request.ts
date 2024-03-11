@@ -6,6 +6,8 @@ export interface DuplicateElectionTaskTypeCommunicationTemplateRequest {
   invitationReminderCommunicationTemplateId?: string;
   taskReminderCommunicationTemplateId?: string;
   retractedInvitationCommunicationTemplateId?: string;
+  removedFromTaskCommunicationTemplateId?: string;
+  removedByValidationCommunicationTemplateId?: string;
 }
 
 export interface DuplicateElectionRequest {
@@ -23,5 +25,7 @@ export interface DuplicateElectionRequest {
   invitationReminderCommunicationTemplateId?: string;
   taskReminderCommunicationTemplateId?: string;
   retractedInvitationCommunicationTemplateId?: string;
+  removedFromTaskCommunicationTemplateId?: string;
+  removedByValidationCommunicationTemplateId?: string;
   electionTaskTypeCommunicationTemplates?: Array<DuplicateElectionTaskTypeCommunicationTemplateRequest>;
 }

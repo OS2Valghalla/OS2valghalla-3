@@ -6,5 +6,9 @@
         public Guid ParticipantId { get; init; }
         public Guid TaskTypeId { get; init; }
         public Guid ElectionId { get; init; }
+        public DateTime? InvitationDate { get; set; }
+        public DateTime? InvitationReminderDate { get; set; }
+        public DateTime? ReminderDate { get; set; }
+        public DateTime TaskDate { get; set; }
     }
 }

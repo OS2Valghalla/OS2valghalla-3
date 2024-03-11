@@ -34,6 +34,10 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
   taskReminder_TemplateType?: CommunicationTemplateTypes;
   retractedInvitation_Template?: CommunicationTemplateShared;
   retractedInvitation_TemplateType?: CommunicationTemplateTypes;
+  removedFromTask_Template?: CommunicationTemplateShared;
+  removedFromTask_TemplateType?: CommunicationTemplateTypes;
+  removedByValidation_Template?: CommunicationTemplateShared;
+  removedByValidation_TemplateType?: CommunicationTemplateTypes;
 }
 
 @Component({
@@ -95,6 +99,10 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
     taskReminder_Template: [undefined as CommunicationTemplateShared, Validators.required],
     retractedInvitation_TemplateType: [undefined],
     retractedInvitation_Template: [undefined as CommunicationTemplateShared, Validators.required],
+    removedFromTask_TemplateType: [undefined],
+    removedFromTask_Template: [undefined as CommunicationTemplateShared, Validators.required],
+    removedByValidation_TemplateType: [undefined],
+    removedByValidation_Template: [undefined as CommunicationTemplateShared, Validators.required],
   });
 
   ngAfterViewInit(): void {
@@ -116,6 +124,8 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
       this.setSelectedTemplate(this.communicationTemplates.filter(t => t.id == DefaultCommunicationTemplates.InvitationReminderStringId)[0], this.formCommunicationTemplates.controls.invitationReminder_TemplateType, this.formCommunicationTemplates.controls.invitationReminder_Template);
       this.setSelectedTemplate(this.communicationTemplates.filter(t => t.id == DefaultCommunicationTemplates.TaskReminderStringId)[0], this.formCommunicationTemplates.controls.taskReminder_TemplateType, this.formCommunicationTemplates.controls.taskReminder_Template);
       this.setSelectedTemplate(this.communicationTemplates.filter(t => t.id == DefaultCommunicationTemplates.RetractedInvitationStringId)[0], this.formCommunicationTemplates.controls.retractedInvitation_TemplateType, this.formCommunicationTemplates.controls.retractedInvitation_Template);
+      this.setSelectedTemplate(this.communicationTemplates.filter(t => t.id == DefaultCommunicationTemplates.RemovedFromTaskStringId)[0], this.formCommunicationTemplates.controls.removedFromTask_TemplateType, this.formCommunicationTemplates.controls.removedFromTask_Template);
+      this.setSelectedTemplate(this.communicationTemplates.filter(t => t.id == DefaultCommunicationTemplates.RemovedByValidationStringId)[0], this.formCommunicationTemplates.controls.removedByValidation_TemplateType, this.formCommunicationTemplates.controls.removedByValidation_Template);
 
       if (!this.wizard.isUpdateWizard()) {
         this.loading = false;
@@ -156,7 +166,9 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
                 this.setSelectedTemplate(res.data.invitationReminderCommunicationTemplate, this.formCommunicationTemplates.controls.invitationReminder_TemplateType, this.formCommunicationTemplates.controls.invitationReminder_Template);
                 this.setSelectedTemplate(res.data.taskReminderCommunicationTemplate, this.formCommunicationTemplates.controls.taskReminder_TemplateType, this.formCommunicationTemplates.controls.taskReminder_Template);
                 this.setSelectedTemplate(res.data.retractedInvitationCommunicationTemplate, this.formCommunicationTemplates.controls.retractedInvitation_TemplateType, this.formCommunicationTemplates.controls.retractedInvitation_Template);
-    
+                this.setSelectedTemplate(res.data.removedFromTaskCommunicationTemplate, this.formCommunicationTemplates.controls.removedFromTask_TemplateType, this.formCommunicationTemplates.controls.removedFromTask_Template);
+                this.setSelectedTemplate(res.data.removedByValidationCommunicationTemplate, this.formCommunicationTemplates.controls.removedByValidation_TemplateType, this.formCommunicationTemplates.controls.removedByValidation_Template);
+
                 this.taskTypes.forEach(taskType => {
                     var found = res.data.electionTaskTypeCommunicationTemplates.filter(t => t.taskTypeId == taskType.id);
                     if (found && found.length > 0) {                        
@@ -167,6 +179,8 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
                         this.setTaskTypeSelectedTemplate(taskType, electionTaskTypeCommunicationTemplate.invitationReminderCommunicationTemplate, 'invitationReminder_Template');
                         this.setTaskTypeSelectedTemplate(taskType, electionTaskTypeCommunicationTemplate.taskReminderCommunicationTemplate, 'taskReminder_Template');
                         this.setTaskTypeSelectedTemplate(taskType, electionTaskTypeCommunicationTemplate.retractedInvitationCommunicationTemplate, 'retractedInvitation_Template');
+                        this.setTaskTypeSelectedTemplate(taskType, electionTaskTypeCommunicationTemplate.removedFromTaskCommunicationTemplate, 'removedFromTask_Template');
+                        this.setTaskTypeSelectedTemplate(taskType, electionTaskTypeCommunicationTemplate.removedByValidationCommunicationTemplate, 'removedByValidation_Template');
                     }
                 });
 
@@ -231,6 +245,8 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
           invitationReminderCommunicationTemplateId: taskType.invitationReminder_Template?.id,
           taskReminderCommunicationTemplateId: taskType.taskReminder_Template?.id,
           retractedInvitationCommunicationTemplateId: taskType.retractedInvitation_Template?.id,
+          removedFromTaskCommunicationTemplateId: taskType.removedFromTask_Template?.id,
+          removedByValidationCommunicationTemplateId: taskType.removedByValidation_Template?.id,
         })
       }
     });
@@ -250,6 +266,8 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
       invitationReminderCommunicationTemplateId: this.formCommunicationTemplates.value.invitationReminder_Template?.id,
       taskReminderCommunicationTemplateId: this.formCommunicationTemplates.value.taskReminder_Template?.id,
       retractedInvitationCommunicationTemplateId: this.formCommunicationTemplates.value.retractedInvitation_Template?.id,
+      removedFromTaskCommunicationTemplateId: this.formCommunicationTemplates.value.removedFromTask_Template?.id,
+      removedByValidationCommunicationTemplateId: this.formCommunicationTemplates.value.removedByValidation_Template?.id,
       electionTaskTypeCommunicationTemplates: electionTaskTypeCommunicationTemplates
     };
     
@@ -271,6 +289,8 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
     || (taskType.invitationReminder_Template && taskType.invitationReminder_Template.id)
     || (taskType.taskReminder_Template && taskType.taskReminder_Template.id)
     || (taskType.retractedInvitation_Template && taskType.retractedInvitation_Template.id)
+    || (taskType.removedFromTask_Template && taskType.removedFromTask_Template.id)
+    || (taskType.removedByValidation_Template && taskType.removedByValidation_Template.id)
     ) {
       return true;
     }

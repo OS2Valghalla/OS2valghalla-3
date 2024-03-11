@@ -170,11 +170,12 @@ namespace Valghalla.External.Infrastructure.Modules.Tasks
                         (i.TaskType.StartTime > startTime && i.TaskType.StartTime >= endTime) ||
                         (i.TaskType.EndTime <= startTime && i.TaskType.EndTime < endTime)
                     ));
-					
+
             if (invitationCode.HasValue)
             {
                 queryable = queryable.Where(i => i.InvitationCode != invitationCode);
             }
+
             return await queryable.AnyAsync(cancellationToken);
         }
 

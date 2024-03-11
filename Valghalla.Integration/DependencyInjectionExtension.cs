@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Valghalla.Application.AuditLog;
+using Valghalla.Application.Cache;
 using Valghalla.Application.Communication;
 using Valghalla.Application.Configuration.Interfaces;
 using Valghalla.Application.CPR;
@@ -16,6 +17,7 @@ using Valghalla.Application.SMS;
 using Valghalla.Application.Storage;
 using Valghalla.Integration.AuditLog;
 using Valghalla.Integration.Auth;
+using Valghalla.Integration.Cache;
 using Valghalla.Integration.Communication;
 using Valghalla.Integration.Configuration;
 using Valghalla.Integration.CPR;
@@ -42,7 +44,6 @@ namespace Valghalla.Integration
                 options.LoginPath = new PathString("/api/auth/login");
                 options.SlidingExpiration = true;
                 options.Cookie.SameSite = SameSiteMode.None;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 
                 options.Events.OnRedirectToLogin = async (c) =>
                 {
@@ -62,17 +63,20 @@ namespace Valghalla.Integration
 
         public static IServiceCollection AddIntegration(this IServiceCollection services)
         {
+            services.AddMemoryCache();
+            services.AddScoped<ITenantMemoryCache, TenantMemoryCache>();
+
             services.AddSingleton<ISecretService, SecretService>();
             services.AddScoped<IAuditLogService, AuditLogService>();
             services.AddHttpClient<ITextMessageService, TextMessageService>();
             services.AddScoped<IMailMessageService, MailMessageService>();
-            services.AddScoped<DigitalPostMessageHelper>();
+            services.AddSingleton<SmtpClientContainer>();
 
+            services.AddScoped<DigitalPostMessageHelper>();
             services
                 .AddHttpClient<IDigitalPostService, DigitalPostService>()
                 .ConfigurePrimaryHttpMessageHandler(sp => DigitalPostHttpClientHandler.Initialize(sp));
 
-            services.AddHttpClient<IDigitalPostService, DigitalPostService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IExcelService, ExcelService>();
             services.AddScoped<ICPRService, CPRService>();

@@ -7,8 +7,6 @@ using Valghalla.Internal.Application.Modules.Shared.Team.Responses;
 using Valghalla.Internal.Application.Modules.Tasks.Interfaces;
 using Valghalla.Internal.Application.Modules.Tasks.Queries;
 using Valghalla.Internal.Application.Modules.Tasks.Responses;
-using static MassTransit.ValidationResultExtensions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Valghalla.Internal.Infrastructure.Modules.Tasks
 {

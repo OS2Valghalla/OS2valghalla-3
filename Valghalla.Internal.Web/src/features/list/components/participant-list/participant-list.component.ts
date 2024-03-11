@@ -14,7 +14,9 @@ import {
   WorkLocationWithTeamIdsResponse,
   TaskTypeWithTeamIdsResponse,
 } from 'src/features/tasks/models/tasks-filters-options';
-import * as XLSX from 'xlsx';
+import { Workbook } from 'exceljs';
+import { DateTime } from 'luxon';
+import { dateFormat } from 'src/shared/constants/date';
 
 @Component({
   selector: 'app-participant-list',
@@ -185,13 +187,59 @@ export class ParticipantListComponent implements OnInit {
   }
 
   exportAsExcel(toCSV?: boolean) {
+    this.exporting = true;
+
     this.subs.sink = this.filteredTasksHttpService.auditLogExport().subscribe(() => {
-      this.exporting = true;
-      const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table.nativeElement.firstElementChild);
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Participants');
-      toCSV ? XLSX.writeFile(wb, 'Participants.csv', { bookType: 'csv' }) : XLSX.writeFile(wb, 'Participants.xlsx');
-      this.exporting = false;
+      const workbook = new Workbook();
+      const worksheet = workbook.addWorksheet();
+
+      worksheet.columns = this.displayedColumns.map((columnName) => {
+        const column = this.columns.find((i) => i.name == columnName);
+        return {
+          header: column.displayName,
+          key: column.name,
+        };
+      });
+
+      const rows = this.dataSource.data.map((item) => {
+        return this.displayedColumns.reduce((obj, columnName) => {
+          let value = item[columnName];
+
+          if (columnName == 'taskDate') {
+            value = DateTime.fromISO(value).toFormat(dateFormat);
+          }
+
+          return { ...obj, [columnName]: value };
+        }, {});
+      });
+
+      worksheet.addRows(rows);
+
+      if (toCSV) {
+        workbook.csv.writeBuffer().then((data) => {
+          const blob = new Blob([data], { type: 'text/csv' });
+          const url = window.URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'Participants.csv';
+          anchor.click();
+          window.URL.revokeObjectURL(url);
+
+          this.exporting = false;
+        });
+      } else {
+        workbook.xlsx.writeBuffer().then((data) => {
+          const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const url = window.URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = 'Participants.xlsx';
+          anchor.click();
+          window.URL.revokeObjectURL(url);
+
+          this.exporting = false;
+        });
+      }
     });
   }
 

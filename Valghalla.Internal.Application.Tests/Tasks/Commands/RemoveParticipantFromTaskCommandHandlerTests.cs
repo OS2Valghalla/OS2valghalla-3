@@ -1,19 +1,25 @@
 ﻿using FluentValidation.TestHelper;
 using NSubstitute;
+using Valghalla.Application.Communication;
 using Valghalla.Internal.Application.Modules.Tasks.Commands;
 using Valghalla.Internal.Application.Modules.Tasks.Interfaces;
 using Valghalla.Internal.Application.Modules.Tasks.Requests;
+using Valghalla.Internal.Application.Modules.Tasks.Responses;
 
 namespace Valghalla.Internal.Application.Tests.Tasks.Commands
 {
     [TestClass]
     public class RemoveParticipantFromTaskCommandHandlerTests
     {
+        private readonly ICommunicationService _mockCommunicationService;
         private readonly IElectionWorkLocationTasksCommandRepository _mockCommandRepository;
+        private readonly IElectionWorkLocationTasksQueryRepository _mockQueryRepository;
 
         public RemoveParticipantFromTaskCommandHandlerTests()
         {
+            _mockCommunicationService = Substitute.For<ICommunicationService>();
             _mockCommandRepository = Substitute.For<IElectionWorkLocationTasksCommandRepository>();
+            _mockQueryRepository = Substitute.For<IElectionWorkLocationTasksQueryRepository>();
         }
 
         [TestMethod]
@@ -29,7 +35,15 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
                 ElectionId = request.ElectionId,
                 TaskAssignmentId = request.TaskAssignmentId
             };
-            var handler = new RemoveParticipantFromTaskCommandHandler(_mockCommandRepository);
+
+            _mockQueryRepository.GetTaskAssignmentAsync(default, default).ReturnsForAnyArgs(new TaskAssignmentResponse()
+            {
+                ParticipantId = Guid.NewGuid(),
+                Accepted = false,
+                Responsed = false
+            });
+
+            var handler = new RemoveParticipantFromTaskCommandHandler(_mockCommunicationService, _mockCommandRepository, _mockQueryRepository);
 
             await handler.Handle(command, default);
 

@@ -21,6 +21,10 @@ namespace Valghalla.Internal.Application.Modules.Administration.Team.Commands
             RuleFor(x => x)
                .Must((command) => !teamQueryRepository.CheckIfTeamUsedInActiveElectionAsync(command.Id, default).Result)
                .WithMessage("administration.teams.error.team_used_in_active_election");
+
+            RuleFor(x => x)
+               .Must((command) => !teamQueryRepository.CheckIfTeamHasAbandonedParticipantsAsync(command.Id, default).Result)
+               .WithMessage("administration.teams.error.team_has_abandoned_participants");
         }
     }
 
