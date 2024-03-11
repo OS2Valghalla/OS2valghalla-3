@@ -2,7 +2,6 @@ using MassTransit;
 using MassTransit.Contracts.JobService;
 using Microsoft.Extensions.Options;
 using Valghalla.Application.Queue;
-using Valghalla.Application.Queue.Messages;
 using Valghalla.Application.Secret;
 using Valghalla.Worker.Infrastructure.Models;
 using Valghalla.Worker.QueueMessages;
@@ -12,6 +11,8 @@ namespace Valghalla.Worker
     internal class Worker : IHostedService, IDisposable
     {
         private Timer? participantSyncJobTimer = null;
+        private Timer? taskInvitationReminderJobTimer = null;
+        private Timer? taskReminderJobTimer = null;
         private Timer? electionDeactivationJobTimer = null;
         private Timer? auditLogClearJobTimer = null;
         private Timer? communicationLogClearJobTimer = null;
@@ -36,6 +37,8 @@ namespace Valghalla.Worker
         public void Dispose()
         {
             participantSyncJobTimer?.Dispose();
+            taskInvitationReminderJobTimer?.Dispose();
+            taskReminderJobTimer?.Dispose();
             electionDeactivationJobTimer?.Dispose();
             auditLogClearJobTimer?.Dispose();
             communicationLogClearJobTimer?.Dispose();
@@ -62,6 +65,38 @@ namespace Valghalla.Worker
                 null,
                 TimeSpan.Zero,
                 TimeSpan.FromHours(config.ParticipantSyncJob.Period));
+
+            taskInvitationReminderJobTimer = new Timer(
+                async _ =>
+                {
+                    try
+                    {
+                        await ExecuteTaskInvitationReminderJobAsync(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError("An error occurred when running task invitation reminder job in worker -- {@ex}", ex);
+                    }
+                },
+                null,
+                TimeSpan.Zero,
+                TimeSpan.FromHours(config.TaskInvitationReminderJob.Period));
+
+            taskReminderJobTimer = new Timer(
+                async _ =>
+                {
+                    try
+                    {
+                        await ExecuteTaskReminderJobAsync(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError("An error occurred when running task reminder job in worker -- {@ex}", ex);
+                    }
+                },
+                null,
+                TimeSpan.Zero,
+                TimeSpan.FromHours(config.TaskReminderJob.Period));
 
             electionDeactivationJobTimer = new Timer(
                 async _ =>
@@ -119,6 +154,8 @@ namespace Valghalla.Worker
             logger.LogInformation("Worker stopping...");
 
             participantSyncJobTimer?.Change(Timeout.Infinite, 0);
+            taskReminderJobTimer?.Change(Timeout.Infinite, 0);
+            taskInvitationReminderJobTimer?.Change(Timeout.Infinite, 0);
             electionDeactivationJobTimer?.Change(Timeout.Infinite, 0);
             auditLogClearJobTimer?.Change(Timeout.Infinite, 0);
             communicationLogClearJobTimer?.Change(Timeout.Infinite, 0);
@@ -149,6 +186,68 @@ namespace Valghalla.Worker
                         logger.LogError(
                             $"[{tenant.Name}]" +
                             "An error occurred when firing paritcipant sync job message in worker -- {@ex}", ex);
+                    }
+                }))
+                .ToArray();
+
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task ExecuteTaskInvitationReminderJobAsync(CancellationToken cancellationToken)
+        {
+            var tenants = await secretService.GetTenantConfigurationsAsync(cancellationToken);
+            var tasks = tenants
+                .Select(tenant => Task.Run(async () =>
+                {
+                    try
+                    {
+                        using var scope = serviceProvider.CreateScope();
+
+                        var publishEndpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
+                        var queueMessage = new QueueMessage<TaskGetInvitationReminderJobMessage>(tenant.InternalDomain, new TaskGetInvitationReminderJobMessage());
+
+                        await publishEndpoint.Publish<SubmitJob<QueueMessage<TaskGetInvitationReminderJobMessage>>>(new
+                        {
+                            JobId = Guid.NewGuid(),
+                            Job = queueMessage
+                        }, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(
+                            $"[{tenant.Name}]" +
+                            "An error occurred when firing task get invitation reminder job message in worker -- {@ex}", ex);
+                    }
+                }))
+                .ToArray();
+
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task ExecuteTaskReminderJobAsync(CancellationToken cancellationToken)
+        {
+            var tenants = await secretService.GetTenantConfigurationsAsync(cancellationToken);
+            var tasks = tenants
+                .Select(tenant => Task.Run(async () =>
+                {
+                    try
+                    {
+                        using var scope = serviceProvider.CreateScope();
+
+                        var publishEndpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
+                        var queueMessage = new QueueMessage<TaskGetReminderJobMessage>(tenant.InternalDomain, new TaskGetReminderJobMessage());
+
+                        await publishEndpoint.Publish<SubmitJob<QueueMessage<TaskGetReminderJobMessage>>>(new
+                        {
+                            JobId = Guid.NewGuid(),
+                            Job = queueMessage
+                        }, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(
+                            $"[{tenant.Name}]" +
+                            "An error occurred when firing task get reminder job message in worker -- {@ex}", ex);
                     }
                 }))
                 .ToArray();
@@ -249,4 +348,4 @@ namespace Valghalla.Worker
             await Task.WhenAll(tasks);
         }
     }
-}   
+}

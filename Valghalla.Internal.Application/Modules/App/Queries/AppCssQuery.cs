@@ -1,10 +1,7 @@
 ﻿using Valghalla.Application;
 using Valghalla.Application.Abstractions.Messaging;
 using Valghalla.Application.Cache;
-using Valghalla.Application.Configuration;
-using Valghalla.Application.Exceptions;
 using Valghalla.Application.Storage;
-using Valghalla.Application.Tenant;
 
 namespace Valghalla.Internal.Application.Modules.App.Queries
 {
@@ -12,26 +9,20 @@ namespace Valghalla.Internal.Application.Modules.App.Queries
 
     internal class AppCssQueryHandler : IQueryHandler<AppCssQuery>
     {
-        private readonly ITenantContextProvider tenantContextProvider;
         private readonly IFileStorageService fileStorageService;
-        private readonly IAppMemoryCache memoryCache;
+        private readonly ITenantMemoryCache tenantMemoryCache;
 
-        public AppCssQueryHandler(
-            ITenantContextProvider tenantContextProvider,
-            IFileStorageService fileStorageService,
-            IAppMemoryCache memoryCache,
-            AppConfiguration appConfiguration)
+        public AppCssQueryHandler(IFileStorageService fileStorageService, ITenantMemoryCache tenantMemoryCache)
         {
-            this.tenantContextProvider = tenantContextProvider;
             this.fileStorageService = fileStorageService;
-            this.memoryCache = memoryCache;
+            this.tenantMemoryCache = tenantMemoryCache;
         }
 
         public async Task<Response> Handle(AppCssQuery query, CancellationToken cancellationToken)
         {
             var key = "valghalla.css";
 
-            var content = await memoryCache.GetOrCreateAsync(key, async () =>
+            var content = await tenantMemoryCache.GetOrCreateAsync(key, async () =>
             {
                 try
                 {
@@ -51,7 +42,7 @@ namespace Valghalla.Internal.Application.Modules.App.Queries
 
             if (content == null)
             {
-                memoryCache.Remove(key);
+                tenantMemoryCache.Remove(key);
             }
 
             return Response.Ok(content);

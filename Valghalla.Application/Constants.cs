@@ -23,6 +23,8 @@
             public const string InvitationReminderStringId = "dc92a364-fce3-42b2-b383-0a322b3b18ba";
             public const string TaskReminderStringId = "21b06039-57af-4835-be6e-f227117d91c3";
             public const string RetractedInvitationStringId = "e1f1dd14-bf2a-4ba4-b9e5-d8d98dc9561b";
+            public const string RemovedFromTaskStringId = "bb4bb9bf-398a-41b5-a541-8bfc59e1b552";
+            public const string RemovedByValidationStringId = "b1a0f0eb-2962-46be-91a2-50753615c1d5";
         }
 
         public class Validation

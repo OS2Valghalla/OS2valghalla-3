@@ -4,7 +4,7 @@ using Valghalla.Application.Secret;
 
 namespace Valghalla.Integration.DigitalPost
 {
-    internal class DigitalPostHttpClientHandler
+    internal static class DigitalPostHttpClientHandler
     {
         public static HttpClientHandler Initialize(IServiceProvider serviceProvider)
         {

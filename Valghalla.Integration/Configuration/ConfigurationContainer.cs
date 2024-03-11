@@ -5,18 +5,18 @@ namespace Valghalla.Integration.Configuration
 {
     internal class ConfigurationContainer
     {
-        private readonly IAppMemoryCache appMemoryCache;
+        private readonly ITenantMemoryCache tenantMemoryCache;
         private readonly IConfigurationRepository configurationQueryRepository;
 
-        public ConfigurationContainer(IAppMemoryCache appMemoryCache, IConfigurationRepository configurationQueryRepository)
+        public ConfigurationContainer(ITenantMemoryCache tenantMemoryCache, IConfigurationRepository configurationQueryRepository)
         {
-            this.appMemoryCache = appMemoryCache;
+            this.tenantMemoryCache = tenantMemoryCache;
             this.configurationQueryRepository = configurationQueryRepository;
         }
 
         public object GetConfiguration(Type type)
         {
-            var configuration = appMemoryCache.GetOrCreate(type.FullName!, () =>
+            var configuration = tenantMemoryCache.GetOrCreate(type.FullName!, () =>
             {
                 return configurationQueryRepository.GetConfigurationAsync(type, default).Result;
             });
@@ -26,7 +26,7 @@ namespace Valghalla.Integration.Configuration
 
         public void ClearConfiguration(Type type)
         {
-            appMemoryCache.Remove(type.FullName!);
+            tenantMemoryCache.Remove(type.FullName!);
         }
     }
 }

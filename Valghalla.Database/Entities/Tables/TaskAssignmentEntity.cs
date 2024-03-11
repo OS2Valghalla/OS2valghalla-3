@@ -17,6 +17,9 @@ public partial class TaskAssignmentEntity : IChangeTrackingEntity, IElectionConn
     public bool RegistrationSent { get; set; }
     public string HashValue { get; set; } = null!;
     public Guid? InvitationCode { get; set; }
+    public DateTime? InvitationDate { get; set; }
+    public DateTime? TaskReminderDate { get; set; }
+    public DateTime? InvitationReminderDate { get; set; }
     public DateTime CreatedAt { get; set; }
     public Guid CreatedBy { get; set; }
     public DateTime? ChangedAt { get; set; }

@@ -74,7 +74,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "host": "oiosaml-net.dk",
+            "host": "<local domain>",
             "port": 4200
           }
         },

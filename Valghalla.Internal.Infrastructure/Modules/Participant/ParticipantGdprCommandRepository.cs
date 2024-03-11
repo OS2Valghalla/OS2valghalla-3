@@ -63,6 +63,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Participant
                 task.InvitationCode = null;
                 task.InvitationSent = false;
                 task.RegistrationSent = false;
+                task.InvitationDate = null;
+                task.InvitationReminderDate = null;
+                task.TaskReminderDate = null;
             }
 
             taskAssignments.UpdateRange(entity.TaskAssignments);
@@ -104,6 +107,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Participant
                 task.InvitationCode = null;
                 task.InvitationSent = false;
                 task.RegistrationSent = false;
+                task.InvitationDate = null;
+                task.InvitationReminderDate = null;
+                task.TaskReminderDate = null;
             }
 
             taskAssignments.UpdateRange(taskAssignmentEntities);

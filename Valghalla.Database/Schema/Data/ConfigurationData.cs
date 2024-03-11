@@ -22,6 +22,12 @@ namespace Valghalla.Database.Schema.Data
                 on conflict do nothing;
                 ";
 
+        internal static string InitTaskReminderDayConfigrationData()
+           => $@"
+                insert into ""Configuration"" values('{nameof(AppConfiguration)}.{nameof(AppConfiguration.TaskReminderDay)}', '5')
+                on conflict do nothing;
+                ";
+
         internal static string InitMailSenderConfigrationData()
            => $@"
                 insert into ""Configuration"" values('{nameof(AppConfiguration)}.{nameof(AppConfiguration.MailSender)}', '')

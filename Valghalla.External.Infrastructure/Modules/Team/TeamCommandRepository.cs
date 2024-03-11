@@ -3,6 +3,7 @@ using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.External.Application.Modules.Team.Commands;
 using Valghalla.External.Application.Modules.Team.Interfaces;
+using Valghalla.External.Application.Modules.Team.Responses;
 
 namespace Valghalla.External.Infrastructure.Modules.Team
 {
@@ -37,28 +38,31 @@ namespace Valghalla.External.Infrastructure.Modules.Team
             teamResponsibles = dataContext.Set<TeamResponsibleEntity>();
         }
 
-        public async Task RemoveTeamMemberAsync(Guid teamId, Guid participantId, Guid teamResponsibleId, CancellationToken cancellationToken)
+        public async Task<TeamMemberRemovalResponse?> RemoveTeamMemberAsync(Guid teamId, Guid participantId, Guid teamResponsibleId, CancellationToken cancellationToken)
         {
+            var userRemoved = false;
+            var affectedTaskIds = new List<Guid>();
+
             var responsible = await participants
                 .Where(i => i.Id == teamResponsibleId)
                 .SingleAsync(cancellationToken);
 
             var teamMemberEntities = await teamMembers.Where(i => i.ParticipantId == participantId).ToListAsync(cancellationToken);
 
-            if (!teamMemberEntities.Any(i => i.TeamId == teamId)) return;
+            if (!teamMemberEntities.Any(i => i.TeamId == teamId)) return null;
 
             var teamEntities = await teams.Include(i => i.TeamResponsibles)
                 .Where(i => i.TeamResponsibles.Any(x => x.ParticipantId == responsible.Id))
                 .OrderBy(i => i.Name).ToListAsync(cancellationToken);            
 
-            if (!teamEntities.Any(t => t.Id == teamId)) return;
+            if (!teamEntities.Any(t => t.Id == teamId)) return null;
 
             var tasks = await taskAssignments.Include(i => i.Election)
                 .Where(i => i.TeamId == teamId && i.ParticipantId == participantId)
                 .ToListAsync(cancellationToken);
 
             var canBeRemoved = !tasks.Any(t => t.TeamId == teamId && t.ParticipantId == participantId && t.Accepted && (t.TaskDate < DateTime.Today || t.Election.ElectionEndDate < DateTime.Today));
-            if (!canBeRemoved) return;
+            if (!canBeRemoved) return null;
 
 
             foreach (var task in tasks)
@@ -84,6 +88,11 @@ namespace Valghalla.External.Infrastructure.Modules.Team
                 task.InvitationCode = null;
                 task.InvitationSent = false;
                 task.RegistrationSent = false;
+                task.InvitationDate = null;
+                task.InvitationReminderDate = null;
+                task.TaskReminderDate = null;
+
+                affectedTaskIds.Add(task.Id);
             }
 
             taskAssignments.UpdateRange(tasks);
@@ -106,9 +115,12 @@ namespace Valghalla.External.Infrastructure.Modules.Team
                 workLocationResponsibles.RemoveRange(participantEntity.WorkLocationResponsibles);
                 teamResponsibles.RemoveRange(participantEntity.TeamResponsibles);
                 users.Remove(participantEntity.User);
+                userRemoved = true;
             }
 
             await dataContext.SaveChangesAsync(cancellationToken);
+
+            return new TeamMemberRemovalResponse() { UserRemoved = userRemoved, TaskIds = affectedTaskIds };
         }
 
         public async Task<string> CreateTeamLinkAsync(CreateTeamLinkCommand command, CancellationToken cancellationToken)

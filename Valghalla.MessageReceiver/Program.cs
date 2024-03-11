@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 
@@ -9,6 +10,13 @@ namespace Valghalla.MessageReceiver
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+            });
 
             // Add services to the container.
 
@@ -33,6 +41,19 @@ namespace Valghalla.MessageReceiver
             builder.Logging.AddSerilog(logger);
 
             var app = builder.Build();
+
+            app.Use((context, next) =>
+            {
+                if (context.Request.Headers.ContainsKey("X-Forwarded-Proto"))
+                {
+                    if (!string.IsNullOrEmpty(context.Request.Headers["X-Forwarded-Proto"]))
+                    {
+                        context.Request.Scheme = context.Request.Headers["X-Forwarded-Proto"];
+                    }
+                }
+
+                return next(context);
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

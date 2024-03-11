@@ -98,6 +98,9 @@ namespace Valghalla.External.Infrastructure.Modules.MyProfile
                 task.InvitationCode = null;
                 task.InvitationSent = false;
                 task.RegistrationSent = false;
+                task.InvitationDate = null;
+                task.InvitationReminderDate = null;
+                task.TaskReminderDate = null;
             }
 
             taskAssignments.UpdateRange(participantEntity.TaskAssignments);

@@ -34,6 +34,9 @@ namespace Valghalla.Worker.Infrastructure.Modules.Tasks.Repositories
                 entity.InvitationCode = null;
                 entity.InvitationSent = false;
                 entity.RegistrationSent = false;
+                entity.InvitationDate = null;
+                entity.InvitationReminderDate = null;
+                entity.TaskReminderDate = null;
             }
 
             taskAssignments.UpdateRange(entities);

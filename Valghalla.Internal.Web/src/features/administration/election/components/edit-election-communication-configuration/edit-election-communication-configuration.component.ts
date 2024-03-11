@@ -27,6 +27,10 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
     taskReminder_Template?: CommunicationTemplateShared;
     retractedInvitation_TemplateType?: CommunicationTemplateTypes;
     retractedInvitation_Template?: CommunicationTemplateShared;
+    removedFromTask_TemplateType?: CommunicationTemplateTypes;
+    removedFromTask_Template?: CommunicationTemplateShared;
+    removedByValidation_TemplateType?: CommunicationTemplateTypes;
+    removedByValidation_Template?: CommunicationTemplateShared;
   }
 
 @Component({
@@ -53,11 +57,15 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
         invitation_TemplateType: [undefined],
         invitation_Template: [undefined as CommunicationTemplateShared, Validators.required],
         invitationReminder_TemplateType: [undefined],
-        invitationReminder_Template: [undefined as CommunicationTemplateShared],
+        invitationReminder_Template: [undefined as CommunicationTemplateShared, Validators.required],
         taskReminder_TemplateType: [undefined],
-        taskReminder_Template: [undefined as CommunicationTemplateShared],
+        taskReminder_Template: [undefined as CommunicationTemplateShared, Validators.required],
         retractedInvitation_TemplateType: [undefined],
-        retractedInvitation_Template: [undefined as CommunicationTemplateShared],
+        retractedInvitation_Template: [undefined as CommunicationTemplateShared, Validators.required],
+        removedFromTask_TemplateType: [undefined],
+        removedFromTask_Template: [undefined as CommunicationTemplateShared, Validators.required],
+        removedByValidation_TemplateType: [undefined],
+        removedByValidation_Template: [undefined as CommunicationTemplateShared, Validators.required],
     });
     
     @ViewChild(FormPageComponent) private readonly formPage: FormPageComponent;
@@ -85,6 +93,8 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
                 this.setSelectedTemplate(this.item.invitationReminderCommunicationTemplate, this.formCommunicationTemplates.controls.invitationReminder_TemplateType, this.formCommunicationTemplates.controls.invitationReminder_Template);
                 this.setSelectedTemplate(this.item.taskReminderCommunicationTemplate, this.formCommunicationTemplates.controls.taskReminder_TemplateType, this.formCommunicationTemplates.controls.taskReminder_Template);
                 this.setSelectedTemplate(this.item.retractedInvitationCommunicationTemplate, this.formCommunicationTemplates.controls.retractedInvitation_TemplateType, this.formCommunicationTemplates.controls.retractedInvitation_Template);
+                this.setSelectedTemplate(this.item.removedFromTaskCommunicationTemplate, this.formCommunicationTemplates.controls.removedFromTask_TemplateType, this.formCommunicationTemplates.controls.removedFromTask_Template);
+                this.setSelectedTemplate(this.item.removedByValidationCommunicationTemplate, this.formCommunicationTemplates.controls.removedByValidation_TemplateType, this.formCommunicationTemplates.controls.removedByValidation_Template);
 
                 v.taskTypes.data.forEach(taskType => {
                     var taskTypeWithTemplate: TaskTypeWithTemplates = {
@@ -100,6 +110,8 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
                         this.setTaskTypeSelectedTemplate(taskTypeWithTemplate, electionTaskTypeCommunicationTemplate.invitationReminderCommunicationTemplate, 'invitationReminder_Template');
                         this.setTaskTypeSelectedTemplate(taskTypeWithTemplate, electionTaskTypeCommunicationTemplate.taskReminderCommunicationTemplate, 'taskReminder_Template');
                         this.setTaskTypeSelectedTemplate(taskTypeWithTemplate, electionTaskTypeCommunicationTemplate.retractedInvitationCommunicationTemplate, 'retractedInvitation_Template');
+                        this.setTaskTypeSelectedTemplate(taskTypeWithTemplate, electionTaskTypeCommunicationTemplate.removedFromTaskCommunicationTemplate, 'removedFromTask_Template');
+                        this.setTaskTypeSelectedTemplate(taskTypeWithTemplate, electionTaskTypeCommunicationTemplate.removedByValidationCommunicationTemplate, 'removedByValidation_Template');
                     }
                     this.taskTypes.push(taskTypeWithTemplate);
                 });
@@ -141,6 +153,8 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
         || (taskType.invitationReminder_Template && taskType.invitationReminder_Template.id)
         || (taskType.taskReminder_Template && taskType.taskReminder_Template.id)
         || (taskType.retractedInvitation_Template && taskType.retractedInvitation_Template.id)
+        || (taskType.removedFromTask_Template && taskType.removedFromTask_Template.id)
+        || (taskType.removedByValidation_Template && taskType.removedByValidation_Template.id)
         ) {
           return true;
         }
@@ -160,6 +174,8 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
                     invitationReminderCommunicationTemplateId: taskType.invitationReminder_Template?.id,
                     taskReminderCommunicationTemplateId: taskType.taskReminder_Template?.id,
                     retractedInvitationCommunicationTemplateId: taskType.retractedInvitation_Template?.id,
+                    removedFromTaskCommunicationTemplateId: taskType.removedFromTask_Template?.id,
+                    removedByValidationCommunicationTemplateId: taskType.removedByValidation_Template?.id,
                 })
             }
         });
@@ -172,6 +188,8 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
             invitationReminderCommunicationTemplateId: this.formCommunicationTemplates.value.invitationReminder_Template?.id,
             taskReminderCommunicationTemplateId: this.formCommunicationTemplates.value.taskReminder_Template?.id,
             retractedInvitationCommunicationTemplateId: this.formCommunicationTemplates.value.retractedInvitation_Template?.id,
+            removedFromTaskCommunicationTemplateId: this.formCommunicationTemplates.value.removedFromTask_Template?.id,
+            removedByValidationCommunicationTemplateId: this.formCommunicationTemplates.value.removedByValidation_Template?.id,
             electionTaskTypeCommunicationTemplates: electionTaskTypeCommunicationTemplates
           };
 

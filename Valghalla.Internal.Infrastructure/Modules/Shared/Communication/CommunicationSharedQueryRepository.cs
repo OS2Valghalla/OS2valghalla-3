@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Valghalla.Application;
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Shared.Communication.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.Communication.Queries;
 using Valghalla.Internal.Application.Modules.Shared.Communication.Responses;
-using Valghalla.Internal.Application.Modules.Shared.Election.Responses;
 
 namespace Valghalla.Internal.Infrastructure.Modules.Shared.Communication
 {
@@ -23,14 +21,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Shared.Communication
 
         public async Task<IEnumerable<CommunicationTemplateSharedResponse>> GetCommunicationTemplatesAsync(GetCommunicationTemplatesSharedQuery query, CancellationToken cancellationToken)
         {
-            var excludedIds = new List<Guid> { 
-                new Guid(Constants.DefaultCommunicationTemplates.InvitationReminderStringId),
-                new Guid(Constants.DefaultCommunicationTemplates.TaskReminderStringId),
-                new Guid(Constants.DefaultCommunicationTemplates.RetractedInvitationStringId)
-            };
-
             var entities = await communicationTemplates
-                .Where(x => !excludedIds.Contains(x.Id))
                 .OrderByDescending(i => i.Title)
                 .ToArrayAsync(cancellationToken);
 

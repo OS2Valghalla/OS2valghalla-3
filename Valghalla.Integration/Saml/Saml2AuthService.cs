@@ -5,6 +5,7 @@ using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Security.Authentication;
@@ -29,10 +30,11 @@ namespace Valghalla.Integration.Saml
         private readonly IOptions<GlobalAuthConfiguration> authConfigOptions;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IWebHostEnvironment environment;
-        private readonly IAppMemoryCache appMemoryCache;
+        private readonly ITenantMemoryCache tenantMemoryCache;
         private readonly ITenantContextProvider tenantContextProvider;
         private readonly ISaml2AuthContextProvider saml2AuthContextProvider;
         private readonly InternalAuthConfiguration configuration;
+        private readonly ILogger<Saml2AuthService> logger;
 
         private HttpContext HttpContext
         {
@@ -54,18 +56,20 @@ namespace Valghalla.Integration.Saml
             IOptions<GlobalAuthConfiguration> authConfigOptions,
             IHttpContextAccessor httpContextAccessor,
             IWebHostEnvironment environment,
-            IAppMemoryCache appMemoryCache,
+            ITenantMemoryCache tenantMemoryCache,
             ITenantContextProvider tenantContextProvider,
             ISaml2AuthContextProvider saml2AuthContextProvider,
-            InternalAuthConfiguration configuration)
+            InternalAuthConfiguration configuration,
+            ILogger<Saml2AuthService> logger)
         {
             this.authConfigOptions = authConfigOptions;
             this.httpContextAccessor = httpContextAccessor;
             this.environment = environment;
-            this.appMemoryCache = appMemoryCache;
+            this.tenantMemoryCache = tenantMemoryCache;
             this.tenantContextProvider = tenantContextProvider;
             this.saml2AuthContextProvider = saml2AuthContextProvider;
             this.configuration = configuration;
+            this.logger = logger;
         }
 
         public bool IsAuthenticated()
@@ -91,7 +95,7 @@ namespace Valghalla.Integration.Saml
         public async Task<string> GetLoginRedirectUrlAsync(CancellationToken cancellationToken)
         {
             var saml2Config = await GetSaml2ConfigurationAsync(cancellationToken);
-            var binding = new Saml2RedirectBinding();   
+            var binding = new Saml2RedirectBinding();
 
             binding.SetRelayStateQuery(new Dictionary<string, string>
             {
@@ -130,9 +134,9 @@ namespace Valghalla.Integration.Saml
 
             binding.ReadSamlResponse(HttpContext.Request.ToGenericHttpRequest(), saml2AuthnResponse);
 
-
             if (saml2AuthnResponse.Status != Saml2StatusCodes.Success)
             {
+                logger.LogError(saml2AuthnResponse.ToXml().OuterXml);
                 throw new AuthenticationException($"SAML Response status: {saml2AuthnResponse.Status}");
             }
 
@@ -144,7 +148,7 @@ namespace Valghalla.Integration.Saml
 
             if (relayStateQuery.ContainsKey(RELAY_STATE_REDIRECT))
             {
-                var returnValue =  (environment.IsDevelopment() ? tenantContextProvider.CurrentTenant.AngularDevServer : RootUrl) + "?" + RELAY_STATE_REDIRECT + "=true";
+                var returnValue = (environment.IsDevelopment() ? tenantContextProvider.CurrentTenant.AngularDevServer : RootUrl) + "?" + RELAY_STATE_REDIRECT + "=true";
                 return returnValue;
             }
 
@@ -218,7 +222,15 @@ namespace Valghalla.Integration.Saml
 
             await saml2AuthnResponse.CreateSession(HttpContext, claimsTransform: (claimsPrincipal) =>
             {
-                if(isInternal)
+                logger.LogInformation("Claims");
+                foreach (Claim c in claimsPrincipal.Claims)
+                {
+                    string tmp = c.Type + " :: " + c.Value + " :: " + c.ValueType;
+                    logger.LogInformation(tmp);
+                }
+                logger.LogInformation("--------");
+
+                if (isInternal)
                     CheckJobRoleDefinition(claimsPrincipal);
 
                 CheckAssurance(claimsPrincipal);
@@ -244,27 +256,57 @@ namespace Valghalla.Integration.Saml
             if (string.IsNullOrEmpty(configuration.JobRoleDescription))
                 throw new UnauthorizedAccessException("Missing authentication configuration");
 
-            var privilegeClaim = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "dk:gov:saml:attribute:Privileges_intermediate" && !string.IsNullOrEmpty(x.Value));
+            var privilegeClaimV2 = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == OioSaml2ClaimTypes.PrivilegesIntermediate && !string.IsNullOrEmpty(x.Value));
+            var privilegeClaimV3 = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == OioSaml3ClaimTypes.PrivilegesIntermediate && !string.IsNullOrEmpty(x.Value));
+            var privilegeClaim = privilegeClaimV2 ??= privilegeClaimV3;
 
             if (privilegeClaim is null)
-                throw new UnauthorizedAccessException("You are not authorized to the system");
+                throw new UnauthorizedAccessException("You are not authorized to the system (no job function role info supplied with claim)");
 
             byte[] data = Convert.FromBase64String(privilegeClaim.Value);
             string decodedString = System.Text.Encoding.UTF8.GetString(data);
 
-            var serializer = new XmlSerializer(typeof(AuthObjects.PrivilegeList));
+            logger.LogInformation("decodedString");
+            logger.LogInformation(decodedString);
+            logger.LogInformation("--------");
 
-            var serializedObject = (AuthObjects.PrivilegeList)serializer.Deserialize(new StringReader(decodedString));
+            if (decodedString.Contains("http://digst.dk"))
+            {
+                var serializer = new XmlSerializer(typeof(AuthObjectsV3.PrivilegeList));
+                var serializedObject = (AuthObjectsV3.PrivilegeList)serializer.Deserialize(new StringReader(decodedString));
 
-            if (configuration.JobRoleDescription != serializedObject.PrivilegeGroup.Privilege)
-                throw new UnauthorizedAccessException("You are not authorized to the system");
+                logger.LogInformation("Claim JobFunctionRole");
+                logger.LogInformation(serializedObject.PrivilegeGroup.Privilege);
+                logger.LogInformation("--------");
+                logger.LogInformation("Configuration JobFunctionRole");
+                logger.LogInformation(configuration.JobRoleDescription);
+                logger.LogInformation("--------");
+
+                if (configuration.JobRoleDescription != serializedObject.PrivilegeGroup.Privilege)
+                    throw new UnauthorizedAccessException("You are not authorized to the system");
+            }
+            else
+            {
+                var serializer = new XmlSerializer(typeof(AuthObjects.PrivilegeList));
+                var serializedObject = (AuthObjects.PrivilegeList)serializer.Deserialize(new StringReader(decodedString));
+
+                logger.LogInformation("Claim JobFunctionRole");
+                logger.LogInformation(serializedObject.PrivilegeGroup.Privilege);
+                logger.LogInformation("--------");
+                logger.LogInformation("Configuration JobFunctionRole");
+                logger.LogInformation(configuration.JobRoleDescription);
+                logger.LogInformation("--------");
+
+                if (configuration.JobRoleDescription != serializedObject.PrivilegeGroup.Privilege)
+                    throw new UnauthorizedAccessException("You are not authorized to the system");
+            }
         }
 
         private async Task<Saml2Configuration> GetSaml2ConfigurationAsync(CancellationToken cancellationToken)
         {
             var key = nameof(Saml2Configuration);
 
-            var result = await appMemoryCache.GetOrCreateAsync(key, async () =>
+            var result = await tenantMemoryCache.GetOrCreateAsync(key, async () =>
             {
                 var authAppConfig = await saml2AuthContextProvider.GetSaml2AuthAppConfigurationAsync(cancellationToken);
                 var cert = await ReadCertificateAsync(authAppConfig.SigningCertificateFile, authAppConfig.SigningCertificatePassword, cancellationToken);
@@ -311,7 +353,7 @@ namespace Valghalla.Integration.Saml
 
             if (result == null)
             {
-                appMemoryCache.Remove(key);
+                tenantMemoryCache.Remove(key);
                 throw new Exception("Could not resolve saml auth configuration");
             }
 
@@ -331,3 +373,4 @@ namespace Valghalla.Integration.Saml
         }
     }
 }
+

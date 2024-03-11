@@ -23,10 +23,23 @@ namespace Valghalla.MessageReceiver.Controllers
             //this.sender = sender;
         }
 
+        [HttpHead("digitalpostmessagestatus")]
+        public OkResult digitalpostmessagestatus()
+        {
+            
+            if (Request.Method == "HEAD")
+            {
+                logger.Log(LogLevel.Information, "DigitalPostMessageStatus: Received message that is a HEAD request");
+            }
+
+            return Ok();
+        }
+
         [HttpPost("digitalpostmessagestatus")]
         [Consumes("application/xml")]
         public ContentResult DigitalPostMessageStatus([FromBody] ModtagBeskedInput value)
         {
+            
             logger.Log(LogLevel.Information, "DigitalPostMessageStatus: Received message!");
             logger.Log(LogLevel.Information, $"DigitalPostMessageStatus: Request beskedId: {value.Haendelsesbesked.BeskedId.UUIDIdentifikator}");
 

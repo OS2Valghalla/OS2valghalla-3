@@ -787,6 +787,12 @@ namespace Valghalla.Database.Migrations
                     b.Property<int>("LockPeriod")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("RemovedByValidationCommunicationTemplateId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("RemovedFromTaskCommunicationTemplateId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("RetractedInvitationCommunicationTemplateId")
                         .HasColumnType("uuid");
 
@@ -814,6 +820,10 @@ namespace Valghalla.Database.Migrations
                     b.HasIndex("InvitationCommunicationTemplateId");
 
                     b.HasIndex("InvitationReminderCommunicationTemplateId");
+
+                    b.HasIndex("RemovedByValidationCommunicationTemplateId");
+
+                    b.HasIndex("RemovedFromTaskCommunicationTemplateId");
 
                     b.HasIndex("RetractedInvitationCommunicationTemplateId");
 
@@ -854,6 +864,12 @@ namespace Valghalla.Database.Migrations
                     b.Property<Guid?>("InvitationReminderCommunicationTemplateId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("RemovedByValidationCommunicationTemplateId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("RemovedFromTaskCommunicationTemplateId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("RetractedInvitationCommunicationTemplateId")
                         .HasColumnType("uuid");
 
@@ -873,6 +889,10 @@ namespace Valghalla.Database.Migrations
                     b.HasIndex("InvitationCommunicationTemplateId");
 
                     b.HasIndex("InvitationReminderCommunicationTemplateId");
+
+                    b.HasIndex("RemovedByValidationCommunicationTemplateId");
+
+                    b.HasIndex("RemovedFromTaskCommunicationTemplateId");
 
                     b.HasIndex("RetractedInvitationCommunicationTemplateId");
 
@@ -1401,6 +1421,12 @@ namespace Valghalla.Database.Migrations
                     b.Property<Guid?>("InvitationCode")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime?>("InvitationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("InvitationReminderDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<bool>("InvitationSent")
                         .HasColumnType("boolean");
 
@@ -1414,6 +1440,9 @@ namespace Valghalla.Database.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("TaskDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("TaskReminderDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("TaskTypeId")
@@ -4235,6 +4264,16 @@ namespace Valghalla.Database.Migrations
                         .HasForeignKey("InvitationReminderCommunicationTemplateId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("Valghalla.Database.Entities.Tables.CommunicationTemplateEntity", "RemovedByValidationCommunicationTemplate")
+                        .WithMany()
+                        .HasForeignKey("RemovedByValidationCommunicationTemplateId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Valghalla.Database.Entities.Tables.CommunicationTemplateEntity", "RemovedFromTaskCommunicationTemplate")
+                        .WithMany()
+                        .HasForeignKey("RemovedFromTaskCommunicationTemplateId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Valghalla.Database.Entities.Tables.CommunicationTemplateEntity", "RetractedInvitationCommunicationTemplate")
                         .WithMany()
                         .HasForeignKey("RetractedInvitationCommunicationTemplateId")
@@ -4258,6 +4297,10 @@ namespace Valghalla.Database.Migrations
                     b.Navigation("InvitationCommunicationTemplate");
 
                     b.Navigation("InvitationReminderCommunicationTemplate");
+
+                    b.Navigation("RemovedByValidationCommunicationTemplate");
+
+                    b.Navigation("RemovedFromTaskCommunicationTemplate");
 
                     b.Navigation("RetractedInvitationCommunicationTemplate");
 
@@ -4305,17 +4348,29 @@ namespace Valghalla.Database.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("FK_ElectionTaskTypeCommunicationTemplates_CommunicationTempla~3");
 
+                    b.HasOne("Valghalla.Database.Entities.Tables.CommunicationTemplateEntity", "RemovedByValidationCommunicationTemplate")
+                        .WithMany()
+                        .HasForeignKey("RemovedByValidationCommunicationTemplateId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK_ElectionTaskTypeCommunicationTemplates_CommunicationTempla~4");
+
+                    b.HasOne("Valghalla.Database.Entities.Tables.CommunicationTemplateEntity", "RemovedFromTaskCommunicationTemplate")
+                        .WithMany()
+                        .HasForeignKey("RemovedFromTaskCommunicationTemplateId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("FK_ElectionTaskTypeCommunicationTemplates_CommunicationTempla~5");
+
                     b.HasOne("Valghalla.Database.Entities.Tables.CommunicationTemplateEntity", "RetractedInvitationCommunicationTemplate")
                         .WithMany()
                         .HasForeignKey("RetractedInvitationCommunicationTemplateId")
                         .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("FK_ElectionTaskTypeCommunicationTemplates_CommunicationTempla~4");
+                        .HasConstraintName("FK_ElectionTaskTypeCommunicationTemplates_CommunicationTempla~6");
 
                     b.HasOne("Valghalla.Database.Entities.Tables.CommunicationTemplateEntity", "TaskReminderCommunicationTemplate")
                         .WithMany()
                         .HasForeignKey("TaskReminderCommunicationTemplateId")
                         .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("FK_ElectionTaskTypeCommunicationTemplates_CommunicationTempla~5");
+                        .HasConstraintName("FK_ElectionTaskTypeCommunicationTemplates_CommunicationTempla~7");
 
                     b.HasOne("Valghalla.Database.Entities.Tables.TaskTypeEntity", "TaskType")
                         .WithMany("ElectionTaskTypeCommunicationTemplates")
@@ -4336,6 +4391,10 @@ namespace Valghalla.Database.Migrations
                     b.Navigation("InvitationCommunicationTemplate");
 
                     b.Navigation("InvitationReminderCommunicationTemplate");
+
+                    b.Navigation("RemovedByValidationCommunicationTemplate");
+
+                    b.Navigation("RemovedFromTaskCommunicationTemplate");
 
                     b.Navigation("RetractedInvitationCommunicationTemplate");
 

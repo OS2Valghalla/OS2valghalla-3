@@ -6,6 +6,8 @@ export interface UpdateElectionTaskTypeCommunicationTemplateRequest {
   invitationReminderCommunicationTemplateId?: string;
   taskReminderCommunicationTemplateId?: string;
   retractedInvitationCommunicationTemplateId?: string;
+  removedFromTaskCommunicationTemplateId?: string;
+  removedByValidationCommunicationTemplateId?: string;
 }
 
 export interface UpdateElectionCommunicationConfigurationsRequest {
@@ -16,5 +18,7 @@ export interface UpdateElectionCommunicationConfigurationsRequest {
   invitationReminderCommunicationTemplateId?: string;
   taskReminderCommunicationTemplateId?: string;
   retractedInvitationCommunicationTemplateId?: string;
+  removedFromTaskCommunicationTemplateId?: string;
+  removedByValidationCommunicationTemplateId?: string;
   electionTaskTypeCommunicationTemplates?: Array<UpdateElectionTaskTypeCommunicationTemplateRequest>;
 }

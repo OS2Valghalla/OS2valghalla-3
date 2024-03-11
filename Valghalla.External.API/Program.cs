@@ -1,11 +1,11 @@
 using MassTransit;
 using MassTransit.Internals;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using Valghalla.Application.Authentication;
-using Valghalla.Application.Cache;
 using Valghalla.Application.Queue;
 using Valghalla.Application.Saml;
 using Valghalla.Application.Secret;
@@ -29,6 +29,13 @@ namespace Valghalla.External.API
             var builder = WebApplication.CreateBuilder(args);
 
             IdentityModelEventSource.ShowPII = true;
+
+            builder.Services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedHost | ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -80,8 +87,6 @@ namespace Valghalla.External.API
             builder.Services.AddHttpClient();
             builder.Services.AddHttpContextAccessor();
 
-            builder.Services.AddMemoryCache();
-            builder.Services.AddScoped<IAppMemoryCache, AppMemoryCache>();
             builder.Services.AddScoped<IQueueService, QueueService>();
 
             builder.Services.AddScoped<GlobalExceptionHandlingMiddleware>();
@@ -103,8 +108,10 @@ namespace Valghalla.External.API
                 {
                     if (builder.Environment.IsDevelopment())
                     {
+                        var origins = builder.Configuration.GetValue<string[]>("AllowedOrigins") ?? Array.Empty<string>();
+
                         policy
-                            .AllowAnyOrigin()
+                            .WithOrigins(origins)
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -172,6 +179,19 @@ namespace Valghalla.External.API
                 });
 
                 var app = builder.Build();
+
+                app.Use((context, next) =>
+                {
+                    if (context.Request.Headers.ContainsKey("X-Forwarded-Proto"))
+                    {
+                        if (!string.IsNullOrEmpty(context.Request.Headers["X-Forwarded-Proto"]))
+                        {
+                            context.Request.Scheme = context.Request.Headers["X-Forwarded-Proto"];
+                        }
+                    }
+
+                    return next(context);
+                });
 
                 // Configure the HTTP request pipeline.
                 if (app.Environment.IsDevelopment())

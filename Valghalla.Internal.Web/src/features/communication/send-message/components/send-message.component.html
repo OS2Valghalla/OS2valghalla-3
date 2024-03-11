@@ -4,6 +4,7 @@
     <app-wizard class="inline-block w-full" [hideDeleteButton]="true"
         [wizardTitle]="'communication.send_message.page_title' | transloco"
         [submitButtonText]="'shared.dialog.send' | transloco"
+        [submitOnLastStep]="true"
         (create)="sendMessage($event)"
         (onCancelClick)="cancel()"
         (onStepEnter)="onStepEnter($event)" *appShowSkeleton="loading"

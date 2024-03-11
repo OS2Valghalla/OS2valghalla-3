@@ -38,6 +38,8 @@ namespace Valghalla.Internal.API.Controllers.Administration.Election
                 InvitationReminderCommunicationTemplateId = request.InvitationReminderCommunicationTemplateId,
                 TaskReminderCommunicationTemplateId = request.TaskReminderCommunicationTemplateId,
                 RetractedInvitationCommunicationTemplateId = request.RetractedInvitationCommunicationTemplateId,
+                RemovedFromTaskCommunicationTemplateId = request.RemovedFromTaskCommunicationTemplateId,
+                RemovedByValidationCommunicationTemplateId = request.RemovedByValidationCommunicationTemplateId,
                 ElectionTaskTypeCommunicationTemplates = request.ElectionTaskTypeCommunicationTemplates
             };
 
@@ -53,6 +55,7 @@ namespace Valghalla.Internal.API.Controllers.Administration.Election
                 Id = request.Id,
                 Title = request.Title,
                 LockPeriod = request.LockPeriod,
+                WorkLocationIds = request.WorkLocationIds
             };
 
             var result = await sender.Send(command, cancellationToken);
@@ -79,6 +82,8 @@ namespace Valghalla.Internal.API.Controllers.Administration.Election
                 InvitationReminderCommunicationTemplateId = request.InvitationReminderCommunicationTemplateId,
                 TaskReminderCommunicationTemplateId = request.TaskReminderCommunicationTemplateId,
                 RetractedInvitationCommunicationTemplateId = request.RetractedInvitationCommunicationTemplateId,
+                RemovedFromTaskCommunicationTemplateId = request.RemovedFromTaskCommunicationTemplateId,
+                RemovedByValidationCommunicationTemplateId = request.RemovedByValidationCommunicationTemplateId,
                 ElectionTaskTypeCommunicationTemplates = request.ElectionTaskTypeCommunicationTemplates
             };
 
@@ -98,6 +103,8 @@ namespace Valghalla.Internal.API.Controllers.Administration.Election
                 InvitationReminderCommunicationTemplateId = request.InvitationReminderCommunicationTemplateId,
                 TaskReminderCommunicationTemplateId = request.TaskReminderCommunicationTemplateId,
                 RetractedInvitationCommunicationTemplateId = request.RetractedInvitationCommunicationTemplateId,
+                RemovedFromTaskCommunicationTemplateId = request.RemovedFromTaskCommunicationTemplateId,
+                RemovedByValidationCommunicationTemplateId = request.RemovedByValidationCommunicationTemplateId,
                 ElectionTaskTypeCommunicationTemplates = request.ElectionTaskTypeCommunicationTemplates
             };
 

@@ -9,6 +9,7 @@ namespace Valghalla.Internal.Application.Modules.Administration.Election.Command
         public Guid Id { get; init; }
         public string Title { get; init; } = null!;
         public int LockPeriod { get; init; }
+        public IEnumerable<Guid> WorkLocationIds { get; init; } = Array.Empty<Guid>();
     }
 
     public sealed class UpdateElectionCommandValidator : AbstractValidator<UpdateElectionCommand>

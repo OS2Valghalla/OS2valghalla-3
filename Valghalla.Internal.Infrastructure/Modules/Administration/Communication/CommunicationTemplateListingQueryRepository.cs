@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Valghalla.Application;
 using Valghalla.Application.QueryEngine;
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
@@ -15,12 +13,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Communication
     {
         public CommunicationTemplateListingQueryRepository(DataContext dataContext, IMapper mapper) : base(dataContext, mapper)
         {
-            var excludedIds = new List<Guid> {
-                new Guid(Constants.DefaultCommunicationTemplates.InvitationReminderStringId),
-                new Guid(Constants.DefaultCommunicationTemplates.TaskReminderStringId),
-                new Guid(Constants.DefaultCommunicationTemplates.RetractedInvitationStringId)
-            };
-
             Order((queryable, order) =>
             {
                 if (order.Name == "title")
@@ -38,9 +30,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Communication
 
                 return queryable;
             });
-
-            Query(queryable => queryable
-              .Where(x => !excludedIds.Contains(x.Id)));
 
             QueryFor(x => x.Title)
                .Use((queryable, query) => queryable.Where(i => i.Title.Contains(query.Value)));

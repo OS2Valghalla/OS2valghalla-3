@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7202;http://localhost:5179;https://oiosaml-net.dk:20001"
+      "applicationUrl": "https://localhost:7202"
     },
     "IIS Express": {
       "commandName": "IISExpress",

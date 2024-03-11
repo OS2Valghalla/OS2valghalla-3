@@ -1,11 +1,9 @@
-﻿using MailKit.Security;
-using Microsoft.AspNetCore.StaticFiles;
+﻿using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using Valghalla.Application.Configuration;
 using Valghalla.Application.Mail;
 using Valghalla.Application.Secret;
-using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace Valghalla.Integration.Mail
 {
@@ -15,19 +13,22 @@ namespace Valghalla.Integration.Mail
         private readonly ILogger<MailMessageService> logger;
         private readonly AppConfiguration appConfiguration;
         private readonly FileExtensionContentTypeProvider contentTypeProvider;
+        private readonly SmtpClientContainer smtpClientContainer;
 
         public MailMessageService(
             ISecretService secretService,
             ILogger<MailMessageService> logger,
-            AppConfiguration appConfiguration)
+            AppConfiguration appConfiguration,
+            SmtpClientContainer smtpClientContainer)
         {
             this.logger = logger;
             this.secretService = secretService;
             this.appConfiguration = appConfiguration;
             contentTypeProvider = new FileExtensionContentTypeProvider();
+            this.smtpClientContainer = smtpClientContainer;
         }
 
-        public async Task<bool> SendWithAttachmentsAsync(MailDataWithAttachments mailData, CancellationToken cancellationToken)
+        public async Task SendWithAttachmentsAsync(MailDataWithAttachments mailData, CancellationToken cancellationToken)
         {
             try
             {
@@ -90,31 +91,8 @@ namespace Valghalla.Integration.Mail
                 }
                 #endregion
                 mail.Body = body.ToMessageBody();
-                #region Send Mail
 
-                using var smtp = new SmtpClient();
-
-
-                if (config.UseSSL)
-                {
-                    await smtp.ConnectAsync(config.SMPT, config.Port, SecureSocketOptions.SslOnConnect, cancellationToken);
-                }
-                else if (config.UseStartTls)
-                {
-                    await smtp.ConnectAsync(config.SMPT, config.Port, SecureSocketOptions.StartTls, cancellationToken);
-                }
-                else
-                {
-                    await smtp.ConnectAsync(config.SMPT, config.Port, SecureSocketOptions.SslOnConnect, cancellationToken);
-                }
-                await smtp.AuthenticateAsync(config.Username, config.Password, cancellationToken);
-                await smtp.SendAsync(mail, cancellationToken);
-                await smtp.DisconnectAsync(true, cancellationToken);
-
-                #endregion
-
-                return true;
-
+                await smtpClientContainer.SendAsync(mail, cancellationToken);
             }
             catch (Exception ex)
             {
