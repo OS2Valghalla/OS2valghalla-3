@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node --max-http-header-size=100000 ./node_modules/@angular/cli/bin/ng serve --ssl",
+    "start": "node --max-http-header-size=100000 ./serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
