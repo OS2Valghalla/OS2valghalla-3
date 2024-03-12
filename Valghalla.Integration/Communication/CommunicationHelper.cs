@@ -54,6 +54,16 @@ namespace Valghalla.Integration.Communication
             return true;
         }
 
+        public async Task<bool> ValidateRemovedFromTaskByValidationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Task assignment no longer exists (taskAssignmentId = {taskAssignmentId})");
+
+            if (!taskAssignment.Active) return false;
+
+            return true;
+        }
+
         public async Task<bool> ValidateTaskInvitationReminderAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)

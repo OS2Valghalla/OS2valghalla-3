@@ -102,6 +102,7 @@ builder.Services.AddMassTransit(mt =>
     // Task notification jobs
     mt.AddConsumer<TaskInvitationJobConsumer, TaskInvitationJobConsumerDefinition>();
     mt.AddConsumer<RemovedFromTaskJobConsumer, RemovedFromTaskJobConsumerDefinition>();
+    mt.AddConsumer<RemovedFromTaskByValidationJobConsumer, RemovedFromTaskByValidationJobConsumerDefinition>();
     mt.AddConsumer<TaskGetInvitationReminderJobConsumer, TaskGetInvitationReminderJobConsumerDefinition>();
     mt.AddConsumer<TaskSendInvitationReminderJobConsumer, TaskSendInvitationReminderJobConsumerDefinition>();
     mt.AddConsumer<TaskGetReminderJobConsumer, TaskGetReminderJobConsumerDefinition>();
@@ -147,6 +148,7 @@ builder.Services.AddMassTransit(mt =>
                 f.Include<AuditLogClearJobConsumer>();
                 f.Include<CommunicationLogClearJobConsumer>();
                 f.Include<RemovedFromTaskJobConsumer>();
+                f.Include<RemovedFromTaskByValidationJobConsumer>();
                 f.Include<TaskInvitationJobConsumer>();
                 f.Include<TaskRegistrationJobConsumer>();
                 f.Include<TaskGetInvitationReminderJobConsumer>();

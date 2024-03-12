@@ -144,6 +144,11 @@ namespace Valghalla.Infrastructure.Communication
             return await GetCommunicationTemplateAsync(CommunicationType.RemovedFromTask, taskAssignmentId, cancellationToken);
         }
 
+        public async Task<CommunicationTemplate?> GetRemovedFromTaskByValidationCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            return await GetCommunicationTemplateAsync(CommunicationType.RemovedByValidation, taskAssignmentId, cancellationToken);
+        }
+
         public async Task<CommunicationTemplate?> GetTaskRegistrationCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             return await GetCommunicationTemplateAsync(CommunicationType.TaskRegistration, taskAssignmentId, cancellationToken);

@@ -10,5 +10,7 @@
         public DateTime? InvitationReminderDate { get; set; }
         public DateTime? ReminderDate { get; set; }
         public DateTime TaskDate { get; set; }
+        public bool Responsed { get; set; }
+        public bool Accepted { get; set; }
     }
 }

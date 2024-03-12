@@ -63,6 +63,24 @@ namespace Valghalla.Integration.Communication
             }, cancellationToken);
         }
 
+        public async Task SendRemovedFromTaskByValidationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var valid = await communicationHelper.ValidateRemovedFromTaskByValidationAsync(participantId, taskAssignmentId, cancellationToken);
+
+            if (!valid) return;
+
+            var template = await communicationQueryRepository.GetRemovedFromTaskByValidationCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Errors occurred when fetching removed from task by validation communication template (taskAssignmentId = {taskAssignmentId})");
+
+            var logId = await WriteCommunicationLogAsync(participantId, taskAssignmentId, template, cancellationToken);
+
+            await queueService.PublishLoggedJobAsync(logId, new RemovedFromTaskByValidationJobMessage()
+            {
+                ParticipantId = participantId,
+                TaskAssignmentId = taskAssignmentId
+            }, cancellationToken);
+        }
+
         public async Task SendTaskRegistrationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             var valid = await communicationHelper.ValidateTaskRegistrationAsync(participantId, taskAssignmentId, cancellationToken);
