@@ -109,6 +109,9 @@
         <a mat-list-item routerLink="/" (click)="this.isSidenavOpen = false">
           <span class="text-black">{{ 'app.navigation.start' | transloco }}</span>
         </a>
+        <a mat-list-item routerLink="/tasks" (click)="this.isSidenavOpen = false">
+          <span class="text-black">{{ 'app.navigation.tasks.title' | transloco }}</span>
+        </a>
         <a mat-list-item routerLink="/participant" (click)="this.isSidenavOpen = false">
           <span class="text-black">{{ 'app.navigation.participant' | transloco }}</span>
         </a>
