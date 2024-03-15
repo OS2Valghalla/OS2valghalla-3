@@ -189,7 +189,7 @@ namespace Valghalla.Integration.Communication
                 .Replace("!work_location", info.WorkLocation.Title)
                 .Replace("!task_type_description", info.TaskType.Description)
                 .Replace("!task_type", info.TaskType.Title)
-                .Replace("!task_date", $"{PadTimeValue(info.TaskDate.Day)}/{PadTimeValue(info.TaskDate.Month)}/{PadTimeValue(info.TaskDate.Year)}")
+                .Replace("!task_date", $"{PadTimeValue(info.TaskDate.ToLocalTime().Day)}/{PadTimeValue(info.TaskDate.ToLocalTime().Month)}/{PadTimeValue(info.TaskDate.ToLocalTime().Year)}")
                 .Replace("!task_start", $"{PadTimeValue(info.TaskType.StartTime.Hours)}:{PadTimeValue(info.TaskType.StartTime.Minutes)}")
                 .Replace("!payment", info.TaskType.Payment.HasValue ? info.TaskType.Payment.ToString() : string.Empty)
                 .Replace("!days", (DateTime.UtcNow - info.TaskDate).Days.ToString())
