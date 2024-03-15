@@ -192,7 +192,7 @@ namespace Valghalla.Integration.Communication
                 .Replace("!task_date", $"{PadTimeValue(info.TaskDate.Day)}/{PadTimeValue(info.TaskDate.Month)}/{PadTimeValue(info.TaskDate.Year)}")
                 .Replace("!task_start", $"{PadTimeValue(info.TaskType.StartTime.Hours)}:{PadTimeValue(info.TaskType.StartTime.Minutes)}")
                 .Replace("!payment", info.TaskType.Payment.HasValue ? info.TaskType.Payment.ToString() : string.Empty)
-                .Replace("!days", (DateTime.UtcNow - info.TaskDate).Days.ToString())
+                .Replace("!days", (info.TaskDate - DateTime.UtcNow).Days.ToString())
                 .Replace("!municipality", info.MunicipalityName)
                 .Replace("!invitation", invitationLink)
                 .Replace("!contact", contactLink)
