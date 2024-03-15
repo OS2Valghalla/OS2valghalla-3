@@ -15,11 +15,7 @@
           </form>
           <div class="flex justify-start">
             <button mat-button matStepperPrevious *ngIf="!isFirst">{{ 'shared.action.back' | transloco }}</button>
-            <button
-              mat-button
-              matStepperNext
-              *ngIf="!isLast"
-              [disabled]="!step.formGroup.valid && !step.formGroup.disabled">
+            <button mat-button matStepperNext *ngIf="!isLast" [disabled]="step.formGroup.invalid">
               {{ 'shared.action.next' | transloco }}
             </button>
           </div>
