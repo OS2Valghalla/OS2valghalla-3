@@ -11,7 +11,7 @@
         {
             Pk2value = participantId;
             Col2value = firstName + " " + lastName;
-            Col3value = $"{PadTimeValue(birthDate.Day)}/{PadTimeValue(birthDate.Month)}/{PadTimeValue(birthDate.Year)}";
+            Col3value = $"{PadTimeValue(birthDate.ToLocalTime().Day)}/{PadTimeValue(birthDate.ToLocalTime().Month)}/{PadTimeValue(birthDate.ToLocalTime().Year)}";
         }
 
         private static string PadTimeValue(int value) => value.ToString().PadLeft(2, '0');
