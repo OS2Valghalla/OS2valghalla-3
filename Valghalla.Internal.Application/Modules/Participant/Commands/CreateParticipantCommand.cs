@@ -31,7 +31,9 @@ namespace Valghalla.Internal.Application.Modules.Participant.Commands
 
             When(x => !string.IsNullOrEmpty(x.MobileNumber), () =>
             {
-                RuleFor(x => x.MobileNumber).Length(Constants.Validation.MobileNumberLength);
+                RuleFor(x => x.MobileNumber)
+                .Length(Constants.Validation.MobileNumberLength)
+                .Matches("^[0-9]*$").WithMessage("'Mobile Number' must contain only numbers.");
             });
 
             When(x => !string.IsNullOrEmpty(x.Email), () =>
