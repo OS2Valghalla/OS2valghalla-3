@@ -34,5 +34,6 @@
         public string Description { get; init; } = null!;
         public int? Payment { get; init; }
         public TimeSpan StartTime { get; init; }
+        public TimeSpan EndTime { get; init; }
     }
 }
