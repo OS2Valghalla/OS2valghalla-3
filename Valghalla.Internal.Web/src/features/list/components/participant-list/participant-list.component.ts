@@ -221,7 +221,7 @@ export class ParticipantListComponent implements OnInit {
           const url = window.URL.createObjectURL(blob);
           const anchor = document.createElement('a');
           anchor.href = url;
-          anchor.download = 'Participants.csv';
+          anchor.download = `${DateTime.fromJSDate(new Date()).toFormat('yyyyMMdd')}-deltagere.csv`;
           anchor.click();
           window.URL.revokeObjectURL(url);
 
@@ -233,7 +233,7 @@ export class ParticipantListComponent implements OnInit {
           const url = window.URL.createObjectURL(blob);
           const anchor = document.createElement('a');
           anchor.href = url;
-          anchor.download = 'Participants.xlsx';
+          anchor.download = `${DateTime.fromJSDate(new Date()).toFormat('yyyyMMdd')}-deltagere.xlsx`;
           anchor.click();
           window.URL.revokeObjectURL(url);
 
