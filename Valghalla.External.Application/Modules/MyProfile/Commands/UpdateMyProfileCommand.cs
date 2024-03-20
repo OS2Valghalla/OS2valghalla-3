@@ -27,7 +27,7 @@ namespace Valghalla.External.Application.Modules.MyProfile.Commands
             {
                 RuleFor(x => x.MobileNumber)
                 .Length(Constants.Validation.MobileNumberLength)
-                .Matches("^[0-9]*$").WithMessage("'Mobile Number' must contain only numbers.");
+                .Matches("^[0-9]*$");
             });
 
             When(x => !string.IsNullOrEmpty(x.Email), () =>
