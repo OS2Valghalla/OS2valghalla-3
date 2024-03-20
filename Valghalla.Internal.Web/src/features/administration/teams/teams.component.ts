@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TeamHttpService } from './services/teams-http.service';
 import { TableComponent } from 'src/shared/components/table/table.component';
-import { TableEditRowEvent } from 'src/shared/models/ux/table';
 import { SubSink } from 'subsink';
 import { Team } from './models/team';
 import { QueryEvent, QueryForm, QueryFormEvent } from 'src/shared/query-engine/models/query-form';
 import { RoutingNodes } from 'src/shared/constants/routing-nodes';
+import { MatDialog } from '@angular/material/dialog';
+import { CopyInviteLinkDialogComponent } from './components/copy-invite-link-dialog/copy-invite-link-dialog.component';
 
 interface TeamsQueryForm extends QueryForm {}
 
@@ -24,7 +25,7 @@ export class TeamsComponent implements OnInit, OnDestroy {
 
   @ViewChild('tableTeams') private readonly tableTeams: TableComponent<Team>;
 
-  constructor(private router: Router, private teamHttpService: TeamHttpService) {}
+  constructor(private router: Router, private teamHttpService: TeamHttpService, private dialog: MatDialog) {}
 
   ngOnInit(): void {}
 
@@ -46,19 +47,27 @@ export class TeamsComponent implements OnInit, OnDestroy {
     event.execute('administration/team/getteamlistingqueryform');
   }
 
-  deleteTeam(event: TableEditRowEvent<Team>) {
-    this.subs.sink = this.teamHttpService.deleteTeam(event.row.id).subscribe((res) => {
+  deleteTeam = (event: Team) => {
+    this.subs.sink = this.teamHttpService.deleteTeam(event.id).subscribe((res) => {
       if (res.isSuccess) {
         this.tableTeams.refresh();
       }
     });
-  }
+  };
 
   openAddTeam() {
     this.router.navigate([RoutingNodes.Administration, RoutingNodes.Teams, RoutingNodes.Link_Create]);
   }
 
-  openEditTeam(event: TableEditRowEvent<Team>) {
-    this.router.navigate([RoutingNodes.Administration, RoutingNodes.Teams, RoutingNodes.Link_Edit, event.row.id]);
-  }
+  openCopyInviteLink = (event: Team) => {
+    this.subs.sink = this.teamHttpService.createTeamLink(event.id).subscribe((res) => {
+      if (res.isSuccess) {
+        this.dialog.open(CopyInviteLinkDialogComponent, { data: { name: event.name, link: res.data } });
+      }
+    });
+  };
+
+  openEditTeam = (event: Team) => {
+    this.router.navigate([RoutingNodes.Administration, RoutingNodes.Teams, RoutingNodes.Link_Edit, event.id]);
+  };
 }

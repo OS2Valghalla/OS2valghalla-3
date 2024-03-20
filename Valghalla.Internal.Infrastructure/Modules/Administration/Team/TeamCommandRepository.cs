@@ -3,6 +3,7 @@ using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Administration.Team.Commands;
 using Valghalla.Internal.Application.Modules.Administration.Team.Interfaces;
+using Valghalla.Internal.Application.Modules.Team.Commands;
 
 namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
 {
@@ -10,6 +11,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
     {
         private readonly DataContext dataContext;
         private readonly DbSet<TeamEntity> teams;
+        private readonly DbSet<TeamLinkEntity> teamLinks;
         private readonly DbSet<TeamResponsibleEntity> teamResponsibles;
         private readonly DbSet<TeamMemberEntity> teamMembers;
         private readonly DbSet<WorkLocationTeamEntity> workLocationTeams;
@@ -19,10 +21,31 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Team
         {
             this.dataContext = dataContext;
             teams = dataContext.Set<TeamEntity>();
+            teamLinks = dataContext.Set<TeamLinkEntity>();
             teamResponsibles = dataContext.Set<TeamResponsibleEntity>();
             teamMembers = dataContext.Set<TeamMemberEntity>();
             workLocationTeams = dataContext.Set<WorkLocationTeamEntity>();
             taskAssignments = dataContext.Set<TaskAssignmentEntity>();
+        }
+        public async Task<string> CreateTeamLinkAsync(CreateTeamLinkCommand command, CancellationToken cancellationToken)
+        {
+            var existingEntity = await teamLinks.FirstOrDefaultAsync(x => x.Value == command.Value);
+            if (existingEntity != null)
+            {
+                return existingEntity.HashValue;
+            }
+
+            var entity = new TeamLinkEntity()
+            {
+                Id = Guid.NewGuid(),
+                HashValue = command.HashValue,
+                Value = command.Value
+            };
+
+            await teamLinks.AddAsync(entity, cancellationToken);
+            await dataContext.SaveChangesAsync(cancellationToken);
+
+            return entity.HashValue;
         }
 
         public async Task<Guid> CreateTeamAsync(CreateTeamCommand command, CancellationToken cancellationToken)

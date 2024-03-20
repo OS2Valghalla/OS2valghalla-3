@@ -361,12 +361,18 @@
       "teams_listing": {
         "title": "Teams"
       },
+      "team_link": {
+        "copy_link_to_team": "Copy link to team",
+        "invite_members": "Invite members to this team by sharing this link with them:",
+        "copy_link_to_team_instruction": "Clicking the \"Copy link to team\" button will copy the link to your clipboard. Using the link, the recipient can create a user and is automatically added to the team. A team member can view and sign up for all untrusted tasks."
+      },
       "columns": {
         "short_name": "Short name",
         "responsible_count": "Number of responsibles",
         "responsibles": "Responsibles"
       },
       "action": {
+        "copy_invite_link_to_team": "Copy invite link to team",
         "create_team": "Create team",
         "edit_team": "Edit team",
         "delete_confirmation": {

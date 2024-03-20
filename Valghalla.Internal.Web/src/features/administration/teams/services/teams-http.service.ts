@@ -13,25 +13,18 @@ import { NotificationService } from 'src/shared/services/notification.service';
 export class TeamHttpService {
   private baseUrl = getBaseApiUrl() + 'administration/team/';
 
-  constructor(
-    private readonly httpClient: HttpClient,
-    private readonly translocoService: TranslocoService,
-    private readonly notificationService: NotificationService,
-  ) {}
+  constructor(private readonly httpClient: HttpClient, private readonly translocoService: TranslocoService, private readonly notificationService: NotificationService) {}
 
   getAllTeams(): Observable<Response<Array<Team>>> {
-    return this.httpClient
-      .get<Response<Array<Team>>>(this.baseUrl + 'getallteams')
-      .pipe(
-        catchError((err) => {
-          const msg = this.translocoService.translate('administration.teams.error.get_all_teams');
-          this.notificationService.showError(msg);
+    return this.httpClient.get<Response<Array<Team>>>(this.baseUrl + 'getallteams').pipe(
+      catchError((err) => {
+        const msg = this.translocoService.translate('administration.teams.error.get_all_teams');
+        this.notificationService.showError(msg);
 
-          return throwError(() => err);
-        }),
-      );
+        return throwError(() => err);
+      }),
+    );
   }
-
 
   getTeam(id: string): Observable<Response<Team>> {
     return this.httpClient
@@ -43,6 +36,21 @@ export class TeamHttpService {
       .pipe(
         catchError((err) => {
           const msg = this.translocoService.translate('administration.teams.error.get_team');
+          this.notificationService.showError(msg);
+
+          return throwError(() => err);
+        }),
+      );
+  }
+
+  createTeamLink(teamId: string): Observable<Response<string>> {
+    return this.httpClient
+      .post<Response<string>>(this.baseUrl + 'createteamlink', {
+        teamId: teamId,
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('my_team.error.create_team_link');
           this.notificationService.showError(msg);
 
           return throwError(() => err);
