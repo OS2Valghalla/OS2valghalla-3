@@ -11,6 +11,7 @@ namespace Valghalla.Internal.Application.Modules.Communication.CommunicationLog.
 
     public sealed record CommunicationLogListingQueryForm : QueryForm<CommunicationLogListingItem, CommunicationLogListingQueryFormParameters>
     {
+        public Guid ParticipantId { get; init; }
         public MultipleSelectionFilterValue<int>? Status { get; init; }
     }
 }
