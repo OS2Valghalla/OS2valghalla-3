@@ -26,6 +26,7 @@ using Valghalla.Internal.Application.Modules.Shared.Participant.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.SpecialDiet.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.TaskType.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.Team.Interfaces;
+using Valghalla.Internal.Application.Modules.Shared.User;
 using Valghalla.Internal.Application.Modules.Shared.WorkLocation.Interfaces;
 using Valghalla.Internal.Application.Modules.Tasks.Interfaces;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Area;
@@ -51,6 +52,7 @@ using Valghalla.Internal.Infrastructure.Modules.Shared.Participant;
 using Valghalla.Internal.Infrastructure.Modules.Shared.SpecialDiet;
 using Valghalla.Internal.Infrastructure.Modules.Shared.TaskType;
 using Valghalla.Internal.Infrastructure.Modules.Shared.Team;
+using Valghalla.Internal.Infrastructure.Modules.Shared.User;
 using Valghalla.Internal.Infrastructure.Modules.Shared.WorkLocation;
 using Valghalla.Internal.Infrastructure.Modules.Tasks;
 #endregion
@@ -98,7 +100,6 @@ namespace Valghalla.Internal.Infrastructure
             #endregion
 
             #region App
-            services.AddScoped<IAppUserQueryRepository, AppUserQueryRepository>();
             services.AddScoped<IAppElectionQueryRepository, AppElectionQueryRepository>();
             #endregion
 
@@ -122,6 +123,7 @@ namespace Valghalla.Internal.Infrastructure
             #endregion
 
             #region Shared
+            services.AddScoped<IUserSharedQueryRepository, UserSharedQueryRepository>();
             services.AddScoped<IElectionSharedQueryRepository, ElectionSharedQueryRepository>();
             services.AddScoped<IElectionTypeSharedQueryRepository, ElectionTypeSharedQueryRepository>();
             services.AddScoped<IWorkLocationSharedQueryRepository, WorkLocationSharedQueryRepository>();

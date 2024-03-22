@@ -1,8 +1,8 @@
 ﻿using MassTransit;
-using MediatR;
+using Valghalla.Application.Cache;
 using Valghalla.Application.Queue;
 using Valghalla.Application.Queue.Messages;
-using Valghalla.External.Application.Modules.App.Commands;
+using Valghalla.Application.User;
 
 namespace Valghalla.External.API.Queues
 {
@@ -16,17 +16,24 @@ namespace Valghalla.External.API.Queues
 
     public class ExternalUserClearCacheConsumer : IConsumer<QueueMessage<ExternalUserClearCacheMessage>>
     {
-        private readonly ISender sender;
+        private readonly ITenantMemoryCache tenantMemoryCache;
 
-        public ExternalUserClearCacheConsumer(ISender sender)
+        public ExternalUserClearCacheConsumer(ITenantMemoryCache tenantMemoryCache)
         {
-            this.sender = sender;
+            this.tenantMemoryCache = tenantMemoryCache;
         }
 
         public async Task Consume(ConsumeContext<QueueMessage<ExternalUserClearCacheMessage>> context)
         {
-            var command = new ClearExternalUserCacheCommand(context.Message.Data.CprNumbers);
-            await sender.Send(command);
+            var cprNumbers = context.Message.Data.CprNumbers;
+
+            foreach (var cpr in cprNumbers)
+            {
+                var cacheKey = UserContext.GetCacheKey(cpr);
+                tenantMemoryCache.Remove(cacheKey);
+            }
+
+            await Task.CompletedTask;
         }
     }
 }

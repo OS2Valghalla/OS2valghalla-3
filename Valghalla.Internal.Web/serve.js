@@ -17,12 +17,19 @@ if (!appSettings.AngularDevServer) {
     process.exit(1);
 }
 
-const url = new URL(appSettings.AngularDevServer);
-console.log(`Angular Dev Server: ${appSettings.AngularDevServer}`);
+if (!appSettings.Urls) {
+    console.error("Urls does not exist in appsettings file. Please check source control documentation on how to create development app settings file");
+    process.exit(1);
+}
+
+const ngUrl = new URL(appSettings.AngularDevServer);
+const dotnetUrl = new URL(appSettings.Urls);
+console.log(`Valghalla.Internal.Web Server: ${appSettings.AngularDevServer}`);
+console.log(`Valghalla.Internal.API Server: ${appSettings.Urls}`);
 
 const envScript = `/** This file is auto-generated for development purporse. Do not commit to source control. **/
 export const environment = {
-    baseAddress: "${url.protocol}//${url.hostname}:${url.port}/api/"
+    baseAddress: "${dotnetUrl.protocol}//${dotnetUrl.hostname}:${dotnetUrl.port}/api/"
 }
 `;
 
@@ -31,7 +38,7 @@ writeFileSync(envFilePath, envScript, { encoding: 'utf8' });
 console.log("A development file has been created: " + envFilePath);
 
 console.log("Stating Angular dev server...");
-const ng = spawn(`ng serve --host ${url.hostname} --port ${url.port} --ssl`, [], { shell: true, detached: true });
+const ng = spawn(`ng serve --host ${ngUrl.hostname} --port ${ngUrl.port} --ssl`, [], { shell: true, detached: true });
 
 ng.stdout.on('data', (data) => {
     console.log(`NgServe process stdout: ${data}`);

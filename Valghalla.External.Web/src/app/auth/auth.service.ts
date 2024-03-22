@@ -1,12 +1,10 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpBackend, HttpErrorResponse } from '@angular/common/http';
 import { ReplaySubject, Observable, catchError, throwError, of, EMPTY, take } from 'rxjs';
-import { getBaseApiUrl } from 'src/shared/functions/url-helper';
-import { IFRAME_MESSAGE } from './consts';
+import { getLoginUrl, getLogoutUrl, getPingUrl, redirectIfNeeded, redirectToLoginIfNeeded, storeRedirectUrl } from './utils';
 
-const REDIRECT_URL = 'valghalla.redirectUrl';
-const COOKIE_STATE = 'valghalla.signedin';
-const IGNORE_CODE = '__ignore';
+const SIGNED_IN_FLAG = 'valghalla.signedin';
+const UNAUTHORIZED_FLAG = '_unauthorized';
 
 @Injectable({
   providedIn: 'root',
@@ -23,21 +21,20 @@ export class AuthService {
 
   initialize() {
     if (this.isSessionExist()) {
-      return this.getState();
+      return this.ping();
     }
 
     return EMPTY;
   }
 
   login(redirectUrl?: string) {
-    const apiPath = getBaseApiUrl() + 'auth/login';
-    this.storeRedirectUrl(redirectUrl);
-    window.location.href = apiPath;
+    storeRedirectUrl(redirectUrl);
+    window.location.href = getLoginUrl();
   }
 
   logout(profileDeleted: boolean) {
     this.httpClient
-      .post<string>(getBaseApiUrl() + 'auth/logout', undefined, {
+      .post<string>(getLogoutUrl(), undefined, {
         params: {
           profileDeleted: profileDeleted,
         },
@@ -47,6 +44,10 @@ export class AuthService {
       .pipe(
         take(1),
         catchError((err: HttpErrorResponse) => {
+          if (redirectToLoginIfNeeded(err)) {
+            return new Observable<any>();
+          }
+
           return throwError(() => err);
         }),
       )
@@ -57,50 +58,39 @@ export class AuthService {
       });
   }
 
-  getState(): Observable<void> {
+  ping(): Observable<void> {
     return new Observable<void>((observer) => {
-      const apiPath = getBaseApiUrl() + 'auth/state';
-
-      if (!this.isRedirectRequired()) {
-        this.storeRedirectUrl();
-      }
-
       this.httpClient
-        .get<string | null>(apiPath, {
+        .get<string | null>(getPingUrl(), {
           responseType: 'text' as any,
           withCredentials: isDevMode(),
         })
         .pipe(
           take(1),
           catchError((err: HttpErrorResponse) => {
-            if (err.status == 401 || err.status == 403) {
-              this.authorized.next(false);
-              this.redirectIfNeeded();
+            if (redirectIfNeeded()) {
+              return of(UNAUTHORIZED_FLAG);
+            }
 
-              observer.next();
-              observer.complete();
-              return of(IGNORE_CODE);
+            if (redirectToLoginIfNeeded(err)) {
+              return new Observable<any>();
+            }
+
+            if (err.status == 401 || err.status == 403) {
+              return of(UNAUTHORIZED_FLAG);
             }
 
             return throwError(() => err);
           }),
         )
-        .subscribe((loginRedirectUrl?: string) => {
-          if (loginRedirectUrl == IGNORE_CODE) return;
-
-          if (loginRedirectUrl) {
-            window.location.href = loginRedirectUrl;
-            return;
+        .subscribe((flag?: string) => {
+          if (flag == UNAUTHORIZED_FLAG) {
+            this.authorized.next(false);
           }
-
-          // we're in an iframe to do silent cookie refresh
-          if (window.location !== window.parent.location) {
-            window.parent.postMessage(IFRAME_MESSAGE, '*');
-            return;
+          else {
+            this.authorized.next(true);
+            redirectIfNeeded();
           }
-
-          this.authorized.next(true);
-          this.redirectIfNeeded();
 
           observer.next();
           observer.complete();
@@ -109,30 +99,7 @@ export class AuthService {
   }
 
   isSessionExist() {
-    const value = document.cookie.match('(^|;)\\s*' + COOKIE_STATE + '\\s*=\\s*([^;]+)')?.pop();
+    const value = document.cookie.match('(^|;)\\s*' + SIGNED_IN_FLAG + '\\s*=\\s*([^;]+)')?.pop();
     return !!value;
-  }
-
-  private storeRedirectUrl(url?: string) {
-    if (this.isRedirectRequired()) return;
-    localStorage.setItem(REDIRECT_URL, url ?? window.location.href);
-  }
-
-  private redirectIfNeeded() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectRequired = urlParams.get('redirect');
-
-    if (redirectRequired) {
-      const redirectUrl = localStorage.getItem(REDIRECT_URL);
-
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      }
-    }
-  }
-
-  private isRedirectRequired() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return !!urlParams.get('redirect');
   }
 }

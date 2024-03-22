@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Valghalla.Application.Abstractions.Messaging;
 using Valghalla.Internal.Application.Modules.App.Queries;
@@ -7,6 +8,7 @@ namespace Valghalla.Internal.API.Controllers.App
 {
     [ApiController]
     [Route("_css")]
+    [AllowAnonymous]
     public class AppCssController : ControllerBase
     {
         private readonly ISender sender;

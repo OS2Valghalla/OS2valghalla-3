@@ -1,6 +1,6 @@
-﻿namespace Valghalla.Internal.Application.Modules.App.Responses
+﻿namespace Valghalla.Application.User
 {
-    public sealed record UserResponse
+    public sealed record UserInfo
     {
         public Guid Id { get; init; }
         public Guid? ParticipantId { get; init; }

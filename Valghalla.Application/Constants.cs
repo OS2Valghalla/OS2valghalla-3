@@ -11,8 +11,8 @@
 
         public static class Authentication
         {
-            public const string LoginPath = "/api/auth/login";
-            public const string LogoutPath = "/api/auth/logout";
+            public const string Scheme = "ValghallaToken";
+            public const string Cookie = "ValghallaTokenKey";
         }
 
         public static class DefaultCommunicationTemplates

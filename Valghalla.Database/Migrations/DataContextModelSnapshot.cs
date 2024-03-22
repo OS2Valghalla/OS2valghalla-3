@@ -1780,6 +1780,34 @@ namespace Valghalla.Database.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.UserTokenEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpiredAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserToken", (string)null);
+                });
+
             modelBuilder.Entity("Valghalla.Database.Entities.Tables.WebPageEntity", b =>
                 {
                     b.Property<string>("PageName")

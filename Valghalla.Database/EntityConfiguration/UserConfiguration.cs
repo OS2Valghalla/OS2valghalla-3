@@ -19,6 +19,17 @@ namespace Valghalla.Database.EntityConfiguration
                 entity.Property(e => e.Cvr).HasMaxLength(50);
                 entity.Property(e => e.Serial).HasMaxLength(50);
             });
+
+            modelBuilder.Entity<UserTokenEntity>(entity =>
+            {
+                entity.ToTable("UserToken");
+
+                entity.HasKey(e => e.Id);
+
+                entity
+                    .Property(e => e.Code)
+                    .HasMaxLength(Constants.Validation.MaximumGeneralStringLength);
+            });
         }
     }
 }

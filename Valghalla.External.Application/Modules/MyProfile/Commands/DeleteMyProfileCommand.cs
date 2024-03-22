@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using System.Runtime.ConstrainedExecution;
 using Valghalla.Application.Abstractions.Messaging;
+using Valghalla.Application.Cache;
 using Valghalla.Application.Queue;
 using Valghalla.Application.Queue.Messages;
 using Valghalla.Application.User;
@@ -28,15 +30,18 @@ namespace Valghalla.External.Application.Modules.MyProfile.Commands
         private readonly IUserContextProvider userContextProvider;
         private readonly IMyProfileCommandRepository myProfileCommandRepository;
         private readonly IQueueService queueService;
+        private readonly ITenantMemoryCache tenantMemoryCache;
 
         public DeleteMyProfileCommandHandler(
             IUserContextProvider userContextProvider,
             IMyProfileCommandRepository myProfileCommandRepository,
-            IQueueService queueService)
+            IQueueService queueService,
+            ITenantMemoryCache tenantMemoryCache)
         {
             this.userContextProvider = userContextProvider;
             this.myProfileCommandRepository = myProfileCommandRepository;
             this.queueService = queueService;
+            this.tenantMemoryCache = tenantMemoryCache;
         }
 
         public async Task<Response> Handle(DeleteMyProfileCommand command, CancellationToken cancellationToken)
@@ -44,6 +49,9 @@ namespace Valghalla.External.Application.Modules.MyProfile.Commands
             var user = userContextProvider.CurrentUser;
 
             await myProfileCommandRepository.DeleteMyProfileAsync(user.ParticipantId!.Value, cancellationToken);
+
+            var cacheKey = UserContext.GetCacheKey(user.Cpr!);
+            tenantMemoryCache.Remove(cacheKey);
 
             await queueService.PublishAsync(new ExternalUserClearCacheMessage()
             {
