@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
+using Valghalla.Application.Cache;
 using Valghalla.Application.Configuration;
 using Valghalla.Application.DigitalPost;
 using Valghalla.Application.Secret;
@@ -17,19 +18,22 @@ namespace Valghalla.Integration.DigitalPost
         private readonly ISecretService secretService;
         private readonly HttpClient httpClient;
         private readonly DigitalPostMessageHelper helper;
+        private readonly ITenantMemoryCache tenantMemoryCache;
 
         public DigitalPostService(
             AppConfiguration appConfiguration,
             IOptions<SecretConfiguration> secretConfigurationOptions,
             ISecretService secretService,
             HttpClient httpClient,
-            DigitalPostMessageHelper helper)
+            DigitalPostMessageHelper helper,
+            ITenantMemoryCache tenantMemoryCache)
         {
             this.appConfiguration = appConfiguration;
             this.secretConfiguration = secretConfigurationOptions.Value;
             this.secretService = secretService;
             this.httpClient = httpClient;
             this.helper = helper;
+            this.tenantMemoryCache = tenantMemoryCache;
         }
 
         public async Task SendAsync(Guid messageUUID, DigitalPostMessage message, CancellationToken cancellationToken)
@@ -64,39 +68,45 @@ namespace Valghalla.Integration.DigitalPost
 
         private GenericXmlSecurityToken GetSecurityToken(DigitalPostConfiguration config)
         {
-            var wscConfig = new OioIdwsWcfConfigurationSection()
+            return tenantMemoryCache.GetOrCreate("DigitalPostCVR", cacheEntry =>
             {
-                WspEndpoint = config.WspEndpoint,
-                WspEndpointID = config.WspEndpointID,
-                WspSoapVersion = "1.2",
-                Cvr = appConfiguration.DigitalPostCvr,
-                TokenLifeTimeInMinutes = 5,
-                IncludeLibertyHeader = true,
-                StsEndpointAddress = config.StsEndpointAddress,
-                StsEntityIdentifier = config.StsEntityIdentifier,
-                StsCertificate = new Certificate()
+                var wscConfig = new OioIdwsWcfConfigurationSection()
                 {
-                    FromFileSystem = true,
-                    FilePath = GetCertFilePath(config.StsCertificateFilePath),
-                    Password = config.StsCertificatePassword,
-                },
-                ServiceCertificate = new Certificate()
-                {
-                    FromFileSystem = true,
-                    FilePath = GetCertFilePath(config.ServiceCertificateFilePath),
-                    Password = config.ServiceCertificatePassword,
-                },
-                ClientCertificate = new Certificate()
-                {
-                    FromFileSystem = true,
-                    FilePath = GetCertFilePath(config.ClientCertificateFilePath),
-                    Password = config.ClientCertificatePassword,
-                }
-            };
+                    WspEndpoint = config.WspEndpoint,
+                    WspEndpointID = config.WspEndpointID,
+                    WspSoapVersion = "1.2",
+                    Cvr = appConfiguration.DigitalPostCvr,
+                    TokenLifeTimeInMinutes = 5,
+                    IncludeLibertyHeader = true,
+                    StsEndpointAddress = config.StsEndpointAddress,
+                    StsEntityIdentifier = config.StsEntityIdentifier,
+                    StsCertificate = new Certificate()
+                    {
+                        FromFileSystem = true,
+                        FilePath = GetCertFilePath(config.StsCertificateFilePath),
+                        Password = config.StsCertificatePassword,
+                    },
+                    ServiceCertificate = new Certificate()
+                    {
+                        FromFileSystem = true,
+                        FilePath = GetCertFilePath(config.ServiceCertificateFilePath),
+                        Password = config.ServiceCertificatePassword,
+                    },
+                    ClientCertificate = new Certificate()
+                    {
+                        FromFileSystem = true,
+                        FilePath = GetCertFilePath(config.ClientCertificateFilePath),
+                        Password = config.ClientCertificatePassword,
+                    }
+                };
 
-            var stsTokenConfig = TokenServiceConfigurationFactory.CreateConfiguration(wscConfig);
-            IStsTokenService stsTokenService = new StsTokenServiceCache(stsTokenConfig);
-            return (GenericXmlSecurityToken)stsTokenService.GetToken();
+                var stsTokenConfig = TokenServiceConfigurationFactory.CreateConfiguration(wscConfig);
+                IStsTokenService stsTokenService = new StsTokenService(stsTokenConfig);
+                var token = (GenericXmlSecurityToken)stsTokenService.GetToken();
+                cacheEntry.AbsoluteExpiration = token.ValidTo - stsTokenConfig.CacheClockSkew;
+
+                return token;
+            })!;
         }
 
         private string GetCertFilePath(string path)
