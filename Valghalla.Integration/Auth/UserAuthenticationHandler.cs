@@ -22,7 +22,7 @@ namespace Valghalla.Integration.Auth
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (AuthenticationUtilities.IsAnonymousEndpoint(Context))
+            if (!AuthenticationUtilities.IsApiEndpoint(Context) || AuthenticationUtilities.IsAnonymousEndpoint(Context))
             {
                 await Task.CompletedTask;
                 return AuthenticateResult.NoResult();

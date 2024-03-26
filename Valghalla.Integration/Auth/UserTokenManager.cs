@@ -11,6 +11,7 @@ namespace Valghalla.Integration.Auth
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ITenantMemoryCache tenantMemoryCache;
         private readonly IUserTokenRepository userTokenRepository;
+        private readonly ICookieResolver cookieResolver;
 
         private HttpContext HttpContext
         {
@@ -27,7 +28,7 @@ namespace Valghalla.Integration.Auth
             {
                 if (_currentTokenKey == null)
                 {
-                    var stringValue = HttpContext.Request.Cookies[Constants.Authentication.Cookie];
+                    var stringValue = HttpContext.Request.Cookies[cookieResolver.GetCookieName()];
                     if (stringValue != null)
                     {
                         _currentTokenKey = UserToken.Decode(stringValue);
@@ -45,11 +46,13 @@ namespace Valghalla.Integration.Auth
         public UserTokenManager(
             IHttpContextAccessor httpContextAccessor,
             ITenantMemoryCache tenantMemoryCache,
-            IUserTokenRepository userTokenRepository)
+            IUserTokenRepository userTokenRepository,
+            ICookieResolver cookieResolver)
         {
             this.httpContextAccessor = httpContextAccessor;
             this.tenantMemoryCache = tenantMemoryCache;
             this.userTokenRepository = userTokenRepository;
+            this.cookieResolver = cookieResolver;
         }
 
         public void ExpireUserToken() => EnsureTokenExpiredInResponseCookie();
@@ -112,7 +115,7 @@ namespace Valghalla.Integration.Auth
             var cookieOptions = GetCookieOptions();
             cookieOptions.Expires = token.ExpiredAt;
 
-            HttpContext.Response.Cookies.Append(Constants.Authentication.Cookie, cookieValue, cookieOptions);
+            HttpContext.Response.Cookies.Append(cookieResolver.GetCookieName(), cookieValue, cookieOptions);
         }
 
         private void EnsureTokenExpiredInResponseCookie()
@@ -120,12 +123,12 @@ namespace Valghalla.Integration.Auth
             var cookieOptions = GetCookieOptions();
             cookieOptions.Expires = DateTime.UtcNow.AddYears(-1);
 
-            HttpContext.Response.Cookies.Append(Constants.Authentication.Cookie, string.Empty, cookieOptions);
+            HttpContext.Response.Cookies.Append(cookieResolver.GetCookieName(), string.Empty, cookieOptions);
         }
 
         private CookieOptions GetCookieOptions() => new()
         {
-            HttpOnly = true,
+            HttpOnly = false,
             SameSite = SameSiteMode.None,
             Secure = true,
             Domain = HttpContext.Request.Host.Host

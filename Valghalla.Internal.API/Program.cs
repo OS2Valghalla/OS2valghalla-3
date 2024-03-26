@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
+using Valghalla.Application.Auth;
 using Valghalla.Application.Authentication;
 using Valghalla.Application.Queue;
 using Valghalla.Application.Saml;
@@ -84,6 +85,7 @@ namespace Valghalla.Internal.API
             builder.Services.AddScoped<IQueueService, QueueService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ISaml2AuthPostProcessor, Saml2AuthPostProcessor>();
+            builder.Services.AddSingleton<ICookieResolver, CookieResolver>();
 
             builder.Services.AddScoped<ApiLogHandlingMiddleware>();
             builder.Services.AddScoped<GlobalExceptionHandlingMiddleware>();
