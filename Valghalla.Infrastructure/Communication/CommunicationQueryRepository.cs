@@ -85,6 +85,7 @@ namespace Valghalla.Infrastructure.Communication
                     Description = entity.TaskType.Description,
                     Payment = entity.TaskType.Payment,
                     StartTime = entity.TaskType.StartTime,
+                    EndTime = entity.TaskType.EndTime,
                 },
                 TaskDate = entity.TaskDate,
                 InvitationCode = entity.InvitationCode
@@ -129,6 +130,7 @@ namespace Valghalla.Infrastructure.Communication
                     Description = entity.TaskType.Description,
                     Payment = entity.TaskType.Payment,
                     StartTime = entity.TaskType.StartTime,
+                    EndTime = entity.TaskType.EndTime,
                 },
                 TaskDate = entity.TaskDate
             };

@@ -61,6 +61,7 @@
     },
     "error": {
       "get_app_context": "Error fetching app context",
+      "get_app_user": "Error occurred when fetching current user data",
       "get_user_teams": "Error fetching user teams"
     },
     "deactivated_web": {

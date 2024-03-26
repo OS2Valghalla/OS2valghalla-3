@@ -5,7 +5,7 @@ import { AuthHttpInterceptor } from './auth-http.interceptor';
 import { AuthService } from './auth.service';
 
 function initializerFactory(authService: AuthService): () => Observable<void> {
-  return () => authService.getState();
+  return () => authService.ping();
 }
 
 @NgModule({

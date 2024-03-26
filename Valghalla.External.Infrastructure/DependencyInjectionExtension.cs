@@ -5,6 +5,7 @@ using Valghalla.External.Application.Modules.App.Interfaces;
 using Valghalla.External.Application.Modules.MyProfile.Interfaces;
 using Valghalla.External.Application.Modules.Registration.Interfaces;
 using Valghalla.External.Application.Modules.Shared.SpecialDiet.Interfaces;
+using Valghalla.External.Application.Modules.Shared.User;
 using Valghalla.External.Application.Modules.Tasks.Interfaces;
 using Valghalla.External.Application.Modules.Team.Interfaces;
 using Valghalla.External.Application.Modules.Unprotected.Interfaces;
@@ -14,6 +15,7 @@ using Valghalla.External.Infrastructure.Modules.App;
 using Valghalla.External.Infrastructure.Modules.MyProfile;
 using Valghalla.External.Infrastructure.Modules.Registration;
 using Valghalla.External.Infrastructure.Modules.Shared.SpecialDiet;
+using Valghalla.External.Infrastructure.Modules.Shared.User;
 using Valghalla.External.Infrastructure.Modules.Tasks;
 using Valghalla.External.Infrastructure.Modules.Team;
 using Valghalla.External.Infrastructure.Modules.Unprotected;
@@ -64,6 +66,7 @@ namespace Valghalla.External.Infrastructure
             #endregion
 
             #region Shared
+            services.AddScoped<IUserSharedQueryRepository, UserSharedQueryRepository>();
             services.AddScoped<ISpecialDietSharedQueryRepository, SpecialDietSharedQueryRepository>();
             #endregion
 

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Valghalla.Application.Abstractions.Messaging;
@@ -24,6 +25,7 @@ namespace Valghalla.External.API.Controllers.Task
         }
 
         [HttpGet("gettaskpreview")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetTaskPreviewAsync(string hashValue, Guid? code, CancellationToken cancellationToken)
         {
             var query = new GetTaskPreviewQuery(hashValue, code);
@@ -59,6 +61,7 @@ namespace Valghalla.External.API.Controllers.Task
         }
 
         [HttpPost("gettaskoverview")]
+        [UserAuthorize(RoleEnum.Participant)]
         public async Task<IActionResult> GetTaskOverviewAsync(GetTaskOverviewRequest request, CancellationToken cancellationToken)
         {
             var query = new GetTaskOverviewQuery()
@@ -74,6 +77,7 @@ namespace Valghalla.External.API.Controllers.Task
         }
 
         [HttpGet("gettaskoverviewfilteroptions")]
+        [UserAuthorize(RoleEnum.Participant)]
         public async Task<IActionResult> GetTaskOverviewFilterOptionsAsync(CancellationToken cancellationToken)
         {
             var query = new GetTaskOverviewFilterOptionsQuery();

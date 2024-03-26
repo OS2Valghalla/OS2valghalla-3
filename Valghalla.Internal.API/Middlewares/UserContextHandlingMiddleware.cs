@@ -1,107 +1,56 @@
-﻿using MediatR;
-using System.Security.Claims;
-using Valghalla.Application.Abstractions.Messaging;
-using Valghalla.Application.Exceptions;
+﻿using Valghalla.Application.Auth;
 using Valghalla.Application.User;
 using Valghalla.Internal.API.Auth;
-using Valghalla.Internal.Application.Modules.Administration.User.Commands;
-using Valghalla.Internal.Application.Modules.App.Queries;
-using Valghalla.Internal.Application.Modules.App.Responses;
 
 namespace Valghalla.Internal.API.Middlewares
 {
     internal class UserContextHandlingMiddleware : IMiddleware
     {
-        private readonly ISender sender;
-        private readonly ILogger<UserContextHandlingMiddleware> logger;
-        private readonly UserContextInternalProvider internalProvider;
+        private readonly IUserService userService;
+        private readonly UserContextInternalProvider userContextInternalProvider;
 
-        public UserContextHandlingMiddleware(
-            ISender sender,
-            ILogger<UserContextHandlingMiddleware> logger,
-            UserContextInternalProvider internalProvider)
+        public UserContextHandlingMiddleware(IUserService userService, UserContextInternalProvider userContextInternalProvider)
         {
-            this.sender = sender;
-            this.logger = logger;
-            this.internalProvider = internalProvider;
+            this.userService = userService;
+            this.userContextInternalProvider = userContextInternalProvider;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var principal = context.User;
-            var name = principal.FindFirstValue(AppClaimTypes.Name);
-            var cvr = principal.FindFirstValue(AppClaimTypes.Cvr);
-            var serial = principal.FindFirstValue(AppClaimTypes.Serial);
+            var cancellationToken = context.RequestAborted;
 
-            if (!string.IsNullOrEmpty(cvr) && !string.IsNullOrEmpty(serial))
+            if (context.User.Identity == null || !context.User.Identity.IsAuthenticated)
             {
-                Guid userId;
-                IEnumerable<Guid> roleIds;
-
-                var user = await GetUserAsync(cvr, serial);
-
-                if (user == null)
+                if (AuthenticationUtilities.IsAnonymousEndpoint(context))
                 {
-                    userId = await CreateUserAsync(name ?? "Unknown", cvr, serial);
-                    roleIds = new List<Guid> { Role.Administrator.Id };
+                    await next(context);
                 }
                 else
                 {
-                    userId = user.Id;
-                    roleIds = user.RoleIds;
+                    await AuthenticationUtilities.SetTokenExpiredResponseAsync(context, cancellationToken);
                 }
 
-                internalProvider.SetUserContext(new UserContext()
-                {
-                    UserId = userId,
-                    RoleIds = roleIds,
-                    Name = name,
-                    Cvr = cvr,
-                    Serial = serial
-                });
+                return;
             }
+
+            var userInfo = await userService.GetUserInfoAsync(context.User, cancellationToken);
+
+            if (userInfo == null)
+            {
+                await AuthenticationUtilities.SetUnauthorizedResponseAsync(context, cancellationToken);
+                return;
+            }
+
+            userContextInternalProvider.SetUserContext(new UserContext()
+            {
+                UserId = userInfo.Id,
+                RoleIds = userInfo.RoleIds,
+                Name = userInfo.Name,
+                Cvr = context.User.GetCvr(),
+                Serial = context.User.GetSerial()
+            });
 
             await next(context);
-        }
-
-        private async Task<UserResponse?> GetUserAsync(string cvrNumber, string serial)
-        {
-            try
-            {
-                var query = new GetInternalUserQuery(cvrNumber, serial);
-                var response = await sender.Send(query);
-
-                if (response is not Response<UserResponse> userResponse)
-                {
-                    throw new UnableToCastToUserResponseException();
-                }
-
-                return userResponse.Data;
-            }
-            catch (Exception ex)
-            {
-                throw new UserException(ex);
-            }
-        }
-
-        private async Task<Guid> CreateUserAsync(string name, string cvrNumber, string serial)
-        {
-            try
-            {
-                var command = new CreateUserCommand(SystemRole.Administrator.Id, name, cvrNumber, serial);
-                var response = await sender.Send(command);
-
-                if (response is not Response<Guid> userResponse)
-                {
-                    throw new UnableToCastToUserResponseException();
-                }
-
-                return userResponse.Data;
-            }
-            catch (Exception ex)
-            {
-                throw new UserException(ex);
-            }
         }
     }
 }

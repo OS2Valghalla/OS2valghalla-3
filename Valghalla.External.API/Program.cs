@@ -82,12 +82,15 @@ namespace Valghalla.External.API
             builder.Services.AddInfrastructure();
             builder.Services.AddIntegration();
             builder.Services.AddApplication();
+            builder.Services.AddRouting();
             builder.Services.AddControllers();
 
             builder.Services.AddHttpClient();
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddScoped<IQueueService, QueueService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ISaml2AuthPostProcessor, Saml2AuthPostProcessor>();
 
             builder.Services.AddScoped<GlobalExceptionHandlingMiddleware>();
             builder.Services.AddScoped<LogContextHandlingMiddleware>();
@@ -100,11 +103,13 @@ namespace Valghalla.External.API
             builder.Services.AddScoped<UserContextInternalProvider>();
             builder.Services.AddScoped<IUserContextProvider, UserContextProvider>();
 
-            builder.Services.AddSaml2Auth();
+            builder.Services.AddAuthServices();
+
+            var corsPolicyName = "ValghallaCorsPolicy";
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy(name: "AllowAllForDevelopment", policy =>
+                options.AddPolicy(corsPolicyName, policy =>
                 {
                     if (builder.Environment.IsDevelopment())
                     {
@@ -180,18 +185,9 @@ namespace Valghalla.External.API
 
                 var app = builder.Build();
 
-                app.Use((context, next) =>
-                {
-                    if (context.Request.Headers.ContainsKey("X-Forwarded-Proto"))
-                    {
-                        if (!string.IsNullOrEmpty(context.Request.Headers["X-Forwarded-Proto"]))
-                        {
-                            context.Request.Scheme = context.Request.Headers["X-Forwarded-Proto"];
-                        }
-                    }
+                app.UseForwardedHeaders();
 
-                    return next(context);
-                });
+                app.UseRouting();
 
                 // Configure the HTTP request pipeline.
                 if (app.Environment.IsDevelopment())
@@ -201,7 +197,7 @@ namespace Valghalla.External.API
                 }
 
                 app.UseHttpsRedirection();
-                app.UseCors("AllowAllForDevelopment");
+                app.UseCors(corsPolicyName);
 
                 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
                 // Tenant context middleware need to run first before authentication so claim transformation can query User

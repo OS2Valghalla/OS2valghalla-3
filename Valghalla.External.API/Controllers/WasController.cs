@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Valghalla.Application.Saml;
 using Valghalla.Application.User;
@@ -24,6 +25,7 @@ namespace Valghalla.External.API.Controllers
 
         [HttpGet]
         [Route("was")]
+        [AllowAnonymous]
         public IActionResult Redirect()
         {
             return Redirect("https://www.was.digst.dk/os2valghalla-dk");

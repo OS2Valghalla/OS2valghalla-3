@@ -1,70 +1,66 @@
-﻿using MediatR;
-using System.Security.Claims;
-using Valghalla.Application.Abstractions.Messaging;
-using Valghalla.Application.Exceptions;
+﻿using Valghalla.Application.Auth;
 using Valghalla.Application.User;
 using Valghalla.External.API.Auth;
-using Valghalla.External.Application.Modules.App.Queries;
-using Valghalla.External.Application.Modules.App.Responses;
 
 namespace Valghalla.External.API.Middlewares
 {
     internal class UserContextHandlingMiddleware : IMiddleware
     {
-        private readonly ISender sender;
+        private readonly IUserService userService;
         private readonly UserContextInternalProvider userContextInternalProvider;
 
-        public UserContextHandlingMiddleware(
-            ISender sender,
-            UserContextInternalProvider userContextInternalProvider)
+        public UserContextHandlingMiddleware(IUserService userService, UserContextInternalProvider userContextInternalProvider)
         {
-            this.sender = sender;
+            this.userService = userService;
             this.userContextInternalProvider = userContextInternalProvider;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var principal = context.User;
-            var cpr = principal.FindFirstValue(AppClaimTypes.Cpr);
+            var cancellationToken = context.RequestAborted;
 
-            if (!string.IsNullOrEmpty(cpr))
+            if (context.User.Identity == null || !context.User.Identity.IsAuthenticated)
             {
-                var user = await GetUserAsync(cpr);
-
-                if (user != null)
+                if (AuthenticationUtilities.IsAnonymousEndpoint(context))
                 {
-                    userContextInternalProvider.SetUserContext(new UserContext()
-                    {
-                        UserId = user.Id,
-                        RoleIds = user.RoleIds,
-                        ParticipantId = user.ParticipantId,
-                        Name = user.Name,
-                        Cpr = cpr
-                    });
+                    await next(context);
                 }
+                else
+                {
+                    await AuthenticationUtilities.SetTokenExpiredResponseAsync(context, cancellationToken);
+                }
+
+                return;
             }
+
+            var userInfo = await userService.GetUserInfoAsync(context.User, cancellationToken);
+
+            if (userInfo == null)
+            {
+                if (IsRegistrationPath(context))
+                {
+                    await next(context);
+                    return;
+                }
+
+                await AuthenticationUtilities.SetUnauthorizedResponseAsync(context, cancellationToken);
+                return;
+            }
+
+            userContextInternalProvider.SetUserContext(new UserContext()
+            {
+                UserId = userInfo.Id,
+                RoleIds = userInfo.RoleIds,
+                ParticipantId = userInfo.ParticipantId,
+                Name = userInfo.Name,
+                Cpr = context.User.GetCpr(),
+            });
 
             await next(context);
         }
 
-        private async Task<UserResponse?> GetUserAsync(string cprNumber)
-        {
-            try
-            {
-                var query = new GetExternalUserQuery(cprNumber);
-                var response = await sender.Send(query);
-
-                if (response is not Response<UserResponse> userResponse)
-                {
-                    throw new UnableToCastToUserResponseException();
-                }
-
-                return userResponse.Data;
-            }
-            catch (Exception ex)
-            {
-                throw new UserException(ex);
-            }
-        }
+        private static bool IsRegistrationPath(HttpContext context) =>
+            context.Request.Path.HasValue &&
+            (context.Request.Path.Value.Contains("api/registration/registerwithteam") || context.Request.Path.Value.Contains("api/registration/registerwithtask"));
     }
 }

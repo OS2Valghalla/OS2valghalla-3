@@ -37,7 +37,7 @@ namespace Valghalla.Internal.Application.Modules.App.Queries
 
             var appContext = new AppContextResponse()
             {
-                User = new UserResponse()
+                User = new UserInfo()
                 {
                     Id = userContextProvider.CurrentUser.UserId,
                     RoleIds = userContextProvider.CurrentUser.RoleIds,

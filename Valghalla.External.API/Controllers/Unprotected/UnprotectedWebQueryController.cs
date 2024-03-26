@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Valghalla.External.Application.Modules.Unprotected.Queries;
 
@@ -6,6 +7,7 @@ namespace Valghalla.External.API.Controllers.Unprotected
 {
     [ApiController]
     [Route("api/unprotected/web")]
+    [AllowAnonymous]
     public class UnprotectedWebQueryController : ControllerBase
     {
         private readonly ISender sender;

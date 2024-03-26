@@ -16,6 +16,7 @@ namespace Valghalla.Worker
         private Timer? electionDeactivationJobTimer = null;
         private Timer? auditLogClearJobTimer = null;
         private Timer? communicationLogClearJobTimer = null;
+        private Timer? userTokenClearJobTimer = null;
 
         private readonly ILogger<Worker> logger;
         private readonly IOptions<JobConfiguration> jobConfigurationOptions;
@@ -42,6 +43,7 @@ namespace Valghalla.Worker
             electionDeactivationJobTimer?.Dispose();
             auditLogClearJobTimer?.Dispose();
             communicationLogClearJobTimer?.Dispose();
+            userTokenClearJobTimer?.Dispose();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -146,6 +148,22 @@ namespace Valghalla.Worker
                 TimeSpan.Zero,
                 TimeSpan.FromHours(config.CommunicationLogClearJob.Period));
 
+            userTokenClearJobTimer = new Timer(
+                async _ =>
+                {
+                    try
+                    {
+                        await ExecuteUserTokenClearJobAsync(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError("An error occurred when checking and clearing user tokens in worker -- {@ex}", ex);
+                    }
+                },
+                null,
+                TimeSpan.Zero,
+                TimeSpan.FromHours(config.UserTokenClearJob.Period));
+
             return Task.CompletedTask;
         }
 
@@ -159,6 +177,7 @@ namespace Valghalla.Worker
             electionDeactivationJobTimer?.Change(Timeout.Infinite, 0);
             auditLogClearJobTimer?.Change(Timeout.Infinite, 0);
             communicationLogClearJobTimer?.Change(Timeout.Infinite, 0);
+            userTokenClearJobTimer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }
 
@@ -341,6 +360,37 @@ namespace Valghalla.Worker
                         logger.LogError(
                             $"[{tenant.Name}]" +
                             "An error occurred when firing communication log clear job message in worker -- {@ex}", ex);
+                    }
+                }))
+                .ToArray();
+
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task ExecuteUserTokenClearJobAsync(CancellationToken cancellationToken)
+        {
+            var tenants = await secretService.GetTenantConfigurationsAsync(cancellationToken);
+            var tasks = tenants
+                .Select(tenant => Task.Run(async () =>
+                {
+                    try
+                    {
+                        using var scope = serviceProvider.CreateScope();
+
+                        var publishEndpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
+                        var queueMessage = new QueueMessage<UserTokenClearJobMessage>(tenant.InternalDomain, new UserTokenClearJobMessage());
+
+                        await publishEndpoint.Publish<SubmitJob<QueueMessage<UserTokenClearJobMessage>>>(new
+                        {
+                            JobId = Guid.NewGuid(),
+                            Job = queueMessage
+                        }, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(
+                            $"[{tenant.Name}]" +
+                            "An error occurred when firing user token clear job message in worker -- {@ex}", ex);
                     }
                 }))
                 .ToArray();

@@ -25,7 +25,6 @@ namespace Valghalla.Integration.Saml
     {
         private const string RELAY_STATE_REDIRECT = "redirect";
         private const string RELAY_STATE_PROFILE_DELETED = "profiledeleted";
-        private const string COOKIE_STATE = "valghalla.signedin";
 
         private readonly IOptions<GlobalAuthConfiguration> authConfigOptions;
         private readonly IHttpContextAccessor httpContextAccessor;
@@ -35,6 +34,8 @@ namespace Valghalla.Integration.Saml
         private readonly ISaml2AuthContextProvider saml2AuthContextProvider;
         private readonly InternalAuthConfiguration configuration;
         private readonly ILogger<Saml2AuthService> logger;
+
+        private readonly ISaml2AuthPostProcessor postProcessor;
 
         private HttpContext HttpContext
         {
@@ -60,7 +61,8 @@ namespace Valghalla.Integration.Saml
             ITenantContextProvider tenantContextProvider,
             ISaml2AuthContextProvider saml2AuthContextProvider,
             InternalAuthConfiguration configuration,
-            ILogger<Saml2AuthService> logger)
+            ILogger<Saml2AuthService> logger,
+            ISaml2AuthPostProcessor postProcessor)
         {
             this.authConfigOptions = authConfigOptions;
             this.httpContextAccessor = httpContextAccessor;
@@ -70,26 +72,7 @@ namespace Valghalla.Integration.Saml
             this.saml2AuthContextProvider = saml2AuthContextProvider;
             this.configuration = configuration;
             this.logger = logger;
-        }
-
-        public bool IsAuthenticated()
-        {
-            return
-                HttpContext.User.Identity != null &&
-                HttpContext.User.Identity.IsAuthenticated;
-        }
-
-        public void ClearClientSession()
-        {
-            foreach (var cookie in HttpContext.Request.Cookies)
-            {
-                HttpContext.Response.Cookies.Delete(cookie.Key);
-            }
-        }
-
-        public void SaveClientSession()
-        {
-            HttpContext.Response.Cookies.Append(COOKIE_STATE, "true");
+            this.postProcessor = postProcessor;
         }
 
         public async Task<string> GetLoginRedirectUrlAsync(CancellationToken cancellationToken)
@@ -107,7 +90,7 @@ namespace Valghalla.Integration.Saml
             return binding.RedirectLocation.OriginalString;
         }
 
-        public async Task<string> LogoutAsync(bool profileDeleted, CancellationToken cancellationToken)
+        public async Task<string> LogoutAsync(ClaimsPrincipal principal, bool profileDeleted, CancellationToken cancellationToken)
         {
             var saml2Config = await GetSaml2ConfigurationAsync(cancellationToken);
             var binding = new Saml2RedirectBinding();
@@ -120,13 +103,13 @@ namespace Valghalla.Integration.Saml
                 });
             }
 
-            var saml2LogoutRequest = await new Saml2LogoutRequest(saml2Config, HttpContext.User).DeleteSession(HttpContext);
+            var saml2LogoutRequest = new Saml2LogoutRequest(saml2Config, principal);
             binding.Bind(saml2LogoutRequest);
 
             return binding.RedirectLocation.OriginalString;
         }
 
-        public async Task<string> SetupAssertionConsumerServiceAsync(Func<ClaimsPrincipal, ClaimsPrincipal> transform, bool isInternal, CancellationToken cancellationToken)
+        public async Task<string> SetupAssertionConsumerServiceAsync(bool isInternal, CancellationToken cancellationToken)
         {
             var saml2Config = await GetSaml2ConfigurationAsync(cancellationToken);
             var binding = new Saml2PostBinding();
@@ -142,7 +125,7 @@ namespace Valghalla.Integration.Saml
 
             binding.Unbind(HttpContext.Request.ToGenericHttpRequest(), saml2AuthnResponse);
 
-            await CreateSession(saml2AuthnResponse, transform, isInternal);
+            await EnsureClaimsPrincipal(saml2AuthnResponse, isInternal, cancellationToken);
 
             var relayStateQuery = binding.GetRelayStateQuery();
 
@@ -188,7 +171,6 @@ namespace Valghalla.Integration.Saml
                 {
                     requestBinding.Unbind(genericHttpRequest, logoutRequest);
                     status = Saml2StatusCodes.Success;
-                    await logoutRequest.DeleteSession(HttpContext);
                 }
                 catch (Exception exc)
                 {
@@ -212,30 +194,33 @@ namespace Valghalla.Integration.Saml
             }
         }
 
-        private async Task CreateSession(Saml2AuthnResponse saml2AuthnResponse, Func<ClaimsPrincipal, ClaimsPrincipal> transform, bool isInternal)
+        private async Task<ClaimsPrincipal> EnsureClaimsPrincipal(Saml2AuthnResponse saml2AuthnResponse, bool isInternal, CancellationToken cancellationToken)
         {
-            if (HttpContext.Request.Cookies.Any())
+            if (saml2AuthnResponse.Status != 0)
             {
-                await Task.CompletedTask;
-                return;
+                throw new InvalidOperationException($"The SAML2 Response Status is not Success, the Response Status is: {saml2AuthnResponse.Status}.");
             }
 
-            await saml2AuthnResponse.CreateSession(HttpContext, claimsTransform: (claimsPrincipal) =>
+            ClaimsPrincipal principal = new ClaimsPrincipal(saml2AuthnResponse.ClaimsIdentity);
+            if (principal.Identity == null || !principal.Identity.IsAuthenticated)
             {
-                logger.LogInformation("Claims");
-                foreach (Claim c in claimsPrincipal.Claims)
-                {
-                    string tmp = c.Type + " :: " + c.Value + " :: " + c.ValueType;
-                    logger.LogInformation(tmp);
-                }
-                logger.LogInformation("--------");
+                throw new InvalidOperationException("No Claims Identity created from SAML2 Response.");
+            }
 
-                if (isInternal)
-                    CheckJobRoleDefinition(claimsPrincipal);
+            logger.LogInformation("Claims");
+            foreach (Claim c in principal.Claims)
+            {
+                string tmp = c.Type + " :: " + c.Value + " :: " + c.ValueType;
+                logger.LogInformation(tmp);
+            }
+            logger.LogInformation("--------");
 
-                CheckAssurance(claimsPrincipal);
-                return transform(claimsPrincipal);
-            });
+            if (isInternal)
+                CheckJobRoleDefinition(principal);
+
+            CheckAssurance(principal);
+
+            return await postProcessor.HandleAsync(principal, cancellationToken);
         }
 
         private static ClaimsPrincipal CheckAssurance(ClaimsPrincipal claimsPrincipal)

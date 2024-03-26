@@ -6,7 +6,6 @@ namespace Valghalla.External.Application.Modules.App.Responses
     {
         public bool ElectionActivated { get; init; }
         public bool FAQPageActivated { get; init; }
-        public UserResponse? User { get; init; }
         public ElectionCommitteeContactInformationPage? WebPage { get; init; }
     }
 }
