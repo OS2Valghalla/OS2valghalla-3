@@ -361,12 +361,18 @@
       "teams_listing": {
         "title": "Teams"
       },
+      "team_link": {
+        "copy_link_to_team": "Kopier link til holdet",
+        "invite_members": "Inviter medlemmer til dette hold ved at dele dette link med dem:",
+        "copy_link_to_team_instruction": "Når du klikker på knappen \"Kopier link til team\", kopieres linket til din udklipsholder. Ved hjælp af linket kan modtageren oprette en bruger og blive automatisk føjet til teamet. Et teammedlem kan se og tilmelde sig alle ikke-godkendte opgaver."
+      },
       "columns": {
         "short_name": "Forkortelse",
         "responsible_count": "Antal ansvarlige",
         "responsibles": "Ansvarlige"
       },
       "action": {
+        "copy_invite_link_to_team": "Kopier invitationslink til team",
         "create_team": "Opret team",
         "edit_team": "Rediger team",
         "delete_confirmation": {
