@@ -10,10 +10,7 @@ import { ElectionShared } from 'src/shared/models/election/election-shared';
 import { AreaShared } from 'src/shared/models/area/area-shared';
 import { TeamShared } from 'src/shared/models/team/team-shared';
 import { FilteredTasksHttpService } from 'src/features/tasks/services/filtered-tasks-http.service';
-import {
-  WorkLocationWithTeamIdsResponse,
-  TaskTypeWithTeamIdsResponse,
-} from 'src/features/tasks/models/tasks-filters-options';
+import { WorkLocationWithTeamIdsResponse, TaskTypeWithTeamIdsResponse } from 'src/features/tasks/models/tasks-filters-options';
 import { Workbook } from 'exceljs';
 import { DateTime } from 'luxon';
 import { dateFormat } from 'src/shared/constants/date';
@@ -152,11 +149,7 @@ export class ParticipantListComponent implements OnInit {
     },
   ];
 
-  constructor(
-    private translocoService: TranslocoService,
-    private globalStateService: GlobalStateService,
-    private filteredTasksHttpService: FilteredTasksHttpService,
-  ) {
+  constructor(private translocoService: TranslocoService, private globalStateService: GlobalStateService, private filteredTasksHttpService: FilteredTasksHttpService) {
     this.dataSource = new MatTableDataSource();
     this.printDataSource = new MatTableDataSource();
   }

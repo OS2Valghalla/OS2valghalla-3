@@ -34,7 +34,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Communication.CommunicationL
                     (i.Participant.FirstName != null && i.Participant.FirstName.ToLower().Contains(query.Value) ||
                     (i.Participant.LastName != null && i.Participant.LastName.ToLower().Contains(query.Value)) ||
                     (i.ShortMessage != null && i.ShortMessage.ToLower().Contains(query.Value)))));
-
+            
             QueryFor(x => x.Status)
                 .With(request =>
                 {
@@ -49,6 +49,10 @@ namespace Valghalla.Internal.Infrastructure.Modules.Communication.CommunicationL
                 })
                 .Use((queryable, query) => queryable.Where(i =>
                     query.Values.Contains(i.Status)));
+
+            QueryFor(x => x.ParticipantId)
+                .Use((queryable, participantId) => queryable.Where(i => participantId == Guid.Empty || i.ParticipantId == participantId));
+
         }
 
         public override async Task<QueryResult<CommunicationLogListingItem>> ExecuteQuery(CommunicationLogListingQueryForm form, CancellationToken cancellationToken)
