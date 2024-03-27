@@ -393,6 +393,7 @@
         "team_has_abandoned_participants": "Team will have abandoned participants if it's deleted. Please ensure affected participants move to another team before removal"
       },
       "success": {
+        "copy_team_link": "Team link copied successfully",
         "create_team": "Team created successfully",
         "update_team": "Team updated successfully",
         "delete_team": "Team deleted successfully"
