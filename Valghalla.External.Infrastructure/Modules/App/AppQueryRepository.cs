@@ -2,12 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Valghalla.Application;
-using Valghalla.Application.User;
 using Valghalla.Application.Web;
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.External.Application.Modules.App.Interfaces;
-using Valghalla.External.Application.Modules.App.Queries;
 using Valghalla.External.Application.Modules.App.Responses;
 
 namespace Valghalla.External.Infrastructure.Modules.App
@@ -15,7 +13,6 @@ namespace Valghalla.External.Infrastructure.Modules.App
     internal class AppQueryRepository : IAppQueryRepository
     {
         private readonly IMapper mapper;
-        private readonly IQueryable<UserEntity> users;
         private readonly IQueryable<ParticipantEntity> participants;
         private readonly IQueryable<ElectionEntity> elections;
         private readonly IQueryable<WebPageEntity> webPages;
@@ -24,7 +21,6 @@ namespace Valghalla.External.Infrastructure.Modules.App
         public AppQueryRepository(DataContext dataContext, IMapper mapper)
         {
             this.mapper = mapper;
-            users = dataContext.Set<UserEntity>().AsNoTracking();
             participants = dataContext.Set<ParticipantEntity>().AsNoTracking();
             elections = dataContext.Set<ElectionEntity>().AsNoTracking();
             webPages = dataContext.Set<WebPageEntity>().AsNoTracking();
@@ -36,43 +32,6 @@ namespace Valghalla.External.Infrastructure.Modules.App
             return await elections
                 .Where(i => i.Active)
                 .AnyAsync(cancellationToken);
-        }
-
-        public async Task<UserResponse?> GetUserAsync(GetExternalUserQuery query, CancellationToken cancellationToken)
-        {
-            var userEntity = await users
-                .Where(i => i.Cpr == query.CprNumber)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (userEntity == null) return null;
-
-            var participant = await participants
-                .Include(i => i.TeamResponsibles)
-                .Include(i => i.WorkLocationResponsibles)
-                .Where(i => i.UserId == userEntity.Id)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (participant == null) return null;
-
-            var roleIds = new List<Guid>() { Role.Participant.Id };
-
-            if (participant.TeamResponsibles.Any())
-            {
-                roleIds.Add(Role.TeamResponsible.Id);
-            }
-
-            if (participant.WorkLocationResponsibles.Any())
-            {
-                roleIds.Add(Role.WorkLocationResponsible.Id);
-            };
-
-            return new UserResponse()
-            {
-                Id = userEntity.Id,
-                ParticipantId = participant.Id,
-                Name = participant.FirstName + " " + participant.LastName,
-                RoleIds = roleIds
-            };
         }
 
         public async Task<IEnumerable<UserTeamResponse>> GetUserTeamsAsync(Guid participantId, CancellationToken cancellationToken)

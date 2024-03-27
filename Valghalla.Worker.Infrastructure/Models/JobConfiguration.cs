@@ -11,6 +11,7 @@
         public TaskNotificationJobConfiguration TaskNotificationJob { get; init; } = null!;
         public AuditLogClearJobConfiguration AuditLogClearJob { get; init; } = null!;
         public CommunicationLogClearJobConfiguration CommunicationLogClearJob { get; init; } = null!;
+        public UserTokenClearJobConfiguration UserTokenClearJob { get; init; } = null!;
     }
 
     public sealed record ParticipantSyncJobConfiguration
@@ -45,7 +46,6 @@
     {
         public int ConcurrentLimit { get; init; }
         public int Timeout { get; init; }
-        public int Period { get; init; }
         public int Retry { get; init; }
         public int RetryPeriod { get; init; }
     }
@@ -80,6 +80,15 @@
     public sealed record CommunicationLogClearJobConfiguration
     {
         public int MaxAvailableTime { get; init; }
+        public int ConcurrentLimit { get; init; }
+        public int Timeout { get; init; }
+        public int Period { get; init; }
+        public int Retry { get; init; }
+        public int RetryPeriod { get; init; }
+    }
+
+    public sealed record UserTokenClearJobConfiguration
+    {
         public int ConcurrentLimit { get; init; }
         public int Timeout { get; init; }
         public int Period { get; init; }

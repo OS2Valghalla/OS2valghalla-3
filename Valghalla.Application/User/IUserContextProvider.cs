@@ -1,4 +1,6 @@
-﻿namespace Valghalla.Application.User
+﻿using System.Security.Claims;
+
+namespace Valghalla.Application.User
 {
     public interface IUserContextProvider
     {

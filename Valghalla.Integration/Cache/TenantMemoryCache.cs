@@ -24,12 +24,27 @@ namespace Valghalla.Integration.Cache
             });
         }
 
+        public TItem? GetOrCreate<TItem>(string key, Func<ICacheEntry, TItem> factory)
+        {
+            return memoryCache.GetOrCreate(BuildKey(key), cacheEntry =>
+            {
+                return factory(cacheEntry);
+            });
+        }
+
         public Task<TItem?> GetOrCreateAsync<TItem>(string key, Func<Task<TItem>> factory)
         {
             return memoryCache.GetOrCreateAsync(BuildKey(key), cacheEntry =>
             {
                 cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
                 return factory();
+            });
+        }
+        public Task<TItem?> GetOrCreateAsync<TItem>(string key, Func<ICacheEntry, Task<TItem>> factory)
+        {
+            return memoryCache.GetOrCreateAsync(BuildKey(key), cacheEntry =>
+            {
+                return factory(cacheEntry);
             });
         }
 

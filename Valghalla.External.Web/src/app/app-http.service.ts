@@ -7,6 +7,7 @@ import { CacheQuery } from 'src/shared/state/cache-query';
 import { Response } from 'src/shared/models/respone';
 import { AppContext } from 'src/app/models/app-context';
 import { UserTeam } from './models/user-team';
+import { User } from './models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,25 @@ export class AppHttpService extends CacheQuery {
           }
         }),
       ),
+    );
+  }
+  
+  getUser(): Observable<Response<User>> {
+    const key = 'AppHttpService.getUser';
+    return this.query(
+      key,
+      this.httpClient
+        .get<Response<User>>(this.baseUrl + 'app/user')
+        .pipe(
+          catchError(() => {
+            return throwError(() => new Error(this.translocoService.translate('app.error.http.get_app_user')));
+          }),
+          tap((res) => {
+            if (!res.isSuccess) {
+              this.invalidate(key);
+            }
+          }),
+        ),
     );
   }
 

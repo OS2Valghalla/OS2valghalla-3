@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Valghalla.External.Application.Modules.Unprotected.Queries;
@@ -9,6 +10,7 @@ namespace Valghalla.External.API.Controllers.Unprotected
 
     [ApiController]
     [Route("api/unprotected/tasks")]
+    [AllowAnonymous]
     public class UnprotectedTasksQueryController : ControllerBase
     {
         private readonly ISender sender;

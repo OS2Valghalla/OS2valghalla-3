@@ -1,6 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Valghalla.Application.Abstractions.Messaging;
+using Valghalla.Application.Exceptions;
+using Valghalla.Application.User;
 using Valghalla.External.Application.Modules.App.Queries;
 using Valghalla.Integration.Auth;
 
@@ -11,13 +14,16 @@ namespace Valghalla.External.API.Controllers.App
     public class AppQueryController : ControllerBase
     {
         private readonly ISender sender;
+        private readonly IUserContextProvider userContextProvider;
 
-        public AppQueryController(ISender sender)
+        public AppQueryController(ISender sender, IUserContextProvider userContextProvider)
         {
             this.sender = sender;
+            this.userContextProvider = userContextProvider;
         }
 
         [HttpGet("context")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAppContextAsync(CancellationToken cancellationToken)
         {
             var query = new GetAppContextQuery();
@@ -25,7 +31,23 @@ namespace Valghalla.External.API.Controllers.App
             return Ok(response);
         }
 
+        [HttpGet("user")]
+        public IActionResult GetUser()
+        {
+            var user = userContextProvider.CurrentUser ?? throw new UserException("Could not get current user info.");
+
+            var response = Valghalla.Application.Abstractions.Messaging.Response.Ok(new UserInfo()
+            {
+                Id = user.UserId,
+                RoleIds = user.RoleIds,
+                Name = user.Name,
+            });
+
+            return Ok(response);
+        }
+
         [HttpGet("logo")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAppLogoAsync(CancellationToken cancellationToken)
         {
             var query = new GetAppLogoQuery();
