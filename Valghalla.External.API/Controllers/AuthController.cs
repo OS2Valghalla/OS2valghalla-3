@@ -40,7 +40,6 @@ namespace Valghalla.External.API.Controllers
         public async Task<IActionResult> SetupAssertionConsumerServiceAsync(CancellationToken cancellationToken)
         {
             var redirectUrl = await saml2AuthService.SetupAssertionConsumerServiceAsync(false, cancellationToken);
-            HttpContext.Response.Cookies.Append("valghalla.signedin", "true");
             return Redirect(redirectUrl);
         }
 
@@ -56,7 +55,6 @@ namespace Valghalla.External.API.Controllers
             var redirectUrl = await saml2AuthService.LogoutAsync(principal, profileDeleted, cancellationToken);
 
             userTokenManager.ExpireUserToken();
-            HttpContext.Response.Cookies.Delete("valghalla.signedin");
 
             return Content(redirectUrl);
         }

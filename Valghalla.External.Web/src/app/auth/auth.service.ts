@@ -3,7 +3,7 @@ import { HttpClient, HttpBackend, HttpErrorResponse } from '@angular/common/http
 import { ReplaySubject, Observable, catchError, throwError, of, EMPTY, take } from 'rxjs';
 import { getLoginUrl, getLogoutUrl, getPingUrl, redirectIfNeeded, redirectToLoginIfNeeded, storeRedirectUrl } from './utils';
 
-const SIGNED_IN_FLAG = 'valghalla.signedin';
+const SIGNED_IN_FLAG = 'ValghallaExternalTokenKey';
 const UNAUTHORIZED_FLAG = '_unauthorized';
 
 @Injectable({

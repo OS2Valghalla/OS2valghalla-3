@@ -19,6 +19,12 @@ namespace Valghalla.Internal.API.Middlewares
         {
             var cancellationToken = context.RequestAborted;
 
+            if (!AuthenticationUtilities.IsApiEndpoint(context))
+            {
+                await next(context);
+                return;
+            }
+
             if (context.User.Identity == null || !context.User.Identity.IsAuthenticated)
             {
                 if (AuthenticationUtilities.IsAnonymousEndpoint(context))
