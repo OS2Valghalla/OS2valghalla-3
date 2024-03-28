@@ -69,5 +69,13 @@ namespace Valghalla.Database.Schema.Data
                  insert into ""Configuration"" values('{nameof(InternalAuthConfiguration)}.{nameof(InternalAuthConfiguration.JobRoleDescription)}', '')
                  on conflict do nothing;
                  ";
+
+        internal static string InitReplyToMailConfigrationData()
+            => $@"
+                insert into ""Configuration"" values('{nameof(AppConfiguration)}.{nameof(AppConfiguration.ReplyToMailSender)}', '')
+                on conflict do nothing;
+                insert into ""Configuration"" values('{nameof(AppConfiguration)}.{nameof(AppConfiguration.ReplyToMailAddress)}', '')
+                on conflict do nothing;
+                ";
     }
 }

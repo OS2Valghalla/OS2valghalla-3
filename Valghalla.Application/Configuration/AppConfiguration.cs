@@ -11,6 +11,8 @@ namespace Valghalla.Application.Configuration
         public string SmsSender { get; init; } = null!;
         public string MailSender { get; init; } = null!;
         public string MailAddress { get; init; } = null!;
+        public string ReplyToMailSender { get; init; } = null!;
+        public string ReplyToMailAddress { get; init; } = null!;
         public string TaskReminderDay { get; init; } = null!;
     }
 }
