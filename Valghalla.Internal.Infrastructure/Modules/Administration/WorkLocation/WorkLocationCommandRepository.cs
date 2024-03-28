@@ -99,7 +99,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             var deletedWorkLocationResponsiblesIds = deletedWorkLocationResponsibles.Select(t => t.ParticipantId).ToList();
             var newWorkLocationResponsibleIds = command.ResponsibleIds.Where(r => !existingWorkLocationResponsibles.Any(i => i.ParticipantId == r)).ToList();
 
-            var deletedAssociatedTasks = await tasks.Where(t => t.WorkLocationId != command.Id && (deletedWorkLocationTaskTypeIds.Contains(t.TaskTypeId) || deletedWorkLocationTeamsIds.Contains(t.TeamId))).ToListAsync();
+            var deletedAssociatedTasks = await tasks.Where(t => t.WorkLocationId == command.Id && (deletedWorkLocationTaskTypeIds.Contains(t.TaskTypeId) || deletedWorkLocationTeamsIds.Contains(t.TeamId))).ToListAsync(cancellationToken);
 
             foreach (var deletedWorkLocationTaskType in deletedWorkLocationTaskTypes)
             {
