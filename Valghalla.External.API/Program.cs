@@ -92,7 +92,7 @@ namespace Valghalla.External.API
             builder.Services.AddScoped<IQueueService, QueueService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ISaml2AuthPostProcessor, Saml2AuthPostProcessor>();
-            builder.Services.AddSingleton<ICookieResolver, CookieResolver>();
+            builder.Services.AddSingleton<IUserTokenConfigurator, UserTokenConfigurator>();
 
             builder.Services.AddScoped<GlobalExceptionHandlingMiddleware>();
             builder.Services.AddScoped<LogContextHandlingMiddleware>();

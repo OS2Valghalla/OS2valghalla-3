@@ -11,7 +11,7 @@ namespace Valghalla.Integration.Auth
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ITenantMemoryCache tenantMemoryCache;
         private readonly IUserTokenRepository userTokenRepository;
-        private readonly ICookieResolver cookieResolver;
+        private readonly IUserTokenConfigurator userTokenConfigurator;
 
         private HttpContext HttpContext
         {
@@ -28,7 +28,7 @@ namespace Valghalla.Integration.Auth
             {
                 if (_currentTokenKey == null)
                 {
-                    var stringValue = HttpContext.Request.Cookies[cookieResolver.GetCookieName()];
+                    var stringValue = HttpContext.Request.Cookies[userTokenConfigurator.CookieName];
                     if (stringValue != null)
                     {
                         _currentTokenKey = UserToken.Decode(stringValue);
@@ -47,12 +47,12 @@ namespace Valghalla.Integration.Auth
             IHttpContextAccessor httpContextAccessor,
             ITenantMemoryCache tenantMemoryCache,
             IUserTokenRepository userTokenRepository,
-            ICookieResolver cookieResolver)
+            IUserTokenConfigurator userTokenConfigurator)
         {
             this.httpContextAccessor = httpContextAccessor;
             this.tenantMemoryCache = tenantMemoryCache;
             this.userTokenRepository = userTokenRepository;
-            this.cookieResolver = cookieResolver;
+            this.userTokenConfigurator = userTokenConfigurator;
         }
 
         public void ExpireUserToken() => EnsureTokenExpiredInResponseCookie();
@@ -69,7 +69,7 @@ namespace Valghalla.Integration.Auth
                 return null;
             }
 
-            if (cachedToken.Renewable)
+            if (userTokenConfigurator.Renewable && cachedToken.Renewable)
             {
                 return await EnsureUserTokenAsync(cachedToken.ToClaimsPrincipal(), cancellationToken);
             }
@@ -115,7 +115,7 @@ namespace Valghalla.Integration.Auth
             var cookieOptions = GetCookieOptions();
             cookieOptions.Expires = token.ExpiredAt;
 
-            HttpContext.Response.Cookies.Append(cookieResolver.GetCookieName(), cookieValue, cookieOptions);
+            HttpContext.Response.Cookies.Append(userTokenConfigurator.CookieName, cookieValue, cookieOptions);
         }
 
         private void EnsureTokenExpiredInResponseCookie()
@@ -123,7 +123,7 @@ namespace Valghalla.Integration.Auth
             var cookieOptions = GetCookieOptions();
             cookieOptions.Expires = DateTime.UtcNow.AddYears(-1);
 
-            HttpContext.Response.Cookies.Append(cookieResolver.GetCookieName(), string.Empty, cookieOptions);
+            HttpContext.Response.Cookies.Append(userTokenConfigurator.CookieName, string.Empty, cookieOptions);
         }
 
         private CookieOptions GetCookieOptions() => new()
