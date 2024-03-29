@@ -995,6 +995,8 @@
   "participant": {
     "page_title": "Deltagere",
     "error": {
+      "mobile_number_8_characters_in_length": "Mobilt nummer skal være 8 tegn langt",
+      "mobile_number_contain_only_numbers": "Mobilt nummer skal kun indeholde tal",
       "participant_exists": "Der findes allerede en deltager med samme CPR-nummer",
       "create_participant": "Fejl opstod ved oprettelse af deltager",
       "update_participant": "Fejl opstod ved opdatering af deltager",

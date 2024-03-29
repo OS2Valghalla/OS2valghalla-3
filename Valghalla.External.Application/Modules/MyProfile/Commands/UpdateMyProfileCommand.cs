@@ -25,7 +25,9 @@ namespace Valghalla.External.Application.Modules.MyProfile.Commands
 
             When(x => !string.IsNullOrEmpty(x.MobileNumber), () =>
             {
-                RuleFor(x => x.MobileNumber).Length(Constants.Validation.MobileNumberLength);
+                RuleFor(x => x.MobileNumber)
+                .Length(Constants.Validation.MobileNumberLength)
+                .Matches("^[0-9]*$");
             });
 
             When(x => !string.IsNullOrEmpty(x.Email), () =>

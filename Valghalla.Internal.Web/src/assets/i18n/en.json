@@ -1002,6 +1002,8 @@
   "participant": {
     "page_title": "Participant",
     "error": {
+      "mobile_number_8_characters_in_length": "Mobile number must be 8 characters in length",
+      "mobile_number_contain_only_numbers": "Mobile number must contain only numbers",
       "participant_exists": "A participant exists with the same CPR number",
       "create_participant": "Error occurred when creating participant",
       "update_participant": "Error occurred when updating participant",
