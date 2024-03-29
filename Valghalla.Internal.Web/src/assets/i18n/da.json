@@ -392,6 +392,7 @@
         "team_used_in_active_election": "Team brugt i et aktivt valg kan ikke slettes"
       },
       "success": {
+        "copy_team_link": "Team link kopieret med succes",
         "create_team": "Team oprettet med succes",
         "update_team": "Team opdateret med succes",
         "delete_team": "Team slettet med succes"
