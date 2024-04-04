@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Valghalla.Application;
 using Valghalla.Application.AuditLog;
+using Valghalla.Application.Auth;
 using Valghalla.Application.Cache;
 using Valghalla.Application.Communication;
 using Valghalla.Application.Configuration.Interfaces;
@@ -33,13 +34,13 @@ namespace Valghalla.Integration
 {
     public static class DependencyInjectionExtension
     {
-        public static IServiceCollection AddSaml2Auth(this IServiceCollection services)
+        public static IServiceCollection AddAuthServices(this IServiceCollection services)
         {
             services.AddScoped<ISaml2AuthService, Saml2AuthService>();
             services.AddSingleton<IAuthorizationPolicyProvider, UserAuthorizationPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, UserAuthorizationHandler>();
 
-            services.AddAuthentication("saml2").AddCookie("saml2", delegate (CookieAuthenticationOptions options)
+            /*services.AddAuthentication("saml2").AddCookie("saml2", delegate (CookieAuthenticationOptions options)
             {
                 options.LoginPath = new PathString("/api/auth/login");
                 options.SlidingExpiration = true;
@@ -54,7 +55,13 @@ namespace Valghalla.Integration
 
                     await c.Response.WriteAsync("__COOKIE_EXPIRED__", default);
                 };
-            });
+            });*/
+
+            services.AddScoped<IUserTokenManager, UserTokenManager>();
+
+            services
+                .AddAuthentication(Constants.Authentication.Scheme)
+                .AddScheme<AuthenticationSchemeOptions, UserAuthenticationHandler>(Constants.Authentication.Scheme, null);
 
             services.AddAuthorization();
 

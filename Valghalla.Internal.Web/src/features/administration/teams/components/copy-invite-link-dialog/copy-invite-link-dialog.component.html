@@ -1,0 +1,18 @@
+<mat-card>
+  <mat-card-header mat-dialog-title>
+    <mat-card-title class="!text-base">
+      {{ 'administration.teams.team_link.copy_link_to_team' | transloco }} <strong>{{ teamName }}</strong>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content mat-dialog-content class="!text-base">
+    <div>{{ 'administration.teams.team_link.invite_members' | transloco }}</div>
+    <a target="_blank" href="{{ teamLink }}">
+      <strong>{{ teamLink }}</strong>
+    </a>
+    <div>{{ 'administration.teams.team_link.copy_link_to_team_instruction' | transloco }}</div>
+  </mat-card-content>
+  <mat-card-actions mat-dialog-actions align="end">
+    <button mat-button (click)="onCopy()">{{ 'administration.teams.team_link.copy_link_to_team' | transloco }}</button>
+    <button mat-button (click)="onClose()">{{ 'shared.dialog.cancel' | transloco }}</button>
+  </mat-card-actions>
+</mat-card>

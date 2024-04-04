@@ -16,11 +16,7 @@ export class CommunicationLogDetailsComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   item?: CommunicationLogDetails;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly communicationLogHttpService: CommunicationLogHttpService,
-  ) {}
+  constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly communicationLogHttpService: CommunicationLogHttpService) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get(RoutingNodes.Id);
@@ -28,7 +24,7 @@ export class CommunicationLogDetailsComponent implements OnInit, OnDestroy {
       if (res.isSuccess) {
         this.loading = false;
         this.item = res.data;
-        this.item.message = (this.item.message as any).replaceAll('\n', '<br/>')
+        this.item.message = (this.item.message as any).replaceAll('\n', '<br/>');
       }
     });
   }

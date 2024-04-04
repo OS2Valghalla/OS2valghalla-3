@@ -1,4 +1,5 @@
-﻿using Valghalla.Application.CPR;
+﻿using Valghalla.Application.Communication;
+using Valghalla.Application.CPR;
 using Valghalla.Application.TaskValidation;
 using Valghalla.Worker.Infrastructure.Modules.Election.Repositories;
 using Valghalla.Worker.Infrastructure.Modules.Participant.Repositories;
@@ -24,6 +25,7 @@ namespace Valghalla.Worker.Services
         private readonly ITaskAssignmentQueryRepository taskAssignmentQueryRepository;
         private readonly ITaskAssignmentCommandRepository taskAssignmentCommandRepository;
         private readonly ITaskValidationService taskValidationService;
+        private readonly ICommunicationService communicationService;
         private readonly ICPRService cprService;
 
         public ParticipantSyncService(
@@ -35,7 +37,8 @@ namespace Valghalla.Worker.Services
             ITaskAssignmentQueryRepository taskAssignmentQueryRepository,
             ITaskAssignmentCommandRepository taskAssignmentCommandRepository,
             ITaskValidationService taskValidationService,
-            ICPRService cprService)
+            ICommunicationService communicationService,
+        ICPRService cprService)
         {
             this.logger = logger;
             this.electionQueryRepository = electionQueryRepository;
@@ -45,6 +48,7 @@ namespace Valghalla.Worker.Services
             this.taskAssignmentQueryRepository = taskAssignmentQueryRepository;
             this.taskAssignmentCommandRepository = taskAssignmentCommandRepository;
             this.taskValidationService = taskValidationService;
+            this.communicationService = communicationService;
             this.cprService = cprService;
         }
 
@@ -102,7 +106,15 @@ namespace Valghalla.Worker.Services
 
                 var invalidTaskAssignmentDict = Evaluate(evaluatedParticipants, taskAssignments, taskTypes, ruleDict);
                 var invalidTaskAssignmentIds = invalidTaskAssignmentDict.Values.SelectMany(i => i);
+                var invalidTaskAssignments = await taskAssignmentQueryRepository.GetTaskAssignmentsAsync(invalidTaskAssignmentIds, cancellationToken);
                 await taskAssignmentCommandRepository.UnassignTaskAssignmentsAsync(invalidTaskAssignmentIds, cancellationToken);
+                foreach (var taskAssignment in invalidTaskAssignments)
+                {
+                    if (taskAssignment.Accepted && taskAssignment.Responsed)
+                    {
+                        await communicationService.SendRemovedFromTaskByValidationAsync(taskAssignment.ParticipantId, taskAssignment.Id, cancellationToken);
+                    }
+                }
             }
         }
 

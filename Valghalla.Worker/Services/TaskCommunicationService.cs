@@ -12,6 +12,7 @@ namespace Valghalla.Worker.Services
     internal interface ITaskCommunicationService
     {
         Task SendTaskInvitationAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
+        Task SendRemovedFromTaskByValidationAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendRemovedFromTaskAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendTaskReminderAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendTaskInvitationReminderAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
@@ -84,6 +85,18 @@ namespace Valghalla.Worker.Services
 
             var template = await communicationQueryRepository.GetRemovedFromTaskCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
                 ?? throw new Exception($"Errors occurred when fetching removed from task communication template (taskAssignmentId = {taskAssignmentId})");
+
+            await SendAsync(logId, participantId, taskAssignmentId, template, cancellationToken);
+        }
+
+        public async Task SendRemovedFromTaskByValidationAsync(Guid logId, Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var valid = await communicationHelper.ValidateRemovedFromTaskByValidationAsync(participantId, taskAssignmentId, cancellationToken);
+
+            if (!valid) return;
+
+            var template = await communicationQueryRepository.GetRemovedFromTaskByValidationCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Errors occurred when fetching removed from task by validation communication template (taskAssignmentId = {taskAssignmentId})");
 
             await SendAsync(logId, participantId, taskAssignmentId, template, cancellationToken);
         }

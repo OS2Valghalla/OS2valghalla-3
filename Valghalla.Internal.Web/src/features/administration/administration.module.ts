@@ -32,6 +32,7 @@ import { TaskTypeComponent } from './task-type/task-type.component';
 import { WorkLocationComponent } from './work-location/work-location.component';
 import { WorkLocationItemComponent } from './work-location/components/work-location-item/work-location-item.component';
 import { AuditLogLandingComponent } from './audit-log/audit-log.component';
+import { CopyInviteLinkDialogComponent } from './teams/components/copy-invite-link-dialog/copy-invite-link-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AuditLogLandingComponent } from './audit-log/audit-log.component';
     UserComponent,
     UserInvitationDialogComponent,
     UserEditDialogComponent,
+    CopyInviteLinkDialogComponent,
     TeamsComponent,
     TeamItemComponent,
     AreaComponent,

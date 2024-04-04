@@ -61,6 +61,7 @@
     },
     "error": {
       "get_app_context": "Fejl ved hentning af app-kontekst",
+      "get_app_user": "Fejl ved hentning af brugerdata",
       "get_user_teams": "Fejl ved hentning af deltagerteams"
     },
     "deactivated_web": {
@@ -108,7 +109,7 @@
     },
     "error": {
       "validation": "Valideringsfejl",
-      "get_special_diets_shared": "Der opstod fejl under hentning af Specialkost-siden",
+      "get_special_diets_shared": "Fejl ved hentning af Specialkost",
       "get_webpage_disclosurestatement": "Fejl ved hentning af Oplysningserklæring",
       "get_webpage_declarationofconsent": "Fejl ved hentning af Samtykkeerklæring",
       "get_webpage_front": "Fejl ved hentning af Forsiden",
@@ -168,7 +169,7 @@
         "you_are_invited": "Du er inviteret",
         "unregister_from": "Afmeld fra",
         "unregister_dialog_content": "Du vil blive afmeldt fra opgaven og vil ikke modtage betaling. Det bliver muligt for andre at tilmelde sig opgaven. Når du bekræfter, kan du ikke længere fortryde det",
-        "task_locked_warning": "Det er ikke muligt at afmelde sig fra denne opgave, da den finder sted snart. <a href='/contact-us'>Kontakt os</a> venligst, hvis du ikke har mulighed for at deltage"
+        "task_locked_warning": "Det er ikke muligt at afmelde sig fra denne opgave, da den finder sted snart. <a href='/kontakt-os'>Kontakt os</a> venligst, hvis du ikke har mulighed for at deltage"
       },
       "error": {
         "get_my_tasks": "Der opstod en fejl ved hentning af mine opgaver"
@@ -361,7 +362,7 @@
       "remove_member_confirmation": "vil ikke længere være en del af teamet, og alle tildelte opgaver fjernes.",
       "search_for_name": "Søg efter navn",
       "cannot_be_removed": "Kan ikke fjernes",
-      "cannot_be_removed_tooltip": "Det er ikke muligt at fjerne dette medlem, da vi har brug for deres oplysninger til betaling for en tidligere opgave."
+      "cannot_be_removed_tooltip": "Det er ikke muligt at fjerne dette medlem, da vi har brug for oplysninger til betaling for en tidligere udført opgave."
     },
     "error": {
       "get_team_by_team_link": "Fejl ved hentning af teamoplysninger",
@@ -372,7 +373,7 @@
     },
     "success": {
       "remove_member": "Teammedlem er fjernet med succes",
-      "create_team_link": "Team-link er kopieret til udklipsholder med succes"
+      "create_team_link": "Teamlink er kopieret til udklipsholder med succes"
     }
   },
   "my_tasks": {
@@ -405,7 +406,7 @@
       "cpr_help_text": "Disse oplysninger stammer fra CPR-registret. Hvis de er forkerte, skal du kontakte den kommune eller det sogn, der håndterer registreringen.",
       "mobile_number": {
         "title": "Mobilnummer",
-        "hint": "Indtast et dansk telefonnummer"
+        "hint": "Indtast et dansk telefonnummer på otte cifre"
       },
       "email": {
         "title": "E-mail",
@@ -449,7 +450,7 @@
     "label": {
       "mobile_number": {
         "title": "Mobilnummer",
-        "hint": "Indtast et dansk telefonnummer"
+        "hint": "Indtast et dansk telefonnummer på otte cifre"
       },
       "email": {
         "title": "E-mail",
@@ -470,7 +471,7 @@
         "receipt_for_registration": "Kvittering for tilmelding"
       },
       "profile": {
-        "name": "Navn (Fra MitID)",
+        "name": "Navn (Fra CPR-registret)",
         "cpr": "CPR-nummer",
         "address": "Adresse",
         "municipality": "Kommune",

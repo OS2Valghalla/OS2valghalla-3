@@ -85,6 +85,7 @@ namespace Valghalla.Infrastructure.Communication
                     Description = entity.TaskType.Description,
                     Payment = entity.TaskType.Payment,
                     StartTime = entity.TaskType.StartTime,
+                    EndTime = entity.TaskType.EndTime,
                 },
                 TaskDate = entity.TaskDate,
                 InvitationCode = entity.InvitationCode
@@ -129,6 +130,7 @@ namespace Valghalla.Infrastructure.Communication
                     Description = entity.TaskType.Description,
                     Payment = entity.TaskType.Payment,
                     StartTime = entity.TaskType.StartTime,
+                    EndTime = entity.TaskType.EndTime,
                 },
                 TaskDate = entity.TaskDate
             };
@@ -142,6 +144,11 @@ namespace Valghalla.Infrastructure.Communication
         public async Task<CommunicationTemplate?> GetRemovedFromTaskCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             return await GetCommunicationTemplateAsync(CommunicationType.RemovedFromTask, taskAssignmentId, cancellationToken);
+        }
+
+        public async Task<CommunicationTemplate?> GetRemovedFromTaskByValidationCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            return await GetCommunicationTemplateAsync(CommunicationType.RemovedByValidation, taskAssignmentId, cancellationToken);
         }
 
         public async Task<CommunicationTemplate?> GetTaskRegistrationCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken)

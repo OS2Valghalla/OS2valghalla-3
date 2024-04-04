@@ -147,8 +147,8 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
             lockPeriod: res.data.lockPeriod,
           });
 
-          this.sourceDaysBeforeElectionDate = (new Date(res.data.electionDate)).getDate() - (new Date(res.data.electionStartDate)).getDate();
-          this.sourceDaysAfterElectionDate = (new Date(res.data.electionEndDate)).getDate() - (new Date(res.data.electionDate)).getDate();
+          this.sourceDaysBeforeElectionDate = Math.round((new Date(res.data.electionDate).getTime() - new Date(res.data.electionStartDate).getTime()) / (1000 * 3600 * 24));
+          this.sourceDaysAfterElectionDate = Math.round((new Date(res.data.electionEndDate).getTime() - new Date(res.data.electionDate).getTime()) / (1000 * 3600 * 24));
           this.formDate.controls.daysBeforeElectionDate.setValue(this.sourceDaysBeforeElectionDate);
           this.formDate.controls.daysAfterElectionDate.setValue(this.sourceDaysAfterElectionDate);
 

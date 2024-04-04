@@ -1,6 +1,6 @@
-﻿using ITfoxtec.Identity.Saml2.Schemas;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using Valghalla.Application;
 
 namespace Valghalla.Integration.Auth
 {
@@ -15,7 +15,7 @@ namespace Valghalla.Integration.Auth
 
         public Task<AuthorizationPolicy> GetDefaultPolicyAsync()
         {
-            var policy = new AuthorizationPolicyBuilder(Saml2Constants.AuthenticationScheme)
+            var policy = new AuthorizationPolicyBuilder(Constants.Authentication.Scheme)
                 .RequireAuthenticatedUser()
                 .Build();
 
@@ -29,7 +29,7 @@ namespace Valghalla.Integration.Auth
             if (policyName.StartsWith(UserAuthorizeAttribute.POLICY_PREFIX, StringComparison.OrdinalIgnoreCase) &&
                 Guid.TryParse(policyName.AsSpan(UserAuthorizeAttribute.POLICY_PREFIX.Length), out var roleId))
             {
-                var policy = new AuthorizationPolicyBuilder(Saml2Constants.AuthenticationScheme)
+                var policy = new AuthorizationPolicyBuilder(Constants.Authentication.Scheme)
                     .RequireAuthenticatedUser()
                     .AddRequirements(new UserAuthorizationRequirement(roleId))
                     .Build();

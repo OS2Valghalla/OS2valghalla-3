@@ -3,6 +3,7 @@
     public interface ICommunicationService
     {
         Task SendTaskInvitationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
+        Task SendRemovedFromTaskByValidationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendRemovedFromTaskAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendTaskRegistrationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task SendTaskCancellationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Valghalla.Application.Auth;
 using Valghalla.Application.User;
 using Valghalla.External.API.Auth;
 using Valghalla.External.API.Requests.Registration;
@@ -17,7 +17,10 @@ namespace Valghalla.External.API.Controllers.Registration
         private readonly IUserContextProvider userContextProvider;
         private readonly UserContextInternalProvider userContextInternalProvider;
 
-        public RegistrationCommandController(ISender sender, IUserContextProvider userContextProvider, UserContextInternalProvider userContextInternalProvider)
+        public RegistrationCommandController(
+            ISender sender,
+            IUserContextProvider userContextProvider,
+            UserContextInternalProvider userContextInternalProvider)
         {
             this.sender = sender;
             this.userContextProvider = userContextProvider;
@@ -32,7 +35,7 @@ namespace Valghalla.External.API.Controllers.Registration
                 return BadRequest();
             }
 
-            var cpr = GetSignedInUserCpr();
+            var cpr = HttpContext.User.GetCpr();
 
             if (string.IsNullOrEmpty(cpr))
             {
@@ -63,7 +66,7 @@ namespace Valghalla.External.API.Controllers.Registration
                 return BadRequest();
             }
 
-            var cpr = GetSignedInUserCpr();
+            var cpr = HttpContext.User.GetCpr();
 
             if (string.IsNullOrEmpty(cpr))
             {
@@ -94,12 +97,6 @@ namespace Valghalla.External.API.Controllers.Registration
             var command = new JoinTeamCommand(hashValue);
             var response = await sender.Send(command, cancellationToken);
             return Ok(response);
-        }
-
-        private string? GetSignedInUserCpr()
-        {
-            var principal = HttpContext.User;
-            return principal.FindFirstValue(AppClaimTypes.Cpr);
         }
     }
 }

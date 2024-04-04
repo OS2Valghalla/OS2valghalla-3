@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Reflection;
 using Valghalla.Application;
-using Valghalla.Application.Cache;
 using Valghalla.Application.Queue;
 using Valghalla.Application.Secret;
 using Valghalla.Application.Tenant;
@@ -94,14 +93,17 @@ builder.Services.AddMassTransit(mt =>
             r.UsePostgres();
         });
 
+    // Timer jobs
     mt.AddConsumer<ParticipantSyncJobConsumer, ParticipantSyncJobConsumerDefinition>();
     mt.AddConsumer<ElectionActivationJobConsumer, ElectionActivationJobConsumerDefinition>();
     mt.AddConsumer<ElectionDeactivationJobConsumer, ElectionDeactivationJobConsumerDefinition>();
     mt.AddConsumer<AuditLogClearJobConsumer, AuditLogClearJobConsumerDefinition>();
     mt.AddConsumer<CommunicationLogClearJobConsumer, CommunicationLogClearJobConsumerDefinition>();
+    mt.AddConsumer<UserTokenClearJobConsumer, UserTokenClearJobConsumerDefinition>();
     // Task notification jobs
     mt.AddConsumer<TaskInvitationJobConsumer, TaskInvitationJobConsumerDefinition>();
     mt.AddConsumer<RemovedFromTaskJobConsumer, RemovedFromTaskJobConsumerDefinition>();
+    mt.AddConsumer<RemovedFromTaskByValidationJobConsumer, RemovedFromTaskByValidationJobConsumerDefinition>();
     mt.AddConsumer<TaskGetInvitationReminderJobConsumer, TaskGetInvitationReminderJobConsumerDefinition>();
     mt.AddConsumer<TaskSendInvitationReminderJobConsumer, TaskSendInvitationReminderJobConsumerDefinition>();
     mt.AddConsumer<TaskGetReminderJobConsumer, TaskGetReminderJobConsumerDefinition>();
@@ -141,12 +143,16 @@ builder.Services.AddMassTransit(mt =>
 
             instance.ConfigureEndpoints(ctx, f =>
             {
+                // Timer jobs
                 f.Include<ParticipantSyncJobConsumer>();
                 f.Include<ElectionActivationJobConsumer>();
                 f.Include<ElectionDeactivationJobConsumer>();
                 f.Include<AuditLogClearJobConsumer>();
                 f.Include<CommunicationLogClearJobConsumer>();
+                f.Include<UserTokenClearJobConsumer>();
+                // Task notification jobs
                 f.Include<RemovedFromTaskJobConsumer>();
+                f.Include<RemovedFromTaskByValidationJobConsumer>();
                 f.Include<TaskInvitationJobConsumer>();
                 f.Include<TaskRegistrationJobConsumer>();
                 f.Include<TaskGetInvitationReminderJobConsumer>();
@@ -212,18 +218,7 @@ try
 
     var app = builder.Build();
 
-    app.Use((context, next) =>
-    {
-        if (context.Request.Headers.ContainsKey("X-Forwarded-Proto"))
-        {
-            if (!string.IsNullOrEmpty(context.Request.Headers["X-Forwarded-Proto"]))
-            {
-                context.Request.Scheme = context.Request.Headers["X-Forwarded-Proto"];
-            }
-        }
-
-        return next(context);
-    });
+    app.UseForwardedHeaders();
 
     app.MapGet("/", () => "Hello World!");
 

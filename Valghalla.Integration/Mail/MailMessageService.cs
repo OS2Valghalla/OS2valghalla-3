@@ -41,6 +41,11 @@ namespace Valghalla.Integration.Mail
                 // Sender
                 mail.From.Add(new MailboxAddress(appConfiguration.MailSender, appConfiguration.MailAddress));
                 mail.Sender = new MailboxAddress(appConfiguration.MailSender, appConfiguration.MailAddress);
+                
+                if (!string.IsNullOrEmpty(appConfiguration.ReplyToMailSender) && !string.IsNullOrEmpty(appConfiguration.ReplyToMailAddress))
+                {
+                    mail.ReplyTo.Add(new MailboxAddress(appConfiguration.ReplyToMailSender, appConfiguration.ReplyToMailAddress));
+                }
 
                 // Receiver
                 foreach (string mailAddress in mailData.To)

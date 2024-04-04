@@ -61,6 +61,7 @@
     },
     "error": {
       "get_app_context": "Error fetching app context",
+      "get_app_user": "Error occurred when fetching current user data",
       "get_user_teams": "Error fetching user teams"
     },
     "deactivated_web": {
@@ -333,7 +334,7 @@
     },
     "error": {
       "get_my_work_locations": "Error fetching my work locations",
-      "get_work_loctaion_dates": "Error fetching work location dates",
+      "get_work_location_dates": "Error fetching work location dates",
       "get_work_location_details": "Error fetching work location details"
     }
   },

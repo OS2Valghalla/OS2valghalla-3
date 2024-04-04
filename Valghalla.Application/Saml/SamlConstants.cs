@@ -1,6 +1,6 @@
 ﻿namespace Valghalla.Application.Saml
 {
-    public static class Constants
+    public static class SamlConstants
     {
         public const string CVR_KEY = "O";
         public const string NAME_KEY = "CN";

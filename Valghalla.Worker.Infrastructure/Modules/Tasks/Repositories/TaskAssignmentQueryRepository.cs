@@ -13,6 +13,7 @@ namespace Valghalla.Worker.Infrastructure.Modules.Tasks.Repositories
         Task<IEnumerable<TaskAssignmentResponse>> GetUnsentInvitationTaskAssignmentsAsync(Guid electionId, CancellationToken cancellationToken);
         Task<IEnumerable<TaskAssignmentResponse>> GetUnsentRegistrationTaskAssignmentsAsync(Guid electionId, CancellationToken cancellationToken);
         Task<IEnumerable<TaskAssignmentResponse>> GetTaskAssignmentsAsync(IEnumerable<Guid> participantIds, IEnumerable<Guid> electionIds, CancellationToken cancellationToken);
+        Task<IEnumerable<TaskAssignmentResponse>> GetTaskAssignmentsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken);
     }
 
     internal class TaskAssignmentQueryRepository : ITaskAssignmentQueryRepository
@@ -47,7 +48,7 @@ namespace Valghalla.Worker.Infrastructure.Modules.Tasks.Repositories
                     i.ParticipantId != null &&
                     i.InvitationSent == true &&
                     i.InvitationDate.HasValue &&
-                    i.Responsed == false && 
+                    i.Responsed == false &&
                     i.Accepted == false)
                 .ToArrayAsync(cancellationToken);
 
@@ -92,6 +93,12 @@ namespace Valghalla.Worker.Infrastructure.Modules.Tasks.Repositories
                     electionIds.Contains(i.ElectionId))
                 .ToArrayAsync(cancellationToken);
 
+            return entities.Select(mapper.Map<TaskAssignmentResponse>);
+        }
+
+        public async Task<IEnumerable<TaskAssignmentResponse>> GetTaskAssignmentsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+        {
+            var entities = await taskAssignments.Where(i => ids.Contains(i.Id)).ToArrayAsync(cancellationToken);
             return entities.Select(mapper.Map<TaskAssignmentResponse>);
         }
     }

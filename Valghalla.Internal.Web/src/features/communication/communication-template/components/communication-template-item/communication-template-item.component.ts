@@ -33,9 +33,7 @@ export class CommunicationTemplateItemComponent implements AfterViewInit, OnDest
     { id: CommunicationTemplateTypes.SMS, title: 'communication.template_type.sms' },
   ];
 
-  readonly tokens = [
-    "name", "election", "work_location", "work_location_address", "task_type", "task_date", "task_start", "task_type_description", "payment", "days", "municipality", "invitation", "contact", "external_web"
-  ];
+  readonly tokens = ['name', 'election', 'work_location', 'work_location_address', 'task_type', 'task_date', 'task_start', 'task_end', 'task_type_description', 'payment', 'days', 'municipality', 'invitation', 'contact', 'external_web'];
 
   readonly pageContentSettings: RichTextEditorOptions = {
     isRichText: true,

@@ -5,6 +5,7 @@
         string ReplaceTokens(string template, CommunicationRelatedInfo info);
         Task<bool> ValidateTaskInvitationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateRemovedFromTaskAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
+        Task<bool> ValidateRemovedFromTaskByValidationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateTaskInvitationReminderAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateTaskReminderAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateTaskRegistrationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);

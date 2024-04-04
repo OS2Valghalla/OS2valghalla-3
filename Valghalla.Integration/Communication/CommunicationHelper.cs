@@ -54,6 +54,16 @@ namespace Valghalla.Integration.Communication
             return true;
         }
 
+        public async Task<bool> ValidateRemovedFromTaskByValidationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
+        {
+            var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
+                ?? throw new Exception($"Task assignment no longer exists (taskAssignmentId = {taskAssignmentId})");
+
+            if (!taskAssignment.Active) return false;
+
+            return true;
+        }
+
         public async Task<bool> ValidateTaskInvitationReminderAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
@@ -179,10 +189,11 @@ namespace Valghalla.Integration.Communication
                 .Replace("!work_location", info.WorkLocation.Title)
                 .Replace("!task_type_description", info.TaskType.Description)
                 .Replace("!task_type", info.TaskType.Title)
-                .Replace("!task_date", $"{PadTimeValue(info.TaskDate.Day)}/{PadTimeValue(info.TaskDate.Month)}/{PadTimeValue(info.TaskDate.Year)}")
+                .Replace("!task_date", $"{PadTimeValue(info.TaskDate.ToLocalTime().Day)}/{PadTimeValue(info.TaskDate.ToLocalTime().Month)}/{PadTimeValue(info.TaskDate.ToLocalTime().Year)}")
                 .Replace("!task_start", $"{PadTimeValue(info.TaskType.StartTime.Hours)}:{PadTimeValue(info.TaskType.StartTime.Minutes)}")
+                .Replace("!task_end", $"{PadTimeValue(info.TaskType.EndTime.Hours)}:{PadTimeValue(info.TaskType.EndTime.Minutes)}")
                 .Replace("!payment", info.TaskType.Payment.HasValue ? info.TaskType.Payment.ToString() : string.Empty)
-                .Replace("!days", (DateTime.UtcNow - info.TaskDate).Days.ToString())
+                .Replace("!days", (info.TaskDate - DateTime.UtcNow).Days.ToString())
                 .Replace("!municipality", info.MunicipalityName)
                 .Replace("!invitation", invitationLink)
                 .Replace("!contact", contactLink)
