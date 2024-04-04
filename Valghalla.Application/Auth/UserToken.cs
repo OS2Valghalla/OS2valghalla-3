@@ -37,7 +37,7 @@ namespace Valghalla.Application.Auth
         public bool Valid => DateTime.UtcNow < ExpiredAt;
         public bool Renewable => Valid && DateTime.UtcNow > RefreshedAfter;
 
-        public ClaimsPrincipal ToClaimsPrincipal()
+        public ClaimsPrincipal ToClaimsPrincipal(bool includeSessionIndex = true)
         {
             var claims = new List<Claim> {
                 new(ClaimTypes.Name, Value.Saml2NameId ?? Key.Identifier.ToString()),
@@ -47,9 +47,13 @@ namespace Valghalla.Application.Auth
                 new(ClaimsPrincipalExtension.Cpr, Value.Cpr ?? string.Empty),
                 new(ClaimsPrincipalExtension.Serial, Value.Serial ?? string.Empty),
                 new(ClaimsPrincipalExtension.Saml2NameIdFormat, Value.Saml2NameIdFormat ?? string.Empty),
-                new(ClaimsPrincipalExtension.Saml2NameId, Value.Saml2NameId ?? string.Empty),
-                new(ClaimsPrincipalExtension.Saml2SessionIndex, Value.Saml2SessionIndex ?? string.Empty),
+                new(ClaimsPrincipalExtension.Saml2NameId, Value.Saml2NameId ?? string.Empty)
             };
+
+            if (includeSessionIndex)
+            {
+                claims.Add(new(ClaimsPrincipalExtension.Saml2SessionIndex, Value.Saml2SessionIndex ?? string.Empty));
+            }
 
             var identity = new ClaimsIdentity(claims, Constants.Authentication.Scheme);
             return new(identity);

@@ -44,9 +44,15 @@ namespace Valghalla.Internal.API.Controllers
         }
 
         [HttpPost("logout")]
+        [AllowAnonymous]
         public async Task<IActionResult> LogoutAsync(CancellationToken cancellationToken)
         {
-            var redirectUrl = await saml2AuthService.LogoutAsync(HttpContext.User, false, cancellationToken);
+            var token = await userTokenManager.EnsureUserTokenAsync(cancellationToken);
+            var principal = token?.ToClaimsPrincipal(includeSessionIndex: false);
+
+            if (principal == null) return BadRequest();
+
+            var redirectUrl = await saml2AuthService.LogoutAsync(principal, false, cancellationToken);
 
             userTokenManager.ExpireUserToken();
 
