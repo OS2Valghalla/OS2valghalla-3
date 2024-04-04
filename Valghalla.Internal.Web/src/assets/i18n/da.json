@@ -463,7 +463,7 @@
         "standard_messages_hint": "Angiv hvilke skabeloner, der automatisk sendes til deltagere",
         "task_specific_messages": "Opgavespecifikke beskeder",
         "confirmation_of_registration": "Bekræftelse på tilmelding",
-        "confirmation_of_cancellation": "Bekræftelse apå afmelding",
+        "confirmation_of_cancellation": "Bekræftelse på afmelding",
         "invitation": "Invitation",
         "invitation_reminder": "Invitationspåmindelse",
         "invitation_reminder_hint": "Sendes hver fjerde dag efter invitationen er sendt, indtil der modtages svar",
