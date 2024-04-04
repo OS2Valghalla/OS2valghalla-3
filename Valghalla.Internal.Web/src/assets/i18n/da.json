@@ -468,13 +468,13 @@
         "invitation_reminder": "Invitationspåmindelse",
         "invitation_reminder_hint": "Sendes hver fjerde dag efter invitationen er sendt, indtil der modtages svar",
         "task_reminder": "Opgavepåmindelse",
-        "task_reminder_hint": "Kan aktiveres og deaktiveres på den individuelle opgavetype",
+        "task_reminder_hint": "Sendes fem dage før en opgave skal løses. Kan aktiveres og deaktiveres på den individuelle opgavetype",
         "retracted_invitation": "Annulleret invitation",
         "retracted_invitation_hint": "Sendes hvis en invitation ikke længere er gyldig. For eksempel hvis ledige opgaver flyttes fra et team til et andet",
         "removed_from_task": "Fjernet fra opgave",
         "removed_from_task_hint": "Sendes hvis en deltager fjernes fra en opgave af en teamansvarlig eller en administrator",
         "removed_by_validation": "Fjernet pga. nye CPR-oplysninger",
-        "removed_by_validation_hint": "Vil blive sendt, hvis en deltager fjernes fra en opgave på grund af nye CPR-oplysninger, der ikke matcher valideringskravene"
+        "removed_by_validation_hint": "Sendes, hvis en deltager fjernes fra en opgave på grund af nye CPR-oplysninger, der ikke matcher valideringskravene"
       },
       "messages": {
         "invalid_election_start_date": "Ugyldig startdag",
