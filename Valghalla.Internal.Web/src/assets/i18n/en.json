@@ -364,7 +364,7 @@
       "team_link": {
         "copy_link_to_team": "Copy link to team",
         "invite_members": "Invite members to this team by sharing this link with them:",
-        "copy_link_to_team_instruction": "Clicking the \"Copy link to team\" button will copy the link to your clipboard. Using the link, the recipient can create a user and is automatically added to the team. A team member can view and sign up for all untrusted tasks."
+        "copy_link_to_team_instruction": "Clicking the \"Copy link to team\" button will copy the link to your clipboard. Using the link, the recipient can create a user and is automatically added to the team. A team member can view and sign up for all the team's untrusted tasks."
       },
       "columns": {
         "short_name": "Short name",
@@ -393,6 +393,7 @@
         "team_has_abandoned_participants": "Team will have abandoned participants if it's deleted. Please ensure affected participants move to another team before removal"
       },
       "success": {
+        "copy_team_link": "Invitation link copied successfully",
         "create_team": "Team created successfully",
         "update_team": "Team updated successfully",
         "delete_team": "Team deleted successfully"
@@ -827,7 +828,7 @@
       "task_type": "Tilforordnet",
       "task_date": "03-04-1939",
       "task_start": "07:00",
-      "task_end": "08:00",
+      "task_end": "16:00",
       "task_type_description": "Som tilforordnet hjælper du med at tage imod vælgerne, scanne deres valgkort og udlevere stemmesedler.<br/><br/>Du er også med til at hjælpe vælgerne med at afgive deres stemme og sikre, at stemmesedlerne kommer i valgurnerne. Sammen med andre frivillige er du med til at sikre, at det hele forløber efter reglerne, og sammen skaber vi den gode stemning på valgstederne.<br/><br/>Når du møder ind om morgenen, vil du få en nærmere introduktion til opgaverne. Du behøver ikke kender til reglerne eller lovgivningen på forhånd.<br/><br/>Hvis der opstår tvivl i løbet af dagen, er der en valgsekretær på valgstedet, som kan afklare alle spørgsmål.",
       "payment": "850",
       "days": "5",
@@ -1001,14 +1002,16 @@
   "participant": {
     "page_title": "Participant",
     "error": {
+      "mobile_number_8_characters_in_length": "Mobile number must be 8 characters in length",
+      "mobile_number_contain_only_numbers": "Mobile number must only contain numbers",
       "participant_exists": "A participant exists with the same CPR number",
       "create_participant": "Error occurred when creating participant",
       "update_participant": "Error occurred when updating participant",
       "get_participant_details": "Error fetching participant details",
       "get_team_responsible_rights": "Error fetching team responsible rights",
       "get_participant_personal_record": "Error fetching participant personal record",
-      "cpr_invalid": "CPR is invalid. CPR should be 10 characters only (numbers), first 2 numbers should be 1 to 31 and the next 2 numbers should be 1 to 12.",
-      "cvr_invalid": "CVR is invalid. CVR should 8 characters only (numbers)",
+      "cpr_invalid": "CPR should be 10 characters only (numbers)",
+      "cvr_invalid": "CVR is invalid. CVR should be 8 characters only (numbers)",
       "participant_has_associated_tasks": "Participant cannot be removed from team, because he/she is assigned to a task in that team",
       "create_participant_event_log": "Error occurred when creating event log",
       "update_participant_event_log": "Error occurred when updating event log",
@@ -1117,14 +1120,14 @@
       "content": "The participant and all data about this participant will be removed",
       "has_assigned_tasks_in_active_election": "Participant is assigned to a task in an active election, and will be removed if deleted",
       "is_team_responsible": "This participant is a team responsible, and will be removed from team if deleted",
-      "is_work_location_responsible": "This participant is a work location responsible, and will be removed from team if deleted"
+      "is_work_location_responsible": "This participant is a work location responsible, and will be removed from work location if deleted"
     },
     "bulk_delete_participants_confirmation": {
       "title": "Delete participants",
       "content": "The participants and all data about them will be removed",
       "contain_assigned_tasks_in_active_election": "One or more participants are assigned to a task in an active election, and will be removed if deleted",
       "contain_team_responsible": "One or more participants are a team responsible, and will be removed from team if deleted",
-      "contain_work_location_responsible": "One or more participants are a work location responsible, and will be removed from team if deleted"
+      "contain_work_location_responsible": "One or more participants are a work location responsible, and will be removed from work location if deleted"
     }
   },
   "start": {

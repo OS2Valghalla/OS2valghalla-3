@@ -15,6 +15,11 @@
       [sticky]="true"
       [customActions]="[
         {
+          icon: 'link',
+          hoverText: 'administration.teams.action.copy_invite_link_to_team' | transloco,
+          onClick: this.openCopyInviteLink
+        },
+        {
           icon: 'edit',
           hoverText: 'shared.action.edit' | transloco,
           onClick: this.openEditTeam
@@ -23,11 +28,6 @@
           icon: 'delete',
           hoverText: 'shared.action.delete' | transloco,
           onClick: this.deleteTeam
-        },
-        {
-          icon: 'link',
-          hoverText: 'administration.teams.action.copy_invite_link_to_team' | transloco,
-          onClick: this.openCopyInviteLink
         }
       ]"
       [columns]="['name', 'shortName', 'responsibleCount', '$customActions']"

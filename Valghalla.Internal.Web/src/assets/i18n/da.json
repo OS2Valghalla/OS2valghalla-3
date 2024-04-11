@@ -147,9 +147,9 @@
     },
     "error": {
       "invalid_file_extension": "Ugyldig filtypenavn",
-      "invalid_file_extension_details": "Vælg venligst filen med understøttet filtypenavn: ",
+      "invalid_file_extension_details": "Vælg venligst fil med understøttet filtypenavn: ",
       "validation": "Valideringsfejl",
-      "message": "Fejl opstod fra serveren",
+      "message": "Fejl opstod på serveren",
       "message_no_item": "Der er intet element på denne liste",
       "error_getting_task_types": "Fejl ved hentning af tilgængelige opgavetyper",
       "text_message": {
@@ -362,9 +362,9 @@
         "title": "Teams"
       },
       "team_link": {
-        "copy_link_to_team": "Kopier link til holdet",
-        "invite_members": "Inviter medlemmer til dette hold ved at dele dette link med dem:",
-        "copy_link_to_team_instruction": "Når du klikker på knappen \"Kopier link til team\", kopieres linket til din udklipsholder. Ved hjælp af linket kan modtageren oprette en bruger og blive automatisk føjet til teamet. Et teammedlem kan se og tilmelde sig alle ikke-godkendte opgaver."
+        "copy_link_to_team": "Kopier link til teamet",
+        "invite_members": "Inviter medlemmer til dette team ved at dele dette link med dem:",
+        "copy_link_to_team_instruction": "Når du klikker på knappen \"Kopier link til teamet\", kopieres linket til din udklipsholder. Ved hjælp af linket kan modtageren oprette en bruger, som automatisk bliver medlem af teamet. Et teammedlem kan se og tilmelde sig teamets ikke-betroede opgaver."
       },
       "columns": {
         "short_name": "Forkortelse",
@@ -389,9 +389,11 @@
         "get_all_teams": "Fejl opstod ved hentning af alle team",
         "team_exist": "Der findes allerede et team med dette navn",
         "check_team_used_in_active_election": "Fejl opstod ved tjek af om teamet bruges i aktivt valg",
-        "team_used_in_active_election": "Team brugt i et aktivt valg kan ikke slettes"
+        "team_used_in_active_election": "Team brugt i et aktivt valg kan ikke slettes",
+        "team_has_abandoned_participants": "Hvis teamet slettes vil det medføre deltagere uden teamtilknytning. Sørg venligst for, at berørte deltagere slettes eller flyttes til et andet team, før fjernelse."
       },
       "success": {
+        "copy_team_link": "Invitationslink kopieret med succes",
         "create_team": "Team oprettet med succes",
         "update_team": "Team opdateret med succes",
         "delete_team": "Team slettet med succes"
@@ -460,15 +462,19 @@
         "standard_messages": "Standardbeskeder",
         "standard_messages_hint": "Angiv hvilke skabeloner, der automatisk sendes til deltagere",
         "task_specific_messages": "Opgavespecifikke beskeder",
-        "confirmation_of_registration": "Bekræftelse af registrering",
-        "confirmation_of_cancellation": "Bekræftelse af annullering",
+        "confirmation_of_registration": "Bekræftelse på tilmelding",
+        "confirmation_of_cancellation": "Bekræftelse på afmelding",
         "invitation": "Invitation",
-        "invitation_reminder": "Påmindelse om invitation",
-        "invitation_reminder_hint": "Sendes hver fjerde dag efter invitationen er sendt indtil der modtages svar",
+        "invitation_reminder": "Invitationspåmindelse",
+        "invitation_reminder_hint": "Sendes hver fjerde dag efter invitationen er sendt, indtil der modtages svar",
         "task_reminder": "Opgavepåmindelse",
-        "task_reminder_hint": "Sendetidspunktet angives på den individuelle opgavetype",
-        "retracted_invitation": "Tilbagetrukket invitation",
-        "retracted_invitation_hint": "Udstedes, hvis en invitation ikke længere er gyldig. For eksempel hvis ledige opgaver flyttes fra et team til et andet"
+        "task_reminder_hint": "Sendes fem dage før en opgave skal løses. Kan aktiveres og deaktiveres på den individuelle opgavetype",
+        "retracted_invitation": "Annulleret invitation",
+        "retracted_invitation_hint": "Sendes hvis en invitation ikke længere er gyldig. For eksempel hvis ledige opgaver flyttes fra et team til et andet",
+        "removed_from_task": "Fjernet fra opgave",
+        "removed_from_task_hint": "Sendes hvis en deltager fjernes fra en opgave af en teamansvarlig eller en administrator",
+        "removed_by_validation": "Fjernet pga. nye CPR-oplysninger",
+        "removed_by_validation_hint": "Sendes, hvis en deltager fjernes fra en opgave på grund af nye CPR-oplysninger, der ikke matcher valideringskravene"
       },
       "messages": {
         "invalid_election_start_date": "Ugyldig startdag",
@@ -665,8 +671,8 @@
         "title": "Er du sikker på, at du vil opdatere denne opgavetype?",
         "validation_not_required_turn_on": "Vær opmærksom på, at dette fjerner validering af accepterede opgaver i aktive valg",
         "validation_not_required_turn_off": "Vær opmærksom på, at dette vil starte validering af alle accepterede opgaver i aktive valg. Hvis nogen brugere ikke lever op til valideringskravene, vil de blive afmeldt opgaven",
-        "trusted_turn_on": "Vær opmærksom på, at dette måske fjerner synligheden af opgaver af denne opgavetype for deltagere i aktive valg",
-        "trusted_turn_off": "Vær opmærksom på, at dette måske gør opgaver af denne opgavetype synlige for deltagere i aktive valg"
+        "trusted_turn_on": "Vær opmærksom på, at dette måske gør opgaver af denne opgavetype usynlige på den eksterne hjemmeside for deltagere i aktive valg",
+        "trusted_turn_off": "Vær opmærksom på, at dette måske gør opgaver af denne opgavetype synlige på den eksterne hjemmeside for deltagere i aktive valg"
       },
       "delete_task_type_confirmation": {
         "title": "Slet opgavetype",
@@ -805,13 +811,14 @@
       "task_type": "Opgavetype",
       "task_date": "Opgavedag",
       "task_start": "Starttidspunkt på opgave",
+      "task_end": "Sluttidspunkt på opgave",
       "task_type_description": "Beskrivelse af opgavetype",
       "payment": "Betaling for opgave",
       "days": "Antal dage indtil opgavedag",
       "municipality": "Kommune",
-      "invitation": "URL til invitation til opgave",
+      "invitation": "Link til invitation til opgave",
       "contact": "Link til kontaktside på ekstern hjemmeside",
-      "external_web": "Link til ekstern hjemmeside"
+      "external_web": "Link til forside på ekstern hjemmeside"
     },
     "tokens_preview": {
       "name": "Mads Skjern",
@@ -821,6 +828,7 @@
       "task_type": "Tilforordnet",
       "task_date": "03.04.1939",
       "task_start": "07:00",
+      "task_end": "16:00",
       "task_type_description": "Som tilforordnet hjælper du med at tage imod vælgerne, scanne deres valgkort og udlevere stemmesedler.<br/><br/>Du er også med til at hjælpe vælgerne med at afgive deres stemme og sikre, at stemmesedlerne kommer i valgurnerne. Sammen med andre frivillige er du med til at sikre, at det hele forløber efter reglerne, og sammen skaber vi den gode stemning på valgstederne.<br/><br/>Når du møder ind om morgenen, vil du få en nærmere introduktion til opgaverne. Du behøver ikke kende til reglerne eller lovgivningen på forhånd.<br/><br/>Hvis der opstår tvivl i løbet af dagen, er der en valgsekretær på valgstedet, som kan afklare alle spørgsmål.",
       "payment": 850,
       "days": 5,
@@ -846,7 +854,7 @@
       "tokens_header": "Automatisk udskiftning af tekst:",
       "tokens_note": "Du kan bruge disse tokens til automatisk udskiftning af tekst. I listen nedenfor kan du se de tilgængelige tokens, og hvad de vil blive udskiftet med. Vær opmærksom på, at der kan være situationer, hvor tokens ikke kan udskiftes.",
       "attach_files": "Vedhæft filer",
-      "attach_files_hint": "Tilladte filtyper: pdf, doc, docx, txt, odt, xls og xlsx.<br/>Husk, at filen skal være webtilgængelig!<br/>Maks. 10MB.",
+      "attach_files_hint": "Tilladte filtyper: pdf, doc, docx, txt, odt, xls og xlsx.<br/>Husk at filen skal være webtilgængelig!<br/>Maks. 10MB.",
       "preview_description": "Her kan du se, hvordan beskeden vil se ud for modtageren. Tokens erstattes med data fra et fiktivt valg og afspejler ikke dine indtastede data.",
       "subject_max_length_error": "Emne må max være 256 tegn"
     },
@@ -865,7 +873,7 @@
       "standard": "Standard"
     },
     "communication_log": {
-      "page_title": "Kommunikationlog",
+      "page_title": "Kommunikationslog",
       "error": {
         "get_communication_log_details": "Fejl under hentning af kommunikationslogsdetaljer"
       },
@@ -908,7 +916,7 @@
         "select_recipients_hint": "Modtagere er baseret på valget <strong>[[election]]</strong>.<br>Hvis der ikke bruges filtre, vil alle deltagere med en tilknyttet opgave modtage beskeden",
         "filtered_participants_result": "Valgte modtagere baseret på filtrering",
         "preview_send_message_header": "Denne besked sendes til [[count]] deltagere",
-        "preview_send_message_hint": "Beskeden sendes, når du klikker på knappen Send besked"
+        "preview_send_message_hint": "Beskeden sendes, når du klikker på knappen Send"
       }
     }
   },
@@ -994,13 +1002,15 @@
   "participant": {
     "page_title": "Deltagere",
     "error": {
+      "mobile_number_8_characters_in_length": "Mobilnummer skal være 8 tegn langt",
+      "mobile_number_contain_only_numbers": "Mobilnummer må kun indeholde tal",
       "participant_exists": "Der findes allerede en deltager med samme CPR-nummer",
       "create_participant": "Fejl opstod ved oprettelse af deltager",
       "update_participant": "Fejl opstod ved opdatering af deltager",
       "get_participant_details": "Fejl ved hentning af deltageroplysninger",
       "get_team_responsible_rights": "Fejl ved hentning af rettigheder for team-ansvarlige",
       "get_participant_personal_record": "Fejl ved hentning af deltagerens personlige oplysninger",
-      "cpr_invalid": "CPR-nummer er ugyldigt. CPR-nummer skal være 10 tegn (kun tal) - de første 2 tal skal være 1 til 31, og de næste 2 tal skal være 1 til 12",
+      "cpr_invalid": "CPR-nummer skal bestå af 10 tegn uden bindestreg",
       "cvr_invalid": "CVR-nummer er ugyldigt. CVR-nummer skal være 8 tegn (kun tal)",
       "participant_has_associated_tasks": "Deltager kan ikke fjernes fra teamet, fordi han/hun er tilføjet en opgave i det team",
       "create_participant_event_log": "Fejl opstod ved oprettelse af kommentar",
@@ -1110,7 +1120,7 @@
       "content": "Deltageren og alle data om denne deltager vil blive fjernet",
       "has_assigned_tasks_in_active_election": "Deltager er tilmeldt en opgave i et aktivt valg og vil blive fjernet ved sletning",
       "is_team_responsible": "Denne deltager er teamansvarlig og vil blive fjernet fra teamet ved sletning",
-      "is_work_location_responsible": "Denne deltager er arbejdsstedsansvarlig og vil blive fjernet fra teamet ved sletning"
+      "is_work_location_responsible": "Denne deltager er arbejdsstedsansvarlig og vil blive fjernet fra arbejdsstedet ved sletning"
     },
     "bulk_delete_participants_confirmation": {
       "title": "Slet deltagere",
@@ -1125,7 +1135,7 @@
     "no_election_message": "Ingen valg tilgængelige. Gå venligst til <a href='/administration/election'>Valg</a> for at oprette et."
   },
   "unprotected": {
-    "page_title": null,
+    "page_title": "",
     "unauthorized": {
       "page_title": "Uautoriseret",
       "content": "Du har ikke adgang til denne ressource"
