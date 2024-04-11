@@ -1,4 +1,6 @@
-﻿using Valghalla.Application.Communication;
+﻿using System;
+using System.Security.Policy;
+using Valghalla.Application.Communication;
 using Valghalla.Application.Tenant;
 
 namespace Valghalla.Integration.Communication
@@ -174,7 +176,7 @@ namespace Valghalla.Integration.Communication
             return true;
         }
 
-        public string ReplaceTokens(string template, CommunicationRelatedInfo info)
+        public string ReplaceTokens(string template, CommunicationRelatedInfo info, bool htmlFormatLinks)
         {
             if (string.IsNullOrEmpty(template)) return string.Empty;
 
@@ -182,6 +184,17 @@ namespace Valghalla.Integration.Communication
             var contactLink = tenantContextProvider.CurrentTenant.ExternalDomain + "/kontakt-os";
             var invitationLink = tenantContextProvider.CurrentTenant.ExternalDomain + $"/opgaver/invitation/{info.HashValue}/{info.InvitationCode ?? Guid.Empty}";
 
+            var externalWebLinkHTML = externalWebLink;
+            var contactLinkHTML = contactLink;
+            var invitationLinkHTML = invitationLink;
+
+            if (htmlFormatLinks)
+            {
+                externalWebLinkHTML = "<a href=\"" + externalWebLink + "\">" + externalWebLink + "</a>";
+                contactLinkHTML = "<a href=\"" + contactLink + "\">" + contactLink + "</a>";
+                invitationLinkHTML = "<a href=\"" + invitationLink + "\">" + invitationLink + "</a>";
+            }
+            
             return template
                 .Replace("!name", info.Participant.Name)
                 .Replace("!election", info.ElectionTitle)
@@ -195,9 +208,9 @@ namespace Valghalla.Integration.Communication
                 .Replace("!payment", info.TaskType.Payment.HasValue ? info.TaskType.Payment.ToString() : string.Empty)
                 .Replace("!days", (info.TaskDate - DateTime.UtcNow).Days.ToString())
                 .Replace("!municipality", info.MunicipalityName)
-                .Replace("!invitation", invitationLink)
-                .Replace("!contact", contactLink)
-                .Replace("!external_web", externalWebLink);
+                .Replace("!invitation", invitationLinkHTML)
+                .Replace("!contact", contactLinkHTML)
+                .Replace("!external_web", externalWebLinkHTML);
         }
 
         private static string PadTimeValue(int value) => value.ToString().PadLeft(2, '0');
