@@ -177,6 +177,7 @@ namespace Valghalla.Integration.Communication
             if (templateType == TemplateType.SMS)
                 htmlFormatLinks = false;
 
+
             var subject = communicationHelper.ReplaceTokens(templateSubject, info, htmlFormatLinks);
             var content = communicationHelper.ReplaceTokens(templateContent, info, htmlFormatLinks);
 
