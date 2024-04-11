@@ -176,7 +176,7 @@ namespace Valghalla.Integration.Communication
             return true;
         }
 
-        public string ReplaceTokens(string template, CommunicationRelatedInfo info)
+        public string ReplaceTokens(string template, CommunicationRelatedInfo info, bool htmlFormatLinks)
         {
             if (string.IsNullOrEmpty(template)) return string.Empty;
 
@@ -184,10 +184,17 @@ namespace Valghalla.Integration.Communication
             var contactLink = tenantContextProvider.CurrentTenant.ExternalDomain + "/kontakt-os";
             var invitationLink = tenantContextProvider.CurrentTenant.ExternalDomain + $"/opgaver/invitation/{info.HashValue}/{info.InvitationCode ?? Guid.Empty}";
 
-            var externalWebLinkHTML = "<a href=\"" + externalWebLink + "\">" + externalWebLink + "</a>";
-            var contactLinkHTML = "<a href=\"" + contactLink + "\">" + contactLink + "</a>";
-            var invitationLinkHTML = "<a href=\"" + invitationLink + "\">" + invitationLink + "</a>";
+            var externalWebLinkHTML = externalWebLink;
+            var contactLinkHTML = contactLink;
+            var invitationLinkHTML = invitationLink;
 
+            if (htmlFormatLinks)
+            {
+                externalWebLinkHTML = "<a href=\"" + externalWebLink + "\">" + externalWebLink + "</a>";
+                contactLinkHTML = "<a href=\"" + contactLink + "\">" + contactLink + "</a>";
+                invitationLinkHTML = "<a href=\"" + invitationLink + "\">" + invitationLink + "</a>";
+            }
+            
             return template
                 .Replace("!name", info.Participant.Name)
                 .Replace("!election", info.ElectionTitle)

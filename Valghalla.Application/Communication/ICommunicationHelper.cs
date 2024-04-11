@@ -2,7 +2,7 @@
 {
     public interface ICommunicationHelper
     {
-        string ReplaceTokens(string template, CommunicationRelatedInfo info);
+        string ReplaceTokens(string template, CommunicationRelatedInfo info, bool htmlFormatLinks);
         Task<bool> ValidateTaskInvitationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateRemovedFromTaskAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateRemovedFromTaskByValidationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);

@@ -165,8 +165,12 @@ namespace Valghalla.Worker.Services
             var info = await (isRejectedTask ? communicationQueryRepository.GetRejectedTaskInfoAsync(taskAssignmentId, cancellationToken) : communicationQueryRepository.GetCommunicationRelatedInfoAsync(participantId, taskAssignmentId, cancellationToken))
                 ?? (isRejectedTask ? throw new Exception($"Errors occurred when fetching rejected task related information (taskId = {taskAssignmentId})") : throw new Exception($"Errors occurred when fetching assigned task related information (taskId = {taskAssignmentId})"));
 
-            var subject = communicationHelper.ReplaceTokens(templateSubject, info);
-            var content = communicationHelper.ReplaceTokens(templateContent, info);
+            bool htmlFormatLinks = true;
+            if(templateType == TemplateType.SMS)
+                htmlFormatLinks = false;
+
+            var subject = communicationHelper.ReplaceTokens(templateSubject, info, htmlFormatLinks);
+            var content = communicationHelper.ReplaceTokens(templateContent, info, htmlFormatLinks);
 
             if (templateType == TemplateType.DigitalPost)
             {
@@ -191,8 +195,12 @@ namespace Valghalla.Worker.Services
             var info = await communicationQueryRepository.GetCommunicationRelatedInfoAsync(participantId, taskAssignmentId, cancellationToken)
                 ?? throw new Exception($"Errors occurred when fetching task related information (taskAssignmentId = {taskAssignmentId})");
 
-            var subject = communicationHelper.ReplaceTokens(template.Subject, info);
-            var content = communicationHelper.ReplaceTokens(template.Content, info);
+            bool htmlFormatLinks = true;
+            if (template.TemplateType == TemplateType.SMS)
+                htmlFormatLinks = false;
+
+            var subject = communicationHelper.ReplaceTokens(template.Subject, info, htmlFormatLinks);
+            var content = communicationHelper.ReplaceTokens(template.Content, info, htmlFormatLinks);
 
             if (template.TemplateType == TemplateType.DigitalPost)
             {
