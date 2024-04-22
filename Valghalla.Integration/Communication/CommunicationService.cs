@@ -172,8 +172,12 @@ namespace Valghalla.Integration.Communication
 
         private async Task<Guid> WriteCommunicationLogAsync(CommunicationRelatedInfo info, Guid participantId, CommunicationLogSendType sendType, int templateType, string templateSubject, string templateContent, CancellationToken cancellationToken)
         {
-            var subject = communicationHelper.ReplaceTokens(templateSubject, info);
-            var content = communicationHelper.ReplaceTokens(templateContent, info);
+            bool htmlFormatLinks = true;
+            if (templateType == TemplateType.SMS)
+                htmlFormatLinks = false;
+
+            var subject = communicationHelper.ReplaceTokens(templateSubject, info, htmlFormatLinks);
+            var content = communicationHelper.ReplaceTokens(templateContent, info, htmlFormatLinks);
 
             if (templateType == TemplateType.DigitalPost)
             {
