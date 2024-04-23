@@ -108,44 +108,54 @@ export class ParticipantListComponent implements OnInit {
       index: 7,
     },
     {
+      name: 'participantDigitalPostStatus',
+      displayName: this.translocoService.translate('list.participant_list.labels.participant_digital_post_status'),
+      index: 8,
+    },
+    {
       name: 'teamName',
       displayName: this.translocoService.translate('list.participant_list.labels.team_association'),
-      index: 8,
+      index: 9,
+    },
+    {
+      name: 'workLocation',
+      displayName: this.translocoService.translate('list.participant_list.labels.work_location'),
+      index: 10,
     },
     {
       name: 'taskStatus',
       displayName: this.translocoService.translate('list.participant_list.labels.task_status'),
-      index: 9,
+      index: 11,
     },
     {
       name: 'taskDate',
       displayName: this.translocoService.translate('list.participant_list.labels.task_date'),
-      index: 10,
+      index: 12,
     },
     {
       name: 'taskTypeName',
       displayName: this.translocoService.translate('list.participant_list.labels.task_type'),
-      index: 11,
+      index: 13,
     },
     {
       name: 'areaName',
       displayName: this.translocoService.translate('list.participant_list.labels.task_area'),
-      index: 12,
+      index: 14,
     },
     {
       name: 'taskStartTime',
       displayName: this.translocoService.translate('list.participant_list.labels.task_start_time'),
-      index: 13,
+      index: 15,
     },
     {
       name: 'taskPayment',
       displayName: this.translocoService.translate('list.participant_list.labels.task_payment'),
-      index: 14,
+      index: 16,
     },
     {
       name: 'receipt',
       displayName: this.translocoService.translate('list.participant_list.labels.receipt'),
-      index: 15,
+      index: 17,
     },
   ];
 
