@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node --max-http-header-size=100000 ./serve",
-    "build": "ng build",
+    "build": "ng build --output-hashing=all",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",

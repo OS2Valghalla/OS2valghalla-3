@@ -166,8 +166,8 @@ namespace Valghalla.Worker.Services
                 ?? (isRejectedTask ? throw new Exception($"Errors occurred when fetching rejected task related information (taskId = {taskAssignmentId})") : throw new Exception($"Errors occurred when fetching assigned task related information (taskId = {taskAssignmentId})"));
 
             bool htmlFormatLinks = true;
+
             if(templateType == TemplateType.SMS)
-                htmlFormatLinks = false;
 
             var subject = communicationHelper.ReplaceTokens(templateSubject, info, htmlFormatLinks);
             var content = communicationHelper.ReplaceTokens(templateContent, info, htmlFormatLinks);
@@ -196,6 +196,7 @@ namespace Valghalla.Worker.Services
                 ?? throw new Exception($"Errors occurred when fetching task related information (taskAssignmentId = {taskAssignmentId})");
 
             bool htmlFormatLinks = true;
+
             if (template.TemplateType == TemplateType.SMS)
                 htmlFormatLinks = false;
 

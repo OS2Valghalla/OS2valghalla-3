@@ -194,7 +194,7 @@ namespace Valghalla.Integration.Communication
                 contactLinkHTML = "<a href=\"" + contactLink + "\">" + contactLink + "</a>";
                 invitationLinkHTML = "<a href=\"" + invitationLink + "\">" + invitationLink + "</a>";
             }
-            
+
             return template
                 .Replace("!name", info.Participant.Name)
                 .Replace("!election", info.ElectionTitle)
