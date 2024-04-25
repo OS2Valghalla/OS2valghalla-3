@@ -1,4 +1,5 @@
-﻿using Valghalla.Application.Communication;
+﻿using SF1601;
+using Valghalla.Application.Communication;
 using Valghalla.Application.Configuration;
 using Valghalla.Application.Queue;
 using Valghalla.Application.Queue.Messages;
