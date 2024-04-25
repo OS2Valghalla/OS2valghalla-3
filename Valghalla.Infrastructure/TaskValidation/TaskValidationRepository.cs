@@ -44,26 +44,23 @@ namespace Valghalla.Infrastructure.TaskValidation
             return entities.Select(i => new TaskValidationRule(i.ValidationRuleId)).ToArray();
         }
 
-        public async Task<EvaluatedTaskType> GetEvaluatedTaskType(Guid taskTypeId, CancellationToken cancellationToken)
-        {
-            var entity = await taskTypes
-                .Where(i => i.Id == taskTypeId)
-                .SingleAsync(cancellationToken);
-
-            return mapper.Map<EvaluatedTaskType>(entity);
-        }
-
-        public async Task<EvaluatedTaskType> GetEvaluatedTaskTypeByTaskId(Guid taskId, CancellationToken cancellationToken)
+        public async Task<EvaluatedTask> GetEvaluatedTask(Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             var task = await tasks
-                .Where(i => i.Id == taskId)
+                .Where(i => i.Id == taskAssignmentId)
                 .SingleAsync(cancellationToken);
 
             var entity = await taskTypes
                 .Where(i => i.Id == task.TaskTypeId)
                 .SingleAsync(cancellationToken);
 
-            return mapper.Map<EvaluatedTaskType>(entity);
+            return new EvaluatedTask()
+            {
+                TaskAssignmentId = taskAssignmentId,
+                TaskTypeId = entity.Id,
+                TaskDate = task.TaskDate,
+                ValidationNotRequired = entity.ValidationNotRequired
+            };
         }
     }
 }

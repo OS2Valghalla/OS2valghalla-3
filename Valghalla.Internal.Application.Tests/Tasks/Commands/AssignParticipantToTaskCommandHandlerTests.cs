@@ -66,7 +66,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { })));
 
             var result = validator.TestValidate(command);
@@ -92,7 +92,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { })));
 
             var result = validator.TestValidate(command);
@@ -118,7 +118,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { })));
 
             var result = validator.TestValidate(command);
@@ -144,7 +144,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { })));
 
             var result = validator.TestValidate(command);
@@ -172,7 +172,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { new TaskValidationRule(TaskValidationRule.Alive.Id) })));
 
             var result = validator.TestValidate(command);
@@ -202,7 +202,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { new TaskValidationRule(TaskValidationRule.Age18.Id) })));
 
             var result = validator.TestValidate(command);
@@ -232,7 +232,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { new TaskValidationRule(TaskValidationRule.ResidencyMunicipality.Id) })));
 
             var result = validator.TestValidate(command);
@@ -262,7 +262,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { new TaskValidationRule(TaskValidationRule.Disenfranchised.Id) })));
 
             var result = validator.TestValidate(command);
@@ -292,7 +292,7 @@ namespace Valghalla.Internal.Application.Tests.Tasks.Commands
             var validator = new AssignParticipantToTaskCommandValidator(_mockTaskValidationService, _mockElectionWorkLocationTasksQueryRepository);
 
             _mockTaskValidationService
-                .ExecuteAsync(request.TaskTypeId, request.ElectionId, request.ParticipantId, default)
+                .ExecuteAsync(request.TaskAssignmentId, request.ElectionId, request.ParticipantId, default)
                 .Returns(Task.FromResult(new TaskValidationResult(new List<TaskValidationRule> { new TaskValidationRule(TaskValidationRule.Citizenship.Id) })));
 
             var result = validator.TestValidate(command);

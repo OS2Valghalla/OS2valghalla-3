@@ -58,7 +58,7 @@ namespace Valghalla.External.Application.Modules.Tasks.Commands
                 return Response.Ok(TaskConfirmationResult.ConflictResult());
             }
 
-            var validationResult = await taskValidationService.ExecuteAsync(taskAssignment.TaskTypeId, taskAssignment.ElectionId, participantId, cancellationToken);
+            var validationResult = await taskValidationService.ExecuteAsync(taskAssignment.Id, taskAssignment.ElectionId, participantId, cancellationToken);
 
             if (!validationResult.Succeed)
             {
