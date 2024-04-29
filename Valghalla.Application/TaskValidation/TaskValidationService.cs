@@ -16,7 +16,7 @@ namespace Valghalla.Application.TaskValidation
             this.cprService = cprService;
         }
 
-        public TaskValidationResult Execute(EvaluatedTaskType taskType, EvaluatedParticipant participant, IEnumerable<TaskValidationRule> rules)
+        public TaskValidationResult Execute(EvaluatedTask taskAssignment, EvaluatedParticipant participant, IEnumerable<TaskValidationRule> rules)
         {
             var failedRules = new List<TaskValidationRule>();
 
@@ -25,14 +25,19 @@ namespace Valghalla.Application.TaskValidation
                 failedRules.Add(TaskValidationRule.Alive);
             }
 
-            if (taskType.ValidationNotRequired)
+            if (taskAssignment.ValidationNotRequired)
             {
                 return new(failedRules);
             }
 
-            if (rules.Any(i => i.Id == TaskValidationRule.Age18.Id) && participant.Age < 18)
+            if (rules.Any(i => i.Id == TaskValidationRule.Age18.Id))
             {
-                failedRules.Add(TaskValidationRule.Age18);
+                var age = CalculateAge(participant, taskAssignment);
+
+                if (age < 18)
+                {
+                    failedRules.Add(TaskValidationRule.Age18);
+                }
             }
 
             if (rules.Any(i => i.Id == TaskValidationRule.Disenfranchised.Id) && participant.Disenfranchised)
@@ -53,25 +58,25 @@ namespace Valghalla.Application.TaskValidation
             return new(failedRules);
         }
 
-        public async Task<TaskValidationResult> ExecuteAsync(Guid taskTypeId, Guid electionId, Guid participantId, CancellationToken cancellationToken)
+        public async Task<TaskValidationResult> ExecuteAsync(Guid taskAssignmentId, Guid electionId, Guid participantId, CancellationToken cancellationToken)
         {
-            var taskType = await taskValidationRepository.GetEvaluatedTaskType(taskTypeId, cancellationToken);
+            var taskType = await taskValidationRepository.GetEvaluatedTask(taskAssignmentId, cancellationToken);
             var participant = await taskValidationRepository.GetEvaluatedParticipant(participantId, cancellationToken);
             var rules = await taskValidationRepository.GetValidationRules(electionId, cancellationToken);
 
             return Execute(taskType, participant, rules);
         }
 
-        public async Task<TaskValidationResult> ExecuteAsync(Guid taskId, Guid electionId, string cpr, CancellationToken cancellationToken)
+        public async Task<TaskValidationResult> ExecuteAsync(Guid taskAssignmentId, Guid electionId, string cpr, CancellationToken cancellationToken)
         {
-            var taskType = await taskValidationRepository.GetEvaluatedTaskTypeByTaskId(taskId, cancellationToken);
+            var taskType = await taskValidationRepository.GetEvaluatedTask(taskAssignmentId, cancellationToken);
             var cprPersonInfo = await cprService.ExecuteAsync(cpr);
             var record = cprPersonInfo.ToRecord();
 
             var evaluatedParticipant = new EvaluatedParticipant()
             {
                 Id = Guid.Empty,
-                Age = record.Age,
+                Birthdate = record.Birthdate,
                 CountryCode = record.CountryCode,
                 Deceased = record.Deceased,
                 Disenfranchised = record.Disenfranchised,
@@ -81,6 +86,29 @@ namespace Valghalla.Application.TaskValidation
             var rules = await taskValidationRepository.GetValidationRules(electionId, cancellationToken);
 
             return Execute(taskType, evaluatedParticipant, rules);
+        }
+
+        private static int CalculateAge(EvaluatedParticipant participant, EvaluatedTask taskAssignment)
+        {
+            var taskDateLocalTime = taskAssignment.TaskDate.ToLocalTime();
+            var birthDateLocalTime = participant.Birthdate.ToLocalTime();
+            var taskDate = new DateTime(taskDateLocalTime.Year, taskDateLocalTime.Month, taskDateLocalTime.Day);
+            var birthdate = new DateTime(birthDateLocalTime.Year, birthDateLocalTime.Month, birthDateLocalTime.Day);
+
+            var months = taskDate.Month - birthdate.Month;
+            var years = taskDate.Year - birthdate.Year;
+
+            if (taskDate.Day < birthdate.Day)
+            {
+                months--;
+            }
+
+            if (months < 0)
+            {
+                years--;
+            }
+
+            return years;
         }
     }
 }

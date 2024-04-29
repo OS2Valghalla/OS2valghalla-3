@@ -34,7 +34,7 @@ namespace Valghalla.Internal.Application.Modules.Tasks.Commands
                .Must((command) => !electionWorkLocationTasksQueryRepository.CheckIfTaskHasConflictsAsync(command.ElectionId, command.TaskAssignmentId, command.ParticipantId, default).Result)
                .WithMessage("tasks.error.task_conflict");
 
-            RuleFor(x => taskValidationService.ExecuteAsync(x.TaskTypeId, x.ElectionId, x.ParticipantId, default).Result).Custom((result, context) =>
+            RuleFor(x => taskValidationService.ExecuteAsync(x.TaskAssignmentId, x.ElectionId, x.ParticipantId, default).Result).Custom((result, context) =>
             {
                 if (!result.IsAlive())
                 {

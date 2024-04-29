@@ -38,7 +38,7 @@ namespace Valghalla.Worker.Services
             ITaskAssignmentCommandRepository taskAssignmentCommandRepository,
             ITaskValidationService taskValidationService,
             ICommunicationService communicationService,
-        ICPRService cprService)
+            ICPRService cprService)
         {
             this.logger = logger;
             this.electionQueryRepository = electionQueryRepository;
@@ -136,7 +136,15 @@ namespace Valghalla.Worker.Services
                     var taskType = taskTypes.Single(i => i.Id == taskAssignment.TaskTypeId);
                     ruleDict.TryGetValue(taskAssignment.ElectionId, out var rules);
 
-                    var taskValidationResult = taskValidationService.Execute(taskType, participant, rules!);
+                    var evaluatedTask = new EvaluatedTask()
+                    {
+                        TaskAssignmentId = taskAssignment.Id,
+                        TaskTypeId = taskType.Id,
+                        TaskDate = taskAssignment.TaskDate,
+                        ValidationNotRequired = taskType.ValidationNotRequired
+                    };
+
+                    var taskValidationResult = taskValidationService.Execute(evaluatedTask, participant, rules!);
 
                     if (!taskValidationResult.Succeed)
                     {

@@ -195,12 +195,28 @@
           {{ row.participantSpecialDiets }}
         </td>
       </ng-container>
+      <ng-container matColumnDef="participantDigitalPostStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'list.participant_list.labels.participant_digital_post_status' | transloco }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ (row.participantDigitalPostStatus ? 'shared.common.yes' : 'shared.common.no') | transloco }}
+        </td>
+      </ng-container>
       <ng-container matColumnDef="teamName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ 'list.participant_list.labels.team_association' | transloco }}
         </th>
         <td mat-cell *matCellDef="let row">
           {{ row.teamName }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="workLocation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'list.participant_list.labels.work_location' | transloco }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.workLocation }}
         </td>
       </ng-container>
       <ng-container matColumnDef="taskStatus">
@@ -318,12 +334,28 @@
           {{ row.participantSpecialDiets }}
         </td>
       </ng-container>
+      <ng-container matColumnDef="participantDigitalPostStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'list.participant_list.labels.participant_digital_post_status' | transloco }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ (row.participantDigitalPostStatus ? 'shared.common.yes' : 'shared.common.no') | transloco }}
+        </td>
+      </ng-container>
       <ng-container matColumnDef="teamName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ 'list.participant_list.labels.team_association' | transloco }}
         </th>
         <td mat-cell *matCellDef="let row">
           {{ row.teamName }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="workLocation">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'list.participant_list.labels.work_location' | transloco }}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.workLocation }}
         </td>
       </ng-container>
       <ng-container matColumnDef="taskStatus">

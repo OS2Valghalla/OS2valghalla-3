@@ -270,6 +270,8 @@
     "participant_list": {
       "page_title": "Participant lists",
       "labels": {
+        "participant_digital_post_status": "Digital Post status",
+        "work_location": "Work location",
         "show_preview": "Show preview",
         "export_to_excel": "Export to Excel",
         "export_to_csv": "Export to CSV",
