@@ -1,34 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Digst.OioIdws.WscCore" Version="4.0.70" />
     <PackageReference Include="DocumentFormat.OpenXML.Extensions" Version="1.0.0" />
     <PackageReference Include="ITfoxtec.Identity.Saml2.MvcCore" Version="4.8.6" />
     <PackageReference Include="MailKit" Version="4.2.0" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.16" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Sinks.Map" Version="1.0.2" />
-    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="7.0.3" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="8.0.1" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.*" />
     <PackageReference Include="System.ServiceModel.Federation" Version="4.10.*" />
     <PackageReference Include="System.ServiceModel.Http" Version="4.10.*" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.*" />
     <PackageReference Include="System.ServiceModel.Security" Version="4.10.*" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Valghalla.Application\Valghalla.Application.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Excel\Templates\Resource.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -36,12 +31,10 @@
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Excel\Templates\Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>
