@@ -9,6 +9,7 @@
         public string Address { get; init; } = string.Empty;
         public string PostalCode { get; init; } = string.Empty;
         public string City { get; init; } = string.Empty;
+        public int VoteLocation { get; set; }
         public bool HasActiveElection { get; set; } = false;
         public List<Guid> TaskTypeIds { get; init; } = new List<Guid>();
         public List<Guid> TeamIds { get; init; } = new List<Guid>();

@@ -77,7 +77,7 @@ public partial class DataContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // optionsBuilder.UseNpgsql("Connectionstring do desired database, should not be used in production");
+        optionsBuilder.UseNpgsql("Host=localhost;port=5432;Database=Valghalla;Username=postgres;Password=!zyxzapr3");
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
