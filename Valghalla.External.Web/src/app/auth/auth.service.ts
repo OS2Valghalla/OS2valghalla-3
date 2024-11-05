@@ -28,11 +28,14 @@ export class AuthService {
   }
 
   login(redirectUrl?: string) {
+    console.log('login');
+    
     storeRedirectUrl(redirectUrl);
     window.location.href = getLoginUrl();
   }
 
   logout(profileDeleted: boolean) {
+    console.log('login');
     this.httpClient
       .post<string>(getLogoutUrl(), undefined, {
         params: {

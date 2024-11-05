@@ -1,22 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  CanMatch,
-  Route,
-  Router,
-  RouterStateSnapshot,
-  UrlSegment,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable, take } from 'rxjs';
 import { GlobalStateService } from './global-state.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class FaqPageGuard implements CanActivate, CanActivateChild, CanMatch {
+export class FaqPageGuard  {
   constructor(private readonly router: Router, private readonly globalStateService: GlobalStateService) {}
 
   canMatch(

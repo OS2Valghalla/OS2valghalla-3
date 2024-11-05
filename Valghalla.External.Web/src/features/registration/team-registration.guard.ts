@@ -1,22 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  CanMatch,
-  Route,
-  Router,
-  RouterStateSnapshot,
-  UrlSegment,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable, catchError, take, throwError } from 'rxjs';
 import { AuthService } from '../../app/auth/auth.service';
 import { RoutingNodes } from 'src/shared/constants/routing-nodes';
 import { RegistrationHttpService } from './services/registration-http.service';
 
 @Injectable()
-export class TeamRegistrationGuard implements CanActivate, CanActivateChild, CanMatch {
+export class TeamRegistrationGuard  {
   constructor(
     private readonly router: Router,
     private readonly authService: AuthService,
