@@ -16,12 +16,12 @@ import { DateTime } from 'luxon';
 import { dateFormat } from 'src/shared/constants/date';
 
 @Component({
-  selector: 'app-participant-list',
-  templateUrl: './participant-list.component.html',
-  styleUrls: ['participant-list.component.scss', '../../../../shared/components/table/table.component.scss'],
+  selector: 'election_system_list',
+  templateUrl: './election-system-list.component.html',
+  styleUrls: ['election-system-list.component.scss', '../../../../shared/components/table/table.component.scss'],
   providers: [FilteredTasksHttpService],
 })
-export class ParticipantListComponent implements OnInit {
+export class ElectionSystemList implements OnInit {
   private readonly subs = new SubSink();
 
   election?: ElectionShared;
@@ -58,7 +58,7 @@ export class ParticipantListComponent implements OnInit {
 
   printDataSource: MatTableDataSource<any>;
 
-  displayedColumns: Array<string> = ['participantName', 'participantCpr', 'teamName', 'taskDate', 'taskTypeName'];
+  displayedColumns: Array<string> = ['taskTypeName', 'participantName', 'participantBirthDate', 'votingArea', 'participantUserName', 'participantCpr'];
 
   @ViewChild('TABLE') table: ElementRef<HTMLElement>;
 
@@ -71,91 +71,36 @@ export class ParticipantListComponent implements OnInit {
 
   columns = [
     {
-      name: 'participantName',
-      displayName: this.translocoService.translate('list.participant_list.labels.full_name'),
+      name: 'taskTypeName',
+      displayName: this.translocoService.translate('list.election_system_list.labels.task_type'),
       index: 1,
+    },
+    {
+      name: 'participantName',
+      displayName: this.translocoService.translate('list.election_system_list.labels.full_name'),
+      index: 2,
       disabled: true,
       isSelected: true,
     },
     {
-      name: 'participantCpr',
-      displayName: this.translocoService.translate('list.participant_list.labels.cpr_number'),
-      index: 2,
-    },
-    {
-      name: 'participantAge',
-      displayName: this.translocoService.translate('list.participant_list.labels.participant_age'),
+      name: 'participantBirthDate',
+      displayName: this.translocoService.translate('list.election_system_list.labels.participant_birthdate'),
       index: 3,
     },
     {
-      name: 'participantPhoneNumber',
-      displayName: this.translocoService.translate('list.participant_list.labels.participant_phone'),
+      name: 'votingArea',
+      displayName: this.translocoService.translate('list.election_system_list.labels.voting_area'),
       index: 4,
     },
     {
-      name: 'participantEmail',
-      displayName: this.translocoService.translate('list.participant_list.labels.participant_email'),
+      name: 'participantUserName',
+      displayName: this.translocoService.translate('list.election_system_list.labels.participant_user_name'),
       index: 5,
     },
     {
-      name: 'participantAddress',
-      displayName: this.translocoService.translate('list.participant_list.labels.participant_address'),
+      name: 'participantCpr',
+      displayName: this.translocoService.translate('list.election_system_list.labels.cpr_number'),
       index: 6,
-    },
-    {
-      name: 'participantSpecialDiets',
-      displayName: this.translocoService.translate('list.participant_list.labels.participant_special_diet'),
-      index: 7,
-    },
-    {
-      name: 'participantDigitalPostStatus',
-      displayName: this.translocoService.translate('list.participant_list.labels.participant_digital_post_status'),
-      index: 8,
-    },
-    {
-      name: 'teamName',
-      displayName: this.translocoService.translate('list.participant_list.labels.team_association'),
-      index: 9,
-    },
-    {
-      name: 'workLocation',
-      displayName: this.translocoService.translate('list.participant_list.labels.work_location'),
-      index: 10,
-    },
-    {
-      name: 'taskStatus',
-      displayName: this.translocoService.translate('list.participant_list.labels.task_status'),
-      index: 11,
-    },
-    {
-      name: 'taskDate',
-      displayName: this.translocoService.translate('list.participant_list.labels.task_date'),
-      index: 12,
-    },
-    {
-      name: 'taskTypeName',
-      displayName: this.translocoService.translate('list.participant_list.labels.task_type'),
-      index: 13,
-    },
-    {
-      name: 'areaName',
-      displayName: this.translocoService.translate('list.participant_list.labels.task_area'),
-      index: 14,
-    },
-    {
-      name: 'taskStartTime',
-      displayName: this.translocoService.translate('list.participant_list.labels.task_start_time'),
-      index: 15,
-    },
-    {
-      name: 'taskPayment',
-      displayName: this.translocoService.translate('list.participant_list.labels.task_payment'),
-      index: 16,
-    },
-    {
-      name: 'receipt',
-      displayName: this.translocoService.translate('list.participant_list.labels.receipt'),
-      index: 17,
     },
   ];
 
@@ -190,6 +135,7 @@ export class ParticipantListComponent implements OnInit {
   }
 
   exportAsExcel(toCSV?: boolean) {
+    // TODO: Implement Export of CSV-file with users to Election system
     this.exporting = true;
 
     this.subs.sink = this.filteredTasksHttpService.auditLogExport().subscribe(() => {
@@ -209,6 +155,9 @@ export class ParticipantListComponent implements OnInit {
           let value = item[columnName];
 
           if (columnName == 'taskDate') {
+            value = DateTime.fromISO(value).toFormat(dateFormat);
+          }
+          if (columnName == 'participantBirthDate') {
             value = DateTime.fromISO(value).toFormat(dateFormat);
           }
 

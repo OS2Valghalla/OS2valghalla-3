@@ -19,6 +19,10 @@
         "participant_list": {
           "title": "Deltagerlister",
           "description": "Opret deltagerlister til eksport fra OS2valghalla"
+        },
+        "election_system_list": {
+          "title": "Eksport til valgsystemet",
+          "description": "Opret CSV-fil med brugere til valgsystemet"
         }
       },
       "administration": "Administration",
@@ -283,6 +287,37 @@
         "participant_email": "E-mail adresse",
         "participant_address": "Adresse",
         "participant_special_diet": "Specialkost",
+        "team_association": "Team",
+        "task_status": "Opgavestatus",
+        "task_date": "Opgavedato",
+        "task_type": "Opgavetyper",
+        "task_area": "Områder",
+        "task_start_time": "Starttidspunkt",
+        "task_payment": "Betaling",
+        "receipt": "Kvittering"
+      },
+      "error": {},
+      "success": {}
+    },
+    "election_system_list": {
+      "page_title": "Eksport til valgsystemet",
+      "labels": {
+        "participant_digital_post_status": "Digital Post status",
+        "work_location": "Arbejdssted",
+        "show_preview": "Vis preview",
+        "export_to_excel": "Eksportér som Excel-fil",
+        "export_to_csv": "Eksportér som CSV-fil",
+        "select_columns": "Vælg kolonner",
+        "full_name": "Fuldt navn",
+        "cpr_number": "CPR-nummer",
+        "participant_age": "Alder",
+        "participant_phone": "Mobilnummer",
+        "participant_email": "E-mail adresse",
+        "participant_address": "Adresse",
+        "participant_special_diet": "Specialkost",
+        "participant_birthdate": "Fødselsdato",
+        "participant_user_name": "Brugernavn",
+        "voting_area": "Afstemningsområde",
         "team_association": "Team",
         "task_status": "Opgavestatus",
         "task_date": "Opgavedato",
@@ -727,6 +762,7 @@
         "address": "Adresse",
         "postal_code": "Postnummer",
         "city": "By",
+        "vote_location": "Afstemningsområde",
         "relevant_task_types": "Relevante opgavetyper",
         "relevant_teams": "Relevante teams"
       },

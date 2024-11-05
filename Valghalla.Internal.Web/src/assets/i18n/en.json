@@ -19,6 +19,10 @@
         "participant_list": {
           "title": "Participant lists",
           "description": "Create lists of participants to export"
+        },
+        "election_system_list": {
+          "title": "Export for election system",
+          "description": "Create CSV-file with users for the election system"
         }
       },
       "administration": "Administration",
@@ -283,6 +287,37 @@
         "participant_email": "Participant e-mail address",
         "participant_address": "Participant address",
         "participant_special_diet": "Participant special diet",
+        "team_association": "Team association",
+        "task_status": "Task status",
+        "task_date": "Task date",
+        "task_type": "Task type",
+        "task_area": "Task area",
+        "task_start_time": "Task start time",
+        "task_payment": "Task payment",
+        "receipt": "Receipt"
+      },
+      "error": {},
+      "success": {}
+    },
+    "election_system_list": {
+      "page_title": "Export for election system",
+      "labels": {
+        "participant_digital_post_status": "Digital Post status",
+        "work_location": "Work location",
+        "show_preview": "Show preview",
+        "export_to_excel": "Export to Excel",
+        "export_to_csv": "Export to CSV",
+        "select_columns": "Select columns",
+        "full_name": "Full name",
+        "cpr_number": "CPR-number",
+        "participant_age": "Participant age",
+        "participant_phone": "Participant phone number",
+        "participant_email": "Participant e-mail address",
+        "participant_address": "Participant address",
+        "participant_special_diet": "Participant special diet",
+        "participant_birthdate": "Participant birth date",
+        "participant_user_name": "Participant user name",
+        "voting_area": "Voting area",
         "team_association": "Team association",
         "task_status": "Task status",
         "task_date": "Task date",
@@ -727,6 +762,7 @@
         "address": "Address",
         "postal_code": "Postal code",
         "city": "City",
+        "vote_location": "Vote area",
         "relevant_task_types": "Relevant task types",
         "relevant_teams": "Relevant teams"
       },
