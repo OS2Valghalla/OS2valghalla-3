@@ -178,7 +178,7 @@ export class ParticipantListComponent implements OnInit {
           this.teams = res.data.teams;
           this.workLocations = res.data.workLocations;
           this.taskTypes = res.data.taskTypes;
-          var tasksDate: Date = new Date(res.data.electionStartDate);
+          const tasksDate: Date = new Date(res.data.electionStartDate);
           while (tasksDate <= new Date(res.data.electionEndDate)) {
             this.electionDates.push(new Date(tasksDate));
             tasksDate.setDate(tasksDate.getDate() + 1);
@@ -190,6 +190,7 @@ export class ParticipantListComponent implements OnInit {
   }
 
   exportAsExcel(toCSV?: boolean) {
+    // TODO: Implement Export of CSV-file with users to Election system
     this.exporting = true;
 
     this.subs.sink = this.filteredTasksHttpService.auditLogExport().subscribe(() => {
@@ -253,14 +254,14 @@ export class ParticipantListComponent implements OnInit {
       this.allColumnsSelected = false;
     }
 
-    var selectedOptions = [];
+    const selectedOptions = [];
     this.columnsList.selectedOptions.selected.forEach((selectedColumn) => {
       selectedOptions.push(selectedColumn.value);
     });
 
     this.displayedColumns = selectedOptions.sort((a, b) => {
-      var foundA = this.columns.filter((f) => f.name == a)[0];
-      var foundB = this.columns.filter((f) => f.name == b)[0];
+      const foundA = this.columns.filter((f) => f.name == a)[0];
+      const foundB = this.columns.filter((f) => f.name == b)[0];
       return this.columns.indexOf(foundA) < this.columns.indexOf(foundB) ? -1 : 1;
     });
   }
@@ -281,18 +282,18 @@ export class ParticipantListComponent implements OnInit {
   loadParticipantsTasks() {
     this.loadingTasks = true;
 
-    var selectedOptions = [];
+    const selectedOptions = [];
     this.columnsList.selectedOptions.selected.forEach((selectedColumn) => {
       selectedOptions.push(selectedColumn.value);
     });
 
     this.displayedColumns = selectedOptions.sort((a, b) => {
-      var foundA = this.columns.filter((f) => f.name == a)[0];
-      var foundB = this.columns.filter((f) => f.name == b)[0];
+      const foundA = this.columns.filter((f) => f.name == a)[0];
+      const foundB = this.columns.filter((f) => f.name == b)[0];
       return this.columns.indexOf(foundA) < this.columns.indexOf(foundB) ? -1 : 1;
     });
 
-    var request: any = {
+    const request: any = {
       electionId: this.election.id,
       tasksFilter: {
         teamIds: [],

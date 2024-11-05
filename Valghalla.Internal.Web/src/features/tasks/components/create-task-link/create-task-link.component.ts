@@ -83,7 +83,7 @@ export class CreateTaskLinkComponent implements OnInit {
                         this.displayWorkLocations = this.workLocations.filter(t => t.teamIds.indexOf(this.selectedTeamId) > -1);
                         this.displayTaskTypes = this.taskTypes.filter(t => t.teamIds.indexOf(this.selectedTeamId) > -1);                    
                     }
-                    var tasksDate: Date = new Date(res.data.electionStartDate);
+                    const tasksDate: Date = new Date(res.data.electionStartDate);
                     while (tasksDate <= new Date(res.data.electionEndDate)) {
                         this.electionDates.push(new Date(tasksDate));
                         tasksDate.setDate(tasksDate.getDate() + 1);
@@ -108,7 +108,7 @@ export class CreateTaskLinkComponent implements OnInit {
         this.loadingTasks = true;
         this.tasksLink = '';
 
-        var request: GetAvailableTasksByFiltersRequest = {
+        const request: GetAvailableTasksByFiltersRequest = {
             electionId: this.election.id,
             tasksFilter: {
                 teamId: this.selectedTeamId,
@@ -144,7 +144,7 @@ export class CreateTaskLinkComponent implements OnInit {
     copyFilteredTasksLink() {
         this.generatingLink = true;    
 
-        var filters: TasksFilterRequest = {
+        const filters: TasksFilterRequest = {
             teamId: this.selectedTeamId,
             areaIds: [],
             workLocationIds: [],
@@ -163,7 +163,7 @@ export class CreateTaskLinkComponent implements OnInit {
             filters.taskTypeIds = this.selectedTaskTypeIds.sort();
         }
 
-        var request: CreateFilteredTaskLinkRequest = {
+        const request: CreateFilteredTaskLinkRequest = {
             electionId: this.election.id,
             tasksFilter: filters
         };

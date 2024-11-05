@@ -64,8 +64,8 @@ export class CommunicationTemplatesComponent implements OnDestroy {
   }
 
   getTemplateTypeName(row: CommunicationTemplateListingItem) {
-    var found = this.templateTypes.filter((f) => f.id == row.templateType);
-    var templateTypeName = found && found.length > 0 ? this.translocoService.translate(found[0].title) : '';
+    const found = this.templateTypes.filter((f) => f.id == row.templateType);
+    const templateTypeName = found && found.length > 0 ? this.translocoService.translate(found[0].title) : '';
     row.templateTypeName = templateTypeName;
     return templateTypeName;
   }

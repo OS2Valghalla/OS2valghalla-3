@@ -235,7 +235,7 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, Afte
 
   onRowSelecting(row) {
     if (this.onlyOneSelection) {
-      var isSelecting = this.selection.isSelected(row[this.headerRowDef.key]);
+      const isSelecting = this.selection.isSelected(row[this.headerRowDef.key]);
       this.selection.clear();
       if (!isSelecting) {
         this.selection.select(row[this.headerRowDef.key]);
@@ -276,9 +276,9 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, Afte
   }
 
   mergeStyleObj(objectList) {
-    var obj = {};
+    const obj = {};
     objectList.forEach(function (x) {
-      for (var i in x) obj[i] = x[i];
+      for (const i in x) obj[i] = x[i];
     });
     return obj;
   }

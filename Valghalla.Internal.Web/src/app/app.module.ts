@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandler, Injectable, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,44 +35,38 @@ export class AppPageTitleStrategy extends TitleStrategy {
   }
 }
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    FooterComponent,
-    ChangeElectionDialogComponent,
-    GdprConfirmationDialogComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    AuthModule,
-    MaterialModule,
-    TranslocoRootModule,
-    BrowserAnimationsModule,
-    SharedModule,
-  ],
-  providers: [
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandler,
-    },
-    {
-      provide: TitleStrategy,
-      useClass: AppPageTitleStrategy,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AppHttpInterceptor,
-      multi: true,
-    },
-    {
-      provide: SIDE_MODAL,
-      useValue: new ReplaySubject(1),
-    },
-    { provide: MatPaginatorIntl, useClass: MatPaginationIntlService },
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        NavbarComponent,
+        FooterComponent,
+        ChangeElectionDialogComponent,
+        GdprConfirmationDialogComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        AuthModule,
+        MaterialModule,
+        TranslocoRootModule,
+        BrowserAnimationsModule,
+        SharedModule], providers: [
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandler,
+        },
+        {
+            provide: TitleStrategy,
+            useClass: AppPageTitleStrategy,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AppHttpInterceptor,
+            multi: true,
+        },
+        {
+            provide: SIDE_MODAL,
+            useValue: new ReplaySubject(1),
+        },
+        { provide: MatPaginatorIntl, useClass: MatPaginationIntlService },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}

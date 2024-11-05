@@ -97,13 +97,13 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
                 this.setSelectedTemplate(this.item.removedByValidationCommunicationTemplate, this.formCommunicationTemplates.controls.removedByValidation_TemplateType, this.formCommunicationTemplates.controls.removedByValidation_Template);
 
                 v.taskTypes.data.forEach(taskType => {
-                    var taskTypeWithTemplate: TaskTypeWithTemplates = {
+                    const taskTypeWithTemplate: TaskTypeWithTemplates = {
                         id: taskType.id,
                         title: taskType.title
                     };
-                    var found = this.item.electionTaskTypeCommunicationTemplates.filter(t => t.taskTypeId == taskType.id);
+                    const found = this.item.electionTaskTypeCommunicationTemplates.filter(t => t.taskTypeId == taskType.id);
                     if (found && found.length > 0) {                        
-                        var electionTaskTypeCommunicationTemplate = found[0];
+                        const electionTaskTypeCommunicationTemplate = found[0];
                         this.setTaskTypeSelectedTemplate(taskTypeWithTemplate, electionTaskTypeCommunicationTemplate.confirmationOfRegistrationCommunicationTemplate, 'confirmationOfRegistration_Template');
                         this.setTaskTypeSelectedTemplate(taskTypeWithTemplate, electionTaskTypeCommunicationTemplate.confirmationOfCancellationCommunicationTemplate, 'confirmationOfCancellation_Template');
                         this.setTaskTypeSelectedTemplate(taskTypeWithTemplate, electionTaskTypeCommunicationTemplate.invitationCommunicationTemplate, 'invitation_Template');
@@ -129,7 +129,7 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
       setSelectedTemplate(selectedTemplate: CommunicationTemplateListingItem, formTemplateTypeFieldName: FormControl, formTemplateFieldName: FormControl) {
         if (selectedTemplate && selectedTemplate.id) {
             formTemplateTypeFieldName.setValue(selectedTemplate.templateType);
-            var found = this.communicationTemplates.filter(t => t.id == selectedTemplate.id);
+            const found = this.communicationTemplates.filter(t => t.id == selectedTemplate.id);
             if (found && found.length > 0) {
                 formTemplateFieldName.setValue(found[0]);
             }
@@ -138,7 +138,7 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
 
       setTaskTypeSelectedTemplate(taskType: TaskTypeWithTemplates, selectedTemplate: CommunicationTemplateListingItem, taskTypeTemplatePropertyName: string) {
         if (selectedTemplate && selectedTemplate.id) {            
-            var found = this.communicationTemplates.filter(t => t.id == selectedTemplate.id);
+            const found = this.communicationTemplates.filter(t => t.id == selectedTemplate.id);
             if (found && found.length > 0) {
                 taskType[taskTypeTemplatePropertyName + 'Type'] = selectedTemplate.templateType;
                 taskType[taskTypeTemplatePropertyName] = found[0];
@@ -163,7 +163,7 @@ interface TaskTypeWithTemplates extends TaskTypeShared {
       }
 
       updateElection(event: FormPageEvent) {
-        var electionTaskTypeCommunicationTemplates: Array<UpdateElectionTaskTypeCommunicationTemplateRequest> = [];
+        const electionTaskTypeCommunicationTemplates: Array<UpdateElectionTaskTypeCommunicationTemplateRequest> = [];
         this.taskTypes.forEach(taskType => {
             if (this.hasSpecificTemplate(taskType)) {
                 electionTaskTypeCommunicationTemplates.push({
