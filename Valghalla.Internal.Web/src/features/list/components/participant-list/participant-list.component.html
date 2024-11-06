@@ -88,16 +88,159 @@
           (change)="toggleAllColumns()"
           class="min-w-full pb-2"
           ><strong>{{ 'shared.common.select_all' | transloco }}</strong></mat-checkbox
-        >
+        >        
         <mat-list-option
           checkboxPosition="before"
-          *ngFor="let column of columns"
-          [value]="column.name"
+          [value]="'participantName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="column.disabled"
-          [selected]="column.isSelected"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantName')"
           class="min-w-[350px] max-w-[350px]">
-          {{ column.displayName }}
+          {{ 'list.participant_list.labels.full_name' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantCpr'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantCpr')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.cpr_number' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantAge'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantAge')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.participant_age' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantPhoneNumber'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantPhoneNumber')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.participant_phone' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantEmail'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantEmail')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.participant_email' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantAddress'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantAddress')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.participant_address' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantSpecialDiets'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantSpecialDiets')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.participant_special_diet' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantDigitalPostStatus'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantDigitalPostStatus')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.participant_digital_post_status' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'teamName'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('teamName')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.team_association' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'workLocation'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('workLocation')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.work_location' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'taskStatus'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('taskStatus')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.task_status' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'taskDate'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('taskDate')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.task_date' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'taskTypeName'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('taskTypeName')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.task_type' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'areaName'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('areaName')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.task_area' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'taskStartTime'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('taskStartTime')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.task_start_time' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'taskPayment'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('taskPayment')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.task_payment' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'receipt'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('receipt')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.receipt' | transloco }}
         </mat-list-option>
       </mat-selection-list>
     </mat-expansion-panel>

@@ -72,11 +72,13 @@ export class ElectionSystemList implements OnInit {
   columns = [
     {
       name: 'taskTypeName',
+      key: 'list.election_system_list.labels.task_type',
       displayName: this.translocoService.translate('list.election_system_list.labels.task_type'),
       index: 1,
     },
     {
       name: 'participantName',
+      key: 'list.election_system_list.labels.full_name', 
       displayName: this.translocoService.translate('list.election_system_list.labels.full_name'),
       index: 2,
       disabled: true,
@@ -84,21 +86,25 @@ export class ElectionSystemList implements OnInit {
     },
     {
       name: 'participantBirthDate',
+      key: 'list.election_system_list.labels.participant_birthdate',
       displayName: this.translocoService.translate('list.election_system_list.labels.participant_birthdate'),
       index: 3,
     },
     {
       name: 'votingArea',
+      key: 'list.election_system_list.labels.voting_area',
       displayName: this.translocoService.translate('list.election_system_list.labels.voting_area'),
       index: 4,
     },
     {
       name: 'participantUserName',
+      key: 'list.election_system_list.labels.participant_user_name',
       displayName: this.translocoService.translate('list.election_system_list.labels.participant_user_name'),
       index: 5,
     },
     {
       name: 'participantCpr',
+      key: 'list.election_system_list.labels.cpr_number',
       displayName: this.translocoService.translate('list.election_system_list.labels.cpr_number'),
       index: 6,
     },
@@ -135,7 +141,6 @@ export class ElectionSystemList implements OnInit {
   }
 
   exportAsExcel(toCSV?: boolean) {
-    // TODO: Implement Export of CSV-file with users to Election system
     this.exporting = true;
 
     this.subs.sink = this.filteredTasksHttpService.auditLogExport().subscribe(() => {
@@ -145,7 +150,7 @@ export class ElectionSystemList implements OnInit {
       worksheet.columns = this.displayedColumns.map((columnName) => {
         const column = this.columns.find((i) => i.name == columnName);
         return {
-          header: column.displayName,
+          header: this.translocoService.translate(column.key),
           key: column.name,
         };
       });

@@ -59,14 +59,58 @@
         >
         <mat-list-option
           checkboxPosition="before"
-          *ngFor="let column of columns"
-          [value]="column.name"
+          [value]="'taskTypeName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="column.disabled"
-          [selected]="column.isSelected"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('taskTypeName')"
           class="min-w-[350px] max-w-[350px]">
-          {{ column.displayName | transloco }}
+          {{ 'list.election_system_list.labels.task_type' | transloco }}
         </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantName'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantName')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.election_system_list.labels.full_name' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantCpr'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantCpr')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.election_system_list.labels.cpr_number' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantBirthDate'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantBirthDate')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.election_system_list.labels.participant_birthdate' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'votingArea'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('votingArea')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.election_system_list.labels.voting_area' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
+          [value]="'participantUserName'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="displayedColumns.includes('participantUserName')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.election_system_list.labels.participant_user_name' | transloco }}
+        </mat-list-option>        
       </mat-selection-list>
     </mat-expansion-panel>
   </div>

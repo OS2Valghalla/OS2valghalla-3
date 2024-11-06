@@ -72,6 +72,7 @@ export class ParticipantListComponent implements OnInit {
   columns = [
     {
       name: 'participantName',
+      key: 'list.participant_list.labels.full_name',
       displayName: this.translocoService.translate('list.participant_list.labels.full_name'),
       index: 1,
       disabled: true,
@@ -79,81 +80,97 @@ export class ParticipantListComponent implements OnInit {
     },
     {
       name: 'participantCpr',
+      key: 'list.participant_list.labels.cpr_number',
       displayName: this.translocoService.translate('list.participant_list.labels.cpr_number'),
       index: 2,
     },
     {
       name: 'participantAge',
+      key: 'list.participant_list.labels.participant_age',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_age'),
       index: 3,
     },
     {
       name: 'participantPhoneNumber',
+      key: 'list.participant_list.labels.participant_phone',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_phone'),
       index: 4,
     },
     {
       name: 'participantEmail',
+      key: 'list.participant_list.labels.participant_email',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_email'),
       index: 5,
     },
     {
       name: 'participantAddress',
+      key: 'list.participant_list.labels.participant_address',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_address'),
       index: 6,
     },
     {
       name: 'participantSpecialDiets',
+      key: 'list.participant_list.labels.participant_special_diet',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_special_diet'),
       index: 7,
     },
     {
       name: 'participantDigitalPostStatus',
+      key: 'list.participant_list.labels.participant_digital_post_status',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_digital_post_status'),
       index: 8,
     },
     {
       name: 'teamName',
+      key: 'list.participant_list.labels.team_association',
       displayName: this.translocoService.translate('list.participant_list.labels.team_association'),
       index: 9,
     },
     {
       name: 'workLocation',
+      key: 'list.participant_list.labels.work_location',
       displayName: this.translocoService.translate('list.participant_list.labels.work_location'),
       index: 10,
     },
     {
       name: 'taskStatus',
+      key: 'list.participant_list.labels.task_status',
       displayName: this.translocoService.translate('list.participant_list.labels.task_status'),
       index: 11,
     },
     {
       name: 'taskDate',
+      key: 'list.participant_list.labels.task_date',
       displayName: this.translocoService.translate('list.participant_list.labels.task_date'),
       index: 12,
     },
     {
       name: 'taskTypeName',
+      key: 'list.participant_list.labels.task_type',
       displayName: this.translocoService.translate('list.participant_list.labels.task_type'),
       index: 13,
     },
     {
       name: 'areaName',
+      key: 'list.participant_list.labels.task_area',
       displayName: this.translocoService.translate('list.participant_list.labels.task_area'),
       index: 14,
     },
     {
       name: 'taskStartTime',
+      key: 'list.participant_list.labels.task_start_time',
       displayName: this.translocoService.translate('list.participant_list.labels.task_start_time'),
       index: 15,
     },
     {
       name: 'taskPayment',
+      key: 'list.participant_list.labels.task_payment',
       displayName: this.translocoService.translate('list.participant_list.labels.task_payment'),
       index: 16,
     },
     {
       name: 'receipt',
+      key: 'list.participant_list.labels.receipt',
       displayName: this.translocoService.translate('list.participant_list.labels.receipt'),
       index: 17,
     },
@@ -199,7 +216,7 @@ export class ParticipantListComponent implements OnInit {
       worksheet.columns = this.displayedColumns.map((columnName) => {
         const column = this.columns.find((i) => i.name == columnName);
         return {
-          header: column.displayName,
+          header: this.translocoService.translate(column.key),
           key: column.name,
         };
       });
