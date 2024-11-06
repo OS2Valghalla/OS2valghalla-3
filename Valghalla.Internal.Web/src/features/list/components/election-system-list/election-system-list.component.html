@@ -51,7 +51,7 @@
         class="flex flex-wrap">
         <mat-checkbox
           [(ngModel)]="allColumnsSelected"
-          [indeterminate]="displayedColumns.length < columns.length"
+          [indeterminate]="columns.length < columns.length"
           [ngModelOptions]="{ standalone: true }"
           (change)="toggleAllColumns()"
           class="min-w-full pb-2"
@@ -61,8 +61,8 @@
           checkboxPosition="before"
           [value]="'taskTypeName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [selected]="displayedColumns.includes('taskTypeName')"
+          [disabled]="isColumnDisabled('taskTypeName')"
+          [selected]="false"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.election_system_list.labels.task_type' | transloco }}
         </mat-list-option>
@@ -70,8 +70,8 @@
           checkboxPosition="before"
           [value]="'participantName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [selected]="displayedColumns.includes('participantName')"
+          [disabled]="isColumnDisabled('participantName')"
+          [selected]="true"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.election_system_list.labels.full_name' | transloco }}
         </mat-list-option>
@@ -79,8 +79,8 @@
           checkboxPosition="before"
           [value]="'participantCpr'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [selected]="displayedColumns.includes('participantCpr')"
+          [disabled]="isColumnDisabled('participantCpr')"
+          [selected]="false"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.election_system_list.labels.cpr_number' | transloco }}
         </mat-list-option>
@@ -88,8 +88,8 @@
           checkboxPosition="before"
           [value]="'participantBirthDate'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [selected]="displayedColumns.includes('participantBirthDate')"
+          [disabled]="isColumnDisabled('participantBirthDate')"
+          [selected]="false"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.election_system_list.labels.participant_birthdate' | transloco }}
         </mat-list-option>
@@ -97,8 +97,8 @@
           checkboxPosition="before"
           [value]="'votingArea'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [selected]="displayedColumns.includes('votingArea')"
+          [disabled]="isColumnDisabled('votingArea')"
+          [selected]="false"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.election_system_list.labels.voting_area' | transloco }}
         </mat-list-option>
@@ -106,12 +106,12 @@
           checkboxPosition="before"
           [value]="'participantUserName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [selected]="displayedColumns.includes('participantUserName')"
+          [disabled]="isColumnDisabled('participantUserName')"
+          [selected]="false"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.election_system_list.labels.participant_user_name' | transloco }}
         </mat-list-option>        
-      </mat-selection-list>
+            </mat-selection-list>
     </mat-expansion-panel>
   </div>
   <div class="w-full flex gap-4 print:hidden">

@@ -83,96 +83,128 @@ export class ParticipantListComponent implements OnInit {
       key: 'list.participant_list.labels.cpr_number',
       displayName: this.translocoService.translate('list.participant_list.labels.cpr_number'),
       index: 2,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantAge',
       key: 'list.participant_list.labels.participant_age',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_age'),
       index: 3,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantPhoneNumber',
       key: 'list.participant_list.labels.participant_phone',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_phone'),
       index: 4,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantEmail',
       key: 'list.participant_list.labels.participant_email',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_email'),
       index: 5,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantAddress',
       key: 'list.participant_list.labels.participant_address',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_address'),
       index: 6,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantSpecialDiets',
       key: 'list.participant_list.labels.participant_special_diet',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_special_diet'),
       index: 7,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantDigitalPostStatus',
       key: 'list.participant_list.labels.participant_digital_post_status',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_digital_post_status'),
       index: 8,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'teamName',
       key: 'list.participant_list.labels.team_association',
       displayName: this.translocoService.translate('list.participant_list.labels.team_association'),
       index: 9,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'workLocation',
       key: 'list.participant_list.labels.work_location',
       displayName: this.translocoService.translate('list.participant_list.labels.work_location'),
       index: 10,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'taskStatus',
       key: 'list.participant_list.labels.task_status',
       displayName: this.translocoService.translate('list.participant_list.labels.task_status'),
       index: 11,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'taskDate',
       key: 'list.participant_list.labels.task_date',
       displayName: this.translocoService.translate('list.participant_list.labels.task_date'),
       index: 12,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'taskTypeName',
       key: 'list.participant_list.labels.task_type',
       displayName: this.translocoService.translate('list.participant_list.labels.task_type'),
       index: 13,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'areaName',
       key: 'list.participant_list.labels.task_area',
       displayName: this.translocoService.translate('list.participant_list.labels.task_area'),
       index: 14,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'taskStartTime',
       key: 'list.participant_list.labels.task_start_time',
       displayName: this.translocoService.translate('list.participant_list.labels.task_start_time'),
       index: 15,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'taskPayment',
       key: 'list.participant_list.labels.task_payment',
       displayName: this.translocoService.translate('list.participant_list.labels.task_payment'),
       index: 16,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'receipt',
       key: 'list.participant_list.labels.receipt',
       displayName: this.translocoService.translate('list.participant_list.labels.receipt'),
       index: 17,
+      disabled: false,
+      isSelected: false,
     },
   ];
 
@@ -262,7 +294,10 @@ export class ParticipantListComponent implements OnInit {
       }
     });
   }
-
+  isColumnDisabled(columnName: string): boolean {
+    const column = this.columns.find(col => col.name === columnName);
+    return column ? column.disabled : false;
+  }
   changeSelectedColumns() {
     if (this.columnsList.selectedOptions.selected.length == this.columns.length) {
       this.allColumnsSelected = true;

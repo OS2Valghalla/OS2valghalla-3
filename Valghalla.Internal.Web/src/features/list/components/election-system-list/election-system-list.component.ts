@@ -75,6 +75,8 @@ export class ElectionSystemList implements OnInit {
       key: 'list.election_system_list.labels.task_type',
       displayName: this.translocoService.translate('list.election_system_list.labels.task_type'),
       index: 1,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantName',
@@ -89,24 +91,32 @@ export class ElectionSystemList implements OnInit {
       key: 'list.election_system_list.labels.participant_birthdate',
       displayName: this.translocoService.translate('list.election_system_list.labels.participant_birthdate'),
       index: 3,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'votingArea',
       key: 'list.election_system_list.labels.voting_area',
       displayName: this.translocoService.translate('list.election_system_list.labels.voting_area'),
       index: 4,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantUserName',
       key: 'list.election_system_list.labels.participant_user_name',
       displayName: this.translocoService.translate('list.election_system_list.labels.participant_user_name'),
       index: 5,
+      disabled: false,
+      isSelected: false,
     },
     {
       name: 'participantCpr',
       key: 'list.election_system_list.labels.cpr_number',
       displayName: this.translocoService.translate('list.election_system_list.labels.cpr_number'),
       index: 6,
+      disabled: false,
+      isSelected: false,
     },
   ];
 
@@ -199,7 +209,10 @@ export class ElectionSystemList implements OnInit {
       }
     });
   }
-
+  isColumnDisabled(columnName: string): boolean {
+    const column = this.columns.find(col => col.name === columnName);
+    return column ? column.disabled : false;
+  }  
   changeSelectedColumns() {
     if (this.columnsList.selectedOptions.selected.length == this.columns.length) {
       this.allColumnsSelected = true;
@@ -289,3 +302,4 @@ export class ElectionSystemList implements OnInit {
     });
   }
 }
+

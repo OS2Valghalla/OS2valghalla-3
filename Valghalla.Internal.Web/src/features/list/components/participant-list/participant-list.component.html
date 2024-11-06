@@ -93,8 +93,8 @@
           checkboxPosition="before"
           [value]="'participantName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [selected]="displayedColumns.includes('participantName')"
+          [disabled]="true"
+          [selected]="isColumnDisabled('participantName')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.full_name' | transloco }}
         </mat-list-option>
@@ -103,7 +103,7 @@
           [value]="'participantCpr'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('participantCpr')"
+          [selected]="isColumnDisabled('participantCpr')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.cpr_number' | transloco }}
         </mat-list-option>
@@ -112,7 +112,7 @@
           [value]="'participantAge'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('participantAge')"
+          [selected]="isColumnDisabled('participantAge')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.participant_age' | transloco }}
         </mat-list-option>
@@ -121,7 +121,7 @@
           [value]="'participantPhoneNumber'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('participantPhoneNumber')"
+          [selected]="isColumnDisabled('participantPhoneNumber')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.participant_phone' | transloco }}
         </mat-list-option>
@@ -130,7 +130,7 @@
           [value]="'participantEmail'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('participantEmail')"
+          [selected]="isColumnDisabled('participantEmail')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.participant_email' | transloco }}
         </mat-list-option>
@@ -139,7 +139,7 @@
           [value]="'participantAddress'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('participantAddress')"
+          [selected]="isColumnDisabled('participantAddress')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.participant_address' | transloco }}
         </mat-list-option>
@@ -148,7 +148,7 @@
           [value]="'participantSpecialDiets'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('participantSpecialDiets')"
+          [selected]="isColumnDisabled('participantSpecialDiets')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.participant_special_diet' | transloco }}
         </mat-list-option>
@@ -157,7 +157,7 @@
           [value]="'participantDigitalPostStatus'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('participantDigitalPostStatus')"
+          [selected]="isColumnDisabled('participantDigitalPostStatus')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.participant_digital_post_status' | transloco }}
         </mat-list-option>
@@ -166,7 +166,7 @@
           [value]="'teamName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('teamName')"
+          [selected]="isColumnDisabled('teamName')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.team_association' | transloco }}
         </mat-list-option>
@@ -175,7 +175,7 @@
           [value]="'workLocation'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('workLocation')"
+          [selected]="isColumnDisabled('workLocation')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.work_location' | transloco }}
         </mat-list-option>
@@ -184,7 +184,7 @@
           [value]="'taskStatus'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('taskStatus')"
+          [selected]="isColumnDisabled('taskStatus')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.task_status' | transloco }}
         </mat-list-option>
@@ -193,7 +193,7 @@
           [value]="'taskDate'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('taskDate')"
+          [selected]="isColumnDisabled('taskDate')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.task_date' | transloco }}
         </mat-list-option>
@@ -202,7 +202,7 @@
           [value]="'taskTypeName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('taskTypeName')"
+          [selected]="isColumnDisabled('taskTypeName')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.task_type' | transloco }}
         </mat-list-option>
@@ -211,7 +211,7 @@
           [value]="'areaName'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('areaName')"
+          [selected]="isColumnDisabled('areaName')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.task_area' | transloco }}
         </mat-list-option>
@@ -220,7 +220,7 @@
           [value]="'taskStartTime'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('taskStartTime')"
+          [selected]="isColumnDisabled('taskStartTime')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.task_start_time' | transloco }}
         </mat-list-option>
@@ -229,7 +229,7 @@
           [value]="'taskPayment'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('taskPayment')"
+          [selected]="isColumnDisabled('taskPayment')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.task_payment' | transloco }}
         </mat-list-option>
@@ -238,7 +238,7 @@
           [value]="'receipt'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
-          [selected]="displayedColumns.includes('receipt')"
+          [selected]="isColumnDisabled('receipt')"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.receipt' | transloco }}
         </mat-list-option>
