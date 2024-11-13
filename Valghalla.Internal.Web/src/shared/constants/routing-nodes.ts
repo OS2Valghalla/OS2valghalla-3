@@ -12,6 +12,7 @@ export class RoutingNodes {
 
   static List = 'list';
   static ParticipantList = 'participant-list';
+  static ElectionSystemList = 'election_system_list';
   static Administration = 'administration';
   static Tasks = 'tasks';
   static CreateTaskLink = 'create-task-link';

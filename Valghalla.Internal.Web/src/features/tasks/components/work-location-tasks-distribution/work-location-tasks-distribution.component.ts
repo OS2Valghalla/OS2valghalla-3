@@ -107,24 +107,24 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
     }
 
     buildDailyWorkLocationTasks() {
-      var electionDate: Date = new Date(this.workLocationTasksSummary.electionDate);
-      var tasksDate: Date = new Date(this.workLocationTasksSummary.electionStartDate);
+      const electionDate: Date = new Date(this.workLocationTasksSummary.electionDate);
+      const tasksDate: Date = new Date(this.workLocationTasksSummary.electionStartDate);
       while (tasksDate <= new Date(this.workLocationTasksSummary.electionEndDate)) {
-        var clonedTasksDate = new Date(tasksDate);        
+        const clonedTasksDate = new Date(tasksDate);        
         var dailyWorkLocationTasksItem: DailyWorkLocationTasks = {
           tasksDate: clonedTasksDate,
           teams: []
         };
         this.workLocationTasksSummary.teams.forEach((team) => {
-          var taskTypesSummary: TeamTasksSummary = {
+          const taskTypesSummary: TeamTasksSummary = {
             teamId: team.id,
             teamName: team.name,
             taskTypes: []
           };
           this.workLocationTasksSummary.taskTypes.forEach((taskType) => {
-            var foundTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == team.id && t.taskTypeId == taskType.id && new Date(t.tasksDate).valueOf() === tasksDate.valueOf());
+            const foundTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == team.id && t.taskTypeId == taskType.id && new Date(t.tasksDate).valueOf() === tasksDate.valueOf());
 
-            var taskTypeTasksSummary: TaskTypeTasksSummary = {
+            const taskTypeTasksSummary: TaskTypeTasksSummary = {
               taskTypeId: taskType.id,
               assignedTasksCount: foundTasks && foundTasks.length > 0 ? foundTasks[0].assignedTasksCount : 0,
               allTasksCount: foundTasks && foundTasks.length > 0 ? foundTasks[0].allTasksCount : 0,            
@@ -153,10 +153,10 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
     }
 
     getTaskTypeAssignedTasksCount(taskType) {
-      var dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
-      var assignedTasksCount = 0;
+      const dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
+      let assignedTasksCount = 0;
       dailyWorkLocationTask.teams.forEach((team) => {
-        var foundTaskTypes = team.taskTypes.filter(t => t.taskTypeId == taskType.id);
+        const foundTaskTypes = team.taskTypes.filter(t => t.taskTypeId == taskType.id);
         if (foundTaskTypes && foundTaskTypes.length > 0) {
           assignedTasksCount += foundTaskTypes[0].assignedTasksCount;
         }
@@ -165,10 +165,10 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
     }
 
     getTaskTypeAllTasksCount(taskType) {
-      var dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
-      var allTasksCount = 0;
+      const dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
+      let allTasksCount = 0;
       dailyWorkLocationTask.teams.forEach((team) => {
-        var foundTaskTypes = team.taskTypes.filter(t => t.taskTypeId == taskType.id);
+        const foundTaskTypes = team.taskTypes.filter(t => t.taskTypeId == taskType.id);
         if (foundTaskTypes && foundTaskTypes.length > 0) {
           allTasksCount += foundTaskTypes[0].allTasksCount;
         }
@@ -177,8 +177,8 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
     }
 
     getSumAssignedTasksCount() {
-      var dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
-      var assignedTasksCount = 0;
+      const dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
+      let assignedTasksCount = 0;
       dailyWorkLocationTask.teams.forEach((team) => {
         team.taskTypes.forEach((taskType) => {
           assignedTasksCount += taskType.assignedTasksCount;
@@ -188,8 +188,8 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
     }
 
     getSumAllTasksCount() {
-      var dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
-      var allTasksCount = 0;
+      const dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
+      let allTasksCount = 0;
       dailyWorkLocationTask.teams.forEach((team) => {
         team.taskTypes.forEach((taskType) => {
           allTasksCount += taskType.allTasksCount;
@@ -207,11 +207,11 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
         taskTypesSummary.allTasksCount = taskTypesSummary.assignedTasksCount;
       }
 
-      var dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
+      const dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
       
-      var foundWorkLocationTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == teamsSummary.teamId && t.taskTypeId == taskTypesSummary.taskTypeId && (new Date(t.tasksDate)).valueOf() === dailyWorkLocationTask.tasksDate.valueOf());
+      const foundWorkLocationTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == teamsSummary.teamId && t.taskTypeId == taskTypesSummary.taskTypeId && (new Date(t.tasksDate)).valueOf() === dailyWorkLocationTask.tasksDate.valueOf());
       
-      var foundUpdatingTasks = this.updatingTasks.filter(t => t.teamId == teamsSummary.teamId && t.taskTypeId == taskTypesSummary.taskTypeId && (new Date(t.tasksDate)).valueOf() === dailyWorkLocationTask.tasksDate.valueOf());
+      const foundUpdatingTasks = this.updatingTasks.filter(t => t.teamId == teamsSummary.teamId && t.taskTypeId == taskTypesSummary.taskTypeId && (new Date(t.tasksDate)).valueOf() === dailyWorkLocationTask.tasksDate.valueOf());
       if (!foundWorkLocationTasks || foundWorkLocationTasks.length == 0) {
           if (!foundUpdatingTasks || foundUpdatingTasks.length == 0) {
             if (taskTypesSummary.allTasksCount > 0) {
@@ -262,7 +262,7 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
       }
       else {
         this.submitting = true;
-        var request: WorkLocationTasksDistributingRequest = {
+        const request: WorkLocationTasksDistributingRequest = {
           electionId: this.election.id,
           workLocationId: this.itemId,
           distributingTasks: this.updatingTasks

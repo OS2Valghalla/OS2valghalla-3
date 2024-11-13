@@ -1,4 +1,4 @@
-import { Component, ContentChildren, EventEmitter, Input, Output, QueryList, ViewChild } from '@angular/core';
+import { Component, ContentChildren, EventEmitter, Input, Output, QueryList, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { ReplaySubject, finalize } from 'rxjs';
 import { WizardEvent } from 'src/shared/models/ux/wizard';
@@ -13,7 +13,7 @@ import { WizardStepComponent } from './wizard-step.component';
   selector: 'app-wizard',
   templateUrl: './wizard.component.html',
 })
-export class WizardComponent {
+export class WizardComponent implements OnInit, OnDestroy {
   private readonly subs = new SubSink();
   private readonly state = new ReplaySubject<void>();
 

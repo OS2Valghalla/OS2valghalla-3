@@ -1,22 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  CanMatch,
-  Route,
-  Router,
-  RouterStateSnapshot,
-  UrlSegment,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable, catchError, take, throwError } from 'rxjs';
 import { AuthService } from '../../app/auth/auth.service';
 import { TaskHttpService } from '../tasks/services/task-http.service';
 import { RoutingNodes } from 'src/shared/constants/routing-nodes';
 
 @Injectable()
-export class TaskCancellationGuard implements CanActivate, CanActivateChild, CanMatch {
+export class TaskCancellationGuard  {
   constructor(
     private readonly router: Router,
     private readonly authService: AuthService,

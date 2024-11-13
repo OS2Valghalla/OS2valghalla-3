@@ -43,13 +43,13 @@
         <ng-container matColumnDef="total" stickyEnd>
             <mat-header-cell *matHeaderCellDef class="min-w-[100px] font-semibold">{{'shared.common.total' | transloco}}</mat-header-cell>
             <mat-cell *matCellDef="let status" class="min-w-[100px] font-semibold">               
-              <div *ngIf="status.statusName == 'all'">
+              <div *ngIf="status.statusName === 'all'">
                 {{status.sumAssignedTasksCount}}/{{status.sumAllTasksCount}}
               </div>
-              <div *ngIf="status.statusName == 'missing'">
+              <div *ngIf="status.statusName === 'missing'">
                 {{status.sumMissingTasksCount}}
               </div>
-              <div *ngIf="status.statusName == 'awaiting'">
+              <div *ngIf="status.statusName === 'awaiting'">
                 {{status.sumAwaitingTasksCount}}
               </div>                 
             </mat-cell>
@@ -57,13 +57,13 @@
         <ng-container *ngFor="let taskType of areasGeneralInfo.taskTypes" [matColumnDef]="taskType.id">
             <mat-header-cell *matHeaderCellDef class="min-w-[125px]"><span [matTooltip]="taskType.title" matTooltipPosition="above">{{taskType.shortName}}</span></mat-header-cell>
             <mat-cell *matCellDef="let status" class="min-w-[125px]">  
-              <div *ngIf="status.statusName == 'all'">
+              <div *ngIf="status.statusName === 'all'">
                 {{status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].assignedTasksCount}}/{{status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount}}
               </div>
-              <div *ngIf="status.statusName == 'missing'">
+              <div *ngIf="status.statusName === 'missing'">
                 {{status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].missingTasksCount}}
               </div>
-              <div *ngIf="status.statusName == 'awaiting'">
+              <div *ngIf="status.statusName === 'awaiting'">
                 {{status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].awaitingTasksCount}}
               </div>
             </mat-cell>

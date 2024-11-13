@@ -217,7 +217,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
   ) {
     if (selectedTemplate && selectedTemplate.id) {
       formTemplateTypeFieldName.setValue(selectedTemplate.templateType);
-      var found = this.communicationTemplates.filter((t) => t.id == selectedTemplate.id);
+      const found = this.communicationTemplates.filter((t) => t.id == selectedTemplate.id);
       if (found && found.length > 0) {
         formTemplateFieldName.setValue(found[0]);
       }
@@ -281,7 +281,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
   }
 
   createElection(event: WizardEvent) {
-    var electionTaskTypeCommunicationTemplates: Array<CreateElectionTaskTypeCommunicationTemplateRequest> = [];
+    const electionTaskTypeCommunicationTemplates: Array<CreateElectionTaskTypeCommunicationTemplateRequest> = [];
     this.taskTypes.forEach((taskType) => {
       if (this.hasSpecificTemplate(taskType)) {
         electionTaskTypeCommunicationTemplates.push({

@@ -28,6 +28,7 @@ export class AuthService {
   }
 
   login(redirectUrl?: string) {
+    
     storeRedirectUrl(redirectUrl);
     window.location.href = getLoginUrl();
   }

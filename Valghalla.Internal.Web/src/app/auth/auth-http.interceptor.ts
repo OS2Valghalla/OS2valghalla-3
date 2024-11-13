@@ -1,11 +1,5 @@
 import { Injectable, isDevMode } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpEvent,
-  HttpRequest,
-  HttpHandler,
-  HttpErrorResponse,
-} from '@angular/common/http';
+import { HttpInterceptor, HttpEvent, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';

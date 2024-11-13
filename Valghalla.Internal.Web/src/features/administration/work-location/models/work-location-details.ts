@@ -5,6 +5,7 @@ export interface WorkLocationDetails {
     address: string;
     postalCode: string;
     city: string;
+    voteLocation: number;
     hasActiveElection?: boolean;
     taskTypeIds: Array<string>;
     teamIds: Array<string>;

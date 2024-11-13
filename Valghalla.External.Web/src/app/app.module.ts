@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandler, Injectable, NgModule } from '@angular/core';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -40,52 +40,46 @@ export class AppPageTitleStrategy extends TitleStrategy {
   }
 }
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    AppIconCollection,
-    ContactUsComponent,
-    PrivacyPolciyComponent,
-    FilteredTasksComponent,
-    TeamInvitationComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    AuthModule,
-    SharedModule,
-    ReactiveFormsModule,
-    DkfdsModule,
-    TranslocoRootModule,
-    BrowserAnimationsModule,
-    TasksModule,
-  ],
-  providers: [
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandler,
-    },
-    {
-      provide: TitleStrategy,
-      useClass: AppPageTitleStrategy,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AppHttpInterceptor,
-      multi: true,
-    },
-    {
-      provide: TOAST_CONTAINER,
-      useValue: new ReplaySubject(1),
-    },
-    {
-      provide: DATE_PIPE_DEFAULT_OPTIONS,
-      useValue: { dateFormat: dateFormat },
-    },
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        HeaderComponent,
+        FooterComponent,
+        AppIconCollection,
+        ContactUsComponent,
+        PrivacyPolciyComponent,
+        FilteredTasksComponent,
+        TeamInvitationComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        AuthModule,
+        SharedModule,
+        ReactiveFormsModule,
+        DkfdsModule,
+        TranslocoRootModule,
+        BrowserAnimationsModule,
+        TasksModule], providers: [
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandler,
+        },
+        {
+            provide: TitleStrategy,
+            useClass: AppPageTitleStrategy,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AppHttpInterceptor,
+            multi: true,
+        },
+        {
+            provide: TOAST_CONTAINER,
+            useValue: new ReplaySubject(1),
+        },
+        {
+            provide: DATE_PIPE_DEFAULT_OPTIONS,
+            useValue: { dateFormat: dateFormat },
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}

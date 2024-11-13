@@ -35,7 +35,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                 AreaId = command.AreaId,
                 Address = command.Address,
                 PostalCode = command.PostalCode,
-                City = command.City
+                City = command.City,
+                VoteLocation = command.VoteLocation
             };
 
             await workLocations.AddAsync(entity, cancellationToken);
@@ -84,6 +85,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             entity.Address = command.Address;
             entity.PostalCode = command.PostalCode;
             entity.City = command.City;
+            entity.VoteLocation = command.VoteLocation;
 
             workLocations.Update(entity);
             

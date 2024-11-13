@@ -8,7 +8,7 @@ import {
   Input,
   Output,
   ViewChild,
-  forwardRef,
+  forwardRef, OnInit,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -34,7 +34,7 @@ import { Observable, map, startWith } from 'rxjs';
   ],
 })
 export class MultipleSelectionComponent<T extends { alternative?: boolean; [k: string]: any }>
-  implements ControlValueAccessor
+  implements ControlValueAccessor, OnInit
 {
   @Input() label: string;
 

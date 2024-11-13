@@ -29,6 +29,7 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocation
                 Address = request.Address,
                 PostalCode = request.PostalCode,
                 City = request.City,
+                VoteLocation = request.VoteLocation,
                 TaskTypeIds = request.TaskTypeIds,
                 TeamIds = request.TeamIds,
                 ResponsibleIds = request.ResponsibleIds
@@ -49,6 +50,7 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocation
                 Address = request.Address,
                 PostalCode = request.PostalCode,
                 City = request.City,
+                VoteLocation = request.VoteLocation,
                 TaskTypeIds = request.TaskTypeIds,
                 TeamIds = request.TeamIds,
                 ResponsibleIds = request.ResponsibleIds

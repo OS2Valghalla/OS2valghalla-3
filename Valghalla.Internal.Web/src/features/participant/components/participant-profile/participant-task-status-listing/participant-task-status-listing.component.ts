@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { SubSink } from 'subsink';
 import { TranslocoService } from '@ngneat/transloco';
 import { MatPaginator } from '@angular/material/paginator';
@@ -21,7 +21,7 @@ import { ParticipantTask } from '../../../models/participant-task';
   styleUrls: ['./participant-task-status-listing.component.scss'],
   providers: [ElectionHttpService, ParticipantHttpService]
 })
-export class ParticipantTaskStatusListingComponent implements OnDestroy {
+export class ParticipantTaskStatusListingComponent implements OnDestroy, AfterViewInit {
   private readonly subs = new SubSink();
 
   loadingTasks = true;

@@ -35,7 +35,7 @@ export class RichTextInputComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngAfterViewInit(): void {
     if (this.editorComponent) {
-      var contentEditors = this.editorComponent.elementRef.nativeElement.getElementsByClassName('NgxEditor__Content')
+      const contentEditors = this.editorComponent.elementRef.nativeElement.getElementsByClassName('NgxEditor__Content')
       contentEditors[0].addEventListener("paste", function(event) {
         event.preventDefault();
         const plainTextClipboard = event.clipboardData.getData('text/plain');

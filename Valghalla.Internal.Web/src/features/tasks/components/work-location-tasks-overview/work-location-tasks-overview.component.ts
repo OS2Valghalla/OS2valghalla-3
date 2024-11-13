@@ -148,23 +148,23 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
         teams: []
       };
 
-      var tasksDate: Date = new Date(this.workLocationTasksSummary.electionEndDate);
-      var index = 0;
+      const tasksDate: Date = new Date(this.workLocationTasksSummary.electionEndDate);
+      let index = 0;
       while (tasksDate >= new Date(this.workLocationTasksSummary.electionStartDate)) {
-        var clonedTasksDate = new Date(tasksDate);        
+        const clonedTasksDate = new Date(tasksDate);        
         var dailyWorkLocationTasksItem: DailyWorkLocationTasks = {
           tasksDate: clonedTasksDate,
           index: index,
           teams: []
         };
         this.workLocationTasksSummary.teams.forEach((team, teamIndex) => {
-          var taskTypesSummary: TeamTasksSummary = {
+          const taskTypesSummary: TeamTasksSummary = {
             teamId: team.id,
             teamName: team.name,
             taskTypes: []
           };
           if (this.allDatesWorkLocationTasks.teams.length <= teamIndex) {
-            var allDatesTaskTypesSummary: TeamTasksSummary = {
+            const allDatesTaskTypesSummary: TeamTasksSummary = {
               teamId: team.id,
               teamName: team.name,
               taskTypes: []
@@ -172,9 +172,9 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
             this.allDatesWorkLocationTasks.teams.push(allDatesTaskTypesSummary);
           }
           this.workLocationTasksSummary.taskTypes.forEach((taskType, taskTypeIndex) => {
-            var foundTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == team.id && t.taskTypeId == taskType.id && new Date(t.tasksDate).valueOf() === tasksDate.valueOf());
+            const foundTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == team.id && t.taskTypeId == taskType.id && new Date(t.tasksDate).valueOf() === tasksDate.valueOf());
 
-            var taskTypeTasksSummary: TaskTypeTasksSummary = {
+            const taskTypeTasksSummary: TaskTypeTasksSummary = {
               taskTypeId: taskType.id,
               assignedTasksCount: foundTasks && foundTasks.length > 0 ? foundTasks[0].assignedTasksCount : 0,
               awaitingTasksCount: foundTasks && foundTasks.length > 0 ? foundTasks[0].awaitingTasksCount : 0,
@@ -183,7 +183,7 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
             taskTypesSummary.taskTypes.push(taskTypeTasksSummary);
 
             if (this.allDatesWorkLocationTasks.teams[teamIndex].taskTypes.length <= taskTypeIndex) {
-              var allDatesTaskTypeTasksSummary: TaskTypeTasksSummary = {
+              const allDatesTaskTypeTasksSummary: TaskTypeTasksSummary = {
                 taskTypeId: taskType.id,
                 assignedTasksCount: foundTasks && foundTasks.length > 0 ? foundTasks[0].assignedTasksCount : 0,
                 awaitingTasksCount: foundTasks && foundTasks.length > 0 ? foundTasks[0].awaitingTasksCount : 0,
@@ -259,10 +259,10 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
     }
 
     getTaskTypeAssignedTasksCount(taskType) {
-      var dailyWorkLocationTask = this.selectedDateIndex > - 1 ? this.dailyWorkLocationTasks[this.selectedDateIndex] : this.allDatesWorkLocationTasks;
-      var assignedTasksCount = 0;
+      const dailyWorkLocationTask = this.selectedDateIndex > - 1 ? this.dailyWorkLocationTasks[this.selectedDateIndex] : this.allDatesWorkLocationTasks;
+      let assignedTasksCount = 0;
       dailyWorkLocationTask.teams.forEach((team) => {
-        var foundTaskTypes = team.taskTypes.filter(t => t.taskTypeId == taskType.id);
+        const foundTaskTypes = team.taskTypes.filter(t => t.taskTypeId == taskType.id);
         if (foundTaskTypes && foundTaskTypes.length > 0) {
           assignedTasksCount += foundTaskTypes[0].assignedTasksCount;
         }
@@ -271,10 +271,10 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
     }
 
     getTaskTypeAllTasksCount(taskType) {
-      var dailyWorkLocationTask = this.selectedDateIndex > - 1 ? this.dailyWorkLocationTasks[this.selectedDateIndex] : this.allDatesWorkLocationTasks;
-      var allTasksCount = 0;
+      const dailyWorkLocationTask = this.selectedDateIndex > - 1 ? this.dailyWorkLocationTasks[this.selectedDateIndex] : this.allDatesWorkLocationTasks;
+      let allTasksCount = 0;
       dailyWorkLocationTask.teams.forEach((team) => {
-        var foundTaskTypes = team.taskTypes.filter(t => t.taskTypeId == taskType.id);
+        const foundTaskTypes = team.taskTypes.filter(t => t.taskTypeId == taskType.id);
         if (foundTaskTypes && foundTaskTypes.length > 0) {
           allTasksCount += foundTaskTypes[0].allTasksCount;
         }
@@ -283,8 +283,8 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
     }
 
     getSumAssignedTasksCount() {
-      var dailyWorkLocationTask = this.selectedDateIndex > - 1 ? this.dailyWorkLocationTasks[this.selectedDateIndex] : this.allDatesWorkLocationTasks;
-      var assignedTasksCount = 0;
+      const dailyWorkLocationTask = this.selectedDateIndex > - 1 ? this.dailyWorkLocationTasks[this.selectedDateIndex] : this.allDatesWorkLocationTasks;
+      let assignedTasksCount = 0;
       dailyWorkLocationTask.teams.forEach((team) => {
         team.taskTypes.forEach((taskType) => {
           assignedTasksCount += taskType.assignedTasksCount;
@@ -294,8 +294,8 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
     }
 
     getSumAllTasksCount() {
-      var dailyWorkLocationTask = this.selectedDateIndex > - 1 ? this.dailyWorkLocationTasks[this.selectedDateIndex] : this.allDatesWorkLocationTasks;
-      var allTasksCount = 0;
+      const dailyWorkLocationTask = this.selectedDateIndex > - 1 ? this.dailyWorkLocationTasks[this.selectedDateIndex] : this.allDatesWorkLocationTasks;
+      let allTasksCount = 0;
       dailyWorkLocationTask.teams.forEach((team) => {
         team.taskTypes.forEach((taskType) => {
           allTasksCount += taskType.allTasksCount;
@@ -334,7 +334,7 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
     onParticipantSelected() {
       this.assigningTask.isUpdating = true;
 
-      var request: AssignParticipantToTaskRequest = {
+      const request: AssignParticipantToTaskRequest = {
         electionId: this.assigningTask.electionId,
         taskAssignmentId: this.assigningTask.id,
         participantId: this.form.value.selectedParticipantIds[0],
@@ -380,7 +380,7 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
       .subscribe((result) => {
         if (result === true) {
           task.isUpdating = true;
-          var request: RemoveParticipantFromTaskRequest = {
+          const request: RemoveParticipantFromTaskRequest = {
             electionId: task.electionId,
             taskAssignmentId: task.id
           };
