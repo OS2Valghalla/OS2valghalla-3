@@ -34,7 +34,6 @@ export class AuthService {
   }
 
   logout(profileDeleted: boolean) {
-    console.log('login');
     this.httpClient
       .post<string>(getLogoutUrl(), undefined, {
         params: {
