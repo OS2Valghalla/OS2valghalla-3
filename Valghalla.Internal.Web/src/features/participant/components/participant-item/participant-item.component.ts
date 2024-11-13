@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
 import { SubSink } from 'subsink';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +22,7 @@ import { emailValidator } from 'src/shared/validators/email-validator';
   templateUrl: './participant-item.component.html',
   providers: [ParticipantHttpService],
 })
-export class ParticipantItemComponent implements AfterViewInit, OnDestroy {
+export class ParticipantItemComponent implements AfterViewInit, OnDestroy, OnInit {
   private readonly subs = new SubSink();
 
   loading: boolean = true;

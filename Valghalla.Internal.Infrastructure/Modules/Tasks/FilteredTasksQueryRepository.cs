@@ -112,7 +112,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
             List<ParticipantTaskDetailsResponse> result = new List<ParticipantTaskDetailsResponse>();
 
             var queryableObj = taskAssignments
-                .Include(x => x.Participant).ThenInclude(x => x.SpecialDiets)
+                .Include(x => x.Participant).ThenInclude(x => x.SpecialDiets)                
+                .Include(x => x.Participant).ThenInclude(x => x.User)
                 .Include(x => x.WorkLocation).ThenInclude(x => x.Area)
                 .Include(x => x.Team)
                 .Include(x => x.TaskType)

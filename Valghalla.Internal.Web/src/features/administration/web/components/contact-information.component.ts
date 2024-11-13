@@ -48,7 +48,7 @@ export class WebContactInformationComponent implements OnInit, OnDestroy {
         this.subs.sink = this.webPageHttpService.getContactInformation().subscribe({
             next: (res) => {
                 if (res.isSuccess) {
-                    var contactInformation = res.data;
+                    const contactInformation = res.data;
                     this.form.setValue({
                         municipalityName: contactInformation.municipalityName,
                         electionResponsibleApartment: contactInformation.electionResponsibleApartment,

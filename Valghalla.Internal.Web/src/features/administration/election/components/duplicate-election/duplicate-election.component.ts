@@ -170,9 +170,9 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
                 this.setSelectedTemplate(res.data.removedByValidationCommunicationTemplate, this.formCommunicationTemplates.controls.removedByValidation_TemplateType, this.formCommunicationTemplates.controls.removedByValidation_Template);
 
                 this.taskTypes.forEach(taskType => {
-                    var found = res.data.electionTaskTypeCommunicationTemplates.filter(t => t.taskTypeId == taskType.id);
+                    const found = res.data.electionTaskTypeCommunicationTemplates.filter(t => t.taskTypeId == taskType.id);
                     if (found && found.length > 0) {                        
-                        var electionTaskTypeCommunicationTemplate = found[0];
+                        const electionTaskTypeCommunicationTemplate = found[0];
                         this.setTaskTypeSelectedTemplate(taskType, electionTaskTypeCommunicationTemplate.confirmationOfRegistrationCommunicationTemplate, 'confirmationOfRegistration_Template');
                         this.setTaskTypeSelectedTemplate(taskType, electionTaskTypeCommunicationTemplate.confirmationOfCancellationCommunicationTemplate, 'confirmationOfCancellation_Template');
                         this.setTaskTypeSelectedTemplate(taskType, electionTaskTypeCommunicationTemplate.invitationCommunicationTemplate, 'invitation_Template');
@@ -199,7 +199,7 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
   setSelectedTemplate(selectedTemplate: CommunicationTemplateListingItem, formTemplateTypeFieldName: FormControl, formTemplateFieldName: FormControl) {
     if (selectedTemplate && selectedTemplate.id) {
         formTemplateTypeFieldName.setValue(selectedTemplate.templateType);
-        var found = this.communicationTemplates.filter(t => t.id == selectedTemplate.id);
+        const found = this.communicationTemplates.filter(t => t.id == selectedTemplate.id);
         if (found && found.length > 0) {
             formTemplateFieldName.setValue(found[0]);
         }
@@ -208,7 +208,7 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
 
   setTaskTypeSelectedTemplate(taskType: TaskTypeWithTemplates, selectedTemplate: CommunicationTemplateListingItem, taskTypeTemplatePropertyName: string) {
     if (selectedTemplate && selectedTemplate.id) {            
-        var found = this.communicationTemplates.filter(t => t.id == selectedTemplate.id);
+        const found = this.communicationTemplates.filter(t => t.id == selectedTemplate.id);
         if (found && found.length > 0) {
             taskType[taskTypeTemplatePropertyName + 'Type'] = selectedTemplate.templateType;
             taskType[taskTypeTemplatePropertyName] = found[0];
@@ -234,7 +234,7 @@ export class DuplicateElectionComponent implements AfterViewInit, OnDestroy {
   }
 
   duplicateElection(event: WizardEvent) {
-    var electionTaskTypeCommunicationTemplates: Array<DuplicateElectionTaskTypeCommunicationTemplateRequest> = [];
+    const electionTaskTypeCommunicationTemplates: Array<DuplicateElectionTaskTypeCommunicationTemplateRequest> = [];
     this.taskTypes.forEach(taskType => {
       if (this.hasSpecificTemplate(taskType)) {
         electionTaskTypeCommunicationTemplates.push({

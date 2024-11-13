@@ -16,6 +16,7 @@ namespace Valghalla.Internal.Application.Modules.Administration.WorkLocation.Com
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
+        public int VoteLocation { get; set; }
         public List<Guid> TaskTypeIds { get; init; } = new List<Guid>();
         public List<Guid> TeamIds { get; init; } = new List<Guid>();
         public List<Guid> ResponsibleIds { get; init; } = new List<Guid>();

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 import { RoutingNodes } from 'src/shared/constants/routing-nodes';
 
+
 const routes: Routes = [
   {
     path: '_',

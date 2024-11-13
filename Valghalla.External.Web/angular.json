@@ -88,10 +88,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Valghalla.External.Web:build:production"
+              "buildTarget": "Valghalla.External.Web:build:production"
             },
             "development": {
-              "browserTarget": "Valghalla.External.Web:build:development"
+              "buildTarget": "Valghalla.External.Web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -99,7 +99,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Valghalla.External.Web:build"
+            "buildTarget": "Valghalla.External.Web:build"
           }
         },
         "test": {

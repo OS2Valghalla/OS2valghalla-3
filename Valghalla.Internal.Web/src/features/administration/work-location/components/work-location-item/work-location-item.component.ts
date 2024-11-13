@@ -40,6 +40,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
     address: ['', Validators.required],
     postalCode: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
     city: ['', Validators.required],
+    voteLocation: [0],
     taskTypeIds: [],
     teamIds: [],
     responsibleIds: [[] as string[]],
@@ -89,6 +90,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
                   address: res.data.address,
                   postalCode: res.data.postalCode,
                   city: res.data.city,
+                  voteLocation: res.data.voteLocation,
                   taskTypeIds: res.data.taskTypeIds,
                   teamIds: res.data.teamIds,
                   responsibleIds: res.data.responsibleIds
@@ -116,7 +118,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
   }
 
   changeSelectedTaskTypes() {
-    var selectedOptions = [];
+    const selectedOptions = [];
     this.taskTypesList.selectedOptions.selected.forEach((selectedTaskType) => {
       selectedOptions.push(selectedTaskType.value);
     });
@@ -125,7 +127,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
   }
 
   changeSelectedTeams() {
-    var selectedOptions = [];
+    const selectedOptions = [];
     this.teamsList.selectedOptions.selected.forEach((selectedTeam) => {
       selectedOptions.push(selectedTeam.value);
     });
@@ -140,6 +142,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
       address: this.form.value.address,
       postalCode: this.form.value.postalCode,
       city: this.form.value.city,
+      voteLocation: this.form.value.voteLocation,
       taskTypeIds: this.form.value.taskTypeIds ? this.form.value.taskTypeIds : [],
       teamIds: this.form.value.teamIds ? this.form.value.teamIds : [],
       responsibleIds: this.form.value.responsibleIds ? this.form.value.responsibleIds : []
@@ -160,6 +163,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
       address: this.form.value.address,
       postalCode: this.form.value.postalCode,
       city: this.form.value.city,
+      voteLocation: this.form.value.voteLocation,
       taskTypeIds: this.form.value.taskTypeIds ? this.form.value.taskTypeIds : [],
       teamIds: this.form.value.teamIds ? this.form.value.teamIds : [],
       responsibleIds: this.form.value.responsibleIds ? this.form.value.responsibleIds : []

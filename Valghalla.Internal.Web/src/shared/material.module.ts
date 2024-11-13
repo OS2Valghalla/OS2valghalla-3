@@ -90,8 +90,8 @@ class AppDateFormat extends LuxonDateAdapter {
     DragDropModule,
     NgxFileDropModule,
     NgxEditorModule,
-    BreadcrumbModule,
     MatTooltipModule,
+    BreadcrumbModule    
   ],
   exports: [
     FormsModule,
@@ -128,8 +128,8 @@ class AppDateFormat extends LuxonDateAdapter {
     DragDropModule,
     NgxFileDropModule,
     NgxEditorModule,
-    BreadcrumbModule,
     MatTooltipModule,
+    BreadcrumbModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'sv-SE' },
@@ -152,4 +152,4 @@ class AppDateFormat extends LuxonDateAdapter {
     },
   ],
 })
-export class MaterialModule {}
+export class MaterialModule { }

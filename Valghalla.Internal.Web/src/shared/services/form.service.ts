@@ -42,7 +42,7 @@ export class FormService {
   // }
 
   generateFormContainer(formResponse: any): FormContainer {
-    let formContainer = new FormContainer();
+    const formContainer = new FormContainer();
     formContainer.title = formResponse.form.name;
     formContainer.readonly = false;
     formContainer.formGroup = new UntypedFormGroup({});

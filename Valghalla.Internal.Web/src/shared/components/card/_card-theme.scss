@@ -2,19 +2,19 @@
 @use '@angular/material' as mat;
 
 @mixin color($theme) {
-  $color-config: mat.get-color-config($theme);
+  $color-config: mat.m2-get-color-config($theme);
   $primary: map.get($color-config, 'primary');
   $accent: map.get($color-config, 'accent');
 
   .mat-mdc-card {
     &.card_accent_header {
-      border-top: 5px solid mat.get-color-from-palette($accent, 700);
+      border-top: 5px solid mat.m2-get-color-from-palette($accent, 700);
     }
   }
 
   .mat-mdc-card {
     &.card_primary_header {
-      border-top: 5px solid mat.get-color-from-palette($primary, 700);
+      border-top: 5px solid mat.m2-get-color-from-palette($primary, 700);
     }
   }
 }

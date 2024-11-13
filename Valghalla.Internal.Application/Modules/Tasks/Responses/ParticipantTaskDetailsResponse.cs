@@ -10,9 +10,12 @@
         public string? ParticipantAddress { get; set; }
         public string? ParticipantSpecialDiets { get; set; }
         public bool ParticipantDigitalPostStatus { get; set; }
+        public DateTime? ParticipantBirthDate { get; set; }
+        public string? ParticipantUserName { get; set; }
         public string? AreaName { get; set; }
         public string? TeamName { get; set; }
         public string? WorkLocation { get; set; }
+        public string? VotingArea { get; set; }
         public string? TaskTypeName { get; set; }
         public DateTime? TaskDate { get; set; }
         public string? TaskStatus { get; set; }        

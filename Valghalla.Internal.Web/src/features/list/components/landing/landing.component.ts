@@ -13,5 +13,11 @@ export class ListLandingComponent {
         icon: 'list_alt',
         bodyMessage: 'app.navigation.list.participant_list.description',
     },
+    {
+      routerLink: RoutingNodes.ElectionSystemList,
+      title: 'app.navigation.list.election_system_list.title',
+      icon: 'list_alt',
+      bodyMessage: 'app.navigation.list.election_system_list.description',
+  },
   ];
 }

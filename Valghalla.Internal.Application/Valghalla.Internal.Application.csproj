@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Modules\Shared\ElectionBased\**" />
     <Compile Remove="Modules\Start\**" />
@@ -14,15 +12,12 @@
     <None Remove="Modules\Shared\ElectionBased\**" />
     <None Remove="Modules\Start\**" />
   </ItemGroup>
-
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-	  <_Parameter1>Valghalla.Internal.Application.Tests</_Parameter1>
-	</AssemblyAttribute>
+      <_Parameter1>Valghalla.Internal.Application.Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Valghalla.Application\Valghalla.Application.csproj" />
   </ItemGroup>
-
 </Project>

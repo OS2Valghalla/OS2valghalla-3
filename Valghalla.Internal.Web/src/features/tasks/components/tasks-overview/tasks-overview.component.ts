@@ -89,7 +89,7 @@ export class TasksOverviewComponent implements AfterViewInit {
 
         this.subs.sink = this.areaTasksHttpService.getAreasGeneralInfo(this.election.id).subscribe((resAreas) => {
           this.areasGeneralInfo = resAreas.data;
-          var tasksDate: Date = new Date(this.areasGeneralInfo.electionStartDate);
+          const tasksDate: Date = new Date(this.areasGeneralInfo.electionStartDate);
           while (tasksDate <= new Date(this.areasGeneralInfo.electionEndDate)) {
             this.electionDates.push(new Date(tasksDate));
             tasksDate.setDate(tasksDate.getDate() + 1);
@@ -148,7 +148,7 @@ export class TasksOverviewComponent implements AfterViewInit {
     ];
 
     this.areasGeneralInfo.areas.forEach((area) => {
-      var areaTasksSummary: AreaTasksSummary = {
+      const areaTasksSummary: AreaTasksSummary = {
         areaId: area.id,
         workLocations: [],
         displayedColumns: ['workLocation'],
@@ -159,19 +159,19 @@ export class TasksOverviewComponent implements AfterViewInit {
         }
       });
       areaTasksSummary.displayedColumns.push('total');
-      var foundWorkLocations = this.areasGeneralInfo.workLocations.filter((x) => x.areaId == area.id);
+      const foundWorkLocations = this.areasGeneralInfo.workLocations.filter((x) => x.areaId == area.id);
       if (foundWorkLocations && foundWorkLocations.length > 0) {
         foundWorkLocations.forEach((workLocation) => {
-          var workLocationTasksSummary: WorkLocationTasksSummary = {
+          const workLocationTasksSummary: WorkLocationTasksSummary = {
             workLocationId: workLocation.id,
             workLocationName: workLocation.title,
             taskTypes: [],
           };
           this.areasGeneralInfo.taskTypes.forEach((taskType, taskTypeIndex) => {
-            var foundTasks = this.areaTasksSummary.filter(
+            const foundTasks = this.areaTasksSummary.filter(
               (t) => t.workLocationId == workLocation.id && t.taskTypeId == taskType.id,
             );
-            var taskTypeTasksSummary: TaskTypeTasksSummary = {
+            const taskTypeTasksSummary: TaskTypeTasksSummary = {
               taskTypeId: taskType.id,
               assignedTasksCount: foundTasks && foundTasks.length > 0 ? foundTasks[0].assignedTasksCount : 0,
               awaitingTasksCount: foundTasks && foundTasks.length > 0 ? foundTasks[0].awaitingTasksCount : 0,
@@ -235,9 +235,9 @@ export class TasksOverviewComponent implements AfterViewInit {
   }
 
   getTaskTypeAssignedTasksCount(workLocations: Array<WorkLocationTasksSummary>, taskTypeId: string) {
-    var assignedTasksCount = 0;
+    let assignedTasksCount = 0;
     workLocations.forEach((workLocation) => {
-      var foundTaskTypes = workLocation.taskTypes.filter((t) => t.taskTypeId == taskTypeId);
+      const foundTaskTypes = workLocation.taskTypes.filter((t) => t.taskTypeId == taskTypeId);
       if (foundTaskTypes && foundTaskTypes.length > 0) {
         assignedTasksCount += foundTaskTypes[0].assignedTasksCount;
       }
@@ -246,9 +246,9 @@ export class TasksOverviewComponent implements AfterViewInit {
   }
 
   getTaskTypeAllTasksCount(workLocations: Array<WorkLocationTasksSummary>, taskTypeId: string) {
-    var allTasksCount = 0;
+    let allTasksCount = 0;
     workLocations.forEach((workLocation) => {
-      var foundTaskTypes = workLocation.taskTypes.filter((t) => t.taskTypeId == taskTypeId);
+      const foundTaskTypes = workLocation.taskTypes.filter((t) => t.taskTypeId == taskTypeId);
       if (foundTaskTypes && foundTaskTypes.length > 0) {
         allTasksCount += foundTaskTypes[0].allTasksCount;
       }
@@ -257,7 +257,7 @@ export class TasksOverviewComponent implements AfterViewInit {
   }
 
   getSumAssignedTasksCount(workLocations: Array<WorkLocationTasksSummary>) {
-    var assignedTasksCount = 0;
+    let assignedTasksCount = 0;
     workLocations.forEach((workLocation) => {
       workLocation.taskTypes.forEach((taskType) => {
         assignedTasksCount += taskType.assignedTasksCount;
@@ -267,7 +267,7 @@ export class TasksOverviewComponent implements AfterViewInit {
   }
 
   getSumAllTasksCount(workLocations: Array<WorkLocationTasksSummary>) {
-    var allTasksCount = 0;
+    let allTasksCount = 0;
     workLocations.forEach((workLocation) => {
       workLocation.taskTypes.forEach((taskType) => {
         allTasksCount += taskType.allTasksCount;

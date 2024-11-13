@@ -131,7 +131,7 @@ export class CommunicationSendMessageComponent implements AfterViewInit, OnDestr
             this.teams = res.data.teams;
             this.workLocations = res.data.workLocations;
             this.taskTypes = res.data.taskTypes;
-            var tasksDate: Date = new Date(res.data.electionStartDate);
+            const tasksDate: Date = new Date(res.data.electionStartDate);
             while (tasksDate <= new Date(res.data.electionEndDate)) {
                 this.electionDates.push(new Date(tasksDate));
                 tasksDate.setDate(tasksDate.getDate() + 1);
@@ -199,7 +199,7 @@ export class CommunicationSendMessageComponent implements AfterViewInit, OnDestr
     if (!panelOpen && this.selectionChanged) {
       this.loadingParticipants = true;
 
-      var request = {
+      const request = {
         electionId: this.election.id,
         filters: {
             teamIds: this.formRecipients.controls.selectedTeamIds.value ? this.formRecipients.controls.selectedTeamIds.value : [],
@@ -229,7 +229,7 @@ export class CommunicationSendMessageComponent implements AfterViewInit, OnDestr
     if (this.formInfo.value.templateType != CommunicationTemplateTypes.SMS) {
       const httpRequest = this.fileStorage.submit().pipe(
         switchMap((fileRefIds) => {
-          var request = {
+          const request = {
             electionId: this.election.id,
             subject: this.formContent.controls.subject.value,
             content: this.formContent.controls.content.value,
@@ -257,7 +257,7 @@ export class CommunicationSendMessageComponent implements AfterViewInit, OnDestr
       });
     }
     else {
-      var request = {
+      const request = {
         electionId: this.election.id,
         content: this.formInfo.value.templateType == CommunicationTemplateTypes.SMS ? this.formContent.controls.plainTextContent.value : this.formContent.controls.content.value,
         fileReferenceIds: [],
