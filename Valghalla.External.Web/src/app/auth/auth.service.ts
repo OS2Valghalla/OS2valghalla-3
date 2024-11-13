@@ -28,7 +28,6 @@ export class AuthService {
   }
 
   login(redirectUrl?: string) {
-    console.log('login');
     
     storeRedirectUrl(redirectUrl);
     window.location.href = getLoginUrl();
