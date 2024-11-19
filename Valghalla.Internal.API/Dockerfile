@@ -26,7 +26,7 @@ RUN dotnet build "Valghalla.Internal.API.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "Valghalla.Internal.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-FROM node as ng-build
+FROM node:20 as ng-build
 WORKDIR /src
 COPY ["Valghalla.Internal.Web/", "Valghalla.Internal.Web/"]
 WORKDIR /src/Valghalla.Internal.Web
