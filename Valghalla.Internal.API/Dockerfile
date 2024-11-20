@@ -37,6 +37,6 @@ RUN npm run build
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY --from=ng-build /src/Valghalla.Internal.Web/dist/src /app/wwwroot
+COPY --from=ng-build /src/Valghalla.Internal.Web/dist/src/browser /app/wwwroot
 COPY --from=ng-build /src/Valghalla.Internal.Web/Environment /Environment
 ENTRYPOINT ["dotnet", "Valghalla.Internal.API.dll"]
