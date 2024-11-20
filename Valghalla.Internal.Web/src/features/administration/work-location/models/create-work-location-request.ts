@@ -4,7 +4,7 @@ export interface CreateWorkLocationRequest {
     address: string;
     postalCode: string;
     city: string;
-    voteLocation:Number
+    voteLocation: Number;
     taskTypeIds: Array<string>;
     teamIds: Array<string>;
     responsibleIds?: Array<string>;
