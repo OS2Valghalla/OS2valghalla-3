@@ -1,9 +1,13 @@
 using MassTransit;
+
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
+
 using Serilog;
+
 using System.Reflection;
+
 using Valghalla.Application.Auth;
 using Valghalla.Application.Authentication;
 using Valghalla.Application.Queue;
@@ -178,6 +182,8 @@ namespace Valghalla.Internal.API
                                 rollingInterval: Enum.Parse<RollingInterval>(serilogConfig.RollingInterval));
                         });
                 });
+
+                builder.WebHost.UseUrls("http://*:80");
 
                 var app = builder.Build();
 
