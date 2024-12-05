@@ -2,137 +2,42 @@
 <app-card *ngIf="election" cardTitle="app.navigation.list.election_system_list.description">
   <div class="w-full print:hidden" *appShowSkeleton="loading">
     <mat-form-field class="pb-4 pr-4">
-      <mat-select
-        [(ngModel)]="selectedTaskTypeIds"
-        [ngModelOptions]="{ standalone: true }"
-        [placeholder]="'tasks.labels.task_type' | transloco"
-        multiple="true">
+      <mat-select [(ngModel)]="selectedTaskTypeIds" [ngModelOptions]="{ standalone: true }"
+        [placeholder]="'tasks.labels.task_type' | transloco" multiple="true">
         <mat-option *ngFor="let taskType of taskTypes" [value]="taskType.id">
           {{ taskType.title }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="pb-4 pr-4">
-      <mat-select
-        [(ngModel)]="selectedDates"
-        [ngModelOptions]="{ standalone: true }"
-        [placeholder]="'tasks.labels.task_date' | transloco"
-        multiple="true">
+      <mat-select [(ngModel)]="selectedDates" [ngModelOptions]="{ standalone: true }"
+        [placeholder]="'tasks.labels.task_date' | transloco" multiple="true">
         <mat-option *ngFor="let electionDate of electionDates" [value]="electionDate">
           {{ electionDate | date }}
         </mat-option>
       </mat-select>
-    </mat-form-field>    
+    </mat-form-field>
     <mat-form-field class="pb-4 pr-4">
-      <mat-select
-        [(ngModel)]="selectedWorkLocationIds"
-        [ngModelOptions]="{ standalone: true }"
-        [placeholder]="'tasks.labels.work_location' | transloco"
-        multiple="true">
+      <mat-select [(ngModel)]="selectedWorkLocationIds" [ngModelOptions]="{ standalone: true }"
+        [placeholder]="'tasks.labels.work_location' | transloco" multiple="true">
         <mat-option *ngFor="let workLocation of workLocations" [value]="workLocation.id">
           {{ workLocation.title }}
         </mat-option>
       </mat-select>
-    </mat-form-field>  
-  </div>
-  <div class="w-full pb-4 print:hidden">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <strong>{{ 'list.election_system_list.labels.select_columns' | transloco }}</strong>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <mat-selection-list
-        #selectedColumns
-        *ngIf="!loading"
-        [multiple]="true"
-        [disabled]="loading || loadingTasks || exporting"
-        class="flex flex-wrap">
-        <mat-checkbox
-          [(ngModel)]="allColumnsSelected"
-          [indeterminate]="columns.length < columns.length"
-          [ngModelOptions]="{ standalone: true }"
-          (change)="toggleAllColumns()"
-          class="min-w-full pb-2"
-          ><strong>{{ 'shared.common.select_all' | transloco }}</strong></mat-checkbox
-        >
-        <mat-list-option
-          checkboxPosition="before"
-          [value]="'taskTypeName'"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="isColumnDisabled('taskTypeName')"
-          [selected]="false"
-          class="min-w-[350px] max-w-[350px]">
-          {{ 'list.election_system_list.labels.task_type' | transloco }}
-        </mat-list-option>
-        <mat-list-option
-          checkboxPosition="before"
-          [value]="'participantName'"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="isColumnDisabled('participantName')"
-          [selected]="true"
-          class="min-w-[350px] max-w-[350px]">
-          {{ 'list.election_system_list.labels.full_name' | transloco }}
-        </mat-list-option>
-        <mat-list-option
-          checkboxPosition="before"
-          [value]="'participantCpr'"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="isColumnDisabled('participantCpr')"
-          [selected]="false"
-          class="min-w-[350px] max-w-[350px]">
-          {{ 'list.election_system_list.labels.cpr_number' | transloco }}
-        </mat-list-option>
-        <mat-list-option
-          checkboxPosition="before"
-          [value]="'participantBirthDate'"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="isColumnDisabled('participantBirthDate')"
-          [selected]="false"
-          class="min-w-[350px] max-w-[350px]">
-          {{ 'list.election_system_list.labels.participant_birthdate' | transloco }}
-        </mat-list-option>
-        <mat-list-option
-          checkboxPosition="before"
-          [value]="'votingArea'"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="isColumnDisabled('votingArea')"
-          [selected]="false"
-          class="min-w-[350px] max-w-[350px]">
-          {{ 'list.election_system_list.labels.voting_area' | transloco }}
-        </mat-list-option>
-        <mat-list-option
-          checkboxPosition="before"
-          [value]="'participantUserName'"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="isColumnDisabled('participantUserName')"
-          [selected]="false"
-          class="min-w-[350px] max-w-[350px]">
-          {{ 'list.election_system_list.labels.participant_user_name' | transloco }}
-        </mat-list-option>        
-            </mat-selection-list>
-    </mat-expansion-panel>
+    </mat-form-field>
   </div>
   <div class="w-full flex gap-4 print:hidden">
-    <button
-      class="min-h-[48px] max-h-[48px] pr-4"
-      mat-raised-button
-      color="primary"
-      (click)="loadParticipantsTasks()"
+    <button class="min-h-[48px] max-h-[48px] pr-4" mat-raised-button color="primary" (click)="loadParticipantsTasks()"
       [disabled]="loading || loadingTasks || exporting">
       <span *ngIf="!loadingTasks && !exporting">{{ 'list.election_system_list.labels.show_preview' | transloco }}</span>
       <mat-icon *ngIf="loadingTasks || exporting">
         <mat-spinner color="primary" diameter="18"></mat-spinner>
       </mat-icon>
-    </button>    
-    <button
-      class="min-h-[48px] max-h-[48px]"
-      mat-raised-button
-      color="primary"
-      (click)="exportAsExcel(true)"
+    </button>
+    <button class="min-h-[48px] max-h-[48px]" mat-raised-button color="primary" (click)="exportAsExcel(true)"
       [disabled]="loading || loadingTasks || exporting">
-      <span *ngIf="!loadingTasks && !exporting">{{ 'list.election_system_list.labels.export_to_csv' | transloco }}</span>
+      <span *ngIf="!loadingTasks && !exporting">{{ 'list.election_system_list.labels.export_to_csv' | transloco
+        }}</span>
       <mat-icon *ngIf="loadingTasks || exporting">
         <mat-spinner color="primary" diameter="18"></mat-spinner>
       </mat-icon>
@@ -260,7 +165,7 @@
           {{ row.taskDate | date }}
         </td>
       </ng-container>
-      
+
       <ng-container matColumnDef="areaName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ 'list.election_system_list.labels.task_area' | transloco }}
@@ -415,7 +320,7 @@
         <td mat-cell *matCellDef="let row" class="min-w-[125px]">
           {{ row.taskDate | date }}
         </td>
-      </ng-container>      
+      </ng-container>
       <ng-container matColumnDef="areaName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ 'list.election_system_list.labels.task_area' | transloco }}

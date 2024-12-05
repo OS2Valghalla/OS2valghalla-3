@@ -73,14 +73,14 @@ export class ElectionSystemList implements OnInit {
     {
       name: 'taskTypeName',
       key: 'list.election_system_list.labels.task_type',
-      displayName: this.translocoService.translate('list.election_system_list.labels.task_type'),
+      displayName: this.translocoService.translate('list.Rolle.labels.task_type'),
       index: 1,
       disabled: false,
-      isSelected: false,
+      isSelected: true,
     },
     {
       name: 'participantName',
-      key: 'list.election_system_list.labels.full_name', 
+      key: 'list.election_system_list.labels.full_name',
       displayName: this.translocoService.translate('list.election_system_list.labels.full_name'),
       index: 2,
       disabled: true,
@@ -92,7 +92,7 @@ export class ElectionSystemList implements OnInit {
       displayName: this.translocoService.translate('list.election_system_list.labels.participant_birthdate'),
       index: 3,
       disabled: false,
-      isSelected: false,
+      isSelected: true,
     },
     {
       name: 'votingArea',
@@ -100,7 +100,7 @@ export class ElectionSystemList implements OnInit {
       displayName: this.translocoService.translate('list.election_system_list.labels.voting_area'),
       index: 4,
       disabled: false,
-      isSelected: false,
+      isSelected: true,
     },
     {
       name: 'participantUserName',
@@ -108,7 +108,7 @@ export class ElectionSystemList implements OnInit {
       displayName: this.translocoService.translate('list.election_system_list.labels.participant_user_name'),
       index: 5,
       disabled: false,
-      isSelected: false,
+      isSelected: true,
     },
     {
       name: 'participantCpr',
@@ -116,7 +116,7 @@ export class ElectionSystemList implements OnInit {
       displayName: this.translocoService.translate('list.election_system_list.labels.cpr_number'),
       index: 6,
       disabled: false,
-      isSelected: false,
+      isSelected: true,
     },
   ];
 
@@ -143,6 +143,7 @@ export class ElectionSystemList implements OnInit {
           while (tasksDate <= new Date(res.data.electionEndDate)) {
             this.electionDates.push(new Date(tasksDate));
             tasksDate.setDate(tasksDate.getDate() + 1);
+
           }
           this.loading = false;
         });
@@ -157,8 +158,7 @@ export class ElectionSystemList implements OnInit {
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet();
 
-      worksheet.columns = this.displayedColumns.map((columnName) => {
-        const column = this.columns.find((i) => i.name == columnName);
+      worksheet.columns = this.columns.map((column) => {
         return {
           header: this.translocoService.translate(column.key),
           key: column.name,
@@ -166,17 +166,20 @@ export class ElectionSystemList implements OnInit {
       });
 
       const rows = this.dataSource.data.map((item) => {
-        return this.displayedColumns.reduce((obj, columnName) => {
-          let value = item[columnName];
+        return this.columns.reduce((obj, column) => {
+          let value = item[column.name];
 
-          if (columnName == 'taskDate') {
+          if (column.name == 'taskDate') {
             value = DateTime.fromISO(value).toFormat(dateFormat);
           }
-          if (columnName == 'participantBirthDate') {
+          if (column.name == 'participantBirthDate') {
             value = DateTime.fromISO(value).toFormat(dateFormat);
           }
+          if (column.name == 'participantUserName') {
+            value = value ? value.substring(0, 6) : '';
+          }
 
-          return { ...obj, [columnName]: value };
+          return { ...obj, [column.name]: value };
         }, {});
       });
 
@@ -212,7 +215,7 @@ export class ElectionSystemList implements OnInit {
   isColumnDisabled(columnName: string): boolean {
     const column = this.columns.find(col => col.name === columnName);
     return column ? column.disabled : false;
-  }  
+  }
   changeSelectedColumns() {
     if (this.columnsList.selectedOptions.selected.length == this.columns.length) {
       this.allColumnsSelected = true;
@@ -249,9 +252,8 @@ export class ElectionSystemList implements OnInit {
     this.loadingTasks = true;
 
     const selectedOptions = [];
-    this.columnsList.selectedOptions.selected.forEach((selectedColumn) => {
-      selectedOptions.push(selectedColumn.value);
-    });
+
+    selectedOptions.push('taskTypeName', 'participantName', 'participantBirthDate', 'votingArea', 'participantUserName', 'participantCpr');
 
     this.displayedColumns = selectedOptions.sort((a, b) => {
       const foundA = this.columns.filter((f) => f.name == a)[0];
