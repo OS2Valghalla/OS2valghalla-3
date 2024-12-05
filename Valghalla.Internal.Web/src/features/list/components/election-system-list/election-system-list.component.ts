@@ -73,14 +73,14 @@ export class ElectionSystemList implements OnInit {
     {
       name: 'taskTypeName',
       key: 'list.election_system_list.labels.task_type',
-      displayName: this.translocoService.translate('list.election_system_list.labels.task_type'),
+      displayName: this.translocoService.translate('list.Rolle.labels.task_type'),
       index: 1,
       disabled: false,
       isSelected: false,
     },
     {
       name: 'participantName',
-      key: 'list.election_system_list.labels.full_name', 
+      key: 'list.election_system_list.labels.full_name',
       displayName: this.translocoService.translate('list.election_system_list.labels.full_name'),
       index: 2,
       disabled: true,
@@ -143,6 +143,7 @@ export class ElectionSystemList implements OnInit {
           while (tasksDate <= new Date(res.data.electionEndDate)) {
             this.electionDates.push(new Date(tasksDate));
             tasksDate.setDate(tasksDate.getDate() + 1);
+
           }
           this.loading = false;
         });
@@ -175,10 +176,15 @@ export class ElectionSystemList implements OnInit {
           if (columnName == 'participantBirthDate') {
             value = DateTime.fromISO(value).toFormat(dateFormat);
           }
+          if (columnName == 'participantUserName') {
+            value = value ? value.substring(0, 6) : '';
+          }
 
           return { ...obj, [columnName]: value };
         }, {});
       });
+
+
 
       worksheet.addRows(rows);
 
@@ -212,7 +218,7 @@ export class ElectionSystemList implements OnInit {
   isColumnDisabled(columnName: string): boolean {
     const column = this.columns.find(col => col.name === columnName);
     return column ? column.disabled : false;
-  }  
+  }
   changeSelectedColumns() {
     if (this.columnsList.selectedOptions.selected.length == this.columns.length) {
       this.allColumnsSelected = true;
