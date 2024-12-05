@@ -7,7 +7,6 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 
 using System.Reflection;
-
 using Valghalla.Application.Auth;
 using Valghalla.Application.Authentication;
 using Valghalla.Application.Queue;
@@ -183,7 +182,7 @@ namespace Valghalla.Internal.API
                         });
                 });
 
-                builder.WebHost.UseUrls("http://*:80");
+                builder.WebHost.UseUrls("http://*:80"); // Note: This needs to be removed in Dev
 
                 var app = builder.Build();
 

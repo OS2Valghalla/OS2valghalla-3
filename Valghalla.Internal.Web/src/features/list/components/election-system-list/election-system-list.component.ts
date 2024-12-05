@@ -158,8 +158,6 @@ export class ElectionSystemList implements OnInit {
       const workbook = new Workbook();
       const worksheet = workbook.addWorksheet();
 
-      console.log(this.displayedColumns);
-
       worksheet.columns = this.columns.map((column) => {
         return {
           header: this.translocoService.translate(column.key),
@@ -254,10 +252,7 @@ export class ElectionSystemList implements OnInit {
     this.loadingTasks = true;
 
     const selectedOptions = [];
-    // this.columnsList.selectedOptions.selected.forEach((selectedColumn) => {
-    //   console.log(selectedColumn.value);
-    //   selectedOptions.push(selectedColumn.value);
-    // });
+
     selectedOptions.push('taskTypeName', 'participantName', 'participantBirthDate', 'votingArea', 'participantUserName', 'participantCpr');
 
     this.displayedColumns = selectedOptions.sort((a, b) => {
