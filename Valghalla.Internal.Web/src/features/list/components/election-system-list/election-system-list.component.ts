@@ -178,7 +178,11 @@ export class ElectionSystemList implements OnInit {
           if (column.name == 'participantUserName') {
             value = value ? value.substring(0, 6) : '';
           }
-
+          if (column.name == 'participantCpr') {
+            if (value && !value.includes('-')) {
+              value = `${value.substring(0, 6)}-${value.substring(6)}`;
+            }
+          }
           return { ...obj, [column.name]: value };
         }, {});
       });
