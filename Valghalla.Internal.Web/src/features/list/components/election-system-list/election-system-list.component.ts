@@ -179,6 +179,9 @@ export class ElectionSystemList implements OnInit {
             value = value ? value.substring(0, 6) : '';
           }
           if (column.name == 'participantCpr') {
+            if (value && value.replace('-', '').length < 10) {
+              value = '0' + value;
+            }
             if (value && !value.includes('-')) {
               value = `${value.substring(0, 6)}-${value.substring(6)}`;
             }
