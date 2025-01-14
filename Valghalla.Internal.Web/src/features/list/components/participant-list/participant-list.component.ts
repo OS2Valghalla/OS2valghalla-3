@@ -260,6 +260,9 @@ export class ParticipantListComponent implements OnInit {
           if (columnName == 'taskDate') {
             value = DateTime.fromISO(value).toFormat(dateFormat);
           }
+          if (columnName == "participant_user_name") {
+            value = value ? value.substring(0, 6) : value;
+          }
 
           return { ...obj, [columnName]: value };
         }, {});
@@ -268,8 +271,8 @@ export class ParticipantListComponent implements OnInit {
       worksheet.addRows(rows);
 
       if (toCSV) {
-        workbook.csv.writeBuffer().then((data) => {
-          const blob = new Blob([data], { type: 'text/csv' });
+        workbook.csv.writeBuffer({ encoding: 'utf8' }).then((data) => {
+          const blob = new Blob([data], { type: 'text/csv;charset=utf-8;' });
           const url = window.URL.createObjectURL(blob);
           const anchor = document.createElement('a');
           anchor.href = url;
