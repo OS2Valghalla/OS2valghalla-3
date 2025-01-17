@@ -176,10 +176,10 @@ export class ElectionSystemList implements OnInit {
             value = DateTime.fromISO(value).toFormat(dateFormat);
           }
           if (column.name == 'participantUserName') {
-            value = value ? value.substring(0, 6) : '';
+            value = '';
           }
           if (column.name == 'participantCpr' && value) {
-            value = value.replace(/[^0-9]/g, '').padStart(10, '0');
+            value = value.replace(/[^0-9]/g, '').padStart(10, '0').slice(0, -4) + '-' + value.slice(-4);
           }
           return { ...obj, [column.name]: value };
         }, {});
