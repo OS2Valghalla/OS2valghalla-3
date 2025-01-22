@@ -73,7 +73,7 @@ export class ElectionSystemList implements OnInit {
     {
       name: 'taskTypeName',
       key: 'list.election_system_list.labels.task_type',
-      displayName: this.translocoService.translate('list.Rolle.labels.task_type'),
+      displayName: this.translocoService.translate('list.election_system_list.labels.task_type'),
       index: 1,
       disabled: false,
       isSelected: true,
@@ -176,9 +176,11 @@ export class ElectionSystemList implements OnInit {
             value = DateTime.fromISO(value).toFormat(dateFormat);
           }
           if (column.name == 'participantUserName') {
-            value = value ? value.substring(0, 6) : '';
+            value = '';
           }
-
+          if (column.name == 'participantCpr' && value) {
+            value = value.replace(/[^0-9]/g, '').padStart(10, '0').slice(0, -4) + '-' + value.slice(-4);
+          }
           return { ...obj, [column.name]: value };
         }, {});
       });
