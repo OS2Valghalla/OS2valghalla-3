@@ -1,7 +1,7 @@
 <app-card [cardTitle]="'communication.communication_log.communication_log_listing.title' | transloco">
   <app-table
     *appTableCtx="data; let typing"
-    [pageSizeOptions]="[50]"
+    [pageSizeOptions]="[10, 50]"
     defaultSortColumn="createdAt"
     defaultSortDirection="desc"
     [rowNgClass]="getRowNgClass">
