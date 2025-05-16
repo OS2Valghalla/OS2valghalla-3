@@ -1,76 +1,126 @@
-<h3 *ngIf="!election" [innerHtml]="'start.no_election_message' | transloco">  
-</h3>
-<app-card *ngIf="election"
-  [cardTitle]="'tasks.page_title' | transloco">
+<h3 *ngIf="!election" [innerHtml]="'start.no_election_message' | transloco"></h3>
+<app-card *ngIf="election" [cardTitle]="'tasks.page_title' | transloco">
   <div class="w-full" *appShowSkeleton="loadingAreas">
     <mat-form-field class="pb-4 pr-4 w-52">
-      <mat-select [(ngModel)]="selectedDate" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.all_dates' | transloco" (selectionChange)="onFilterChanged()">
-        <mat-option>{{'tasks.labels.all_dates' | transloco}}</mat-option>
+      <mat-select
+        [(ngModel)]="selectedDate"
+        [ngModelOptions]="{ standalone: true }"
+        [placeholder]="'tasks.labels.all_dates' | transloco"
+        (selectionChange)="onFilterChanged()">
+        <mat-option>{{ 'tasks.labels.all_dates' | transloco }}</mat-option>
         <mat-option *ngFor="let electionDate of electionDates" [value]="electionDate">
           {{ electionDate | date }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="pb-4">
-      <mat-select [(ngModel)]="selectedTeamId" [ngModelOptions]="{standalone: true}" [placeholder]="'tasks.labels.all_teams' | transloco" (selectionChange)="onFilterChanged()">
-        <mat-option>{{'tasks.labels.all_teams' | transloco}}</mat-option>
+      <mat-select
+        [(ngModel)]="selectedTeamId"
+        [ngModelOptions]="{ standalone: true }"
+        [placeholder]="'tasks.labels.all_teams' | transloco"
+        (selectionChange)="onFilterChanged()">
+        <mat-option>{{ 'tasks.labels.all_teams' | transloco }}</mat-option>
         <mat-option *ngFor="let team of areasGeneralInfo.teams" [value]="team.id">
           {{ team.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
-  
+  <div class="w-full pb-4 print:hidden">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <strong>{{ 'list.participant_list.labels.select_columns' | transloco }}</strong>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-selection-list
+        [(ngModel)]="selectedColumns"
+        (ngModelChange)="changeSelectedColumns()"
+        #columnsList
+        *ngIf="!loadingTasks"
+        [multiple]="true"
+        [disabled]="loadingTasks || loadingAreas"
+        class="flex flex-wrap">
+        <mat-checkbox
+          [(ngModel)]="allColumnsSelected"
+          [indeterminate]="displayedColumns.length < columns.length"
+          [ngModelOptions]="{ standalone: true }"
+          (change)="toggleAllColumns()"
+          class="min-w-full pb-2"
+          ><strong>{{ 'shared.common.select_all' | transloco }}</strong></mat-checkbox
+        >
+        <mat-list-option
+          *ngFor="let column of displayedColumnsOptions"
+          checkboxPosition="before"
+          [value]="column.id"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [disabled]="isColumnDisabled(column.displayName)"
+          class="min-w-[350px] max-w-[350px]">
+          {{ column.displayName }}
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-expansion-panel>
+  </div>
+
   <div class="w-full flex pb-4 gap-4" *appShowSkeleton="loadingTasks">
     <div class="flex-none w-48">
       <mat-card>
         <mat-card-content class="text-center bg-gray-100">
-          <div class="font-semibold">{{'tasks.labels.status_total' | transloco}}</div>
-          <div class="text-3xl font-extrabold">            
-            {{allAreasData[0].sumAssignedTasksCount}}/{{allAreasData[0].sumAllTasksCount}}
+          <div class="font-semibold">{{ 'tasks.labels.status_total' | transloco }}</div>
+          <div class="text-3xl font-extrabold">
+            {{ allAreasData[0].sumAssignedTasksCount }}/{{ allAreasData[0].sumAllTasksCount }}
           </div>
         </mat-card-content>
-      </mat-card>      
+      </mat-card>
     </div>
     <div class="flex-1 transition-[width] duration-500 overflow-auto">
       <mat-table [dataSource]="allAreasData" *ngIf="!loadingTasks">
         <ng-container matColumnDef="status" sticky>
-            <mat-header-cell *matHeaderCellDef class="min-w-[200px]"></mat-header-cell>
-            <mat-cell *matCellDef="let status" class="min-w-[200px]">
-                {{ 'tasks.labels.status_' + status.statusName | transloco}}
-            </mat-cell>
+          <mat-header-cell *matHeaderCellDef class="min-w-[200px]"></mat-header-cell>
+          <mat-cell *matCellDef="let status" class="min-w-[200px]">
+            {{ 'tasks.labels.status_' + status.statusName | transloco }}
+          </mat-cell>
         </ng-container>
         <ng-container matColumnDef="total" stickyEnd>
-            <mat-header-cell *matHeaderCellDef class="min-w-[100px] font-semibold">{{'shared.common.total' | transloco}}</mat-header-cell>
-            <mat-cell *matCellDef="let status" class="min-w-[100px] font-semibold">               
-              <div *ngIf="status.statusName === 'all'">
-                {{status.sumAssignedTasksCount}}/{{status.sumAllTasksCount}}
-              </div>
-              <div *ngIf="status.statusName === 'missing'">
-                {{status.sumMissingTasksCount}}
-              </div>
-              <div *ngIf="status.statusName === 'awaiting'">
-                {{status.sumAwaitingTasksCount}}
-              </div>                 
-            </mat-cell>
+          <mat-header-cell *matHeaderCellDef class="min-w-[100px] font-semibold">{{
+            'shared.common.total' | transloco
+          }}</mat-header-cell>
+          <mat-cell *matCellDef="let status" class="min-w-[100px] font-semibold">
+            <div *ngIf="status.statusName === 'all'">
+              {{ status.sumAssignedTasksCount }}/{{ status.sumAllTasksCount }}
+            </div>
+            <div *ngIf="status.statusName === 'missing'">
+              {{ status.sumMissingTasksCount }}
+            </div>
+            <div *ngIf="status.statusName === 'awaiting'">
+              {{ status.sumAwaitingTasksCount }}
+            </div>
+          </mat-cell>
         </ng-container>
         <ng-container *ngFor="let taskType of areasGeneralInfo.taskTypes" [matColumnDef]="taskType.id">
-            <mat-header-cell *matHeaderCellDef class="min-w-[125px]"><span [matTooltip]="taskType.title" matTooltipPosition="above">{{taskType.shortName}}</span></mat-header-cell>
-            <mat-cell *matCellDef="let status" class="min-w-[125px]">  
-              <div *ngIf="status.statusName === 'all'">
-                {{status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].assignedTasksCount}}/{{status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount}}
-              </div>
-              <div *ngIf="status.statusName === 'missing'">
-                {{status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].missingTasksCount}}
-              </div>
-              <div *ngIf="status.statusName === 'awaiting'">
-                {{status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].awaitingTasksCount}}
-              </div>
-            </mat-cell>
+          <mat-header-cell *matHeaderCellDef class="min-w-[125px]"
+            ><span [matTooltip]="taskType.title" matTooltipPosition="above">{{
+              taskType.shortName
+            }}</span></mat-header-cell
+          >
+          <mat-cell *matCellDef="let status" class="min-w-[125px]">
+            <div *ngIf="status.statusName === 'all'">
+              {{ status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].assignedTasksCount }}/{{
+                status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount
+              }}
+            </div>
+            <div *ngIf="status.statusName === 'missing'">
+              {{ status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].missingTasksCount }}
+            </div>
+            <div *ngIf="status.statusName === 'awaiting'">
+              {{ status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].awaitingTasksCount }}
+            </div>
+          </mat-cell>
         </ng-container>
-        
+
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
     </div>
   </div>
@@ -79,52 +129,84 @@
       <mat-expansion-panel *ngFor="let area of areasGeneralInfo.areas; let areaIndex = index" expanded>
         <mat-expansion-panel-header class="bg-gray-100">
           <mat-panel-title>
-            <div class="font-semibold pr-12">{{area.name}}</div>
+            <div class="font-semibold pr-12">{{ area.name }}</div>
             <div>
               <span class="pr-8" *ngIf="!loadingTasks">
-                {{'tasks.labels.status' | transloco}} {{getSumAssignedTasksCount(data[areaIndex].workLocations)}}/{{getSumAllTasksCount(data[areaIndex].workLocations)}}
+                {{ 'tasks.labels.status' | transloco }}
+                {{ getSumAssignedTasksCount(data[areaIndex].workLocations) }}/{{
+                  getSumAllTasksCount(data[areaIndex].workLocations)
+                }}
               </span>
             </div>
           </mat-panel-title>
-        </mat-expansion-panel-header>        
-        <div class="pt-4 w-full transition-[width] duration-500 overflow-auto max-h-[500px]" *appShowSkeleton="loadingTasks">
+        </mat-expansion-panel-header>
+        <div
+          class="pt-4 w-full transition-[width] duration-500 overflow-auto max-h-[500px]"
+          *appShowSkeleton="loadingTasks">
           <mat-table [dataSource]="data[areaIndex].workLocations" *ngIf="!loadingTasks">
             <ng-container matColumnDef="workLocation" sticky>
-                <mat-header-cell *matHeaderCellDef class="min-w-[200px]">{{'tasks.labels.work_location' | transloco}}</mat-header-cell>
-                <mat-cell *matCellDef="let workLocation" class="min-w-[200px]">
-                  <a [routerLink]="workLocationLink + workLocation.workLocationId">
-                    {{workLocation.workLocationName}}
-                  </a>
-                </mat-cell>
-                <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[200px] font-semibold">{{'shared.common.total' | transloco}}</mat-cell>
+              <mat-header-cell *matHeaderCellDef class="min-w-[200px]">{{
+                'tasks.labels.work_location' | transloco
+              }}</mat-header-cell>
+              <mat-cell *matCellDef="let workLocation" class="min-w-[200px]">
+                <a [routerLink]="workLocationLink + workLocation.workLocationId">
+                  {{ workLocation.workLocationName }}
+                </a>
+              </mat-cell>
+              <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[200px] font-semibold">{{
+                'shared.common.total' | transloco
+              }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="total" stickyEnd>
-                <mat-header-cell *matHeaderCellDef class="min-w-[100px] font-semibold">{{'shared.common.total' | transloco}}</mat-header-cell>
-                <mat-cell *matCellDef="let workLocation" class="min-w-[100px] font-semibold">
-                  {{getWorkLocationAssignedTasksCount(workLocation)}}/{{getWorkLocationAllTasksCount(workLocation)}}                    
-                </mat-cell>
-                <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[100px] font-semibold">
-                  <span>
-                    {{getSumAssignedTasksCount(data[areaIndex].workLocations)}}/{{getSumAllTasksCount(data[areaIndex].workLocations)}}
-                  </span>
-                </mat-cell>
+              <mat-header-cell *matHeaderCellDef class="min-w-[100px] font-semibold">{{
+                'shared.common.total' | transloco
+              }}</mat-header-cell>
+              <mat-cell *matCellDef="let workLocation" class="min-w-[100px] font-semibold">
+                {{ getWorkLocationAssignedTasksCount(workLocation) }}/{{ getWorkLocationAllTasksCount(workLocation) }}
+              </mat-cell>
+              <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[100px] font-semibold">
+                <span>
+                  {{ getSumAssignedTasksCount(data[areaIndex].workLocations) }}/{{
+                    getSumAllTasksCount(data[areaIndex].workLocations)
+                  }}
+                </span>
+              </mat-cell>
             </ng-container>
             <ng-container *ngFor="let taskType of areasGeneralInfo.taskTypes" [matColumnDef]="taskType.id">
-                <mat-header-cell *matHeaderCellDef class="min-w-[125px]"><span [matTooltip]="taskType.title" matTooltipPosition="above">{{taskType.shortName}}</span></mat-header-cell>
-                <mat-cell *matCellDef="let workLocation" class="min-w-[125px]">  
-                  <span class="p-2" [ngClass]="workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount > 0 ? (workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].assignedTasksCount == workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount ? 'allAcceptedTasks' : (workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].awaitingTasksCount > 0 ? 'awaitingAcceptedTasks' : '')) : ''">
-                    {{workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].assignedTasksCount}}/{{workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount}}
-                  </span>
-                </mat-cell>
-                <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[125px] font-semibold">
-                  <span class="p-2">
-                    {{getTaskTypeAssignedTasksCount(data[areaIndex].workLocations, taskType.id)}}/{{getTaskTypeAllTasksCount(data[areaIndex].workLocations, taskType.id)}}
-                  </span>
-                </mat-cell>
+              <mat-header-cell *matHeaderCellDef class="min-w-[125px]"
+                ><span [matTooltip]="taskType.title" matTooltipPosition="above">{{
+                  taskType.shortName
+                }}</span></mat-header-cell
+              >
+              <mat-cell *matCellDef="let workLocation" class="min-w-[125px]">
+                <span
+                  class="p-2"
+                  [ngClass]="
+                    workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount > 0
+                      ? workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].assignedTasksCount ==
+                        workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount
+                        ? 'allAcceptedTasks'
+                        : workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].awaitingTasksCount > 0
+                          ? 'awaitingAcceptedTasks'
+                          : ''
+                      : ''
+                  ">
+                  {{ workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].assignedTasksCount }}/{{
+                    workLocation.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].allTasksCount
+                  }}
+                </span>
+              </mat-cell>
+              <mat-cell mat-footer-cell *matFooterCellDef class="min-w-[125px] font-semibold">
+                <span class="p-2">
+                  {{ getTaskTypeAssignedTasksCount(data[areaIndex].workLocations, taskType.id) }}/{{
+                    getTaskTypeAllTasksCount(data[areaIndex].workLocations, taskType.id)
+                  }}
+                </span>
+              </mat-cell>
             </ng-container>
-            
+
             <mat-header-row *matHeaderRowDef="data[areaIndex].displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: data[areaIndex].displayedColumns;"></mat-row>
+            <mat-row *matRowDef="let row; columns: data[areaIndex].displayedColumns"></mat-row>
             <mat-footer-row *matFooterRowDef="data[areaIndex].displayedColumns; sticky: true"></mat-footer-row>
           </mat-table>
         </div>
