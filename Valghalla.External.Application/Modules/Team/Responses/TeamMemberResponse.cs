@@ -6,5 +6,6 @@
         public string Name { get; init; } = null!;
         public int AssignedTasksCount { get; set; }
         public bool CanBeRemoved { get; set; }
+        public string WorkLocations { get; set; }
     }
 }

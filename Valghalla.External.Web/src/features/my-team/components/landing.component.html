@@ -71,6 +71,7 @@
             <tr>
               <th scope="col">{{ 'my_team.labels.name' | transloco }}</th>
               <th scope="col">{{ 'my_team.labels.number_of_tasks' | transloco }}</th>
+              <th scope="col">{{ 'my_team.labels.work_locations' | transloco }}</th>
               <th scope="col" class="d-print-none align-text-md-right">
                 {{ 'my_team.labels.remove_member' | transloco }}
               </th>
@@ -87,6 +88,9 @@
               <td>
                 {{ member.assignedTasksCount }}
                 {{ (member.assignedTasksCount > 1 ? 'my_team.labels.tasks' : 'my_team.labels.task') | transloco }}
+              </td>
+              <td>               
+                {{ member.workLocations }}
               </td>
               <td class="d-print-none align-text-md-right">
                 <a
