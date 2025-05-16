@@ -48,7 +48,7 @@
       </span>
     </div>
     <div class="col">
-      <span>{{ model.taskType.payment }}</span>
+      {{ model.taskType.payment ? (model.taskType.payment + ' kr') : '–' }}
     </div>
   </div>
 </div>
