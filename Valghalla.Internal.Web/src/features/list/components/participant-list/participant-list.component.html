@@ -145,6 +145,15 @@
         </mat-list-option>
         <mat-list-option
           checkboxPosition="before"
+          [value]="'participantProtectedAddress'"
+          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="false"
+          [selected]="isColumnDisabled('participantProtectedAddress')"
+          class="min-w-[350px] max-w-[350px]">
+          {{ 'list.participant_list.labels.participant_protected_address' | transloco }}
+        </mat-list-option>
+        <mat-list-option
+          checkboxPosition="before"
           [value]="'participantSpecialDiets'"
           (click)="$event.stopPropagation(); changeSelectedColumns()"
           [disabled]="false"
@@ -330,6 +339,14 @@
           {{ row.participantAddress }}
         </td>
       </ng-container>
+<ng-container matColumnDef="participantProtectedAddress">
+        <th mat-header-cell *matHeaderCellDef class="min-w-[175px]">
+          {{ 'list.participant_list.labels.participant_protected_address' | transloco }}
+        </th>
+        <td mat-cell *matCellDef="let row" class="min-w-[175px]">
+          <span>{{ row.participantProtectedAddress ?  ('shared.common.yes' | transloco) : ('shared.common.no' | transloco) }}</span>  
+        </td>
+      </ng-container>
       <ng-container matColumnDef="participantSpecialDiets">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           {{ 'list.participant_list.labels.participant_special_diet' | transloco }}
@@ -466,7 +483,15 @@
           {{ 'list.participant_list.labels.participant_address' | transloco }}
         </th>
         <td mat-cell *matCellDef="let row" class="min-w-[175px]">
-          {{ row.participantAddress }}
+          <span>{{ row.participantAddress }}</span>  
+        </td>
+      </ng-container>
+    <ng-container matColumnDef="participantProtectedAddress">
+        <th mat-header-cell *matHeaderCellDef class="min-w-[175px]">
+          {{ 'list.participant_list.labels.participant_protected_address' | transloco }}
+        </th>
+        <td mat-cell *matCellDef="let row" class="min-w-[175px]">
+          <span>{{ row.participantProtectedAddress ?  ('shared.common.yes' | transloco) : ('shared.common.no' | transloco) }}{{ row.participantProtectedAddress }}</span>  
         </td>
       </ng-container>
       <ng-container matColumnDef="participantSpecialDiets">

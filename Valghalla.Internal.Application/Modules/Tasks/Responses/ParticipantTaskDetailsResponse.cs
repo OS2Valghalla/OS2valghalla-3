@@ -8,6 +8,7 @@
         public string? ParticipantPhoneNumber { get; set; }
         public string? ParticipantEmail { get; set; }
         public string? ParticipantAddress { get; set; }
+        public bool ParticipantProtectedAddress { get; set; }
         public string? ParticipantSpecialDiets { get; set; }
         public bool ParticipantDigitalPostStatus { get; set; }
         public DateTime? ParticipantBirthDate { get; set; }

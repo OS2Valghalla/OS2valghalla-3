@@ -49,7 +49,7 @@ namespace Valghalla.Worker.Infrastructure.Modules.Participant.Repositories
                 entity.Deceased = record.Deceased;
                 entity.Disenfranchised = record.Disenfranchised;
                 entity.ExemptDigitalPost = record.ExemptDigitalPost;
-
+                entity.ProtectedAddress = record.ProtectedAddress;
                 entity.LastValidationDate = DateTime.UtcNow;
             }
 

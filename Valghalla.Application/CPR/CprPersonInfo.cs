@@ -33,7 +33,8 @@
                 Birthdate = this.Birthdate,
                 Deceased = this.Deceased,
                 Disenfranchised = this.Disenfranchised,
-                ExemptDigitalPost = this.ExemptDigitalPost
+                ExemptDigitalPost = this.ExemptDigitalPost,
+                ProtectedAddress = this.Address.ProtectedAddress
             };
         }
     }
@@ -43,6 +44,7 @@
         public string Street { get; init; } = string.Empty;
         public string? City { get; init; } = string.Empty;
         public string PostalCode { get; init; } = string.Empty;
+        public bool ProtectedAddress { get; set; } = false;
     }
 
     public sealed record CprMunicipalityInfo

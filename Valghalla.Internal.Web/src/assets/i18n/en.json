@@ -286,6 +286,7 @@
         "participant_phone": "Participant phone number",
         "participant_email": "Participant e-mail address",
         "participant_address": "Participant address",
+        "participant_protected_address": "Protected address",
         "participant_special_diet": "Participant special diet",
         "team_association": "Team association",
         "task_status": "Task status",
@@ -1050,6 +1051,7 @@
       "get_participant_personal_record": "Error fetching participant personal record",
       "cpr_invalid": "CPR should be 10 characters only (numbers)",
       "cvr_invalid": "CVR is invalid. CVR should be 8 characters only (numbers)",
+      "participant_is_deceased": "Participant is deceased",
       "participant_has_associated_tasks": "Participant cannot be removed from team, because he/she is assigned to a task in that team",
       "create_participant_event_log": "Error occurred when creating event log",
       "update_participant_event_log": "Error occurred when updating event log",
@@ -1117,7 +1119,8 @@
       "email": "Email",
       "team": "Team",
       "special_diet": "Special diet",
-      "digital_post": "Digital post"
+      "digital_post": "Digital post",
+      "protected_address": "Protected address"
     },
     "participant_validation_information": {
       "title": "Validation information",
@@ -1126,7 +1129,8 @@
       "citizenship": "Citizenship",
       "legal_adult": "Legal adult",
       "alive": "Alive",
-      "date_of_last_validation": "Date of last validation"
+      "date_of_last_validation": "Date of last validation",
+      "address_is_protected": "Address is protected"
     },
     "team_responsible": {
       "title": "Team responsibles"

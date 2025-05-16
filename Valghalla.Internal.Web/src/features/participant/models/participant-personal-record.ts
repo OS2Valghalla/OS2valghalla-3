@@ -14,5 +14,6 @@ export interface ParticipantPersonalRecord {
   deceased: boolean;
   disenfranchised: boolean;
   exemptDigitalPost: boolean;
+  protectedAddress: boolean;
   lastValidationDate?: Date;
 }

@@ -60,6 +60,7 @@ namespace Valghalla.Internal.Infrastructure.Automapper
                 .ForMember(f => f.ParticipantPhoneNumber, opt => opt.MapFrom(src => src.Participant!.MobileNumber))
                 .ForMember(f => f.ParticipantEmail, opt => opt.MapFrom(src => src.Participant!.Email))
                 .ForMember(f => f.ParticipantAddress, opt => opt.MapFrom(src => string.Join(", ", (new List<string>() { src.Participant!.CoAddress, src.Participant!.StreetAddress, src.Participant!.PostalCode, src.Participant!.City }).Where(s => !string.IsNullOrEmpty(s)))))
+                .ForMember(f => f.ParticipantProtectedAddress,opt => opt.MapFrom(src => src.Participant!.ProtectedAddress))
                 .ForMember(f => f.ParticipantSpecialDiets, opt => opt.MapFrom(src => string.Join(", ", src.Participant!.SpecialDiets!.Select(x => x.Title!))))
                 .ForMember(f => f.ParticipantBirthDate, opt => opt.MapFrom(src => src.Participant!.Birthdate))
                 .ForMember(f => f.ParticipantUserName, opt => opt.MapFrom(src => src.Participant!.User!.Name))

@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Text;
+
+using Microsoft.Extensions.Options;
+
 using SF1520;
-using System.Text;
+
 using Valghalla.Application.Configuration;
 using Valghalla.Application.CPR;
 using Valghalla.Application.Exceptions;
@@ -93,14 +96,17 @@ namespace Valghalla.Integration.CPR
             string? city = null;
             string? municipalityName = null;
             string? municipalityCode = null;
+            bool protectedAddress = false;
 
             if (response.PersonLookupResponse1.adresse?.aktuelAdresse?.standardadresse != null)
             {
+                protectedAddress = response.PersonLookupResponse1.persondata.adressebeskyttelse?.beskyttet ?? false;
+
                 street = response.PersonLookupResponse1.adresse.aktuelAdresse.standardadresse;
                 postalCode = response.PersonLookupResponse1.adresse.aktuelAdresse.postnummer;
                 city = response.PersonLookupResponse1.adresse.aktuelAdresse.postdistrikt;
 
-                var komkod = response.PersonLookupResponse1.adresse.aktuelAdresse.kommunekode.PadLeft(4, '0'); 
+                var komkod = response.PersonLookupResponse1.adresse.aktuelAdresse.kommunekode.PadLeft(4, '0');
 
                 municipalityCode = komkod;
                 municipalityName = komkodDict.ContainsKey(komkod) ? komkodDict[komkod] : null;
@@ -178,6 +184,7 @@ namespace Valghalla.Integration.CPR
                     Street = street,
                     City = city,
                     PostalCode = postalCode,
+                    ProtectedAddress = protectedAddress
                 },
                 Country = new()
                 {

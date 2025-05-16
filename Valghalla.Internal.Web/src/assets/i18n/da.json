@@ -286,6 +286,7 @@
         "participant_phone": "Mobilnummer",
         "participant_email": "E-mail adresse",
         "participant_address": "Adresse",
+        "participant_protected_address": "Adressebeskyttelse",
         "participant_special_diet": "Specialkost",
         "team_association": "Team",
         "task_status": "Opgavestatus",
@@ -1050,6 +1051,7 @@
       "get_participant_personal_record": "Fejl ved hentning af deltagerens personlige oplysninger",
       "cpr_invalid": "CPR-nummer skal bestå af 10 tegn uden bindestreg",
       "cvr_invalid": "CVR-nummer er ugyldigt. CVR-nummer skal være 8 tegn (kun tal)",
+      "participant_is_deceased": "Denne person er afgået ved døden.",
       "participant_has_associated_tasks": "Deltager kan ikke fjernes fra teamet, fordi han/hun er tilføjet en opgave i det team",
       "create_participant_event_log": "Fejl opstod ved oprettelse af kommentar",
       "update_participant_event_log": "Fejl opstod ved opdatering af kommentar",
@@ -1117,7 +1119,8 @@
       "email": "E-mail",
       "team": "Team",
       "special_diet": "Specialkost",
-      "digital_post": "Digital Post"
+      "digital_post": "Digital Post",
+      "protected_address": "Adressebeskyttelse"
     },
     "participant_validation_information": {
       "title": "Valideringsoplysninger",
@@ -1126,7 +1129,8 @@
       "citizenship": "Statsborgerskab",
       "legal_adult": "Myndig",
       "alive": "Levende",
-      "date_of_last_validation": "Dato for sidste validering"
+      "date_of_last_validation": "Dato for sidste validering",
+      "address_is_protected": "Adressen er beskyttet"
     },
     "team_responsible": {
       "title": "Teamansvarlig"

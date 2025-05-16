@@ -26,6 +26,7 @@ public partial class ParticipantEntity : IChangeTrackingEntity
     public bool Deceased { get; set; }
     public bool Disenfranchised { get; set; }
     public bool ExemptDigitalPost { get; set; }
+    public bool ProtectedAddress { get; set; }
     public DateTime? LastValidationDate { get; set; }
 
     public DateTime CreatedAt { get; set; }
