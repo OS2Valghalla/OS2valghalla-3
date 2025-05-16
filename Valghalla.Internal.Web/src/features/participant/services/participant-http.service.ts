@@ -21,7 +21,7 @@ export class ParticipantHttpService {
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 
   getParticipantDetails(id: string): Observable<Response<ParticipantDetails>> {
     return this.httpClient
@@ -41,6 +41,7 @@ export class ParticipantHttpService {
   }
 
   getParticipantPersonalRecord(cpr: string): Observable<Response<ParticipantPersonalRecord>> {
+
     return this.httpClient
       .get<Response<ParticipantPersonalRecord>>(this.baseUrl + 'getparticipantpersonalrecord', {
         params: {
@@ -48,6 +49,16 @@ export class ParticipantHttpService {
         },
       })
       .pipe(
+        tap((res) => {
+          if (res.isSuccess && res.data.deceased) {
+            const msg = this.translocoService.translate('participant.error.participant_is_deceased');
+            this.notificationService.showError(msg);
+
+            return throwError(() => msg);
+          } else {
+            return res;
+          }
+        }),
         catchError((err) => {
           const msg = this.translocoService.translate('participant.error.get_participant_personal_record');
           this.notificationService.showError(msg);
