@@ -15,38 +15,38 @@ import { GlobalStateService } from 'src/app/global-state.service';
   styleUrls: ['./landing.component.scss'],
   providers: [AppWeekdayNamePipe, AppMonthNamePipe, TaskHttpService],
 })
-export class MyTasksLandingComponent implements AfterViewInit{
+export class MyTasksLandingComponent implements AfterViewInit {
   private readonly subs = new SubSink();
 
   loading = true;
 
   tasks: Array<TaskDetails> = [];
-  
+
   constructor(
     private readonly globalStateService: GlobalStateService,
     private readonly appWeekdayNamePipe: AppWeekdayNamePipe,
     private readonly appMonthNamePipe: AppMonthNamePipe,
     private readonly translocoService: TranslocoService,
     private readonly taskHttpService: TaskHttpService,
-  ) {}
+  ) { }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     this.subs.sink = this.taskHttpService
-    .getMyTasks()
-    .pipe(
-      finalize(() => {
-        this.loading = false;
-      }),
-    )
-    .subscribe((res) => {
-      if (res.isSuccess) {
-        this.tasks = res.data;
-      }
-    });
+      .getMyTasks()
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        }),
+      )
+      .subscribe((res) => {
+        if (res.isSuccess) {
+          this.tasks = res.data;
+        }
+      });
   }
 
-  unregisterTask(taskAssignmentId) {
-    this.taskHttpService.unregisterTask(taskAssignmentId).subscribe((res) => {
+  unregisterTask(taskAssignmentId, hashValue) {
+    this.taskHttpService.unregisterTask(taskAssignmentId, hashValue).subscribe((res) => {
       if (res.isSuccess && res.data.succeed) {
         var deletedTask = this.tasks.filter(f => f.taskAssignmentId == taskAssignmentId)[0];
         this.tasks.splice(this.tasks.indexOf(deletedTask), 1);
@@ -54,7 +54,7 @@ export class MyTasksLandingComponent implements AfterViewInit{
         this.globalStateService.userTeamFetching.next();
       }
     });
-  } 
+  }
 
   getTaskDateFriendlyText(taskDate) {
     var date = new Date(taskDate);
@@ -63,5 +63,13 @@ export class MyTasksLandingComponent implements AfterViewInit{
 
   getFileDownloadLink(file: FileReference) {
     return this.taskHttpService.getDownloadFileLink(file.id);
+  }
+
+  acceptTask(hashValue,) {
+    this.taskHttpService.acceptTask(hashValue, '',true, false).subscribe((res) => {
+      if (res.isSuccess && res.data.succeed) {
+        this.globalStateService.userTeamFetching.next();
+      }
+    });
   }
 }

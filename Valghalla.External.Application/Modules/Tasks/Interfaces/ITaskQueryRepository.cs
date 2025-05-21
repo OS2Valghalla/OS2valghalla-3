@@ -13,7 +13,8 @@ namespace Valghalla.External.Application.Modules.Tasks.Interfaces
         Task<IList<TaskDetailsResponse>> GetMyTasksAsync(Guid participantId, CancellationToken cancellationToken);
         Task<TeamResponsibleTasksFiltersOptionsResponse> GetTeamResponsibleTasksFiltersOptionsAsync(Guid teamResponsibleId, CancellationToken cancellationToken);
         Task<TeamResponsibleTaskResponse> GetTeamResponsibleTasksAsync(Guid teamResponsibleId, GetTeamResponsibleTasksQuery query, CancellationToken cancellationToken);
-        Task<TaskAssignmentResponse?> GetTaskAssignmentAsync(string hashValue, Guid? invitationCode, Guid participantId, CancellationToken cancellationToken);
+        Task<TaskAssignmentResponse?> GetTaskAssignmentAsync(string hashValue, Guid? invitationCode,bool taskInvitation, Guid participantId, CancellationToken cancellationToken);
+        Task<TaskAssignmentResponse?> GetTaskAssignmentAsync(string hashValue, Guid participantId, CancellationToken cancellationToken);
         Task<bool> CheckIfTaskHasConflicts(Guid participantId, DateTime taskDate, TimeSpan startTime, TimeSpan endTime, Guid? invitationCode, CancellationToken cancellationToken);
     }
 }

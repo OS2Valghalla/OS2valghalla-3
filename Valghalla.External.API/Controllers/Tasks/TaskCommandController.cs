@@ -18,9 +18,9 @@ namespace Valghalla.External.API.Controllers.Tasks
         }
 
         [HttpPost("accepttask")]
-        public async Task<IActionResult> AcceptTaskAsync(string hashValue, Guid? code, CancellationToken cancellationToken)
+        public async Task<IActionResult> AcceptTaskAsync(string hashValue, Guid? code, bool taskInvitation, CancellationToken cancellationToken)
         {
-            var query = new AcceptTaskCommand(hashValue, code);
+            var query = new AcceptTaskCommand(hashValue, code, taskInvitation);
             var response = await sender.Send(query, cancellationToken);
             return Ok(response);
         }
@@ -34,9 +34,9 @@ namespace Valghalla.External.API.Controllers.Tasks
         }
 
         [HttpPost("unregistertask")]
-        public async Task<IActionResult> UnregisterTaskAsync(Guid taskAssignmentId, CancellationToken cancellationToken)
+        public async Task<IActionResult> UnregisterTaskAsync(Guid taskAssignmentId,string hashValue, CancellationToken cancellationToken)
         {
-            var query = new UnregisterTaskCommand(taskAssignmentId);
+            var query = new UnregisterTaskCommand(taskAssignmentId,hashValue);
             var response = await sender.Send(query, cancellationToken);
             return Ok(response);
         }

@@ -26,7 +26,7 @@ export class TaskDetailsComponent {
     private readonly route: ActivatedRoute,
     private readonly authService: AuthService,
     private readonly taskHttpService: TaskHttpService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.hashValue = this.route.snapshot.paramMap.get(RoutingNodes.Id);
@@ -57,5 +57,13 @@ export class TaskDetailsComponent {
 
   register() {
     this.router.navigate([RoutingNodes.Registration, RoutingNodes.TaskRegistration, this.hashValue]);
+  }
+  rejectTask() {
+    this.taskHttpService.rejectTask(this.hashValue).subscribe((res) => {
+      if (res.isSuccess && res.data.succeed) {
+        this.router.navigate([RoutingNodes.MyTasks]);
+      }
+    }
+    );
   }
 }

@@ -40,7 +40,7 @@ namespace Valghalla.External.Application.Modules.Tasks.Commands
         public async Task<Response> Handle(RejectTaskCommand command, CancellationToken cancellationToken)
         {
             var participantId = userContextProvider.CurrentUser.ParticipantId!.Value;
-            var taskAssignment = await taskQueryRepository.GetTaskAssignmentAsync(command.HashValue, command.InvitationCode, participantId, cancellationToken);
+            var taskAssignment = await taskQueryRepository.GetTaskAssignmentAsync(command.HashValue, command.InvitationCode,false, participantId, cancellationToken);
 
             if (taskAssignment == null)
             {

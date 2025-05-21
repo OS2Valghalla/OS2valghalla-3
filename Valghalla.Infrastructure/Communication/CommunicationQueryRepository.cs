@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Application.Communication;
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
@@ -77,7 +79,7 @@ namespace Valghalla.Infrastructure.Communication
                 WorkLocation = new CommunicationWorkLocationInfo()
                 {
                     Title = entity.WorkLocation.Title,
-                    Address = entity.WorkLocation.Address,
+                    Address = $"{entity.WorkLocation.Address}, {entity.WorkLocation.PostalCode} {entity.WorkLocation.City}",
                 },
                 TaskType = new CommunicationTaskTypeInfo()
                 {
