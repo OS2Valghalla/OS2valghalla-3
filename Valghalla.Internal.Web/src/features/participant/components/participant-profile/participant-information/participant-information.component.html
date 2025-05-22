@@ -47,5 +47,11 @@
         <mat-icon *ngIf="participant.exemptDigitalPost" fontIcon="cancel" class="text-red-600"></mat-icon>
       </div>
     </div>
+<div class="flex flex-row">
+      <div class="basis-48">{{ 'participant.participant_details.protected_address' | transloco }} :</div>
+      <div class="basis-full" *appShowSkeleton="loading || !participant">        
+      {{ participant.protectedAddress ?  ('shared.common.yes' | transloco) : ('shared.common.no' | transloco) }}
+      </div>
+    </div>
   </div>
 </app-card>

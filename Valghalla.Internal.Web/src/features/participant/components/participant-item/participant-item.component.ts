@@ -27,6 +27,7 @@ export class ParticipantItemComponent implements AfterViewInit, OnDestroy, OnIni
 
   loading: boolean = true;
   cprChecking: boolean = false;
+  isAddressProtected: boolean = false;
   item?: ParticipantDetails;
 
   teams: TeamShared[] = [];
@@ -34,8 +35,8 @@ export class ParticipantItemComponent implements AfterViewInit, OnDestroy, OnIni
 
   electionId: string;
 
-  workLocationId? : string;
-  taskId? : string;
+  workLocationId?: string;
+  taskId?: string;
 
   readonly form = this.formBuilder.group({
     cpr: ['', Validators.required],
@@ -74,7 +75,7 @@ export class ParticipantItemComponent implements AfterViewInit, OnDestroy, OnIni
     private readonly teamSharedHttpService: TeamSharedHttpService,
     private readonly specialDietSharedHttpService: SpecialDietSharedHttpService,
     private readonly participantHttpService: ParticipantHttpService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.workLocationId = this.route.snapshot.paramMap.get(RoutingNodes.WorkLocationId);
@@ -129,6 +130,7 @@ export class ParticipantItemComponent implements AfterViewInit, OnDestroy, OnIni
             disenfranchised: value.disenfranchised,
             exemptDigitalPost: value.exemptDigitalPost,
           });
+          this.isAddressProtected = value.protectedAddress;
 
           this.form.controls.cpr.disable();
         }
@@ -156,7 +158,7 @@ export class ParticipantItemComponent implements AfterViewInit, OnDestroy, OnIni
 
     this.subs.sink = event.pipe(this.participantHttpService.createParticipant(request)).subscribe((res) => {
       if (res.isSuccess) {
-        if (this.workLocationId && this.taskId) {          
+        if (this.workLocationId && this.taskId) {
           this.router.navigate([RoutingNodes.TasksOnWorkLocation, this.workLocationId]);
         }
         else if (res.data) {
@@ -232,6 +234,7 @@ export class ParticipantItemComponent implements AfterViewInit, OnDestroy, OnIni
             disenfranchised: value.disenfranchised,
             exemptDigitalPost: value.exemptDigitalPost,
           });
+          this.isAddressProtected = value.protectedAddress;
 
           this.form.controls.cprVerified.setValue(true);
         }

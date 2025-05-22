@@ -75,14 +75,17 @@
         </mat-form-field>
         <mat-form-field appearance="fill" *appShowSkeleton="loading">
           <mat-label>{{ 'participant.participant_item.fields.street_address' | transloco }}</mat-label>
+          <mat-icon matPrefix *ngIf="isAddressProtected" fontIcon="warning" class="text-yellow-600" matTooltip="{{ 'participant.participant_validation_information.address_is_protected' | transloco }}"></mat-icon>
           <input matInput type="text" formControlName="streetAddress" />
         </mat-form-field>
         <mat-form-field appearance="fill" *appShowSkeleton="loading">
           <mat-label>{{ 'participant.participant_item.fields.postal_code' | transloco }}</mat-label>
+          <mat-icon matPrefix *ngIf="isAddressProtected" fontIcon="warning" class="text-yellow-600" matTooltip="{{ 'participant.participant_validation_information.address_is_protected' | transloco }}"></mat-icon>
           <input matInput type="text" formControlName="postalCode" />
         </mat-form-field>
         <mat-form-field appearance="fill" *appShowSkeleton="loading">
           <mat-label>{{ 'participant.participant_item.fields.city' | transloco }}</mat-label>
+          <mat-icon matPrefix *ngIf="isAddressProtected" fontIcon="warning" class="text-yellow-600" matTooltip="{{ 'participant.participant_validation_information.address_is_protected' | transloco }}"></mat-icon>
           <input matInput type="text" formControlName="city" />
         </mat-form-field>
         <mat-form-field appearance="fill" *appShowSkeleton="loading">

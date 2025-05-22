@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.External.Application.Modules.Team.Interfaces;
@@ -7,12 +9,14 @@ using Valghalla.External.Application.Modules.Team.Responses;
 
 namespace Valghalla.External.Infrastructure.Modules.Team
 {
-    internal class TeamQueryRepository: ITeamQueryRepository
+    internal class TeamQueryRepository : ITeamQueryRepository
     {
         private readonly IMapper mapper;
         private readonly IQueryable<ParticipantEntity> participants;
         private readonly IQueryable<TeamEntity> teams;
         private readonly IQueryable<TaskAssignmentEntity> tasks;
+        private readonly IQueryable<WorkLocationEntity> workLocations;
+        private readonly IQueryable<TaskAssignmentEntity> taskAssignments;
 
         public TeamQueryRepository(DataContext dataContext, IMapper mapper)
         {
@@ -20,6 +24,8 @@ namespace Valghalla.External.Infrastructure.Modules.Team
             participants = dataContext.Set<ParticipantEntity>().AsNoTracking();
             teams = dataContext.Set<TeamEntity>().AsNoTracking();
             tasks = dataContext.Set<TaskAssignmentEntity>().AsNoTracking();
+            workLocations = dataContext.Set<WorkLocationEntity>().AsNoTracking();
+            taskAssignments = dataContext.Set<TaskAssignmentEntity>().AsNoTracking();
         }
 
         public async Task<IList<TeamResponse>> GetMyTeamsAsync(Guid participantId, CancellationToken cancellationToken)
@@ -53,10 +59,30 @@ namespace Valghalla.External.Infrastructure.Modules.Team
                 .ToListAsync(cancellationToken);
 
             var teamMembers = participantEntities.Select(mapper.Map<TeamMemberResponse>).ToList();
-            foreach(var teamMember in teamMembers)
+            foreach (var teamMember in teamMembers)
             {
                 teamMember.AssignedTasksCount = tasks.Count(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Accepted && t.TaskDate >= DateTime.Today);
                 teamMember.CanBeRemoved = !tasks.Include(i => i.Election).Any(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Accepted && (t.TaskDate < DateTime.Today || t.Election.ElectionEndDate < DateTime.Today));
+
+                var tasksLocationIds = await taskAssignments
+                    .Where(t => t.ParticipantId == teamMember.Id)
+                    .Select(w => w.WorkLocationId)
+                    .Distinct()
+                    .ToListAsync(cancellationToken);
+
+                if (tasksLocationIds.Count > 0)
+                {
+                    var workLocationTitles = await workLocations
+                        .Where(i => tasksLocationIds.Contains(i.Id))
+                        .Select(i => i.Title)
+                        .ToListAsync(cancellationToken);
+
+                    teamMember.WorkLocations = string.Join(", ", workLocationTitles);
+                }
+                else
+                {
+                    teamMember.WorkLocations = string.Empty;
+                }
             }
 
             return teamMembers;

@@ -18,5 +18,6 @@
         public bool Disenfranchised { get; init; }
         public bool ExemptDigitalPost { get; init; }
         public DateTime? LastValidationDate { get; init; }
+        public bool ProtectedAddress { get; set; }
     }
 }

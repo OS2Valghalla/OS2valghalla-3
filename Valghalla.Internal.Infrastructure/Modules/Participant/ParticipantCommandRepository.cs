@@ -59,6 +59,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Participant
                 Deceased = record.Deceased,
                 Disenfranchised = record.Disenfranchised,
                 ExemptDigitalPost = record.ExemptDigitalPost,
+                ProtectedAddress = record.ProtectedAddress,
                 LastValidationDate = DateTime.UtcNow,
             };
 
