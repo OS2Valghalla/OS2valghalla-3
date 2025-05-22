@@ -426,12 +426,6 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
     };
     this.workLocationTasksHttpService.moveTasks(request).subscribe((res) => {
 
-      if (res.isSuccess) {
-        this.notificationService.showSuccess(this.translocoService.translate('tasks.success.tasks_moved'));
-      } else {
-        this.notificationService.showSuccess(this.translocoService.translate('tasks.error.tasks_moved'));
-      }
-
       this.workLocationTasksHttpService.getTeamTasks(this.dailyTeamTasks[teamIndex].teamId, this.itemId, this.election.id, false).subscribe((teamTasksResult) => {
         this.dailyTeamTasks[teamIndex].tasks = teamTasksResult.data;
         this.dailyTeamTasks[teamIndex].displayingTasks = teamTasksResult.data;

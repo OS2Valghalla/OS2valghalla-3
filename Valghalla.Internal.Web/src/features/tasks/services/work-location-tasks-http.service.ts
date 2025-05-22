@@ -169,15 +169,12 @@ export class WorkLocationTasksHttpService {
   moveTasks(request: MoveTasksRequest): Observable<Response<void>> {
     return this.httpClient.post<Response<void>>(this.baseUrl + 'movetasks', request).pipe(
       catchError((err) => {
-        // const msg = this.translocoService.translate('tasks.error.reply_for_participant');
-        // this.notificationService.showError(msg);
-
+        this.notificationService.showSuccess(this.translocoService.translate('tasks.error.tasks_moved'));
         return throwError(() => err);
       }),
       tap((res) => {
         if (res.isSuccess) {
-          // const msg = this.translocoService.translate('tasks.success.reply_for_participant');
-          // this.notificationService.showSuccess(msg);
+          this.notificationService.showSuccess(this.translocoService.translate('tasks.success.tasks_moved'));          
         }
       }),
     );
