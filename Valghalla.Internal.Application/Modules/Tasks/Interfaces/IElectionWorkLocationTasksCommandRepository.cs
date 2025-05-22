@@ -9,5 +9,6 @@ namespace Valghalla.Internal.Application.Modules.Tasks.Interfaces
         Task<bool> AssignCreatingParticipantToTaskAsync(AssignParticipantToTaskCommand command, IEnumerable<Guid> teamIds, CancellationToken cancellationToken);
         Task RemoveParticipantFromTaskAsync(RemoveParticipantFromTaskCommand command, CancellationToken cancellationToken);
         Task<Guid?> ReplyForParticipantAsync(ReplyForParticipantCommand command, CancellationToken cancellationToken);
+        Task<bool> MoveElectionWorkLocationTasksAsync(MoveTasksCommand command, CancellationToken cancellationToken);
     }
 }

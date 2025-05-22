@@ -1,5 +1,7 @@
 ﻿using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Valghalla.Integration.Auth;
 using Valghalla.Internal.Application.Modules.Tasks.Commands;
 using Valghalla.Internal.Application.Modules.Tasks.Requests;
@@ -9,7 +11,7 @@ namespace Valghalla.Internal.API.Controllers.Tasks
     [ApiController]
     [Route("api/worklocationtasks")]
     [UserAuthorize(RoleEnum.Administrator)]
-    public class WorkLocationTasksCommandController: ControllerBase
+    public class WorkLocationTasksCommandController : ControllerBase
     {
         private readonly ISender sender;
 
@@ -73,6 +75,18 @@ namespace Valghalla.Internal.API.Controllers.Tasks
                 SpecialDietIds = request.SpecialDietIds,
             };
 
+            var result = await sender.Send(command, cancellationToken);
+            return Ok(result);
+        }
+        [HttpPost("movetasks")]
+        public async Task<IActionResult> MoveTasksAsync([FromBody] MoveTasksRequest request, CancellationToken cancellationToken)
+        {
+            var command = new MoveTasksCommand()
+            {
+                TaskIds = request.TaskIds,
+                SourceTeamId = request.sourceTeamId,
+                TargetTeamId = request.targetTeamId
+            };
             var result = await sender.Send(command, cancellationToken);
             return Ok(result);
         }

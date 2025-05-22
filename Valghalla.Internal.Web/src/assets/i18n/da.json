@@ -1019,7 +1019,8 @@
       "validation_rules_citizenship": "Deltager er ikke statsborger i det påkrævede land",
       "validation_rules_legal_adult": "Deltager er ikke myndig",
       "task_conflict": "Deltager er allerede tilmeldt en anden opgave på dette tidspunkt",
-      "get_tasks_filtered_options": "Fejl opstod ved hentning af opgavefiltre"
+      "get_tasks_filtered_options": "Fejl opstod ved hentning af opgavefiltre",
+      "tasks_moved": "Fejl opstod ved flytning af opgaver"
     },
     "success": {
       "distribute_work_location_tasks": "Opgaver er blevet fordelt på arbejdsstedet med succes",
@@ -1027,6 +1028,7 @@
       "remove_participant_from_task": "Deltager er blevet fjernet fra opgaven med succes",
       "reply_for_participant": "Svar for deltager er gennemført med succes",
       "task_link_copied": "Opgavelink er blevet kopieret til udklipsholderen med succes",
+      "tasks_moved": "Opgaver er blevet flyttet med succes",
       "filtered_tasks_link_copied": "Link til filtrerede opgaver er blevet kopieret til udklipsholderen med succes"
     },
     "work_location_tasks": {

@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+
+using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Tasks.Commands;
@@ -9,7 +11,7 @@ using Valghalla.Internal.Application.Modules.Tasks.Requests;
 
 namespace Valghalla.Internal.Infrastructure.Modules.Tasks
 {
-    internal class ElectionWorkLocationTasksCommandRepository: IElectionWorkLocationTasksCommandRepository
+    internal class ElectionWorkLocationTasksCommandRepository : IElectionWorkLocationTasksCommandRepository
     {
         private readonly DataContext dataContext;
         private readonly DbSet<TaskAssignmentEntity> taskAssignments;
@@ -93,7 +95,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
         }
 
         public async Task<bool> AssignParticipantToTaskAsync(AssignParticipantToTaskCommand command, CancellationToken cancellationToken)
-        {            
+        {
             var task = await taskAssignments.FirstAsync(x => x.Id == command.TaskAssignmentId && x.ElectionId == command.ElectionId);
             var existingTeamMember = await teamMembers.AnyAsync(x => x.TeamId == task.TeamId && x.ParticipantId == command.ParticipantId);
 
@@ -132,7 +134,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
             task.InvitationCode = Guid.NewGuid();
             task.InvitationSent = false;
             task.RegistrationSent = false;
-            task.InvitationDate= null;
+            task.InvitationDate = null;
             task.InvitationReminderDate = null;
             task.TaskReminderDate = null;
 
@@ -262,6 +264,34 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
             var byteArrayResult = await hashProcess.ComputeHashAsync(byteArrayResultOfRawData);
 
             return string.Concat(Array.ConvertAll(byteArrayResult, h => h.ToString("X2")));
+        }
+
+        public async Task<bool> MoveElectionWorkLocationTasksAsync(MoveTasksCommand command, CancellationToken cancellationToken)
+        {
+            if (command == null ||
+                command.TaskIds == null || command.TaskIds.Length == 0 ||
+                command.TargetTeamId is not { } targetTeamId || targetTeamId == Guid.Empty ||
+                command.SourceTeamId is not { } sourceTeamId || sourceTeamId == Guid.Empty)
+            {
+                return false;
+            }
+
+            var taskIdSet = new HashSet<Guid>(command.TaskIds.Select(Guid.Parse));
+
+            var tasks = await taskAssignments
+                .Where(ta => taskIdSet.Contains(ta.Id) && ta.TeamId == sourceTeamId && ta.ParticipantId == null)
+                .ToListAsync(cancellationToken);
+
+            if (tasks.Count == 0) return false;
+
+            foreach (var task in tasks)
+            {
+                task.TeamId = targetTeamId;
+            }
+
+            var updated = await dataContext.SaveChangesAsync(cancellationToken);
+
+            return updated > 0;
         }
     }
 }

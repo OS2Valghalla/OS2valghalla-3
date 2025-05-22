@@ -981,6 +981,7 @@
       "status_awaiting": "Awaiting",
       "missing": "MISSING",
       "rejected_invitations": "Rejected invitations",
+      "move_tasks": "Move tasks",
       "reply_on_behalf_of_user": "Reply on behalf of user",
       "participant_information_header": "Participant information",
       "participant_information_description": "Update information if needed",
@@ -995,6 +996,7 @@
       "copy_link": "Copy link",
       "create_participant": "Create participant",
       "assign_participant": "Assign participant",
+      "move_tasks": "Move tasks",
       "edit_participant": "Edit participant",
       "remove_participant": "Remove participant",
       "reply_for_participant": "Reply for participant",
@@ -1019,7 +1021,8 @@
       "validation_rules_citizenship": "Participant is not a citizen of the required country",
       "validation_rules_legal_adult": "Participant is not a legal adult",
       "task_conflict": "Participant is already registered for another task at the time of this task.",
-      "get_tasks_filtered_options": "Error occurred when fetching tasks filtered options"
+      "get_tasks_filtered_options": "Error occurred when fetching tasks filtered options",
+      "tasks_moved": "Error occurred when moving tasks"
     },
     "success": {
       "distribute_work_location_tasks": "Work location tasks has been distributed successfully",
@@ -1027,6 +1030,7 @@
       "remove_participant_from_task": "Participant has been removed from task successfully",
       "reply_for_participant": "Replying for participant successfully",
       "task_link_copied": "Task link has been copied to clipboard successfully",
+      "tasks_moved": "Tasks have been moved successfully",
       "filtered_tasks_link_copied": "Filtered tasks link has been copied to clipboard successfully"
     },
     "work_location_tasks": {
