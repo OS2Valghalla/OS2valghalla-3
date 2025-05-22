@@ -1,12 +1,13 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { SubSink } from 'subsink';
 import { RoutingNodes } from 'src/shared/constants/routing-nodes';
 import { AreaSharedHttpService } from 'src/shared/services/area-shared-http.service';
 import { GlobalStateService } from 'src/app/global-state.service';
 import { AreaTasksHttpService } from '../../services/area-tasks-http.service';
 import { TasksSummary } from '../../models/tasks-summary';
-import { ElectionAreasGeneralInfo } from '../../models/election-areas-general-info';
+import { ElectionAreasGeneralInfo, TaskTypeWithAreaIdsResponse } from '../../models/election-areas-general-info';
 import { ElectionShared } from 'src/shared/models/election/election-shared';
+import { MatSelectionList } from '@angular/material/list';
 
 export interface AreaTasksSummary {
   areaId: string;
@@ -14,6 +15,14 @@ export interface AreaTasksSummary {
   displayedColumns: Array<string>;
 }
 
+interface TableDisplayColumnOptions {
+  id: string;
+  displayName: string;
+}
+interface TableDisplayColumnSettings {
+  options: Array<TableDisplayColumnOptions>;
+  selected: Array<string>;
+}
 export interface WorkLocationTasksSummary {
   workLocationId: string;
   workLocationName: string;
@@ -44,6 +53,7 @@ export interface StatusesTasksSummary {
   providers: [AreaSharedHttpService, AreaTasksHttpService],
 })
 export class TasksOverviewComponent implements AfterViewInit {
+
   private readonly subs = new SubSink();
 
   loadingAreas = true;
@@ -68,11 +78,32 @@ export class TasksOverviewComponent implements AfterViewInit {
 
   displayedColumns: Array<string> = ['status'];
 
+  displayedColumnsOptions: Array<TableDisplayColumnOptions> = [];
+
+  displayedColumnsOptionsSessionKey = 'tasks-overview-columns';
+
+  selectedColumns: Array<string> = [];
+
   workLocationLink: string;
 
   allAreasData: Array<StatusesTasksSummary>;
 
-  constructor(private globalStateService: GlobalStateService, private areaTasksHttpService: AreaTasksHttpService) {}
+  @ViewChild('columnsList') columnsList: MatSelectionList;
+
+  allColumnsSelected = false;
+
+  columns = [
+    {
+      name: 'participantName',
+      key: 'list.participant_list.labels.full_name',
+      displayName: 'list.participant_list.labels.full_name',
+      index: 1,
+      disabled: true,
+      isSelected: true,
+    }
+  ];
+
+  constructor(private globalStateService: GlobalStateService, private areaTasksHttpService: AreaTasksHttpService) { }
 
   ngAfterViewInit(): void {
     this.workLocationLink = '/' + RoutingNodes.TasksOnWorkLocation + '/';
@@ -98,14 +129,62 @@ export class TasksOverviewComponent implements AfterViewInit {
             this.displayedColumns.push(taskType.id);
           });
           this.displayedColumns.push('total');
+
           this.loadingAreas = false;
           this.subs.sink = this.areaTasksHttpService.getAreaTasksSummary(this.election.id).subscribe((res) => {
             this.areaTasksSummary = res.data;
             this.buildAreaTasksSummary();
+            this.initializeTableDisplayFromSession();
           });
         });
       }
     });
+  }
+
+  private saveColumnSettingsToStorage(options: TableDisplayColumnOptions[], selected: string[]) {
+    sessionStorage.setItem(this.displayedColumnsOptionsSessionKey, JSON.stringify({
+      options,
+      selected
+    }));
+  }
+
+  private loadColumnSettingsFromStorage(validOptionIds: string[]): string[] {
+    const sessionValue = sessionStorage.getItem(this.displayedColumnsOptionsSessionKey);
+    if (sessionValue) {
+      try {
+        const parsed = JSON.parse(sessionValue) as TableDisplayColumnSettings;
+        return Array.isArray(parsed.selected)
+          ? parsed.selected.filter(id => validOptionIds.includes(id))
+          : [];
+      } catch {
+        return [...validOptionIds];
+      }
+    }
+    return [...validOptionIds];
+  }
+
+  private initializeTableDisplayFromSession() {
+    this.displayedColumnsOptions = this.areasGeneralInfo.taskTypes.map(taskType => ({
+      id: taskType.id,
+      displayName: taskType.shortName
+    }));
+
+    this.displayedColumnsOptions.push({
+      id: 'total',
+      displayName: 'TOTAL',
+    });
+
+    const validOptionIds = this.displayedColumnsOptions.map(opt => opt.id);
+
+    this.selectedColumns = this.loadColumnSettingsFromStorage(validOptionIds);
+
+    this.displayedColumns = ['status', ...this.selectedColumns];
+    this.data.forEach((areaSummary) => {
+      areaSummary.displayedColumns = ['workLocation', ...this.selectedColumns];
+    });
+    this.allColumnsSelected = this.selectedColumns.length === validOptionIds.length;
+
+    this.saveColumnSettingsToStorage(this.displayedColumnsOptions, this.selectedColumns);
   }
 
   onFilterChanged() {
@@ -275,4 +354,45 @@ export class TasksOverviewComponent implements AfterViewInit {
     });
     return allTasksCount;
   }
+
+  toggleAllColumns() {
+    if (this.allColumnsSelected) {
+      this.columnsList.options.forEach((item) => {
+        if (!item.disabled) item.selected = true;
+      });
+    } else {
+      this.columnsList.options.forEach((item) => {
+        if (!item.disabled) item.selected = false;
+      });
+    }
+    this.changeSelectedColumns();
+  }
+
+  changeSelectedColumns() {
+    const selectedOptions: string[] = this.columnsList
+      ? this.columnsList.selectedOptions.selected.map(item => item.value)
+      : [...this.selectedColumns];
+
+    this.allColumnsSelected = selectedOptions.length === this.displayedColumnsOptions.length;
+
+    const sorted = selectedOptions.sort((a, b) => {
+      const aIndex = this.columns.findIndex(col => col.name === a);
+      const bIndex = this.columns.findIndex(col => col.name === b);
+      return aIndex - bIndex;
+    });
+
+    this.displayedColumns = ['status', ...sorted];
+
+    this.data.forEach((areaSummary) => {
+      areaSummary.displayedColumns = ['workLocation', ...sorted];
+    });
+
+    this.saveColumnSettingsToStorage(this.displayedColumnsOptions, sorted);
+  }
+
+  isColumnDisabled(columnName: string): boolean {
+    const column = this.columns.find(col => col.name === columnName);
+    return column ? column.disabled : false;
+  }
+
 }
