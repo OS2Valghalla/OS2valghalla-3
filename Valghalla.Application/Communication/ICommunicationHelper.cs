@@ -8,6 +8,7 @@
         Task<bool> ValidateRemovedFromTaskByValidationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateTaskInvitationReminderAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateTaskReminderAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
+        Task<bool> ValidateTaskReminderParticipantAsync(Guid participantId,int templateType, CancellationToken cancellationToken);
         Task<bool> ValidateTaskRegistrationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<bool> ValidateTaskInvitationRetractedAsync(Guid taskAssignmentId, CancellationToken cancellationToken);
     }
