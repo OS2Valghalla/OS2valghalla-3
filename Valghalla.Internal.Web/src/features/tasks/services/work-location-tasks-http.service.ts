@@ -12,6 +12,8 @@ import { AssignParticipantToTaskRequest } from '../models/assign-participant-to-
 import { RemoveParticipantFromTaskRequest } from '../models/remove-participant-from-task-request';
 import { ReplyForParticipantRequest } from '../models/reply-for-participant-request';
 import { WorkLocationTasksDistributingRequest } from '../models/work-location-tasks-distributing-request';
+import { TeamShared } from 'src/shared/models/team/team-shared';
+import { MoveTasksRequest } from '../models/move-tasks-request';
 
 @Injectable()
 export class WorkLocationTasksHttpService {
@@ -21,14 +23,14 @@ export class WorkLocationTasksHttpService {
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 
   getWorkLocation(workLocationId: string, electionId: string): Observable<Response<WorkLocationInfo>> {
     return this.httpClient
       .get<Response<WorkLocationInfo>>(getBaseApiUrl() + 'shared/worklocation/getworklocation', {
         params: {
-            workLocationId: workLocationId,
-            electionId: electionId
+          workLocationId: workLocationId,
+          electionId: electionId
         },
       })
       .pipe(
@@ -45,8 +47,8 @@ export class WorkLocationTasksHttpService {
     return this.httpClient
       .get<Response<WorkLocationTasksSummary>>(this.baseUrl + 'getworklocationtaskssummary', {
         params: {
-            workLocationId: workLocationId,
-            electionId: electionId
+          workLocationId: workLocationId,
+          electionId: electionId
         },
       })
       .pipe(
@@ -160,6 +162,22 @@ export class WorkLocationTasksHttpService {
         if (res.isSuccess) {
           const msg = this.translocoService.translate('tasks.success.reply_for_participant');
           this.notificationService.showSuccess(msg);
+        }
+      }),
+    );
+  }
+  moveTasks(request: MoveTasksRequest): Observable<Response<void>> {
+    return this.httpClient.post<Response<void>>(this.baseUrl + 'movetasks', request).pipe(
+      catchError((err) => {
+        // const msg = this.translocoService.translate('tasks.error.reply_for_participant');
+        // this.notificationService.showError(msg);
+
+        return throwError(() => err);
+      }),
+      tap((res) => {
+        if (res.isSuccess) {
+          // const msg = this.translocoService.translate('tasks.success.reply_for_participant');
+          // this.notificationService.showSuccess(msg);
         }
       }),
     );
