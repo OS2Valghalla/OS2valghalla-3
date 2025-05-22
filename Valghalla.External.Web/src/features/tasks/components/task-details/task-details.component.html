@@ -20,6 +20,9 @@
     <button class="button button-primary d-print-none" (click)="register()">
       {{ signedIn ? ('tasks.task_details.register' | transloco) : ('tasks.task_details.login_register' | transloco) }}
     </button>
+    <button class="button button-secondary d-print-none" (click)="rejectTask()" *ngIf="signedIn">
+      {{ 'tasks.task_details.reject_task' | transloco }}
+    </button>
     <div class="w-percent-100 w-percent-md-70 py-4">
       <app-task-preview [model]="taskPreview"></app-task-preview>
       <div class="py-2" [innerHTML]="taskPreview.taskType.description"></div>

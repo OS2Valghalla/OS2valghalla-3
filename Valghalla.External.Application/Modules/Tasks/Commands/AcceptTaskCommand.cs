@@ -8,7 +8,7 @@ using Valghalla.External.Application.Modules.Tasks.Responses;
 
 namespace Valghalla.External.Application.Modules.Tasks.Commands
 {
-    public sealed record AcceptTaskCommand(string HashValue, Guid? InvitationCode): ICommand<Response>;
+    public sealed record AcceptTaskCommand(string HashValue, Guid? InvitationCode, bool taskInvitation) : ICommand<Response>;
 
     public sealed class AcceptTaskCommandValidator : AbstractValidator<AcceptTaskCommand>
     {
@@ -44,15 +44,25 @@ namespace Valghalla.External.Application.Modules.Tasks.Commands
         public async Task<Response> Handle(AcceptTaskCommand command, CancellationToken cancellationToken)
         {
             var participantId = userContextProvider.CurrentUser.ParticipantId!.Value;
-            var taskAssignment = await taskQueryRepository.GetTaskAssignmentAsync(command.HashValue, command.InvitationCode, participantId, cancellationToken);
+            var taskAssignment = await taskQueryRepository.GetTaskAssignmentAsync(command.HashValue, command.InvitationCode,command.taskInvitation, participantId, cancellationToken);
 
             if (taskAssignment == null)
             {
                 return Response.Ok(TaskConfirmationResult.CprInvalidResult());
             }
-
-            var conflicted = await taskQueryRepository.CheckIfTaskHasConflicts(participantId, taskAssignment.TaskDate, taskAssignment.StartTime, taskAssignment.EndTime, command.InvitationCode, cancellationToken);
-
+            
+            var conflicted = false;
+            if (!command.taskInvitation)
+            {
+                conflicted = await taskQueryRepository.CheckIfTaskHasConflicts(
+                    participantId,
+                    taskAssignment.TaskDate,
+                    taskAssignment.StartTime,
+                    taskAssignment.EndTime,
+                    command.InvitationCode,
+                    cancellationToken
+                );
+            }
             if (conflicted)
             {
                 return Response.Ok(TaskConfirmationResult.ConflictResult());

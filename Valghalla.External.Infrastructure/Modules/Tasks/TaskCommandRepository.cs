@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.External.Application.Modules.Tasks.Commands;
@@ -33,9 +34,13 @@ namespace Valghalla.External.Infrastructure.Modules.Tasks
                     i.ParticipantId == participantId &&
                     i.InvitationCode == command.InvitationCode);
             }
-            else
+            else if (!command.taskInvitation)
             {
                 queryable = queryable.Where(i => i.ParticipantId == null);
+            }
+            else
+            {
+                queryable = queryable.Where(i => i.ParticipantId == participantId);
             }
 
             var entity = await queryable.FirstAsync(cancellationToken);
@@ -57,8 +62,8 @@ namespace Valghalla.External.Infrastructure.Modules.Tasks
             var queryable = taskAssignments
                 .Include(i => i.TaskType)
                 .Where(i =>
-                    i.HashValue == command.HashValue &&
-                    i.Responsed == false);
+                    i.HashValue == command.HashValue
+                    );
 
             if (command.InvitationCode.HasValue)
             {

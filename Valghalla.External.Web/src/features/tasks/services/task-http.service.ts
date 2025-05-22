@@ -28,7 +28,7 @@ export class TaskHttpService {
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 
   getTaskPreview(hashValue: string, invitationCode?: string): Observable<Response<TaskPreview>> {
     let query = {
@@ -76,6 +76,7 @@ export class TaskHttpService {
   acceptTask(
     hashValue: string,
     invitationCode?: string,
+    taskInvitation?: boolean,
     showStepIndicator?: boolean,
   ): Observable<Response<TaskConfirmationResult>> {
     let query = {
@@ -87,6 +88,14 @@ export class TaskHttpService {
         ...query,
         ...{
           code: invitationCode,
+        },
+      };
+    }
+    if (taskInvitation) {
+      query = {
+        ...query,
+        ...{
+          taskInvitation: taskInvitation,
         },
       };
     }
@@ -193,11 +202,12 @@ export class TaskHttpService {
       );
   }
 
-  unregisterTask(taskAssignmentId: string): Observable<Response<TaskConfirmationResult>> {
+  unregisterTask(taskAssignmentId: string, hashValue: string): Observable<Response<TaskConfirmationResult>> {
     return this.httpClient
       .post<Response<TaskConfirmationResult>>(this.baseUrl + 'unregistertask', undefined, {
         params: {
           taskAssignmentId: taskAssignmentId,
+          hashValue: hashValue,
         },
       })
       .pipe(

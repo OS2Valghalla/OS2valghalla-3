@@ -70,7 +70,7 @@ export class MyProfileRegistrationConfirmatorComponent implements OnInit, OnDest
     } else if (this.type == 'task') {
       this.saving = true;
       this.subs.sink = this.taskHttpService
-        .acceptTask(this.hashValue, this.invitationCode, true)
+        .acceptTask(this.hashValue, this.invitationCode,false, true)
         .pipe(
           finalize(() => {
             this.saving = false;

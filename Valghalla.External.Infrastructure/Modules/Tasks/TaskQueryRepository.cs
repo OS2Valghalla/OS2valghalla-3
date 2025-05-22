@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Application.QueryEngine;
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
-using Valghalla.External.Application.Modules.Tasks.Commands;
 using Valghalla.External.Application.Modules.Tasks.Interfaces;
 using Valghalla.External.Application.Modules.Tasks.Queries;
 using Valghalla.External.Application.Modules.Tasks.Responses;
@@ -137,7 +138,7 @@ namespace Valghalla.External.Infrastructure.Modules.Tasks
             return result;
         }
 
-        public async Task<TaskAssignmentResponse?> GetTaskAssignmentAsync(string hashValue, Guid? invitationCode, Guid participantId, CancellationToken cancellationToken)
+        public async Task<TaskAssignmentResponse?> GetTaskAssignmentAsync(string hashValue, Guid? invitationCode, bool taskInvitation, Guid participantId, CancellationToken cancellationToken)
         {
             var queryable = taskAssignments.Include(i => i.TaskType)
                 .Where(i =>
@@ -150,10 +151,29 @@ namespace Valghalla.External.Infrastructure.Modules.Tasks
                     i.ParticipantId == participantId &&
                     i.InvitationCode == invitationCode);
             }
-            else
+            else if (!taskInvitation)
             {
                 queryable = queryable.Where(i => i.ParticipantId == null);
             }
+            else
+            {
+                queryable = queryable.Where(i => i.ParticipantId == participantId);
+            }
+
+            var entity = await queryable.FirstOrDefaultAsync(cancellationToken);
+            return mapper.Map<TaskAssignmentResponse>(entity);
+        }
+        public async Task<TaskAssignmentResponse?> GetTaskAssignmentAsync(string hashValue, Guid participantId, CancellationToken cancellationToken)
+        {
+            var queryable = taskAssignments.Include(i => i.TaskType)
+                .Where(i =>
+                    i.HashValue == hashValue);
+
+            if (participantId != Guid.Empty)
+                queryable = queryable.Where(i => i.ParticipantId == participantId);
+            else
+                queryable = queryable.Where(i => i.ParticipantId == null);
+
 
             var entity = await queryable.FirstOrDefaultAsync(cancellationToken);
             return mapper.Map<TaskAssignmentResponse>(entity);

@@ -151,6 +151,8 @@
       "more_info": "More info",
       "register": "Register",
       "unregister": "Unregister",
+      "accept_task": "Accept task",
+      "reject_task": "Reject task",
       "view_more_filters": "View more filters",
       "view_less_filters": "View less filters",
       "register_confirmation_text": "Do you want to register for this task on",
@@ -166,7 +168,7 @@
       "labels": {
         "task_description": "Task description",
         "you_are_registered": "You are registered",
-        "you_are_invited": "You are invited",
+        "you_are_invited": "You are invited, please respond",
         "unregister_from": "Unregister from",
         "unregister_dialog_content": "You will be unregistered from the task and will not receive payment. The task becomes possible for others to register. Once you confirm, you can no longer undo it.",
         "task_locked_warning": "It is not possible to unregister from this task, because it takes place soon. Please <a href='/contact-us'>contact us</a>, if you do not have the opportunity to participate."
@@ -197,7 +199,8 @@
     "task_details": {
       "page_title": "Task details",
       "login_register": "Log in and register",
-      "register": "Register",
+      "register": "Accept and register",
+      "reject_task": "Reject task",
       "copy_link_to_task": "Copy link to task",
       "link": "Link",
       "register_yourself": "Register yourself",

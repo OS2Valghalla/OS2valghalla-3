@@ -67,7 +67,7 @@ export class TaskRegistrationGuard  {
 
         if (authorized) {
           this.taskHttpService
-            .acceptTask(hashValue, invitationCode, false)
+            .acceptTask(hashValue, invitationCode,false, false)
             .pipe(
               take(1),
               catchError((err) => {
