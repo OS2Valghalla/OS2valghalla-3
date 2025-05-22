@@ -22,7 +22,7 @@
 
   <app-table
     *appTableCtx="data; let typing"
-    [pageSizeOptions]="[50]"
+    [pageSizeOptions]="[10, 50]"
     defaultSortColumn="name"
     (editEvent)="openEditParticipant($event)"
     (selectEvent)="onSelectParticipants($event)">

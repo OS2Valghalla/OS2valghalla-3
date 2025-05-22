@@ -55,6 +55,9 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, Afte
   @Input() tablePanelSize: string = 'w-1/4';
   @Input() mainPanelSize: string = 'w-3/4';
 
+  /** Define session storage key table size settings and current page number */
+  @Input() storageKey: string = 'app-table';
+
   @Input() rowNgClass: (row: T) => any;
 
   /** Page event trigger. This will be called when paginator or sort changed */
@@ -109,7 +112,7 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, Afte
   constructor(
     private readonly breakpointObserver: BreakpointObserver,
     public readonly tableContext: TableContextDirective<Array<T>>,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.dataSource = new ServerDataSource();
@@ -165,9 +168,20 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, Afte
   }
 
   ngAfterViewInit(): void {
+    const savedPageSize = +sessionStorage.getItem(`${this.storageKey}-pageSize`);
+    const savedPageIndex = +sessionStorage.getItem(`${this.storageKey}-pageIndex`);
+    if (savedPageSize) {
+      this.paginator.pageSize = savedPageSize;
+    }
+
+    if (!isNaN(savedPageIndex)) {
+      this.paginator.pageIndex = savedPageIndex;
+    }
     this.refresh();
 
     this.subs.sink = this.paginator.page.subscribe((event) => {
+      sessionStorage.setItem(`${this.storageKey}-pageSize`, event.pageSize.toString());
+      sessionStorage.setItem(`${this.storageKey}-pageIndex`, event.pageIndex.toString());
       this.createMockData();
 
       this.pageEvent.emit({
@@ -201,14 +215,17 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, Afte
   }
 
   refresh() {
-    this.paginator.firstPage();
+    const savedPageIndex = +sessionStorage.getItem(`${this.storageKey}-pageIndex`);
+    if (isNaN(savedPageIndex)) {
+      this.paginator.firstPage();
+    }
     this.selection.clear();
 
     this.createMockData();
 
     this.loadEvent.emit({
       pageSize: this.paginator.pageSize,
-      pageIndex: 0,
+      pageIndex: this.paginator.pageIndex ?? 0,
       sortColumn: this.sort.active,
       sortDirection: this.sort.direction,
     });
