@@ -53,7 +53,7 @@
     <button
       class="button button-primary mr-5"
       (click)="register()"
-      [disabled]="saving || !form.controls.consentApproved.value || !form.valid">
+      [disabled]="saving || !form.valid">
       <span *ngIf="!saving">{{
         type == 'task'
           ? ('registration.label.save_and_continue' | transloco)
