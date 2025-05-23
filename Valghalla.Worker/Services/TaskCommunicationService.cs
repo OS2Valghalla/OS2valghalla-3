@@ -118,10 +118,14 @@ namespace Valghalla.Worker.Services
         {
             var valid = await communicationHelper.ValidateTaskReminderAsync(participantId, taskAssignmentId, cancellationToken);
 
+
             if (!valid) return;
 
             var template = await communicationQueryRepository.GetTaskReminderCommunicationTemplateAsync(taskAssignmentId, cancellationToken)
                 ?? throw new Exception($"Errors occurred when fetching task reminder communication template (taskAssignmentId = {taskAssignmentId})");
+
+            var validParticipant = await communicationHelper.ValidateTaskReminderParticipantAsync(participantId, template.TemplateType, cancellationToken);
+            if (!validParticipant) return;
 
             await SendAsync(logId, participantId, taskAssignmentId, template, cancellationToken);
             await communicationCommandRepository.SetTaskAssignmentReminderSentAsync(taskAssignmentId, cancellationToken);
@@ -166,7 +170,7 @@ namespace Valghalla.Worker.Services
                 ?? (isRejectedTask ? throw new Exception($"Errors occurred when fetching rejected task related information (taskId = {taskAssignmentId})") : throw new Exception($"Errors occurred when fetching assigned task related information (taskId = {taskAssignmentId})"));
 
             bool htmlFormatLinks = true;
-            if(templateType == TemplateType.SMS)
+            if (templateType == TemplateType.SMS)
                 htmlFormatLinks = false;
 
             var subject = communicationHelper.ReplaceTokens(templateSubject, info, htmlFormatLinks);

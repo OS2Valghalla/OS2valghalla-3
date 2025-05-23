@@ -186,6 +186,25 @@ namespace Valghalla.Infrastructure.Communication
 
             return mapper.Map<CommunicationTemplate>(communicationTemplate);
         }
+        public async Task<CommunicationParticipantInfo> GetParticipantAsync(Guid participantId, CancellationToken cancellationToken)
+        {
+            var query = await participants
+                .Where(i => i.Id == participantId)
+                .Select(i => new { i.Id, i.FirstName, i.LastName, i.MobileNumber, i.Email, i.Cpr, i.ExemptDigitalPost })
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (query == null) return null!;
+            return new CommunicationParticipantInfo
+            {
+                Id = query.Id,
+                Name = query.FirstName + " " + query.LastName,
+                MobileNumber = query.MobileNumber,
+                Email = query.Email,
+                Cpr = query.Cpr,
+                ExemptDigitalPost = query.ExemptDigitalPost
+            };
+
+        }
 
         private async Task<string> GetMunicipalityNameAsync(CancellationToken cancellationToken)
         {

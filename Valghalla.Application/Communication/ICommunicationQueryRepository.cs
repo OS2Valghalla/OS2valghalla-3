@@ -14,5 +14,6 @@
         Task<CommunicationTemplate?> GetTaskReminderCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<CommunicationTemplate?> GetTaskRetractedInvitationCommunicationTemplateAsync(Guid taskAssignmentId, CancellationToken cancellationToken);
         Task<CommunicationTemplate?> GetCommunicationTemplateAsync(Guid templateId, CancellationToken cancellationToken);
+        Task<CommunicationParticipantInfo> GetParticipantAsync(Guid participantId, CancellationToken cancellationToken);
     }
 }

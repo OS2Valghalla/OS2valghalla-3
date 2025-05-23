@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Policy;
-using Valghalla.Application.Communication;
+﻿using Valghalla.Application.Communication;
 using Valghalla.Application.Tenant;
 
 namespace Valghalla.Integration.Communication
@@ -136,6 +134,17 @@ namespace Valghalla.Integration.Communication
             return true;
         }
 
+        public async Task<bool> ValidateTaskReminderParticipantAsync(Guid participantId, int templateType, CancellationToken cancellationToken)
+        {
+            var participant = await communicationQueryRepository.GetParticipantAsync(participantId, cancellationToken).ConfigureAwait(false);
+
+            if (templateType is TemplateType.DigitalPost && participant.ExemptDigitalPost is true) return false;
+            if (templateType is TemplateType.Email && participant.Email is null) return false;
+            if (templateType is TemplateType.SMS && participant.MobileNumber is null) return false;
+
+            return true;
+        }
+
         public async Task<bool> ValidateTaskRegistrationAsync(Guid participantId, Guid taskAssignmentId, CancellationToken cancellationToken)
         {
             var taskAssignment = await communicationQueryRepository.GetTaskAssignmentCommunicationInfoAsync(taskAssignmentId, cancellationToken)
@@ -194,7 +203,7 @@ namespace Valghalla.Integration.Communication
                 contactLinkHTML = "<a href=\"" + contactLink + "\">" + contactLink + "</a>";
                 invitationLinkHTML = "<a href=\"" + invitationLink + "\">" + invitationLink + "</a>";
             }
-            
+
             return template
                 .Replace("!name", info.Participant.Name)
                 .Replace("!election", info.ElectionTitle)
