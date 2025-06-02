@@ -53,7 +53,7 @@ export class ChangeElectionDialogComponent implements OnInit, OnDestroy {
       new Observable((subscriber) => {
         const election = this.allElections.find(i => i.id == this.form.value.electionId);
         this.globalStateService.changeElectionToWorkOn(election);
-        subscriber.next();
+        subscriber.next(null);
 
         return () => subscriber.complete();
       }),
