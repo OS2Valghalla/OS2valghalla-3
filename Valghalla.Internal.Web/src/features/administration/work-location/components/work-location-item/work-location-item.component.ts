@@ -15,11 +15,13 @@ import { Team } from '../../../teams/models/team';
 import { WorkLocationDetails } from '../../models/work-location-details';
 import { CreateWorkLocationRequest } from '../../models/create-work-location-request';
 import { UpdateWorkLocationRequest } from '../../models/update-work-location-request';
+import { ElectionDetails } from 'src/features/administration/election/models/election-details';
+import { ElectionHttpService } from 'src/features/administration/election/services/election-http.service';
 
 @Component({
   selector: 'app-admin-work-location-item',
   templateUrl: './work-location-item.component.html',
-  providers: [WorkLocationHttpService, AreaHttpService, TaskTypeHttpService, TeamHttpService],
+  providers: [WorkLocationHttpService, AreaHttpService, TaskTypeHttpService, TeamHttpService, ElectionHttpService],
 })
 export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
   private readonly subs = new SubSink();
@@ -30,6 +32,8 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
 
   areas: AreaListingItem[] = [];
 
+  elections: ElectionDetails[] = [];
+
   taskTypes: TaskTypeListingItem[] = [];
 
   teams: Team[] = [];
@@ -37,6 +41,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
   readonly form = this.formBuilder.group({
     title: ['', Validators.required],
     areaId: ['', Validators.required],
+    // electionId: ['', Validators.required],
     address: ['', Validators.required],
     postalCode: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
     city: ['', Validators.required],
@@ -59,58 +64,62 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
     private readonly areaHttpService: AreaHttpService,
     private readonly taskTypeHttpService: TaskTypeHttpService,
     private readonly teamHttpService: TeamHttpService,
-  ) {}
+    private readonly electionHttpService: ElectionHttpService
+  ) { }
 
   ngAfterViewInit(): void {
     this.subs.sink = combineLatest({
-        areas: this.areaHttpService.getAllAreas(),
-        taskTypes: this.taskTypeHttpService.getAllTaskTypes(),
-        teams: this.teamHttpService.getAllTeams(),
-        formPageState: this.formPage.state$,
-      }).subscribe((v) => {
-        this.areas = v.areas.data;
-        this.taskTypes = v.taskTypes.data;
-        this.teams = v.teams.data;
+      areas: this.areaHttpService.getAllAreas(),
+      taskTypes: this.taskTypeHttpService.getAllTaskTypes(),
+      teams: this.teamHttpService.getAllTeams(),
+      elections: this.electionHttpService.getAllElections(),
+      formPageState: this.formPage.state$,
+    }).subscribe((v) => {
+      this.areas = v.areas.data;
+      this.taskTypes = v.taskTypes.data;
+      this.teams = v.teams.data;
+      this.elections = v.elections.data;
 
-        this.subs.sink = this.formPage.state$.subscribe(() => {
-            if (!this.formPage.isUpdateForm()) {
-              this.loading = false;
-              this.changeDetectorRef.detectChanges();
-              return;
-            }
-      
-            this.subs.sink = this.workLocationHttpService.getWorkLocationDetails(this.formPage.itemId).subscribe((res) => {
-              this.loading = false;
-              this.item = res.data;
-      
-              if (res.data) {
-                this.form.setValue({
-                  title: res.data.title,
-                  areaId: res.data.areaId,
-                  address: res.data.address,
-                  postalCode: res.data.postalCode,
-                  city: res.data.city,
-                  voteLocation: res.data.voteLocation,
-                  taskTypeIds: res.data.taskTypeIds,
-                  teamIds: res.data.teamIds,
-                  responsibleIds: res.data.responsibleIds
-                });
-                this.changeDetectorRef.detectChanges();
-              }
-              this.taskTypesList.options.forEach((option) => {
-                if (this.form.controls.taskTypeIds.value.indexOf(option.value) > -1){
-                  option.selected = true;
-                }
-              });
-              this.teamsList.options.forEach((option) => {
-                if (this.form.controls.teamIds.value.indexOf(option.value) > -1){
-                  option.selected = true;
-                }
-              });
+      this.subs.sink = this.formPage.state$.subscribe(() => {
+        if (!this.formPage.isUpdateForm()) {
+          this.loading = false;
+          this.changeDetectorRef.detectChanges();
+          return;
+        }
+
+        this.subs.sink = this.workLocationHttpService.getWorkLocationDetails(this.formPage.itemId).subscribe((res) => {
+          this.loading = false;
+          this.item = res.data;
+
+          if (res.data) {
+            this.form.setValue({
+              title: res.data.title,
+              areaId: res.data.areaId,
+              address: res.data.address,
+              postalCode: res.data.postalCode,
+              city: res.data.city,
+              voteLocation: res.data.voteLocation,
+              taskTypeIds: res.data.taskTypeIds,
+              teamIds: res.data.teamIds,
+              responsibleIds: res.data.responsibleIds,
+// electionId: res.data.electionId ? res.data.electionId : '',
             });
+            this.changeDetectorRef.detectChanges();
+          }
+          this.taskTypesList.options.forEach((option) => {
+            if (this.form.controls.taskTypeIds.value.indexOf(option.value) > -1) {
+              option.selected = true;
+            }
+          });
+          this.teamsList.options.forEach((option) => {
+            if (this.form.controls.teamIds.value.indexOf(option.value) > -1) {
+              option.selected = true;
+            }
+          });
         });
       });
-    
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -122,8 +131,8 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
     this.taskTypesList.selectedOptions.selected.forEach((selectedTaskType) => {
       selectedOptions.push(selectedTaskType.value);
     });
-    this.form.controls.taskTypeIds.patchValue(selectedOptions);   
-    this.form.markAsDirty(); 
+    this.form.controls.taskTypeIds.patchValue(selectedOptions);
+    this.form.markAsDirty();
   }
 
   changeSelectedTeams() {

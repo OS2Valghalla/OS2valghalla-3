@@ -82,6 +82,10 @@
         "title": "Work Locations",
         "description": "Here you can administrate all the work locations in the system"
       },
+      "work_location_template": {
+        "title": "Work Location Templates",
+        "description": "Here you can administrate all the work locations templates in the system"
+      },
       "communication": {
         "title": "Communication",
         "communication_templates": {
@@ -449,6 +453,7 @@
         "activate_election": "Error occured when activating election",
         "deactivate_election": "Error occurred when deactivating election",
         "get_election": "Error occurred when fetching election",
+        "get_elections": "Error occurred when fetching elections",
         "get_election_communication_configurations": "Error occurred when fetching election communication configurations",
         "update_election_communication_configurations": "Error occurred when updating election communication configurations",
         "election_exist": "An election exists with the same name and same election date",
@@ -760,6 +765,7 @@
       },
       "columns": {
         "area": "Area",
+        "election": "Election",
         "address": "Address",
         "postal_code": "Postal code",
         "city": "City",
@@ -774,6 +780,52 @@
         }
       },
       "work_location_listing": {
+        "title": "Work locations",
+        "area": "Area"
+      }
+    },
+    "work_location_template": {
+      "page_title": "Work location Template",
+      "error": {
+        "work_location_template_exist": "A work location template exist with the same name",
+        "get_work_location_template": "Error occurred when fetching work location template",
+        "create_work_location_template": "Error occurred when creating work location template",
+        "update_work_location_template": "Error occurred when updating work location template",
+        "delete_work_location_template": "Error occurred when deleting work location template",
+        "check_work_location_template_used_in_active_election": "Error occurred when checking if work location template used in active election",
+        "work_location_template_used_in_active_election": "Work location template used in an active election cannot be deleted",
+        "active_election_warning": "Task types and teams cannot be edited, because this work location template is part of an active election."
+      },
+      "success": {
+        "create_work_location_template": "Work location template has been created successfully",
+        "update_work_location_template": "Work location template has been updated successfully",
+        "delete_work_location_template": "Work location template has been deleted successfully"
+      },
+      "action": {
+        "create_work_location_template": "Create work location template",
+        "delete_confirmation": {
+          "title": "Delete work location template",
+          "content_no_task": "Are you sure you want to delete this work location template?",
+          "content_has_task": "There are tasks associated with this work location template, are you sure you want to delete it, the associated tasks will be deleted as well?"
+        }
+      },
+      "columns": {
+        "area": "Area",
+        "election": "Election",
+        "address": "Address",
+        "postal_code": "Postal code",
+        "city": "City",
+        "vote_location": "Vote area",
+        "relevant_task_types": "Relevant task types",
+        "relevant_teams": "Relevant teams"
+      },
+      "work_location_template_item": {
+        "page_title": {
+          "create": "Create work location template",
+          "edit": "Edit work location template"
+        }
+      },
+      "work_location_template_listing": {
         "title": "Work locations",
         "area": "Area"
       }

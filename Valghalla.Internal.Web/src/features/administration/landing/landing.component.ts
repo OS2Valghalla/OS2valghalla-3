@@ -15,6 +15,12 @@ export class LandingComponent {
       bodyMessage: 'app.navigation.work_location.description',
     },
     {
+      routerLink: '/' + RoutingNodes.Administration + '/' + RoutingNodes.WorkLocationTemplate,
+      title: 'app.navigation.work_location_template.title',
+      icon: 'settings',
+      bodyMessage: 'app.navigation.work_location_template.description',
+    },
+    {
       routerLink: '/' + RoutingNodes.Administration + '/' + RoutingNodes.Web,
       title: 'app.navigation.web.title',
       icon: 'public',

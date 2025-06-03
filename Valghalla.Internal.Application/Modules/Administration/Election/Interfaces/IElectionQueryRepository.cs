@@ -11,6 +11,7 @@ namespace Valghalla.Internal.Application.Modules.Administration.Election.Interfa
         Task<bool> CheckIfElectionExistsAsync(DuplicateElectionCommand command, CancellationToken cancellationToken);
         Task<bool> CheckIfElectionIsActiveAsync(Guid electionId, CancellationToken cancellationToken);
         Task<ElectionDetailsResponse?> GetElectionAsync(GetElectionQuery query, CancellationToken cancellationToken);
+        Task<List<ElectionDetailsResponse>?> GetElectionsAsync(GetElectionsQuery query, CancellationToken cancellationToken);
         Task<ElectionCommunicationConfigurationsResponse?> GetElectionCommunicationConfigurationsAsync(GetElectionCommunicationConfigurationsQuery query, CancellationToken cancellationToken);
     }
 }

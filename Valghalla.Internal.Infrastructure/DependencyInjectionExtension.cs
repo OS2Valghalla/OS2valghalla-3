@@ -1,6 +1,8 @@
 ﻿#region Modules
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Valghalla.Database;
 using Valghalla.Infrastructure;
 using Valghalla.Internal.Application.Modules.Administration.Area.Interfaces;
@@ -14,6 +16,7 @@ using Valghalla.Internal.Application.Modules.Administration.Team.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.User.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.Web.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocation.Interfaces;
+using Valghalla.Internal.Application.Modules.Administration.WorkLocationTemplate.Interfaces;
 using Valghalla.Internal.Application.Modules.Analyze.Interfaces;
 using Valghalla.Internal.Application.Modules.App.Interfaces;
 using Valghalla.Internal.Application.Modules.Communication.CommunicationLog.Interfaces;
@@ -40,6 +43,7 @@ using Valghalla.Internal.Infrastructure.Modules.Administration.Team;
 using Valghalla.Internal.Infrastructure.Modules.Administration.User;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Web;
 using Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation;
+using Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocationTemplate;
 using Valghalla.Internal.Infrastructure.Modules.Analyze;
 using Valghalla.Internal.Infrastructure.Modules.App;
 using Valghalla.Internal.Infrastructure.Modules.Communication.CommunicationLog;
@@ -90,6 +94,8 @@ namespace Valghalla.Internal.Infrastructure
             services.AddScoped<IElectionCommitteeContactInformationQueryRepository, ElectionCommitteeContactInformationQueryRepository>();
             services.AddScoped<IWorkLocationCommandRepository, WorkLocationCommandRepository>();
             services.AddScoped<IWorkLocationQueryRepository, WorkLocationQueryRepository>();
+            services.AddScoped<IWorkLocationTemplateCommandRepository, WorkLocationTemplateCommandRepository>();
+            services.AddScoped<IWorkLocationTemplateQueryRepository, WorkLocationTemplateQueryRepository>();
             services.AddScoped<ICommunicationCommandRepository, CommunicationCommandRepository>();
             services.AddScoped<ICommunicationQueryRepository, CommunicationQueryRepository>();
             #endregion

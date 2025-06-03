@@ -18,6 +18,7 @@ export class RoutingNodes {
   static CreateTaskLink = 'create-task-link';
   static Overview = 'overview';
   static WorkLocation = 'work-location';
+  static WorkLocationTemplate = 'work-location-template';
   static TasksOnWorkLocation = 'tasks-on-work-location';
   static ReplyForParticipant = 'reply-for-participant';
   static Election = 'election';

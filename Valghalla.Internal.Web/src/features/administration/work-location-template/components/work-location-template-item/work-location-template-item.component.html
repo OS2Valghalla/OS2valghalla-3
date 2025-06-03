@@ -1,29 +1,19 @@
 <app-form-page
   class="inline-block w-1/2"
-  [formTitle]="'administration.work_location.work_location_item.page_title.create' | transloco"
+  [formTitle]="'administration.work_location_template.work_location_template_item.page_title.create' | transloco"
   [updateFormTitle]="
-    ('administration.work_location.work_location_item.page_title.edit' | transloco) + ' - ' + item?.title
+    ('administration.work_location_template.work_location_template_item.page_title.edit' | transloco) + ' - ' + item?.title
   "
   [formGroup]="form"
-  (create)="createWorkLocation($event)"
-  (update)="updateWorkLocation($event)"
-  (delete)="deleteWorkLocation($event)"
+  (create)="createWorkLocationTemplate($event)"
+  (update)="updateWorkLocationTemplate($event)"
+  (delete)="deleteWorkLocationTemplate($event)"
   (onCancelClick)="cancel()">
   <div class="grid grid-cols-2 gap-4">
     <div class="flex flex-col col-span-2">
       <mat-form-field appearance="fill" *appShowSkeleton="loading">
         <mat-label>{{ 'shared.common.title' | transloco }}</mat-label>
         <input matInput type="text" formControlName="title" />
-      </mat-form-field>
-    </div>
-<div class="flex flex-col col-span-2">
-      <mat-form-field appearance="fill" *appShowSkeleton="loading">
-        <mat-label>{{ 'administration.work_location.columns.election' | transloco }}</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let election of elections" [value]="election.id">
-            {{ election.title }}
-          </mat-option>
-        </mat-select>
       </mat-form-field>
     </div>
     <div class="flex flex-col col-span-2">
@@ -61,16 +51,16 @@
         <input matInput type="number" formControlName="voteLocation" />
       </mat-form-field>
     </div>
-    <div class="flex flex-col col-span-2">
+    <!-- <div class="flex flex-col col-span-2">
       <app-participant-picker
         [label]="'administration.teams.columns.responsibles' | transloco"
         [multiple]="true"
         formControlName="responsibleIds"></app-participant-picker>
-    </div>
-    <div class="flex flex-col col-span-2" *ngIf="item?.hasActiveElection">
+    </div> -->
+    <!-- <div class="flex flex-col col-span-2" *ngIf="item?.hasActiveElection">
       <mat-hint>{{ 'administration.work_location.error.active_election_warning' | transloco }}</mat-hint>
-    </div>
-    <div class="flex flex-col">
+    </div> -->
+    <!-- <div class="flex flex-col">
       <h3>{{ 'administration.work_location.columns.relevant_task_types' | transloco }}</h3>
       <mat-selection-list #selectedTaskTypes *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
         <mat-list-option
@@ -81,8 +71,8 @@
           {{ taskType.title }}
         </mat-list-option>
       </mat-selection-list>
-    </div>
-    <div class="flex flex-col">
+    </div> -->
+    <!-- <div class="flex flex-col">
       <h3>{{ 'administration.work_location.columns.relevant_teams' | transloco }}</h3>
       <mat-selection-list #selectedTeams *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
         <mat-list-option
@@ -93,6 +83,6 @@
           {{ team.name }}
         </mat-list-option>
       </mat-selection-list>
-    </div>
+    </div> -->
   </div>
 </app-form-page>
