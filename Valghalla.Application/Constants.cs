@@ -45,6 +45,7 @@
         public static class FileStorage
         {
             public static readonly Guid InternalAuthCertificate = new("c53070b3-075f-465c-96eb-99134d6b670a");
+            public static readonly Guid InternalAuthFallbackCertificate = new("baf2fb3e-566d-490e-bbfd-abf16a350219");
             public static readonly Guid ExternalAuthCertificate = new("baf2fb3e-566d-490e-bbfd-abf16a350219");
 
             public static readonly Guid MunicipalityLogo = new("978607a3-ac87-4ff5-aa4d-4758c3a84dd0");

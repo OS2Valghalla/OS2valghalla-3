@@ -1,17 +1,20 @@
-﻿using ITfoxtec.Identity.Saml2;
+﻿using System.Diagnostics;
+using System.Security.Authentication;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Serialization;
+
+using ITfoxtec.Identity.Saml2;
 using ITfoxtec.Identity.Saml2.MvcCore;
 using ITfoxtec.Identity.Saml2.Schemas;
 using ITfoxtec.Identity.Saml2.Schemas.Metadata;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Diagnostics;
-using System.Security.Authentication;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Serialization;
+
 using Valghalla.Application.Authentication;
 using Valghalla.Application.Cache;
 using Valghalla.Application.Configuration;
@@ -34,6 +37,7 @@ namespace Valghalla.Integration.Saml
         private readonly ISaml2AuthContextProvider saml2AuthContextProvider;
         private readonly InternalAuthConfiguration configuration;
         private readonly ILogger<Saml2AuthService> logger;
+        private readonly HttpClient httpClient;
 
         private readonly ISaml2AuthPostProcessor postProcessor;
 
@@ -62,7 +66,8 @@ namespace Valghalla.Integration.Saml
             ISaml2AuthContextProvider saml2AuthContextProvider,
             InternalAuthConfiguration configuration,
             ILogger<Saml2AuthService> logger,
-            ISaml2AuthPostProcessor postProcessor)
+            ISaml2AuthPostProcessor postProcessor,
+            HttpClient httpClient)
         {
             this.authConfigOptions = authConfigOptions;
             this.httpContextAccessor = httpContextAccessor;
@@ -73,9 +78,10 @@ namespace Valghalla.Integration.Saml
             this.configuration = configuration;
             this.logger = logger;
             this.postProcessor = postProcessor;
+            this.httpClient = httpClient;
         }
 
-        public async Task<string> GetLoginRedirectUrlAsync(CancellationToken cancellationToken)
+        public async Task<(string, string)> GetLoginRedirectUrlAsync(CancellationToken cancellationToken)
         {
             var saml2Config = await GetSaml2ConfigurationAsync(cancellationToken);
             var binding = new Saml2RedirectBinding();
@@ -87,9 +93,38 @@ namespace Valghalla.Integration.Saml
 
             binding.Bind(new Saml2AuthnRequest(saml2Config));
 
+            return (binding.RedirectLocation.OriginalString, binding.RedirectLocation.Host);
+        }
+        public async Task<string> GetFallbackLoginRedirectUrlAsync(CancellationToken cancellationToken)
+        {
+            var saml2Config = await GetSaml2FallbackConfigurationAsync(cancellationToken);
+            var binding = new Saml2RedirectBinding();
+
+            binding.SetRelayStateQuery(new Dictionary<string, string>
+            {
+                { RELAY_STATE_REDIRECT, string.Empty }
+            });
+
+            binding.Bind(new Saml2AuthnRequest(saml2Config));
+
             return binding.RedirectLocation.OriginalString;
         }
-
+        public async Task<bool> GetServiceHealthCheck(string host, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using var response = await httpClient.GetAsync(
+                    $"https://{host}/",
+                    HttpCompletionOption.ResponseHeadersRead,
+                    cancellationToken
+                );
+                return true;
+            }
+            catch (HttpRequestException)
+            {
+                return false;
+            }
+        }
         public async Task<string> LogoutAsync(ClaimsPrincipal principal, bool profileDeleted, CancellationToken cancellationToken)
         {
             var saml2Config = await GetSaml2ConfigurationAsync(cancellationToken);
@@ -294,6 +329,63 @@ namespace Valghalla.Integration.Saml
             var result = await tenantMemoryCache.GetOrCreateAsync(key, async () =>
             {
                 var authAppConfig = await saml2AuthContextProvider.GetSaml2AuthAppConfigurationAsync(cancellationToken);
+                var cert = await ReadCertificateAsync(authAppConfig.SigningCertificateFile, authAppConfig.SigningCertificatePassword, cancellationToken);
+
+                await authAppConfig.SigningCertificateFile.DisposeAsync();
+
+                var saml2Config = new Saml2Configuration
+                {
+                    Issuer = authAppConfig.Issuer,
+                    SignatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+                    CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.None,
+                    RevocationMode = X509RevocationMode.NoCheck,
+                    SignAuthnRequest = true
+                };
+
+                saml2Config.SigningCertificate = saml2Config.DecryptionCertificate = cert;
+                saml2Config.AllowedAudienceUris.Add(authAppConfig.Issuer);
+
+                var entityDescriptor = new EntityDescriptor();
+
+                entityDescriptor.ReadIdPSsoDescriptorFromFile(environment.MapToPhysicalFilePath(authConfigOptions.Value.IdPMetadataFile));
+
+                if (entityDescriptor.IdPSsoDescriptor != null)
+                {
+                    saml2Config.AllowedIssuer = entityDescriptor.EntityId;
+                    saml2Config.SingleSignOnDestination = entityDescriptor.IdPSsoDescriptor.SingleSignOnServices.First().Location;
+                    saml2Config.SingleLogoutDestination = entityDescriptor.IdPSsoDescriptor.SingleLogoutServices.First().Location;
+                    saml2Config.SignatureValidationCertificates.AddRange(entityDescriptor.IdPSsoDescriptor.SigningCertificates);
+
+                    if (entityDescriptor.IdPSsoDescriptor.WantAuthnRequestsSigned.HasValue)
+                    {
+                        saml2Config.SignAuthnRequest = entityDescriptor.IdPSsoDescriptor.WantAuthnRequestsSigned.Value;
+                    }
+
+                    saml2Config.AuthnResponseSignType = Saml2AuthnResponseSignTypes.SignAssertionAndResponse;
+                }
+                else
+                {
+                    throw new Exception("IdPSsoDescriptor not loaded from metadata.");
+                }
+
+                return saml2Config;
+            });
+
+            if (result == null)
+            {
+                tenantMemoryCache.Remove(key);
+                throw new Exception("Could not resolve saml auth configuration");
+            }
+
+            return result;
+        }
+        private async Task<Saml2Configuration> GetSaml2FallbackConfigurationAsync(CancellationToken cancellationToken)
+        {
+            var key = nameof(Saml2Configuration);
+
+            var result = await tenantMemoryCache.GetOrCreateAsync(key, async () =>
+            {
+                var authAppConfig = await saml2AuthContextProvider.GetSaml2AuthAppFallbackConfigurationAsync(cancellationToken);
                 var cert = await ReadCertificateAsync(authAppConfig.SigningCertificateFile, authAppConfig.SigningCertificatePassword, cancellationToken);
 
                 await authAppConfig.SigningCertificateFile.DisposeAsync();

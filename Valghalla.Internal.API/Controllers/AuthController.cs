@@ -1,6 +1,8 @@
 ﻿using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Valghalla.Application.Auth;
 using Valghalla.Application.Saml;
 
@@ -31,8 +33,18 @@ namespace Valghalla.Internal.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginAsync(CancellationToken cancellationToken)
         {
-            var url = await saml2AuthService.GetLoginRedirectUrlAsync(cancellationToken);
-            return Redirect(url);
+            var (url, host) = await saml2AuthService.GetLoginRedirectUrlAsync(cancellationToken);
+
+            if (url is not null && host is not null)
+            {
+                //if (await saml2AuthService.GetServiceHealthCheck(host, cancellationToken))
+                //{
+                //    return Redirect(url);
+                //}
+            }
+
+            var fallbackUrl = await saml2AuthService.GetFallbackLoginRedirectUrlAsync(cancellationToken);
+            return Redirect(fallbackUrl);
         }
 
         [HttpPost("AssertionConsumerService")]

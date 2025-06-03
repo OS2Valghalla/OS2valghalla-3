@@ -27,5 +27,10 @@ namespace Valghalla.External.API.Auth
                 SigningCertificatePassword = externalAuthConfiguration.SigningCertificatePassword
             };
         }
+
+        public Task<Saml2AuthAppConfiguration> GetSaml2AuthAppFallbackConfigurationAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
