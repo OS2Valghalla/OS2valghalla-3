@@ -7,6 +7,7 @@ import { Response } from 'src/shared/models/respone';
 import { NotificationService } from 'src/shared/services/notification.service';
 import { TasksSummary } from '../models/tasks-summary';
 import { ElectionAreasGeneralInfo } from '../models/election-areas-general-info';
+import { TaskStatusGeneralInfoResponse } from '../components/tasks-overview/tasks-overview.component';
 
 @Injectable()
 export class AreaTasksHttpService {
@@ -16,13 +17,13 @@ export class AreaTasksHttpService {
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 
   getAreasGeneralInfo(electionId: string): Observable<Response<ElectionAreasGeneralInfo>> {
     return this.httpClient
       .get<Response<ElectionAreasGeneralInfo>>(this.baseUrl + 'getareasgeneralinfo', {
         params: {
-            electionId: electionId
+          electionId: electionId
         },
       })
       .pipe(
@@ -53,6 +54,21 @@ export class AreaTasksHttpService {
           const msg = this.translocoService.translate('tasks.error.get_area_tasks_summary');
           this.notificationService.showError(msg);
 
+          return throwError(() => err);
+        }),
+      );
+  }
+  getTasksStatusSummary(electionId: string) {
+    let params = new HttpParams();
+    params = params.append('electionId', electionId);
+    return this.httpClient
+      .get<Response<TaskStatusGeneralInfoResponse>>(this.baseUrl + 'gettasksstatussummary', {
+        params: params,
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('tasks.error.get_area_tasks_summary');
+          this.notificationService.showError(msg);
           return throwError(() => err);
         }),
       );

@@ -1,5 +1,7 @@
 ﻿using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Valghalla.Integration.Auth;
 using Valghalla.Internal.Application.Modules.Tasks.Queries;
 
@@ -29,6 +31,13 @@ namespace Valghalla.Internal.API.Controllers.Tasks
         public async Task<IActionResult> GetAreaTasksSummaryAsync(Guid electionId, DateTime? selectedDate, Guid? selectedTeamId, CancellationToken cancellationToken)
         {
             var query = new GetElectionAreaTasksSummaryQuery(electionId, selectedDate.HasValue ? selectedDate.Value.ToUniversalTime() : null, selectedTeamId);
+            var result = await sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet("gettasksstatussummary")]
+        public async Task<IActionResult> getTasksStatusSummaryQuery(Guid electionId, CancellationToken cancellationToken)
+        {
+            var query = new GetParticipantsTasksStatusQuery(electionId);
             var result = await sender.Send(query, cancellationToken);
             return Ok(result);
         }

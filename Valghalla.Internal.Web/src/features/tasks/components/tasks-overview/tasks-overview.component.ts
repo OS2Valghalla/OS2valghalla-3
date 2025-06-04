@@ -45,7 +45,22 @@ export interface StatusesTasksSummary {
   sumMissingTasksCount: number;
   sumAllTasksCount: number;
 }
+export interface TaskStatusGeneralInfoResponse {
+  assignedTasksCount: number;
+  missingTasksCount: number;
+  awaitingTasksCount: number;
+  allTasksCount: number;
+  rejectedTasksCount: number;
+  rejectedTasksInfoResponses: RejectedTasksInfoResponse[];
+}
 
+export interface RejectedTasksInfoResponse {
+  taskId: string;
+  taskTypeId: string;
+  teamId: string;
+  participantId: string;
+  tasksDate: string;
+}
 @Component({
   selector: 'app-tasks-overview',
   templateUrl: './tasks-overview.component.html',
@@ -53,6 +68,9 @@ export interface StatusesTasksSummary {
   providers: [AreaSharedHttpService, AreaTasksHttpService],
 })
 export class TasksOverviewComponent implements AfterViewInit {
+onOpenRejectedTasks() {
+throw new Error('Method not implemented.');
+}
 
   private readonly subs = new SubSink();
 
@@ -75,6 +93,8 @@ export class TasksOverviewComponent implements AfterViewInit {
   areaTasksSummary: Array<TasksSummary> = [];
 
   data: Array<AreaTasksSummary> = [];
+
+  tasksStatusGeneralInfo: TaskStatusGeneralInfoResponse;
 
   displayedColumns: Array<string> = ['status'];
 
@@ -117,6 +137,11 @@ export class TasksOverviewComponent implements AfterViewInit {
         this.electionDates = [];
         this.selectedDate = undefined;
         this.selectedTeamId = undefined;
+
+        this.subs.sink = this.areaTasksHttpService.getTasksStatusSummary(this.election.id).subscribe((res) => {
+          this.tasksStatusGeneralInfo = res.data;
+          this.tasksStatusGeneralInfo.rejectedTasksInfoResponses = this.tasksStatusGeneralInfo.rejectedTasksInfoResponses || [];
+        });
 
         this.subs.sink = this.areaTasksHttpService.getAreasGeneralInfo(this.election.id).subscribe((resAreas) => {
           this.areasGeneralInfo = resAreas.data;

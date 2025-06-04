@@ -23,7 +23,7 @@
         "election_system_list": {
           "title": "Export for election system",
           "description": "Create CSV-file with users for the election system"
-        }
+        }       
       },
       "administration": "Administration",
       "election_type": {
@@ -196,7 +196,8 @@
       "link": "Link",
       "all": "All",
       "created_at": "Created at",
-      "select_all": "Select all"
+      "select_all": "Select all",
+      "open": "Open"
     },
     "task_status": {
       "available": "Available",
@@ -980,6 +981,7 @@
       "status_all": "Status",
       "status_missing": "Missing",
       "status_awaiting": "Awaiting",
+      "status_rejected": "Rejected",
       "missing": "MISSING",
       "rejected_invitations": "Rejected invitations",
       "move_tasks": "Move tasks",
@@ -990,7 +992,8 @@
       "trusted_task": "Trusted task",
       "available_tasks": "Available tasks",
       "link_description": "Sharing this link with participants will make it possible for them to see and assign to the chosen tasks",
-      "filtered_tasks_list_header": "Chosen tasks based on filters"
+      "filtered_tasks_list_header": "Chosen tasks based on filters",
+      "task_status_summary": "Task status summary"
     },
     "actions": {
       "copy_task_link": "Copy task link",
