@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocationTemplate.Responses;
-//using Valghalla.Internal.Application.Modules.Shared.WorkLocationTemplate.Responses;
-using Valghalla.Internal.Application.Modules.Tasks.Responses;
+using Valghalla.Internal.Application.Modules.Shared.WorkLocationTemplate.Responses;
 
 namespace Valghalla.Internal.Infrastructure.Automapper
 {
@@ -11,26 +11,10 @@ namespace Valghalla.Internal.Infrastructure.Automapper
         public WorkLocationTemplateProfile()
         {
             CreateMap<WorkLocationTemplateEntity, WorkLocationTemplateResponse>()
-                .ForMember(f => f.AreaName, opt => opt.MapFrom(src => src.Area != null ? src.Area.Name : string.Empty))
-                ;
+                .ForMember(f => f.AreaName, opt => opt.MapFrom(src => src.Area != null ? src.Area.Name : string.Empty));
             CreateMap<WorkLocationTemplateEntity, WorkLocationTemplateDetailResponse>()
-                .ForMember(f => f.AreaName, opt => opt.MapFrom(src => src.Area != null ? src.Area.Name : string.Empty))
-                //.ForMember(f => f.TaskTypeIds, x => x.MapFrom(src => src.WorkLocationTemplateTaskTypes.Select(i => i.TaskTypeId)))
-                //.ForMember(f => f.TeamIds, x => x.MapFrom(src => src.WorkLocationTemplateTeams.Select(i => i.TeamId)))
-                //.ForMember(f => f.ResponsibleIds, x => x.MapFrom(src => src.WorkLocationTemplateResponsibles.Select(i => i.ParticipantId)))
-                //.ForMember(f => f.HasActiveElection, a => a.Ignore());
-            ;
-
-            //CreateMap<WorkLocationTemplateResponsibleEntity, WorkLocationTemplateResponsibleResponse>()
-            //    .ForMember(f => f.ParticipantFirstName, a => a.Ignore())
-            //    .ForMember(f => f.ParticipantLastName, a => a.Ignore())
-            //    .ForMember(f => f.ParticipantMobileNumber, a => a.Ignore())
-            //    .ForMember(f => f.Id, a => a.Ignore())
-            //    .ForMember(f => f.ParticipantEmail, a => a.Ignore());
-
-            //CreateMap<WorkLocationTemplateEntity, WorkLocationTemplateSharedResponse>();
-            //CreateMap<WorkLocationTemplateEntity, WorkLocationTemplateWithTeamIdsResponse>()
-            //    .ForMember(f => f.TeamIds, a => a.Ignore());
+                .ForMember(f => f.AreaName, opt => opt.MapFrom(src => src.Area != null ? src.Area.Name : string.Empty));
+            CreateMap<WorkLocationTemplateEntity, WorkLocationTemplateSharedResponse>();
         }
     }
 }

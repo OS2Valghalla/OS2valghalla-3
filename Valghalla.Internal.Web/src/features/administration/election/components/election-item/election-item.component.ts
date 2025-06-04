@@ -16,13 +16,14 @@ import { ElectionTypeSharedHttpService } from 'src/shared/services/election-type
 import { ElectionDetails } from '../../models/election-details';
 import { CommunicationTemplateListingItem } from '../../../../communication/communication-template/models/communication-template-listing-item';
 import { WorkLocationShared } from 'src/shared/models/work-location/work-location-shared';
-import { WorkLocationSharedHttpService } from 'src/shared/services/work-location-shared-http.service';
 import { CommunicationTemplateShared } from 'src/shared/models/communication/communication-template-shared';
 import { CommunicationSharedHttpService } from 'src/shared/services/communication-shared-http.service';
 import { TaskTypeShared } from 'src/shared/models/task-type/task-type-shared';
 import { DefaultCommunicationTemplates } from 'src/shared/constants/default-communication-templates';
 import { TaskTypeSharedHttpService } from 'src/shared/services/task-type-shared-http.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { WorkLocationTemplateSharedHttpService } from 'src/shared/services/work-location-template-shared-http.service';
+import { WorkLocationTemplateShared } from 'src/shared/models/work-location-template/work-location-template-shared';
 
 interface TaskTypeWithTemplates extends TaskTypeShared {
   confirmationOfRegistration_Template?: CommunicationTemplateShared;
@@ -50,7 +51,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
     private readonly changeDetectorRef: ChangeDetectorRef,
     private readonly electionHttpService: ElectionHttpService,
     private readonly electionTypeSharedHttpService: ElectionTypeSharedHttpService,
-    private readonly workLocationSharedHttpService: WorkLocationSharedHttpService,
+    private readonly workLocationTemplateSharedHttpService: WorkLocationTemplateSharedHttpService,
     private readonly communicationSharedHttpService: CommunicationSharedHttpService,
     private readonly taskTypeSharedHttpService: TaskTypeSharedHttpService,
   ) {}
@@ -58,7 +59,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
   loading = true;
   item: ElectionDetails;
   electionTypes: ElectionTypeShared[] = [];
-  workLocations: WorkLocationShared[] = [];
+  workLocationTemplates: WorkLocationTemplateShared[] = [];
   taskTypes: TaskTypeWithTemplates[] = [];
   communicationTemplates: CommunicationTemplateShared[] = [];
 
@@ -101,12 +102,12 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
     this.subs.sink = combineLatest({
       wizardState: this.wizard.state$,
       electionTypes: this.electionTypeSharedHttpService.getElectionTypes(),
-      workLocations: this.workLocationSharedHttpService.getWorkLocations(),
+      workLocationTemplates: this.workLocationTemplateSharedHttpService.getWorkLocationTemplates(),
       taskTypes: this.taskTypeSharedHttpService.getTaskTypes(),
       communicationTemplates: this.communicationSharedHttpService.getCommunicationTemplates(),
     }).subscribe((v) => {
       this.electionTypes = v.electionTypes.data;
-      this.workLocations = v.workLocations.data;
+      this.workLocationTemplates = v.workLocationTemplates.data;
       this.taskTypes = v.taskTypes.data;
       this.communicationTemplates = v.communicationTemplates.data;
       this.setSelectedTemplate(

@@ -68,7 +68,7 @@
     [formGroup]="formWorkLocation"
     [stepTitle]="'administration.election.label.step_form_work_location' | transloco">
     <div *appWizardStep class="flex flex-col w-[36rem]">
-      <mat-hint>{{ 'administration.election.label.work_location_hint' | transloco }}</mat-hint>
+      <mat-hint>{{ 'administration.election.label.work_location_template_hint' | transloco }}</mat-hint>
       <mat-checkbox
         *ngFor="let workLocation of workLocations"
         [checked]="isWorkLocationChecked(workLocation)"

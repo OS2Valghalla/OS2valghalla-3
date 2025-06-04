@@ -31,6 +31,7 @@ using Valghalla.Internal.Application.Modules.Shared.TaskType.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.Team.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.User;
 using Valghalla.Internal.Application.Modules.Shared.WorkLocation.Interfaces;
+using Valghalla.Internal.Application.Modules.Shared.WorkLocationTemplate.Interfaces;
 using Valghalla.Internal.Application.Modules.Tasks.Interfaces;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Area;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Communication;
@@ -133,6 +134,7 @@ namespace Valghalla.Internal.Infrastructure
             services.AddScoped<IElectionSharedQueryRepository, ElectionSharedQueryRepository>();
             services.AddScoped<IElectionTypeSharedQueryRepository, ElectionTypeSharedQueryRepository>();
             services.AddScoped<IWorkLocationSharedQueryRepository, WorkLocationSharedQueryRepository>();
+            services.AddScoped<IWorkLocationTemplateSharedQueryRepository, WorkLocationTemplateSharedQueryRepository>();
             services.AddScoped<ICommunicationSharedQueryRepository, CommunicationSharedQueryRepository>();
             services.AddScoped<ITaskTypeSharedQueryRepository, TaskTypeSharedQueryRepository>();
             services.AddScoped<ITeamSharedQueryRepository, TeamSharedQueryRepository>();
