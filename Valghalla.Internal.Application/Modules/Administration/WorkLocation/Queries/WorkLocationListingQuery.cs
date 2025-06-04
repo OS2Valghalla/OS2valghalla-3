@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+
 using Valghalla.Application.QueryEngine;
 using Valghalla.Application.QueryEngine.Values;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocation.Responses;
@@ -21,6 +22,7 @@ namespace Valghalla.Internal.Application.Modules.Administration.WorkLocation.Que
         public FreeTextSearchValue? Title { get; init; }
         public FreeTextSearchValue? PostalCode { get; init; }
         public SingleSelectionFilterValue<Guid>? Area { get; init; }
+        public SingleSelectionFilterValue<Guid>? Election { get; init; }
         public override Order? Order { get; init; } = new Order("title", false);
     }
 

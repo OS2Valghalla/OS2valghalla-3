@@ -41,7 +41,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
   readonly form = this.formBuilder.group({
     title: ['', Validators.required],
     areaId: ['', Validators.required],
-    // electionId: ['', Validators.required],
+    electionId: ['', Validators.required],
     address: ['', Validators.required],
     postalCode: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
     city: ['', Validators.required],
@@ -102,7 +102,7 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
               taskTypeIds: res.data.taskTypeIds,
               teamIds: res.data.teamIds,
               responsibleIds: res.data.responsibleIds,
-// electionId: res.data.electionId ? res.data.electionId : '',
+              electionId: res.data.electionId ? res.data.electionId : '',
             });
             this.changeDetectorRef.detectChanges();
           }

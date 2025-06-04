@@ -110,6 +110,10 @@
       "audit_log": {
         "title": "Revisionslog",
         "description": "Find revisionsinformation om brugeradgang til personlige data og andre aktiviteter i systemet"
+      },
+      "work_location_template": {
+        "title": "Arbejdsstedsskabeloner",
+        "description": "Administrer alle arbejdsstedsskabeloner i systemet"
       }
     },
     "footer": {
@@ -775,6 +779,52 @@
       },
       "work_location_listing": {
         "title": "Arbejdssteder",
+        "area": "Område"
+      }
+    },
+    "work_location_template": {
+      "page_title": "Arbejdsstedsskabelon",
+      "error": {
+        "work_location_template_exist": "En arbejdsstedsskabelon med samme navn eksisterer allerede",
+        "get_work_location_template": "Fejl opstod ved hentning af arbejdsstedsskabelon",
+        "create_work_location_template": "Fejl opstod ved oprettelse af arbejdsstedsskabelon",
+        "update_work_location_template": "Fejl opstod ved opdatering af arbejdsstedsskabelon",
+        "delete_work_location_template": "Fejl opstod ved sletning af arbejdsstedsskabelon",
+        "check_work_location_template_used_in_active_election": "Fejl opstod ved kontrol af om arbejdsstedsskabelon bruges i aktivt valg",
+        "work_location_template_used_in_active_election": "Arbejdsstedsskabelon brugt i et aktivt valg kan ikke slettes",
+        "active_election_warning": "Opgavetyper og teams kan ikke redigeres, da denne arbejdsstedsskabelon er en del af et aktivt valg."
+      },
+      "success": {
+        "create_work_location_template": "Arbejdsstedsskabelon er blevet oprettet med succes",
+        "update_work_location_template": "Arbejdsstedsskabelon er blevet opdateret med succes",
+        "delete_work_location_template": "Arbejdsstedsskabelon er blevet slettet med succes"
+      },
+      "action": {
+        "create_work_location_template": "Opret arbejdsstedsskabelon",
+        "delete_confirmation": {
+          "title": "Slet arbejdsstedsskabelon",
+          "content_no_task": "Er du sikker på, at du vil slette denne arbejdsstedsskabelon?",
+          "content_has_task": "Der er opgaver forbundet med denne arbejdsstedsskabelon. Er du sikker på, at du vil slette den? De tilknyttede opgaver vil også blive slettet"
+        }
+      },
+      "columns": {
+        "area": "Område",
+        "election": "Valg",
+        "address": "Adresse",
+        "postal_code": "Postnummer",
+        "city": "By",
+        "vote_location": "Afstemningsområde",
+        "relevant_task_types": "Relevante opgavetyper",
+        "relevant_teams": "Relevante teams"
+      },
+      "work_location_template_item": {
+        "page_title": {
+          "create": "Opret arbejdsstedsskabelon",
+          "edit": "Rediger arbejdsstedsskabelon"
+        }
+      },
+      "work_location_template_listing": {
+        "title": "Arbejdsstedsskabeloner",
         "area": "Område"
       }
     },

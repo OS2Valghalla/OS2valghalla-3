@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Application.QueryEngine;
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
@@ -38,7 +40,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             Query(queryable =>
             {
                 return queryable
-                    .Include(i => i.Area);
+                    .Include(i => i.Area)
+                    .Include(i => i.ElectionWorkLocations);
             });
 
             // QueryFor is to identity which property to build query expression
@@ -55,7 +58,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
 
             QueryFor(x => x.Title)
                 .Use((queryable, query) => queryable.Where(i => i.Title.Contains(query.Value)));
-            
+
             QueryFor(x => x.PostalCode)
                 .Use((queryable, query) => queryable.Where(i => i.PostalCode!.Contains(query.Value)));
 
@@ -69,6 +72,17 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                     return data.Select(i => new SelectOption<Guid>(i.Id, i.Name));
                 })
                 .Use((queryable, query) => queryable.Where(i => i.AreaId == query.Value));
+
+            QueryFor(x => x.Election)
+                .With(async request =>
+                {
+                    var data = await dataContext.Elections.AsNoTracking()
+                        .Select(i => new { i.Id, i.Title })
+                        .ToListAsync();
+
+                    return data.Select(i => new SelectOption<Guid>(i.Id, i.Title));
+                })
+                .Use((queryable, query) => queryable.Where(i => i.ElectionWorkLocations.Any(x => x.WorkLocationId == query.Value)));
         }
 
         // All repository need to overwrite "ExecuteQuery" method, this will be called by query engine handler

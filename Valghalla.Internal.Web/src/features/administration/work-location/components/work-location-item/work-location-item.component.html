@@ -19,7 +19,7 @@
 <div class="flex flex-col col-span-2">
       <mat-form-field appearance="fill" *appShowSkeleton="loading">
         <mat-label>{{ 'administration.work_location.columns.election' | transloco }}</mat-label>
-        <mat-select>
+        <mat-select formControlName="electionId">
           <mat-option *ngFor="let election of elections" [value]="election.id">
             {{ election.title }}
           </mat-option>

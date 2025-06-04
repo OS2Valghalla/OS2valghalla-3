@@ -19,4 +19,6 @@ public partial class WorkLocationTemplateEntity : IChangeTrackingEntity
     public virtual AreaEntity Area { get; set; } = null!;
     public virtual UserEntity CreatedByUser { get; set; } = null!;
     public virtual UserEntity? ChangedByUser { get; set; }
+
+    public virtual ICollection<WorkLocationEntity> WorkLocations { get; } = new List<WorkLocationEntity>();
 }

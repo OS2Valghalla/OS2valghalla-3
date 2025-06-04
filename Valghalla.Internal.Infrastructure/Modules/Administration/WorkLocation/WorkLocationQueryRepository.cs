@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
-using Valghalla.Internal.Application.Modules.Administration.Team.Commands;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocation.Commands;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocation.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocation.Queries;
@@ -23,7 +24,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
         }
 
         public async Task<bool> CheckIfWorkLocationExistsAsync(CreateWorkLocationCommand command, CancellationToken cancellationToken)
-        {     
+        {
             var name = command.Title.Trim().ToLower();
             return await workLocations.AnyAsync(i => i.Title.ToLower() == name, cancellationToken);
         }
@@ -47,8 +48,22 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
         public async Task<WorkLocationDetailResponse?> GetWorkLocationAsync(GetWorkLocationQuery query, CancellationToken cancellationToken)
         {
             var entity = await workLocations
-                .Include(i => i.Area).Include(i => i.WorkLocationTaskTypes).Include(i => i.WorkLocationTeams).Include(i => i.WorkLocationResponsibles)
+                .Include(i => i.Area).Include(i => i.WorkLocationTaskTypes).Include(i => i.WorkLocationTeams).Include(i => i.WorkLocationResponsibles).Include(i => i.ElectionWorkLocations)
                 .SingleOrDefaultAsync(i => i.Id == query.WorkLocationId, cancellationToken);
+
+            if (entity == null) return null;
+
+            var mappedEntity = mapper.Map<WorkLocationDetailResponse>(entity);
+            mappedEntity.HasActiveElection = await workLocations.Include(x => x.Elections).AnyAsync(x => x.Id == query.WorkLocationId && x.Elections.Any(e => e.Active), cancellationToken);
+
+            return mappedEntity;
+        }
+
+        public async Task<WorkLocationDetailResponse?> GetWorkLocationByElectionIdAsync(GetWorkLocationByElectionIdQuery query, CancellationToken cancellationToken)
+        {
+            var entity = await workLocations
+                .Include(i => i.Area).Include(i => i.WorkLocationTaskTypes).Include(i => i.WorkLocationTeams).Include(i => i.WorkLocationResponsibles).Include(i => i.ElectionWorkLocations)
+                .SingleOrDefaultAsync(i => i.Id == query.WorkLocationId && i.ElectionWorkLocations.Any(x => x.ElectionId == query.ElectionId), cancellationToken);
 
             if (entity == null) return null;
 

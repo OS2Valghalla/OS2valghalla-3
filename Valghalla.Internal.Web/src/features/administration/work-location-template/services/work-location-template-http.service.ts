@@ -35,7 +35,19 @@ export class WorkLocationTemplateHttpService {
         }),
       );
   }
+getAllWorkLocationTemplates(): Observable<Response<WorkLocationTemplateDetails[]>> {
+    return this.httpClient
+      .get<Response<WorkLocationTemplateDetails[]>>(this.baseUrl + 'getworklocationtemplates', {        
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('administration.work_location_template.error.get_work_location_template');
+          this.notificationService.showError(msg);
 
+          return throwError(() => err);
+        }),
+      );
+  }
   createWorkLocationTemplate(value: CreateWorkLocationTemplateRequest): Observable<Response<string>> {
     return this.httpClient.post<Response<string>>(this.baseUrl + 'createworklocationtemplate', value).pipe(
       catchError((err) => {

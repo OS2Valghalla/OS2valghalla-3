@@ -766,6 +766,7 @@
       "columns": {
         "area": "Area",
         "election": "Election",
+        "template": "Template",
         "address": "Address",
         "postal_code": "Postal code",
         "city": "City",

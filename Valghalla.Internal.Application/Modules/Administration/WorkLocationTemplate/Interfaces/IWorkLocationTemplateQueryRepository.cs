@@ -11,9 +11,7 @@ namespace Valghalla.Internal.Application.Modules.Administration.WorkLocationTemp
     {
         Task<bool> CheckIfWorkLocationTemplateExistsAsync(CreateWorkLocationTemplateCommand command, CancellationToken cancellationToken);
         Task<bool> CheckIfWorkLocationTemplateExistsAsync(UpdateWorkLocationTemplateCommand command, CancellationToken cancellationToken);
-        //Task<bool> CheckIfWorkLocationTemplateUsedInActiveElectionAsync(Guid id, CancellationToken cancellationToken);
-        //Task<bool> CheckIfWorkLocationTemplateHasTasksAsync(DeleteWorkLocationTemplateCommand command, CancellationToken cancellationToken);
         Task<WorkLocationTemplateDetailResponse?> GetWorkLocationTemplateAsync(GetWorkLocationTemplateQuery query, CancellationToken cancellationToken);
-        //Task<List<WorkLocationResponsibleResponse>> GetWorkLocationTemplateResponsiblesAsync(GetWorkLocationTemplateResponsibleParticipantsQuery query, CancellationToken cancellationToken);
+        Task<List<WorkLocationTemplateDetailResponse>?> GetWorkLocationTemplatesAsync(GetWorkLocationTemplatesQuery query, CancellationToken cancellationToken);
     }
 }

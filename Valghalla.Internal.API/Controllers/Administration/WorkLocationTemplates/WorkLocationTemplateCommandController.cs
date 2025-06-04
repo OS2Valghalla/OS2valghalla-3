@@ -29,10 +29,7 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocationTemplate
                 Address = request.Address,
                 PostalCode = request.PostalCode,
                 City = request.City,
-                VoteLocation = request.VoteLocation,
-                TaskTypeIds = request.TaskTypeIds,
-                TeamIds = request.TeamIds,
-                ResponsibleIds = request.ResponsibleIds
+                VoteLocation = request.VoteLocation
             };
 
             var id = await sender.Send(command, cancellationToken);
