@@ -783,7 +783,9 @@
       },
       "work_location_listing": {
         "title": "Work locations",
-        "area": "Area"
+        "area": "Area",
+        "election": "Election",
+        "template": "Template"
       }
     },
     "work_location_template": {

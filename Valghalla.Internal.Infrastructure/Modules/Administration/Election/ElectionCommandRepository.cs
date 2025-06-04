@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+
+using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Administration.Election.Commands;
@@ -13,6 +15,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
         private readonly DataContext dataContext;
         private readonly DbSet<ElectionEntity> elections;
         private readonly DbSet<ElectionWorkLocationEntity> electionWorkLocations;
+        private readonly DbSet<WorkLocationTemplateEntity> workLocationTemplates;
+        private readonly DbSet<WorkLocationEntity> workLocations;
         private readonly DbSet<ElectionTaskTypeCommunicationTemplateEntity> electionTaskTypeCommunicationTemplates;
         private readonly DbSet<TaskAssignmentEntity> taskAssignments;
 
@@ -21,6 +25,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
             this.dataContext = dataContext;
             elections = dataContext.Set<ElectionEntity>();
             electionWorkLocations = dataContext.Set<ElectionWorkLocationEntity>();
+            workLocationTemplates = dataContext.Set<WorkLocationTemplateEntity>();
+            workLocations = dataContext.Set<WorkLocationEntity>();
             electionTaskTypeCommunicationTemplates = dataContext.Set<ElectionTaskTypeCommunicationTemplateEntity>();
             taskAssignments = dataContext.Set<TaskAssignmentEntity>();
         }
@@ -47,10 +53,33 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
                 RemovedByValidationCommunicationTemplateId = command.RemovedByValidationCommunicationTemplateId
             };
 
-            var electionWorkLocationEntities = command.WorkLocationIds.Select(workLocationId => new ElectionWorkLocationEntity()
+            var workLocationTemplatesForElection = await workLocationTemplates.Where(i => command.WorkLocationIds.Contains(i.Id)).ToListAsync(cancellationToken);
+            var workLocationsForElection = workLocationTemplatesForElection
+                .Select(i => new WorkLocationEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Address = i.Address,
+                    PostalCode = i.PostalCode,
+                    City = i.City,
+                    AreaId = i.AreaId,
+                    Title = i.Title,
+                    VoteLocation = i.VoteLocation,
+                    ChangedBy = i.ChangedBy,
+                    ChangedAt = i.ChangedAt,
+                    CreatedAt = i.CreatedAt,
+                    CreatedBy = i.CreatedBy,
+                    ChangedByUser = i.ChangedByUser,
+                    CreatedByUser = i.CreatedByUser,
+                    WorkLocationTemplateId = i.Id
+                })
+                .ToList();
+            await workLocations.AddRangeAsync(workLocationsForElection, cancellationToken);
+            await dataContext.SaveChangesAsync(cancellationToken);
+
+            var electionWorkLocationEntities = workLocationsForElection.Select(workLocation => new ElectionWorkLocationEntity()
             {
                 ElectionId = entity.Id,
-                WorkLocationId = workLocationId,
+                WorkLocationId = workLocation.Id,
             });
 
             var electionTaskTypeCommunicationTemplateEntities = command.ElectionTaskTypeCommunicationTemplates.Select(electionTaskTypeCommunicationTemplate => new ElectionTaskTypeCommunicationTemplateEntity()

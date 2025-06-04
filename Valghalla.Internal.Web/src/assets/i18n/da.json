@@ -780,7 +780,9 @@
       },
       "work_location_listing": {
         "title": "Arbejdssteder",
-        "area": "Område"
+        "area": "Område",
+        "election": "Valg",
+        "template": "Skabelon"
       }
     },
     "work_location_template": {

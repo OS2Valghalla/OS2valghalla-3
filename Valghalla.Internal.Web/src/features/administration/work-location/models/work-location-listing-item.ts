@@ -4,4 +4,6 @@ export interface WorkLocationListingItem {
   areaName: string;
   electionId?: string;
   templateId?: string;
+  electionTitle?: string;
+  templateTitle?: string;
 }

@@ -75,7 +75,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
     electionDate: [undefined as Date, Validators.required],
   });
 
-  readonly formWorkLocation = this.formBuilder.group({
+  readonly formWorkLocationTemplate = this.formBuilder.group({
     workLocationIds: [undefined as string[], Validators.required],
   });
 
@@ -199,7 +199,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
             electionDate: res.data.electionDate,
           });
 
-          this.formWorkLocation.setValue({
+          this.formWorkLocationTemplate.setValue({
             workLocationIds: res.data.workLocationIds,
           });
         }
@@ -255,30 +255,32 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
     return null;
   }
 
-  isWorkLocationChecked(workLocation: WorkLocationShared) {
+  isWorkLocationChecked(workLocation: WorkLocationTemplateShared) {
     return (
-      this.formWorkLocation.value.workLocationIds &&
-      this.formWorkLocation.value.workLocationIds.some((id) => id == workLocation.id)
+      this.formWorkLocationTemplate.value.workLocationIds &&
+      this.formWorkLocationTemplate.value.workLocationIds.some((id) => id == workLocation.id)
     );
   }
 
-  isWorkLocationDisabled(workLocation: WorkLocationShared) {
+  isWorkLocationDisabled(workLocation: WorkLocationTemplateShared) {
     return this.item && this.item.workLocationIds && this.item.workLocationIds.some((id) => id == workLocation.id);
   }
 
   toggleWorkLocation(event: MatCheckboxChange, workLocationId: string) {
-    const values = this.formWorkLocation.value.workLocationIds
-      ? this.formWorkLocation.value.workLocationIds.filter((id) => id != workLocationId)
+console.log('Toggle work location:', workLocationId, 'Checked:', event.checked);
+
+    const values = this.formWorkLocationTemplate.value.workLocationIds
+      ? this.formWorkLocationTemplate.value.workLocationIds.filter((id) => id != workLocationId)
       : [];
 
     if (event.checked) {
       values.push(workLocationId);
     }
 
-    this.formWorkLocation.setValue({
+    this.formWorkLocationTemplate.setValue({
       workLocationIds: values,
     });
-    this.formWorkLocation.markAsDirty();
+    this.formWorkLocationTemplate.markAsDirty();
   }
 
   createElection(event: WizardEvent) {
@@ -306,7 +308,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
       electionStartDate: this.formDate.value.electionStartDate,
       electionEndDate: this.formDate.value.electionEndDate,
       electionDate: this.formDate.value.electionDate,
-      workLocationIds: this.formWorkLocation.value.workLocationIds,
+      workLocationIds: this.formWorkLocationTemplate.value.workLocationIds,
       confirmationOfRegistrationCommunicationTemplateId:
         this.formCommunicationTemplates.value.confirmationOfRegistration_Template.id,
       confirmationOfCancellationCommunicationTemplateId:
@@ -334,7 +336,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
       id: this.wizard.itemId,
       title: this.formInfo.value.title,
       lockPeriod: this.formInfo.value.lockPeriod,
-      workLocationIds: this.formWorkLocation.value.workLocationIds,
+      workLocationIds: this.formWorkLocationTemplate.value.workLocationIds,
     };
 
     this.subs.sink = event.pipe(this.electionHttpService.updateElection(updateRequest)).subscribe((res) => {

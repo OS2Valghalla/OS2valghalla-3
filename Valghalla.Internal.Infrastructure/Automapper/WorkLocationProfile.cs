@@ -14,7 +14,9 @@ namespace Valghalla.Internal.Infrastructure.Automapper
             CreateMap<WorkLocationEntity, WorkLocationResponse>()
                 .ForMember(f => f.AreaName, opt => opt.MapFrom(src => src.Area != null ? src.Area.Name : string.Empty))
                 .ForMember(dest => dest.ElectionId, opt => opt.MapFrom(src => src.ElectionWorkLocations.Select(e => e.ElectionId).FirstOrDefault()))
-                .ForMember(dest => dest.TemplateId, opt => opt.MapFrom(src => src.WorkLocationTemplateId != null ? src.WorkLocationTemplateId.ToString() : string.Empty));
+                .ForMember(dest => dest.TemplateId, opt => opt.MapFrom(src => src.WorkLocationTemplateId != null ? src.WorkLocationTemplateId.ToString() : string.Empty))
+                .ForMember(dest => dest.ElectionTitle, opt => opt.MapFrom(src => src.Elections.Select(e => e.Title).FirstOrDefault() ?? string.Empty))
+                .ForMember(dest => dest.TemplateTitle, opt => opt.MapFrom(src => src.WorkLocationTemplate != null ? src.WorkLocationTemplate.Title : string.Empty));
             ;
             CreateMap<WorkLocationEntity, WorkLocationDetailResponse>()
                 .ForMember(f => f.AreaName, opt => opt.MapFrom(src => src.Area != null ? src.Area.Name : string.Empty))

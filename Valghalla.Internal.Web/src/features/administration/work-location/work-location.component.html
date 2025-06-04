@@ -53,8 +53,8 @@
       appHeaderRowDef
       key="id"
       [sticky]="true"
-      [columns]="['title', 'areaName', '$actionsEditDelete']"
-      [mobileColumns]="['title', 'areaName']">
+      [columns]="['title', 'areaName','electionTitle','templateTitle', '$actionsEditDelete']"
+      [mobileColumns]="['title', 'areaName','electionTitle','templateTitle']">
     </ng-container>
 
     <ng-container [appTableTyping]="typing" appColumnDef="title">
@@ -67,6 +67,18 @@
         'administration.work_location.work_location_listing.area' | transloco
       }}</ng-container>
       <ng-container *appCellDef="typing; let row">{{ row.areaName }}</ng-container>
+    </ng-container>
+    <ng-container [appTableTyping]="typing" appColumnDef="electionTitle">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.work_location.work_location_listing.election' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.electionTitle }}</ng-container>
+    </ng-container>
+<ng-container [appTableTyping]="typing" appColumnDef="templateTitle">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.work_location.work_location_listing.template' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.templateTitle }}</ng-container>
     </ng-container>
   </app-table>
 </app-card>

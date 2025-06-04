@@ -33,7 +33,17 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                 {
                     return queryable.SortBy(i => i.Area.Name, order);
                 }
+                else if (order.Name == "electionTitle")
+                {
+                    return queryable.SortBy(i => i.ElectionWorkLocations
+                              .Select(n => n.Election.Title)
+                              .FirstOrDefault(), order);
+                }
 
+                else if (order.Name == "templateTitle")
+                {
+                    return queryable.SortBy(i => i.WorkLocationTemplate.Title, order);
+                }
                 return queryable;
             });
 
@@ -41,6 +51,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             {
                 return queryable
                     .Include(i => i.Area)
+                    .Include(i => i.Elections)
+                    .Include(i => i.WorkLocationTemplate)
                     .Include(i => i.ElectionWorkLocations);
             });
 
