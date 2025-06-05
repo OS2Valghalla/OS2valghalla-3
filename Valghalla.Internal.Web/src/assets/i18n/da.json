@@ -102,6 +102,8 @@
         "tasks_overview_title": "Oversigt over opgaver",
         "tasks_overview_description": "Få overblik over alle opgaver i det valgte valg",
         "create_task_link_title": "Opret opgavelink",
+        "rejected_tasks_overview_link_title": "Oversigt over afviste opgaver",
+        "rejected_tasks_overview_link_description": "Få overblik over afviste opgaver i det valgte valg",
         "create_task_link_description": "Opret et link til valgte opgaver",
         "work_location_tasks_title": "Opgaver på arbejdssted",
         "work_location_tasks_distribution_title": "Fordel opgaver",

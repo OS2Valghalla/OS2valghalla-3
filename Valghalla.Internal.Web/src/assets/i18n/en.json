@@ -23,7 +23,7 @@
         "election_system_list": {
           "title": "Export for election system",
           "description": "Create CSV-file with users for the election system"
-        }       
+        }
       },
       "administration": "Administration",
       "election_type": {
@@ -102,6 +102,8 @@
         "tasks_overview_title": "Tasks overview",
         "tasks_overview_description": "Get an overview of all tasks in the selected election",
         "create_task_link_title": "Create task link",
+        "rejected_tasks_overview_link_title": "Rejected tasks overview",
+        "rejected_tasks_overview_link_description": "Get an overview of all rejected tasks in the selected election",
         "create_task_link_description": "Create a link to selected tasks",
         "work_location_tasks_title": "Work Location Tasks",
         "work_location_tasks_distribution_title": "Distribute tasks",

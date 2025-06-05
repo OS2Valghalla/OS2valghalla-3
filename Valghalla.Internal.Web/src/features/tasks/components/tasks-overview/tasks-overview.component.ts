@@ -8,6 +8,8 @@ import { TasksSummary } from '../../models/tasks-summary';
 import { ElectionAreasGeneralInfo, TaskTypeWithAreaIdsResponse } from '../../models/election-areas-general-info';
 import { ElectionShared } from 'src/shared/models/election/election-shared';
 import { MatSelectionList } from '@angular/material/list';
+import { Router } from '@angular/router';
+import { TaskStatusGeneralInfoResponse } from '../../models/task-status-general-info-response';
 
 export interface AreaTasksSummary {
   areaId: string;
@@ -45,33 +47,15 @@ export interface StatusesTasksSummary {
   sumMissingTasksCount: number;
   sumAllTasksCount: number;
 }
-export interface TaskStatusGeneralInfoResponse {
-  assignedTasksCount: number;
-  missingTasksCount: number;
-  awaitingTasksCount: number;
-  allTasksCount: number;
-  rejectedTasksCount: number;
-  rejectedTasksInfoResponses: RejectedTasksInfoResponse[];
-}
 
-export interface RejectedTasksInfoResponse {
-  taskId: string;
-  taskTypeId: string;
-  teamId: string;
-  participantId: string;
-  tasksDate: string;
-}
 @Component({
   selector: 'app-tasks-overview',
   templateUrl: './tasks-overview.component.html',
   styleUrls: ['../../../../shared/components/table/table.component.scss', 'tasks-overview.component.scss'],
   providers: [AreaSharedHttpService, AreaTasksHttpService],
 })
-export class TasksOverviewComponent implements AfterViewInit {
-onOpenRejectedTasks() {
-throw new Error('Method not implemented.');
-}
 
+export class TasksOverviewComponent implements AfterViewInit {
   private readonly subs = new SubSink();
 
   loadingAreas = true;
@@ -123,7 +107,7 @@ throw new Error('Method not implemented.');
     }
   ];
 
-  constructor(private globalStateService: GlobalStateService, private areaTasksHttpService: AreaTasksHttpService) { }
+  constructor(private globalStateService: GlobalStateService, private areaTasksHttpService: AreaTasksHttpService, private router: Router) { }
 
   ngAfterViewInit(): void {
     this.workLocationLink = '/' + RoutingNodes.TasksOnWorkLocation + '/';
@@ -418,6 +402,9 @@ throw new Error('Method not implemented.');
   isColumnDisabled(columnName: string): boolean {
     const column = this.columns.find(col => col.name === columnName);
     return column ? column.disabled : false;
+  }
+  onOpenRejectedTasks() {
+    this.router.navigate(['/tasks', RoutingNodes.RejectedTasksOverview]);
   }
 
 }

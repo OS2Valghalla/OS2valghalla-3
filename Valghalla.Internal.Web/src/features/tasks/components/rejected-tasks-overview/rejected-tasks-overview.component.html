@@ -1,0 +1,60 @@
+<app-card [cardTitle]="'tasks.page_title' | transloco">
+  <h3 class="pb-2">{{ 'tasks.labels.rejected_invitations' | transloco }}</h3>
+  <ng-container *ngFor="let workLocation of getUniqueWorkLocations()">
+    <h4 class="pt-4 pb-2 font-bold">{{ workLocation }}</h4>
+    <mat-table [dataSource]="getTasksByWorkLocation(workLocation)">
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef class="max-w-[70px] place-content-center"></mat-header-cell>
+        <mat-cell *matCellDef="let task; let rejectedTaskIndex = index" class="max-w-[70px] place-content-center">
+          {{ rejectedTaskIndex + 1 }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="participantName">
+        <mat-header-cell *matHeaderCellDef class="flex-none min-w-[200px]">{{
+          'tasks.labels.participant' | transloco
+        }}</mat-header-cell>
+        <mat-cell *matCellDef="let task" class="flex-none min-w-[200px]">
+          {{ task.participantName ? task.participantName : ('tasks.labels.missing' | transloco) }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="taskTypeName">
+        <mat-header-cell *matHeaderCellDef class="flex-none min-w-[180px]">{{
+          'tasks.labels.task_type' | transloco
+        }}</mat-header-cell>
+        <mat-cell *matCellDef="let task" class="flex-none min-w-[180px]">
+          {{ task.taskTypeName }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="taskDate">
+        <mat-header-cell *matHeaderCellDef class="flex-none min-w-[125px] max-w-[125px]">{{
+          'tasks.labels.task_date' | transloco
+        }}</mat-header-cell>
+        <mat-cell *matCellDef="let task" class="flex-none min-w-[125px] max-w-[125px]">
+          {{ task.taskDate | date }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="areaName">
+        <mat-header-cell *matHeaderCellDef class="flex-none min-w-[180px]">{{
+          'tasks.labels.area' | transloco
+        }}</mat-header-cell>
+        <mat-cell *matCellDef="let task" class="flex-none min-w-[180px]">
+          {{ task.areaName }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="teamName">
+        <mat-header-cell *matHeaderCellDef class="flex-none min-w-[180px]">{{
+          'tasks.labels.team' | transloco
+        }}</mat-header-cell>
+        <mat-cell *matCellDef="let task" class="flex-none min-w-[180px]">
+          {{ task.teamName }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let task" class="place-content-end"> </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </ng-container>
+</app-card>

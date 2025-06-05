@@ -223,5 +223,33 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
                 RejectedTasksCount = rejectedTasksList.Count
             };
         }
+        public async Task<List<RejectedTasksDetailsReponse>> GetRejectedTasks(GetRejectedTasksQuery query, CancellationToken cancellationToken)
+        {
+            var response = new List<RejectedTasksDetailsReponse>();
+            var results = await rejectedTaskAssignments.Include(x => x.Participant)
+                .Include(x => x.Participant)
+                .Include(x => x.WorkLocation).ThenInclude(x => x.Area)
+                .Include(x => x.Team)
+                .Include(x => x.TaskType)
+                .Where(t => t.ElectionId == query.ElectionId)
+                .ToListAsync();
+
+            foreach (var result in results)
+            {
+                response.Add(new RejectedTasksDetailsReponse
+                {
+                    AreaName = result.WorkLocation.Area.Name,
+                    ParticipantName = result.Participant.FirstName + " " + result.Participant.LastName,
+                    TaskTypeName = result.TaskType.Title,
+                    TaskDate = result.TaskDate.ToString(),
+                    WorkLocationName = result.WorkLocation.Title,
+                    TeamName = result.Team.Name
+                });
+
+            }
+            return response;
+        }
+
     }
 }
+

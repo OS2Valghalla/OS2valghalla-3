@@ -35,12 +35,18 @@ namespace Valghalla.Internal.API.Controllers.Tasks
             return Ok(result);
         }
         [HttpGet("gettasksstatussummary")]
-        public async Task<IActionResult> getTasksStatusSummaryQuery(Guid electionId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetTasksStatusSummaryQuery(Guid electionId, CancellationToken cancellationToken)
         {
             var query = new GetParticipantsTasksStatusQuery(electionId);
             var result = await sender.Send(query, cancellationToken);
             return Ok(result);
         }
-
+        [HttpGet("getrejectedtasks")]
+        public async Task<IActionResult> GetRejectedTasksAsync(Guid electionId, CancellationToken cancellationToken)
+        {
+            var query = new GetRejectedTasksQuery(electionId);
+            var result = await sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
     }
 }

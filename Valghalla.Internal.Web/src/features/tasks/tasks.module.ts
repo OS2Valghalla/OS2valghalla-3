@@ -10,6 +10,7 @@ import { CreateTaskLinkComponent } from './components/create-task-link/create-ta
 import { WorkLocationTasksOverviewComponent } from './components/work-location-tasks-overview/work-location-tasks-overview.component';
 import { WorkLocationTasksDistributionComponent } from './components/work-location-tasks-distribution/work-location-tasks-distribution.component';
 import { ReplyForParticipantComponent } from './components/reply-for-participant/reply-for-participant.component';
+import { RejectedTasksOverviewComponent } from './components/rejected-tasks-overview/rejected-tasks-overview.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,8 @@ import { ReplyForParticipantComponent } from './components/reply-for-participant
         WorkLocationTasksOverviewComponent,
         WorkLocationTasksDistributionComponent,
         ReplyForParticipantComponent,
+        RejectedTasksOverviewComponent
     ],
     imports: [CommonModule, MaterialModule, TasksRoutingModule, SharedModule, TranslocoModule],
-  })
-  export class TasksModule {}
+})
+export class TasksModule { }
