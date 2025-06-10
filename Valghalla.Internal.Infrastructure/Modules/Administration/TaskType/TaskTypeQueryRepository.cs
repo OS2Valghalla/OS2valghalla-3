@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Administration.TaskType.Commands;
@@ -62,6 +64,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
         {
             var entity = await taskTypes
                 .Include(i => i.FileReferences)
+                .Include(i => i.WorkLocationTaskTypes).ThenInclude(i => i.WorkLocation).ThenInclude(i => i.Elections)
                 .Where(i => i.Id == id)
                 .SingleOrDefaultAsync(cancellationToken);
 
@@ -74,6 +77,16 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
                .ToListAsync(cancellationToken);
 
             return entities.Select(mapper.Map<TaskTypeListingItemResponse>).ToList();
-        }    
+        }
+        public async Task<IList<TaskTypeListingItemResponse>> GetAllTaskTypesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken)
+        {
+            var entities = await taskTypes
+                .Include(t => t.TaskAssignments)
+                .Where(t => t.TaskAssignments.Any(a => a.ElectionId == electionId))
+                .OrderBy(t => t.Title)
+                .ToListAsync(cancellationToken);
+
+            return entities.Select(mapper.Map<TaskTypeListingItemResponse>).ToList();
+        }
     }
 }

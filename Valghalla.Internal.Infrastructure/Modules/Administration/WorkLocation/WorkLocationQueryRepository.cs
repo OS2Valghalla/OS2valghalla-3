@@ -72,7 +72,23 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
 
             return mappedEntity;
         }
+        public async Task<List<WorkLocationDetailResponse>?> GetWorkLocationsByElectionIdAsync(GetWorkLocationsByElectionIdQuery query, CancellationToken cancellationToken)
+        {
+            var entities = await workLocations
+                .Include(i => i.Area)
+                .Include(i => i.WorkLocationTaskTypes)
+                .Include(i => i.WorkLocationTeams)
+                .Include(i => i.WorkLocationResponsibles)
+                .Include(i => i.ElectionWorkLocations)
+                .Where(i => i.ElectionWorkLocations.Any(x => x.ElectionId == query.ElectionId))
+                .ToListAsync(cancellationToken);
 
+            if (entities == null) return null;
+
+            var mappedEntity = entities.Select(entity => mapper.Map<WorkLocationDetailResponse>(entity));
+            
+            return mappedEntity.ToList();
+        }
         public async Task<List<WorkLocationResponsibleResponse>> GetWorkLocationResponsiblesAsync(GetWorkLocationResponsibleParticipantsQuery query, CancellationToken cancellationToken)
         {
             var entities = await workLocationResponsibles

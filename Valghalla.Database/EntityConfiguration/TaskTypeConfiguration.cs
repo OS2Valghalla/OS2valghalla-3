@@ -1,6 +1,7 @@
-﻿using Valghalla.Database.Entities.Tables;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Application;
+using Valghalla.Database.Entities.Tables;
 
 namespace Valghalla.Database.EntityConfiguration
 {
@@ -25,6 +26,11 @@ namespace Valghalla.Database.EntityConfiguration
 
                 entity.HasOne(e => e.CreatedByUser).WithMany().HasForeignKey(x => x.CreatedBy);
                 entity.HasOne(e => e.ChangedByUser).WithMany().HasForeignKey(x => x.ChangedBy);
+
+                entity.HasOne(e => e.TaskTypeTemplate)
+                .WithMany(t => t.TaskTypes)
+                .HasForeignKey(e => e.TaskTypeTemplateEntityId)
+                .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<TaskTypeFileEntity>(entity =>

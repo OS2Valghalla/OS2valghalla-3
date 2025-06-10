@@ -11,5 +11,6 @@ namespace Valghalla.Internal.Application.Modules.Administration.TaskType.Interfa
         Task<bool> CheckIfTaskTypeHasTasksInActiveElectionAsync(DeleteTaskTypeCommand command, CancellationToken cancellationToken);
         Task<TaskTypeDetailResponse?> GetTaskTypeAsync(Guid id, CancellationToken cancellationToken);
         Task<IList<TaskTypeListingItemResponse>> GetAllTaskTypesAsync(CancellationToken cancellationToken);
+        Task<IList<TaskTypeListingItemResponse>> GetAllTaskTypesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken);
     }
 }

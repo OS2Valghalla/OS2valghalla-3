@@ -21,8 +21,9 @@ namespace Valghalla.Internal.Application.Modules.Administration.WorkLocation.Que
     {
         public FreeTextSearchValue? Title { get; init; }
         public FreeTextSearchValue? PostalCode { get; init; }
-        public SingleSelectionFilterValue<Guid>? Area { get; init; }
-        public SingleSelectionFilterValue<Guid>? Election { get; init; }
+        public SingleSelectionFilterValue<Guid>? AreaId { get; init; }
+        public SingleSelectionFilterValue<Guid>? ElectionId { get; init; }
+        public SingleSelectionFilterValue<Guid>? TemplateId { get; init; }
         public override Order? Order { get; init; } = new Order("title", false);
     }
 

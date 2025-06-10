@@ -75,20 +75,7 @@ namespace Valghalla.Internal.Application.Modules.Administration.WorkLocationTemp
         public async Task<Response<Guid>> Handle(CreateWorkLocationTemplateCommand command, CancellationToken cancellationToken)
         {
             var id = await workLocationTemplateCommandRepository.CreateWorkLocationTemplateAsync(command, cancellationToken);
-            var participants = await participantSharedQueryRepository.GetPariticipantsAsync(new Shared.Participant.Queries.GetParticipantsSharedQuery()
-            {
-                Values = command.ResponsibleIds,
-            }, cancellationToken);
-
-            var auditLogs = participants.Select(i => new ParticipantWorkLocationResponsibleAuditLog(true, command.Title, i.Id, i.FirstName, i.LastName, i.Birthdate));
-            await auditLogService.AddAuditLogsAsync(auditLogs, cancellationToken);
-
-            var cprNumbers = participants.Select(i => i.Cpr);
-            await queueService.PublishAsync(new ExternalUserClearCacheMessage()
-            {
-                CprNumbers = cprNumbers
-            }, cancellationToken);
-
+            
             return Response.Ok(id);
         }
     }

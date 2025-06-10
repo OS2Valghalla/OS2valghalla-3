@@ -79,7 +79,7 @@ public partial class DataContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-         optionsBuilder.UseNpgsql("Host=localhost;port=5432;Database=Valghalla;Username=postgres;Password=!zyxzapr3");
+         // optionsBuilder.UseNpgsql("Connectionstring do desired database, should not be used in production");
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
@@ -92,8 +92,10 @@ public partial class DataContext : DbContext
         ElectionConfiguration.Configure(modelBuilder);
         AreaConfiguration.Configure(modelBuilder);
         WorkLocationConfiguration.Configure(modelBuilder);
+        WorkLocationTemplateTemplateConfiguration.Configure(modelBuilder);
         TeamConfiguration.Configure(modelBuilder);
         TaskTypeConfiguration.Configure(modelBuilder);
+        TaskTypeTemplateConfiguration.Configure(modelBuilder);
         ParticipantConfiguration.Configure(modelBuilder);
         UserConfiguration.Configure(modelBuilder);
         LinkConfiguration.Configure(modelBuilder);

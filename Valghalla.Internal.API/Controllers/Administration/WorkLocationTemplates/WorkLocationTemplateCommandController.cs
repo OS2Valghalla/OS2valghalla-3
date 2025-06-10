@@ -19,7 +19,7 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocationTemplate
             this.sender = sender;
         }
 
-        [HttpPost("createworklocation")]
+        [HttpPost("createworklocationtemplate")]
         public async Task<IActionResult> CreateWorkLocationTemplateAsync([FromBody] CreateWorkLocationTemplateRequest request, CancellationToken cancellationToken)
         {
             var command = new CreateWorkLocationTemplateCommand()
@@ -36,7 +36,7 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocationTemplate
             return Ok(id);
         }
 
-        [HttpPut("updateworklocation")]
+        [HttpPut("updateworklocationtemplate")]
         public async Task<IActionResult> UpdateWorkLocationTemplateAsync([FromBody] UpdateWorkLocationTemplateRequest request, CancellationToken cancellationToken)
         {
             var command = new UpdateWorkLocationTemplateCommand()
@@ -57,7 +57,7 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocationTemplate
             return Ok(result);
         }
 
-        [HttpDelete("deleteworklocation")]
+        [HttpDelete("deleteworklocationtemplate")]
         public async Task<IActionResult> DeleteWorkLocationTemplateAsync(Guid id, CancellationToken cancellationToken)
         {
             var command = new DeleteWorkLocationTemplateCommand(id).Apply(HttpContext);

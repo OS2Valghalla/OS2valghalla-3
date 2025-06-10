@@ -74,7 +74,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             QueryFor(x => x.PostalCode)
                 .Use((queryable, query) => queryable.Where(i => i.PostalCode!.Contains(query.Value)));
 
-            QueryFor(x => x.Area)
+            QueryFor(x => x.AreaId)
                 .With(async request =>
                 {
                     var data = await dataContext.Areas.AsNoTracking()
@@ -85,7 +85,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                 })
                 .Use((queryable, query) => queryable.Where(i => i.AreaId == query.Value));
 
-            QueryFor(x => x.Election)
+            QueryFor(x => x.ElectionId)
                 .With(async request =>
                 {
                     var data = await dataContext.Elections.AsNoTracking()
@@ -95,6 +95,17 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                     return data.Select(i => new SelectOption<Guid>(i.Id, i.Title));
                 })
                 .Use((queryable, query) => queryable.Where(i => i.ElectionWorkLocations.Any(x => x.WorkLocationId == query.Value)));
+
+            QueryFor(x => x.TemplateId)
+                .With(async request =>
+                {
+                    var data = await dataContext.WorkLocationTemplates.AsNoTracking()
+                        .Select(i => new { i.Id, i.Title })
+                        .ToListAsync();
+
+                    return data.Select(i => new SelectOption<Guid>(i.Id, i.Title));
+                })
+                .Use((queryable, query) => queryable.Where(i => i.WorkLocationTemplateId == query.Value));
         }
 
         // All repository need to overwrite "ExecuteQuery" method, this will be called by query engine handler
