@@ -18,7 +18,7 @@ export class TaskTypeHttpService {
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 
   getAllTaskTypes(): Observable<Response<Array<TaskTypeListingItem>>> {
     return this.httpClient
@@ -35,7 +35,22 @@ export class TaskTypeHttpService {
         }),
       );
   }
+  getTaskTypesByElectionID(electionId: string): Observable<Response<Array<TaskTypeListingItem>>> {
+    return this.httpClient
+      .get<Response<Array<TaskTypeListingItem>>>(this.baseUrl + 'getalltasktypesbyelectionid', {
+        params: {
+          electionId: electionId,
+        },
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('administration.task_type.error.get_all_task_types');
+          this.notificationService.showError(msg);
 
+          return throwError(() => err);
+        }),
+      );
+  }
   getTaskTypeDetails(id: string): Observable<Response<TaskTypeDetails>> {
     return this.httpClient
       .get<Response<TaskTypeDetails>>(this.baseUrl + 'gettasktypedetails', {

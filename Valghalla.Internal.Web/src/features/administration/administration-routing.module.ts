@@ -52,6 +52,11 @@ const routes: Routes = [
       import('../administration/task-type/task-type.routing.module').then((m) => m.TaskTypeRoutingModule),
   },
   {
+    path: RoutingNodes.TaskTypeTemplate,
+    loadChildren: () =>
+      import('../administration/task-type-template/task-type-template.routing.module').then((m) => m.TaskTypeTemplateRoutingModule),
+  },
+  {
     path: RoutingNodes.AuditLog,
     loadChildren: () =>
       import('../administration/audit-log/audit-log.routing.module').then((m) => m.AuditLogRoutingModule),

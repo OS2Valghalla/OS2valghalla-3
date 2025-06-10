@@ -56,7 +56,26 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, Afte
   @Input() mainPanelSize: string = 'w-3/4';
 
   /** Define session storage key table size settings and current page number */
-  @Input() storageKey: string = 'app-table';
+  private _storageKey: string = 'app-table';
+
+  @Input()
+  set storageKey(value: string) {
+    this._storageKey = this.slugifyKey(value);
+  }
+  get storageKey(): string {
+    return this._storageKey;
+  }
+
+  private slugifyKey(value: string): string {
+    if (!value) return 'app-table';
+    const slug = value
+      .toString()
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    return `app-table-${slug}`;
+  }
 
   @Input() rowNgClass: (row: T) => any;
 

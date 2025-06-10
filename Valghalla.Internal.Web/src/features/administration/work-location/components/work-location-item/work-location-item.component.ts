@@ -17,11 +17,13 @@ import { CreateWorkLocationRequest } from '../../models/create-work-location-req
 import { UpdateWorkLocationRequest } from '../../models/update-work-location-request';
 import { ElectionDetails } from 'src/features/administration/election/models/election-details';
 import { ElectionHttpService } from 'src/features/administration/election/services/election-http.service';
+import { TaskTypeTemplateListingItem } from 'src/features/administration/task-type-template/models/task-type-template-listing-item';
+import { TaskTypeTemplateHttpService } from 'src/features/administration/task-type-template/services/task-type-template-http.service';
 
 @Component({
   selector: 'app-admin-work-location-item',
   templateUrl: './work-location-item.component.html',
-  providers: [WorkLocationHttpService, AreaHttpService, TaskTypeHttpService, TeamHttpService, ElectionHttpService],
+  providers: [WorkLocationHttpService, AreaHttpService, TaskTypeHttpService, TeamHttpService, ElectionHttpService, TaskTypeTemplateHttpService],
 })
 export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
   private readonly subs = new SubSink();
@@ -35,6 +37,8 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
   elections: ElectionDetails[] = [];
 
   taskTypes: TaskTypeListingItem[] = [];
+
+  taskTypeTemplates: TaskTypeTemplateListingItem[] = [];
 
   teams: Team[] = [];
 
@@ -64,62 +68,79 @@ export class WorkLocationItemComponent implements AfterViewInit, OnDestroy {
     private readonly areaHttpService: AreaHttpService,
     private readonly taskTypeHttpService: TaskTypeHttpService,
     private readonly teamHttpService: TeamHttpService,
-    private readonly electionHttpService: ElectionHttpService
+    private readonly electionHttpService: ElectionHttpService,
+    private readonly taskTypeTemplateHttpService: TaskTypeTemplateHttpService
   ) { }
 
   ngAfterViewInit(): void {
     this.subs.sink = combineLatest({
       areas: this.areaHttpService.getAllAreas(),
-      taskTypes: this.taskTypeHttpService.getAllTaskTypes(),
       teams: this.teamHttpService.getAllTeams(),
       elections: this.electionHttpService.getAllElections(),
       formPageState: this.formPage.state$,
     }).subscribe((v) => {
       this.areas = v.areas.data;
-      this.taskTypes = v.taskTypes.data;
       this.teams = v.teams.data;
       this.elections = v.elections.data;
 
-      this.subs.sink = this.formPage.state$.subscribe(() => {
-        if (!this.formPage.isUpdateForm()) {
-          this.loading = false;
-          this.changeDetectorRef.detectChanges();
-          return;
-        }
-
-        this.subs.sink = this.workLocationHttpService.getWorkLocationDetails(this.formPage.itemId).subscribe((res) => {
-          this.loading = false;
-          this.item = res.data;
-
-          if (res.data) {
-            this.form.setValue({
-              title: res.data.title,
-              areaId: res.data.areaId,
-              address: res.data.address,
-              postalCode: res.data.postalCode,
-              city: res.data.city,
-              voteLocation: res.data.voteLocation,
-              taskTypeIds: res.data.taskTypeIds,
-              teamIds: res.data.teamIds,
-              responsibleIds: res.data.responsibleIds,
-              electionId: res.data.electionId ? res.data.electionId : '',
-            });
+      // Subscribe to electionId changes and fetch task types when set
+      this.subs.sink = this.form.controls.electionId.valueChanges.subscribe((electionId) => {
+        if (electionId) {
+          this.taskTypeHttpService.getTaskTypesByElectionID(electionId).subscribe((res) => {
+            this.taskTypes = res.data;
             this.changeDetectorRef.detectChanges();
+          });
+        } else {
+          this.taskTypes = [];
+        }
+      });
+
+
+      this.taskTypeTemplateHttpService.getAllTaskTypeTemplates().subscribe((res) => {
+        this.taskTypeTemplates = res.data;
+        this.changeDetectorRef.detectChanges();
+      });
+      this.loading = false;
+    });
+
+    this.subs.sink = this.formPage.state$.subscribe(() => {
+      if (!this.formPage.isUpdateForm()) {
+        this.loading = false;
+        this.changeDetectorRef.detectChanges();
+        return;
+      }
+
+      this.subs.sink = this.workLocationHttpService.getWorkLocationDetails(this.formPage.itemId).subscribe((res) => {
+        this.loading = false;
+        this.item = res.data;
+
+        if (res.data) {
+          this.form.setValue({
+            title: res.data.title,
+            areaId: res.data.areaId,
+            address: res.data.address,
+            postalCode: res.data.postalCode,
+            city: res.data.city,
+            voteLocation: res.data.voteLocation,
+            taskTypeIds: res.data.taskTypeIds,
+            teamIds: res.data.teamIds,
+            responsibleIds: res.data.responsibleIds,
+            electionId: res.data.electionId ? res.data.electionId : '',
+          });
+          this.changeDetectorRef.detectChanges();
+        }
+        this.taskTypesList.options.forEach((option) => {
+          if (this.form.controls.taskTypeIds.value.indexOf(option.value) > -1) {
+            option.selected = true;
           }
-          this.taskTypesList.options.forEach((option) => {
-            if (this.form.controls.taskTypeIds.value.indexOf(option.value) > -1) {
-              option.selected = true;
-            }
-          });
-          this.teamsList.options.forEach((option) => {
-            if (this.form.controls.teamIds.value.indexOf(option.value) > -1) {
-              option.selected = true;
-            }
-          });
+        });
+        this.teamsList.options.forEach((option) => {
+          if (this.form.controls.teamIds.value.indexOf(option.value) > -1) {
+            option.selected = true;
+          }
         });
       });
     });
-
   }
 
   ngOnDestroy(): void {

@@ -4,6 +4,7 @@
   actionIcon="add"
   (action)="openAddParticipantEventLog()">
   <app-table
+    [storageKey]="'participant-event-log-listing'"
     *appTableCtx="data; let typing"
     defaultSortColumn="createdAt"
     defaultSortDirection="desc"

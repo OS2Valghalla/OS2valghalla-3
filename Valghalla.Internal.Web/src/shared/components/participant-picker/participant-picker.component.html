@@ -55,7 +55,7 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-content class="h-2/4 overflow-auto">
-        <app-table #table defaultSortColumn="name">
+        <app-table [storageKey]="'participant-picker'"  #table defaultSortColumn="name">
           <ng-container
             [appTableTyping]="typing"
             appHeaderRowDef

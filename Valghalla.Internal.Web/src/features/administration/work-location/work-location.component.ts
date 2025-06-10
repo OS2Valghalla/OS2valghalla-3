@@ -64,6 +64,12 @@ export class WorkLocationComponent implements OnDestroy {
         descending: false,
       };
     }
+    if (this.selectedElectionId) {
+      event.query.electionId = this.selectedElectionId;
+    }
+    if (this.selectedTemplateId) {
+      event.query.templateId = this.selectedTemplateId;
+    }
     event.execute('administration/worklocation/queryworklocationlisting', event.query);
   }
 

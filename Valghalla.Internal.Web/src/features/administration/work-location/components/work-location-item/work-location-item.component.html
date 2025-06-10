@@ -75,10 +75,10 @@
       <mat-selection-list #selectedTaskTypes *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
         <mat-list-option
           checkboxPosition="before"
-          *ngFor="let taskType of taskTypes"
-          [value]="taskType.id"
+          *ngFor="let taskTypeTemplate of taskTypeTemplates"
+          [value]="taskTypeTemplate.id"
           (click)="$event.stopPropagation(); changeSelectedTaskTypes()">
-          {{ taskType.title }}
+          {{ taskTypeTemplate.title }}
         </mat-list-option>
       </mat-selection-list>
     </div>

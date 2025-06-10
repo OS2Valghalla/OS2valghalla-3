@@ -10,6 +10,7 @@
     actionIcon="add"
     (action)="openUserInvitationDialog()">
     <app-table
+      [storageKey]="'user'" 
       #tableUsers
       *appTableCtx="users; let typing"
       defaultSortColumn="name"

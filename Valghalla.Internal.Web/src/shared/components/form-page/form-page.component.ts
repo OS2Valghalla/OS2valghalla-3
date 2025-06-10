@@ -44,7 +44,7 @@ export class FormPageComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly globalStateService: GlobalStateService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.itemId = this.route.snapshot.paramMap.get(RoutingNodes.Id);

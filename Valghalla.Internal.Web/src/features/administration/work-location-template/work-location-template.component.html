@@ -8,6 +8,7 @@
   actionIcon="add"
   (action)="openAddWorkLocationTemplate()">
   <app-table
+    [storageKey]="'work-location-template-listing'" 
     *appTableCtx="data; let typing"
     defaultSortColumn="title"
     (editEvent)="openEditWorkLocationTemplate($event)"

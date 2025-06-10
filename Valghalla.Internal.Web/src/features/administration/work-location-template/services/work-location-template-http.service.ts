@@ -17,7 +17,7 @@ export class WorkLocationTemplateHttpService {
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 
   getWorkLocationTemplateDetails(id: string): Observable<Response<WorkLocationTemplateDetails>> {
     return this.httpClient
@@ -35,9 +35,9 @@ export class WorkLocationTemplateHttpService {
         }),
       );
   }
-getAllWorkLocationTemplates(): Observable<Response<WorkLocationTemplateDetails[]>> {
+  getAllWorkLocationTemplates(): Observable<Response<WorkLocationTemplateDetails[]>> {
     return this.httpClient
-      .get<Response<WorkLocationTemplateDetails[]>>(this.baseUrl + 'getworklocationtemplates', {        
+      .get<Response<WorkLocationTemplateDetails[]>>(this.baseUrl + 'getworklocationtemplates', {
       })
       .pipe(
         catchError((err) => {

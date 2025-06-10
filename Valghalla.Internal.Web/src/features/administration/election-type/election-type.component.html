@@ -8,6 +8,7 @@
   actionIcon="add"
   (action)="openAddElectionType()">
   <app-table
+[storageKey]="'election-type-listing'" 
     #tableElectionTypes
     *appTableCtx="data; let typing"
     defaultSortColumn="title"

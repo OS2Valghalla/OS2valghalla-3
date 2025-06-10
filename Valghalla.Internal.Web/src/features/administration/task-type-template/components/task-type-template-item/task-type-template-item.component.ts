@@ -1,42 +1,28 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild ,ViewEncapsulation} from '@angular/core';
 import { SubSink } from 'subsink';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FormPageComponent } from 'src/shared/components/form-page/form-page.component';
 import { FormPageEvent } from 'src/shared/models/ux/form-page';
-import { TaskTypeHttpService } from '../../services/task-type-http.service';
-import { TaskTypeDetails } from '../../models/task-type-details';
-import { CreateTaskTypeRequest } from '../../models/create-task-type-request';
-import { UpdateTaskTypeRequest } from '../../models/update-task-type-request';
+import { TaskTypeTemplateHttpService } from '../../services/task-type-template-http.service';
+import { TaskTypeTemplateDetails } from '../../models/task-type-template-details';
+import { CreateTaskTypeTemplateRequest } from '../../models/create-task-type-template-request';
+import { UpdateTaskTypeTemplateRequest } from '../../models/update-task-type-template-request';
 import { RichTextEditorOptions } from 'src/shared/models/ux/rich-text-editor-options';
 import { FileStorageComponent } from 'src/shared/components/file-storage/file-storage.component';
 import { switchMap } from 'rxjs';
-import { WorkLocationInfo } from 'src/features/tasks/models/work-location-info';
-import { WorkLocationDetails } from 'src/features/administration/work-location/models/work-location-details';
-import { ElectionDetails } from 'src/features/administration/election/models/election-details';
-import { ElectionHttpService } from 'src/features/administration/election/services/election-http.service';
-import { WorkLocationHttpService } from 'src/features/administration/work-location/services/work-location-http.service';
-import { TaskTypeTemplateDetails } from 'src/features/administration/task-type-template/models/task-type-template-details';
-import { TaskTypeTemplateHttpService } from 'src/features/administration/task-type-template/services/task-type-template-http.service';
 
 @Component({
-  selector: 'app-admin-task-type-item',
-  templateUrl: './task-type-item.component.html',
-  styleUrls: ['./task-type-item.component.scss'],
-  providers: [TaskTypeHttpService, ElectionHttpService, WorkLocationHttpService, TaskTypeTemplateHttpService],
+  selector: 'app-admin-task-type-template-item',
+  templateUrl: './task-type-template-item.component.html',
+  styleUrls: ['./task-type-template-item.component.scss'],
+  providers: [TaskTypeTemplateHttpService],
   encapsulation: ViewEncapsulation.None
 })
-export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TaskTypeTemplateItemComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly subs = new SubSink();
 
   loading: boolean = true;
-  item?: TaskTypeDetails;
-  workLocations: Array<WorkLocationDetails> = [];
-  elections: Array<ElectionDetails> = [];
-  taskTypeTemplates: Array<TaskTypeTemplateDetails> = [];
-  taskTypeTemplateIdBeforeEdit: string | null = null;
-  workLocationIdBeforeEdit: string | null = null;
-  electionIdBeforeEdit: string | null = null;
-
+  item?: TaskTypeTemplateDetails;
 
   readonly rtfOptions: RichTextEditorOptions = {
     isRichText: true,
@@ -47,9 +33,6 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly form = this.formBuilder.group({
     title: ['', Validators.required],
     shortName: ['', Validators.required],
-    electionId: ['', Validators.required],
-    workLocationId: ['', Validators.required],
-    taskTypeTemplateId: ['', Validators.required],
     description: ['', Validators.required],
     startTime: [undefined as string, Validators.required],
     endTime: [undefined as string, Validators.required],
@@ -59,17 +42,14 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
     sendingReminderEnabled: [true],
   });
 
-  @ViewChild(FormPageComponent) readonly formPage: FormPageComponent;
+  @ViewChild(FormPageComponent) private readonly formPage: FormPageComponent;
   @ViewChild(FileStorageComponent) private readonly fileStorage: FileStorageComponent;
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly changeDetectorRef: ChangeDetectorRef,
-    private readonly taskTypeHttpService: TaskTypeHttpService,
-    private readonly electionHttpService: ElectionHttpService,
-    private readonly workLocationHttpService: WorkLocationHttpService,
-    private readonly taskTypeTemplateHttpService: TaskTypeTemplateHttpService
-  ) { }
+    private readonly taskTypeTemplateHttpService: TaskTypeTemplateHttpService,
+  ) {}
 
   ngOnInit(): void {
     this.form.addValidators((control) => {
@@ -86,22 +66,6 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.electionHttpService.getAllElections().subscribe((response) => {
-      this.elections = response.data;
-    });
-    this.subs.sink = this.form.controls.electionId.valueChanges.subscribe((electionId) => {
-      if (electionId) {
-        this.workLocationHttpService.getAllWorkLocationsForElection(electionId).subscribe((res) => {
-          this.workLocations = res.data;
-          this.changeDetectorRef.detectChanges();
-        });
-      } else {
-        this.workLocations = [];
-      }
-    });
-    this.taskTypeTemplateHttpService.getAllTaskTypeTemplates().subscribe((response) => {
-      this.taskTypeTemplates = response.data;
-    });
     this.subs.sink = this.formPage.state$.subscribe(() => {
       if (!this.formPage.isUpdateForm()) {
         this.loading = false;
@@ -109,12 +73,9 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
         return;
       }
 
-      this.subs.sink = this.taskTypeHttpService.getTaskTypeDetails(this.formPage.itemId).subscribe((res) => {
+      this.subs.sink = this.taskTypeTemplateHttpService.getTaskTypeTemplateDetails(this.formPage.itemId).subscribe((res) => {
         this.loading = false;
         this.item = res.data;
-        this.taskTypeTemplateIdBeforeEdit = res.data.taskTypeTemplateId;
-        this.workLocationIdBeforeEdit = res.data.workLocationId;
-        this.electionIdBeforeEdit = res.data.electionId;
 
         if (res.data) {
           this.form.setValue({
@@ -127,11 +88,7 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
             validationNotRequired: res.data.validationNotRequired,
             trusted: res.data.trusted,
             sendingReminderEnabled: res.data.sendingReminderEnabled,
-            electionId: res.data.electionId ?? '',
-            workLocationId: res.data.workLocationId ?? '',
-            taskTypeTemplateId: res.data.taskTypeTemplateId ?? ''
           });
-          this.form.controls['electionId'].disable();
         }
       });
     });
@@ -141,10 +98,10 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  createTaskType(event: FormPageEvent) {
+  createTaskTypeTemplate(event: FormPageEvent) {
     const httpRequest = this.fileStorage.submit().pipe(
       switchMap((fileRefIds) => {
-        const request: CreateTaskTypeRequest = {
+        const request: CreateTaskTypeTemplateRequest = {
           title: this.form.value.title,
           shortName: this.form.value.shortName,
           description: this.form.value.description,
@@ -155,12 +112,9 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
           trusted: this.form.value.trusted,
           sendingReminderEnabled: this.form.value.sendingReminderEnabled,
           fileReferenceIds: fileRefIds,
-          workLocationId: this.form.value.workLocationId,
-          electionId: this.form.value.electionId,
-          taskTypeTemplateId: this.form.value.taskTypeTemplateId
         };
 
-        return this.taskTypeHttpService.createTaskType(request);
+        return this.taskTypeTemplateHttpService.createTaskTypeTemplate(request);
       }),
     );
 
@@ -171,10 +125,10 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  updateTaskType(event: FormPageEvent) {
+  updateTaskTypeTemplate(event: FormPageEvent) {
     const httpRequest = this.fileStorage.submit().pipe(
       switchMap((fileRefIds) => {
-        const request: UpdateTaskTypeRequest = {
+        const request: UpdateTaskTypeTemplateRequest = {
           id: this.formPage.itemId,
           title: this.form.value.title,
           shortName: this.form.value.shortName,
@@ -186,15 +140,9 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
           trusted: this.form.value.trusted,
           sendingReminderEnabled: this.form.value.sendingReminderEnabled,
           fileReferenceIds: fileRefIds,
-          newElectionId: this.form.value.electionId,
-          electionId: this.electionIdBeforeEdit,
-          newWorkLocationId: this.form.value.workLocationId,
-          workLocationId: this.workLocationIdBeforeEdit,
-          newTaskTypeTemplateId: this.form.value.taskTypeTemplateId,
-          taskTypeTemplateId: this.taskTypeTemplateIdBeforeEdit
         };
 
-        return this.taskTypeHttpService.updateTaskType(request);
+        return this.taskTypeTemplateHttpService.updateTaskTypeTemplate(request);
       }),
     );
 
@@ -205,10 +153,10 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  deleteTaskType(event: FormPageEvent) {
+  deleteTaskTypeTemplate(event: FormPageEvent) {
     const httpRequest = this.fileStorage.deleteAllFiles().pipe(
       switchMap(() => {
-        return this.taskTypeHttpService.deleteTaskType(this.formPage.itemId);
+        return this.taskTypeTemplateHttpService.deleteTaskTypeTemplate(this.formPage.itemId);
       }),
     );
 
@@ -221,7 +169,7 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isEmptyContent() {
     if ((this.form.controls.description.touched && (!this.form.controls.description.value || this.form.controls.description.value == '<p></p>'))) {
-      this.form.controls.description.setErrors({ required: true });
+      this.form.controls.description.setErrors({required: true});
       return true;
     }
 

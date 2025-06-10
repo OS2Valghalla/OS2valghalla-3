@@ -33,6 +33,7 @@
     </div>
   </div>
   <app-table
+    [storageKey]="'work-location'" 
     *appTableCtx="data; let typing"
     defaultSortColumn="title"
     (editEvent)="openEditWorkLocation($event)"

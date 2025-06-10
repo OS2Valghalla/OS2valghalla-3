@@ -41,21 +41,13 @@ export class WorkLocationTemplateItemComponent implements AfterViewInit, OnDestr
   readonly form = this.formBuilder.group({
     title: ['', Validators.required],
     areaId: ['', Validators.required],
-    // electionId: ['', Validators.required],
     address: ['', Validators.required],
     postalCode: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
     city: ['', Validators.required],
     voteLocation: [0],
-    // taskTypeIds: [],
-    // teamIds: [],
-    // responsibleIds: [[] as string[]],
   });
 
   @ViewChild(FormPageComponent) private readonly formPage: FormPageComponent;
-
-  // @ViewChild('selectedTaskTypes') private readonly taskTypesList: MatSelectionList;
-
-  // @ViewChild('selectedTeams') private readonly teamsList: MatSelectionList;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -70,15 +62,9 @@ export class WorkLocationTemplateItemComponent implements AfterViewInit, OnDestr
   ngAfterViewInit(): void {
     this.subs.sink = combineLatest({
       areas: this.areaHttpService.getAllAreas(),
-      // taskTypes: this.taskTypeHttpService.getAllTaskTypes(),
-      // teams: this.teamHttpService.getAllTeams(),
-      // elections: this.electionHttpService.getAllElections(),
       formPageState: this.formPage.state$,
     }).subscribe((v) => {
       this.areas = v.areas.data;
-      // this.taskTypes = v.taskTypes.data;
-      // this.teams = v.teams.data;
-      // this.elections = v.elections.data;
 
       this.subs.sink = this.formPage.state$.subscribe(() => {
         if (!this.formPage.isUpdateForm()) {
@@ -98,24 +84,10 @@ export class WorkLocationTemplateItemComponent implements AfterViewInit, OnDestr
               address: res.data.address,
               postalCode: res.data.postalCode,
               city: res.data.city,
-              voteLocation: res.data.voteLocation,
-              // taskTypeIds: res.data.taskTypeIds,
-              // teamIds: res.data.teamIds,
-              // responsibleIds: res.data.responsibleIds,
-              // electionId: res.data.electionId ? res.data.electionId : '',
+              voteLocation: res.data.voteLocation
             });
             this.changeDetectorRef.detectChanges();
           }
-          // this.taskTypesList.options.forEach((option) => {
-          //   if (this.form.controls.taskTypeIds.value.indexOf(option.value) > -1) {
-          //     option.selected = true;
-          //   }
-          // });
-          // this.teamsList.options.forEach((option) => {
-          //   if (this.form.controls.teamIds.value.indexOf(option.value) > -1) {
-          //     option.selected = true;
-          //   }
-          // });
         });
       });
     });
@@ -126,23 +98,6 @@ export class WorkLocationTemplateItemComponent implements AfterViewInit, OnDestr
     this.subs.unsubscribe();
   }
 
-  // changeSelectedTaskTypes() {
-  //   const selectedOptions = [];
-  //   this.taskTypesList.selectedOptions.selected.forEach((selectedTaskType) => {
-  //     selectedOptions.push(selectedTaskType.value);
-  //   });
-  //   this.form.controls.taskTypeIds.patchValue(selectedOptions);
-  //   this.form.markAsDirty();
-  // }
-
-  // changeSelectedTeams() {
-  //   const selectedOptions = [];
-  //   this.teamsList.selectedOptions.selected.forEach((selectedTeam) => {
-  //     selectedOptions.push(selectedTeam.value);
-  //   });
-  //   this.form.controls.teamIds.patchValue(selectedOptions);
-  //   this.form.markAsDirty();
-  // }
 
   createWorkLocationTemplate(event: FormPageEvent) {
     const request: CreateWorkLocationTemplateRequest = {
@@ -151,10 +106,7 @@ export class WorkLocationTemplateItemComponent implements AfterViewInit, OnDestr
       address: this.form.value.address,
       postalCode: this.form.value.postalCode,
       city: this.form.value.city,
-      voteLocation: this.form.value.voteLocation,
-      // taskTypeIds: this.form.value.taskTypeIds ? this.form.value.taskTypeIds : [],
-      // teamIds: this.form.value.teamIds ? this.form.value.teamIds : [],
-      // responsibleIds: this.form.value.responsibleIds ? this.form.value.responsibleIds : []
+      voteLocation: this.form.value.voteLocation
     };
 
     this.subs.sink = event.pipe(this.workLocationTemplateHttpService.createWorkLocationTemplate(request)).subscribe((res) => {
@@ -172,10 +124,7 @@ export class WorkLocationTemplateItemComponent implements AfterViewInit, OnDestr
       address: this.form.value.address,
       postalCode: this.form.value.postalCode,
       city: this.form.value.city,
-      voteLocation: this.form.value.voteLocation,
-      // taskTypeIds: this.form.value.taskTypeIds ? this.form.value.taskTypeIds : [],
-      // teamIds: this.form.value.teamIds ? this.form.value.teamIds : [],
-      // responsibleIds: this.form.value.responsibleIds ? this.form.value.responsibleIds : []
+      voteLocation: this.form.value.voteLocation
     };
 
     this.subs.sink = event.pipe(this.workLocationTemplateHttpService.updateWorkLocationTemplate(request)).subscribe((res) => {

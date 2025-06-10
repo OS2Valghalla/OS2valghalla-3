@@ -8,6 +8,8 @@ export interface QueryForm {
   search?: FreeTextSearchValue;
   take?: number;
   skip?: number;
+electionId?: string;
+  templateId?: string;  
 }
 
 export interface QueryEvent<TQueryForm extends QueryForm> {

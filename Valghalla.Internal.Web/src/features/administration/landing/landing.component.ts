@@ -38,6 +38,12 @@ export class LandingComponent {
       icon: 'task',
       bodyMessage: 'app.navigation.task_type.description',
     },
+{
+      routerLink: '/' + RoutingNodes.Administration + '/' + RoutingNodes.TaskTypeTemplate,
+      title: 'app.navigation.task_type_template.title',
+      icon: 'settings',
+      bodyMessage: 'app.navigation.task_type_template.description',
+    },
     {
       routerLink: '/' + RoutingNodes.Administration + '/' + RoutingNodes.AuditLog,
       title: 'app.navigation.audit_log.title',

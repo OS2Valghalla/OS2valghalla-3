@@ -6,4 +6,3 @@ export interface CreateWorkLocationTemplateRequest {
     city: string;
     voteLocation: Number;
 }
-    

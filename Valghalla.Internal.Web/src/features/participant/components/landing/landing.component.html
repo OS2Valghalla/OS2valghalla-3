@@ -21,6 +21,7 @@
   </button>
 
   <app-table
+    [storageKey]="'participant-listing'"
     *appTableCtx="data; let typing"
     [pageSizeOptions]="[10, 50]"
     defaultSortColumn="name"

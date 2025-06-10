@@ -8,6 +8,7 @@
   actionIcon="add"
   (action)="openAddSpecialDiet()">
   <app-table
+[storageKey]="'specialdiet-listing'" 
     #tableSpecialDiets
     *appTableCtx="data; let typing"
     defaultSortColumn="title"

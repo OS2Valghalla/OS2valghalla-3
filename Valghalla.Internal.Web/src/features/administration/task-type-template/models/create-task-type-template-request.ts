@@ -1,4 +1,4 @@
-export interface CreateTaskTypeRequest {
+export interface CreateTaskTypeTemplateRequest {
   title: string;
   shortName: string;
   description: string;
@@ -9,7 +9,4 @@ export interface CreateTaskTypeRequest {
   trusted: boolean;
   sendingReminderEnabled: boolean;
   fileReferenceIds: string[];
-  workLocationId?: string;
-  electionId?: string;
-  taskTypeTemplateId?: string;
 }
