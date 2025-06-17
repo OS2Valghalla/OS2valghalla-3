@@ -24,7 +24,20 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocation
             var result = await sender.Send(query, cancellationToken);
             return Ok(result);
         }
-
+        [HttpGet("getworklocationbyelectionid")]
+        public async Task<IActionResult> GetWorkLocationByElectionAsync(Guid workLocationId,Guid electionId, CancellationToken cancellationToken)
+        {
+            var query = new GetWorkLocationByElectionIdQuery(workLocationId,electionId);
+            var result = await sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet("getworklocationsbyelectionid")]
+        public async Task<IActionResult> GetWorkLocationsByElectionAsync(Guid electionId, CancellationToken cancellationToken)
+        {
+            var query = new GetWorkLocationsByElectionIdQuery( electionId);
+            var result = await sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
         [HttpPost("queryworklocationlisting")]
         public async Task<IActionResult> QueryWorkLocationListingAsync(WorkLocationListingQueryForm query, CancellationToken cancellationToken)
         {

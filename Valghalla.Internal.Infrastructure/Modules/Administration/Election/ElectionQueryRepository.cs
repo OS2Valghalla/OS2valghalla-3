@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
+using Valghalla.Internal.Application.Modules.Administration.Area.Responses;
 using Valghalla.Internal.Application.Modules.Administration.Communication.Responses;
 using Valghalla.Internal.Application.Modules.Administration.Election.Commands;
 using Valghalla.Internal.Application.Modules.Administration.Election.Interfaces;
@@ -59,7 +62,13 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.Election
             if (entity == null) return null;
             return mapper.Map<ElectionDetailsResponse>(entity);
         }
+        public async Task<List<ElectionDetailsResponse>?> GetElectionsAsync(GetElectionsQuery query, CancellationToken cancellationToken)
+        {
+            var entities = await elections.ToListAsync(cancellationToken);
 
+            if (entities == null) return null;
+            return entities.Select(mapper.Map<ElectionDetailsResponse>).ToList();
+        }
         public async Task<ElectionCommunicationConfigurationsResponse?> GetElectionCommunicationConfigurationsAsync(GetElectionCommunicationConfigurationsQuery query, CancellationToken cancellationToken)
         {
             var entity = await elections

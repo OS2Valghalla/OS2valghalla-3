@@ -9,6 +9,7 @@ import { TaskTypeDetails } from '../models/task-type-details';
 import { TaskTypeListingItem } from '../models/task-type-listing-item';
 import { CreateTaskTypeRequest } from '../models/create-task-type-request';
 import { UpdateTaskTypeRequest } from '../models/update-task-type-request';
+import { TaskTypeTemplateListingItem } from '../../task-type-template/models/task-type-template-listing-item';
 
 @Injectable()
 export class TaskTypeHttpService {
@@ -18,7 +19,8 @@ export class TaskTypeHttpService {
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
+
 
   getAllTaskTypes(): Observable<Response<Array<TaskTypeListingItem>>> {
     return this.httpClient
@@ -35,7 +37,37 @@ export class TaskTypeHttpService {
         }),
       );
   }
+  getAllTaskTypeTemplatess(): Observable<Response<Array<TaskTypeTemplateListingItem>>> {
+    return this.httpClient
+      .get<Response<Array<TaskTypeTemplateListingItem>>>(this.baseUrl + 'getalltasktypetemplates', {
+        params: {
+        },
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('administration.task_type.error.get_all_task_type_templates');
+          this.notificationService.showError(msg);
 
+          return throwError(() => err);
+        }),
+      );
+  }
+  getTaskTypesByElectionID(electionId: string): Observable<Response<Array<TaskTypeListingItem>>> {
+    return this.httpClient
+      .get<Response<Array<TaskTypeListingItem>>>(this.baseUrl + 'getalltasktypesbyelectionid', {
+        params: {
+          electionId: electionId,
+        },
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('administration.task_type.error.get_all_task_types');
+          this.notificationService.showError(msg);
+
+          return throwError(() => err);
+        }),
+      );
+  }
   getTaskTypeDetails(id: string): Observable<Response<TaskTypeDetails>> {
     return this.httpClient
       .get<Response<TaskTypeDetails>>(this.baseUrl + 'gettasktypedetails', {

@@ -18,6 +18,8 @@ namespace Valghalla.Database.Entities.Tables
 
         public virtual ICollection<TaskTypeEntity> TaskTypes { get; } = new List<TaskTypeEntity>();
         public virtual ICollection<TaskTypeFileEntity> TaskTypeFiles { get; } = new List<TaskTypeFileEntity>();
+        public virtual ICollection<TaskTypeTemplateEntity> TaskTypeTemplates { get; } = new List<TaskTypeTemplateEntity>();
+        public virtual ICollection<TaskTypeTemplateFileEntity> TaskTypeTemplateFiles { get; } = new List<TaskTypeTemplateFileEntity>();
         public virtual ICollection<CommunicationTemplateEntity> CommunicationTemplates { get; } = new List<CommunicationTemplateEntity>();
         public virtual ICollection<CommunicationTemplateFileEntity> CommunicationTemplateFiles { get; } = new List<CommunicationTemplateFileEntity>();
         public virtual ICollection<ElectionCommitteeContactInformationEntity> ElectionCommitteeContactInformation { get; } = new List<ElectionCommitteeContactInformationEntity>();

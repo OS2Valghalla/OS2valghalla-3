@@ -1,5 +1,6 @@
 <app-card [cardTitle]="'communication.communication_log.communication_log_listing.title' | transloco">
   <app-table
+    [storageKey]="'communication-log-listing'"
     *appTableCtx="data; let typing"
     [pageSizeOptions]="[10, 50]"
     defaultSortColumn="createdAt"

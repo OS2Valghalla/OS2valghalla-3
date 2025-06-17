@@ -7,7 +7,7 @@
   actionTitle="administration.area.action.create_area"
   actionIcon="add"
   (action)="openAddArea()">
-  <app-table *appTableCtx="data; let typing" defaultSortColumn="name" (editEvent)="openEditArea($event)" (deleteEvent)="deleteArea($event)">
+  <app-table [storageKey]="'area-listing'" *appTableCtx="data; let typing" defaultSortColumn="name" (editEvent)="openEditArea($event)" (deleteEvent)="deleteArea($event)">
     <app-query-container
       [hideFilterBtn]="true"
       cacheKey="election"

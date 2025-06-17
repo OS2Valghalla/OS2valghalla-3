@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Application.QueryEngine;
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
@@ -31,14 +33,27 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                 {
                     return queryable.SortBy(i => i.Area.Name, order);
                 }
+                else if (order.Name == "electionTitle")
+                {
+                    return queryable.SortBy(i => i.ElectionWorkLocations
+                              .Select(n => n.Election.Title)
+                              .FirstOrDefault(), order);
+                }
 
+                else if (order.Name == "templateTitle")
+                {
+                    return queryable.SortBy(i => i.WorkLocationTemplate.Title, order);
+                }
                 return queryable;
             });
 
             Query(queryable =>
             {
                 return queryable
-                    .Include(i => i.Area);
+                    .Include(i => i.Area)
+                    .Include(i => i.Elections)
+                    .Include(i => i.WorkLocationTemplate)
+                    .Include(i => i.ElectionWorkLocations);
             });
 
             // QueryFor is to identity which property to build query expression
@@ -55,11 +70,11 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
 
             QueryFor(x => x.Title)
                 .Use((queryable, query) => queryable.Where(i => i.Title.Contains(query.Value)));
-            
+
             QueryFor(x => x.PostalCode)
                 .Use((queryable, query) => queryable.Where(i => i.PostalCode!.Contains(query.Value)));
 
-            QueryFor(x => x.Area)
+            QueryFor(x => x.AreaId)
                 .With(async request =>
                 {
                     var data = await dataContext.Areas.AsNoTracking()
@@ -69,6 +84,28 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                     return data.Select(i => new SelectOption<Guid>(i.Id, i.Name));
                 })
                 .Use((queryable, query) => queryable.Where(i => i.AreaId == query.Value));
+
+            QueryFor(x => x.ElectionId)
+                .With(async request =>
+                {
+                    var data = await dataContext.Elections.AsNoTracking()
+                        .Select(i => new { i.Id, i.Title })
+                        .ToListAsync();
+
+                    return data.Select(i => new SelectOption<Guid>(i.Id, i.Title));
+                })
+                .Use((queryable, query) => queryable.Where(i => i.ElectionWorkLocations.Any(x => x.WorkLocationId == query.Value)));
+
+            QueryFor(x => x.TemplateId)
+                .With(async request =>
+                {
+                    var data = await dataContext.WorkLocationTemplates.AsNoTracking()
+                        .Select(i => new { i.Id, i.Title })
+                        .ToListAsync();
+
+                    return data.Select(i => new SelectOption<Guid>(i.Id, i.Title));
+                })
+                .Use((queryable, query) => queryable.Where(i => i.WorkLocationTemplateId == query.Value));
         }
 
         // All repository need to overwrite "ExecuteQuery" method, this will be called by query engine handler

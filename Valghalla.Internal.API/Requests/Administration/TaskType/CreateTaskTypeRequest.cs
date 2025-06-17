@@ -12,5 +12,9 @@
         public bool Trusted { get; init; }
         public bool SendingReminderEnabled { get; init; } = true;
         public IEnumerable<Guid> FileReferenceIds { get; init; } = Enumerable.Empty<Guid>();
+
+        public Guid ElectionId { get; set; }
+        public Guid WorkLocationId { get; set; }
+        public Guid TaskTypeTemplateId { get; set; }
     }
 }

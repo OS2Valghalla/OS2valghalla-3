@@ -1,6 +1,8 @@
 ﻿#region Modules
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Valghalla.Database;
 using Valghalla.Infrastructure;
 using Valghalla.Internal.Application.Modules.Administration.Area.Interfaces;
@@ -10,10 +12,12 @@ using Valghalla.Internal.Application.Modules.Administration.ElectionType.Interfa
 using Valghalla.Internal.Application.Modules.Administration.Link.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.SpecialDiet.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.TaskType.Interfaces;
+using Valghalla.Internal.Application.Modules.Administration.TaskTypeTemplate.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.Team.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.User.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.Web.Interfaces;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocation.Interfaces;
+using Valghalla.Internal.Application.Modules.Administration.WorkLocationTemplate.Interfaces;
 using Valghalla.Internal.Application.Modules.Analyze.Interfaces;
 using Valghalla.Internal.Application.Modules.App.Interfaces;
 using Valghalla.Internal.Application.Modules.Communication.CommunicationLog.Interfaces;
@@ -25,9 +29,11 @@ using Valghalla.Internal.Application.Modules.Shared.ElectionType.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.Participant.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.SpecialDiet.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.TaskType.Interfaces;
+using Valghalla.Internal.Application.Modules.Shared.TaskTypeTemplate.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.Team.Interfaces;
 using Valghalla.Internal.Application.Modules.Shared.User;
 using Valghalla.Internal.Application.Modules.Shared.WorkLocation.Interfaces;
+using Valghalla.Internal.Application.Modules.Shared.WorkLocationTemplate.Interfaces;
 using Valghalla.Internal.Application.Modules.Tasks.Interfaces;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Area;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Communication;
@@ -36,10 +42,12 @@ using Valghalla.Internal.Infrastructure.Modules.Administration.ElectionType;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Link;
 using Valghalla.Internal.Infrastructure.Modules.Administration.SpecialDiet;
 using Valghalla.Internal.Infrastructure.Modules.Administration.TaskType;
+using Valghalla.Internal.Infrastructure.Modules.Administration.TaskTypeTemplate;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Team;
 using Valghalla.Internal.Infrastructure.Modules.Administration.User;
 using Valghalla.Internal.Infrastructure.Modules.Administration.Web;
 using Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation;
+using Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocationTemplate;
 using Valghalla.Internal.Infrastructure.Modules.Analyze;
 using Valghalla.Internal.Infrastructure.Modules.App;
 using Valghalla.Internal.Infrastructure.Modules.Communication.CommunicationLog;
@@ -51,6 +59,7 @@ using Valghalla.Internal.Infrastructure.Modules.Shared.ElectionType;
 using Valghalla.Internal.Infrastructure.Modules.Shared.Participant;
 using Valghalla.Internal.Infrastructure.Modules.Shared.SpecialDiet;
 using Valghalla.Internal.Infrastructure.Modules.Shared.TaskType;
+using Valghalla.Internal.Infrastructure.Modules.Shared.TaskTypeTemplate;
 using Valghalla.Internal.Infrastructure.Modules.Shared.Team;
 using Valghalla.Internal.Infrastructure.Modules.Shared.User;
 using Valghalla.Internal.Infrastructure.Modules.Shared.WorkLocation;
@@ -78,6 +87,8 @@ namespace Valghalla.Internal.Infrastructure
             services.AddScoped<ITeamQueryRepository, TeamQueryRepository>();
             services.AddScoped<ITaskTypeCommandRepository, TaskTypeCommandRepository>();
             services.AddScoped<ITaskTypeQueryRepository, TaskTypeQueryRepository>();
+            services.AddScoped<ITaskTypeTemplateCommandRepository, TaskTypeTemplateCommandRepository>();
+            services.AddScoped<ITaskTypeTemplateQueryRepository, TaskTypeTemplateQueryRepository>();
             services.AddScoped<IAreaCommandRepository, AreaCommandRepository>();
             services.AddScoped<IAreaQueryRepository, AreaQueryRepository>();
             services.AddScoped<IUserCommandRepository, UserCommandRepository>();
@@ -90,6 +101,8 @@ namespace Valghalla.Internal.Infrastructure
             services.AddScoped<IElectionCommitteeContactInformationQueryRepository, ElectionCommitteeContactInformationQueryRepository>();
             services.AddScoped<IWorkLocationCommandRepository, WorkLocationCommandRepository>();
             services.AddScoped<IWorkLocationQueryRepository, WorkLocationQueryRepository>();
+            services.AddScoped<IWorkLocationTemplateCommandRepository, WorkLocationTemplateCommandRepository>();
+            services.AddScoped<IWorkLocationTemplateQueryRepository, WorkLocationTemplateQueryRepository>();
             services.AddScoped<ICommunicationCommandRepository, CommunicationCommandRepository>();
             services.AddScoped<ICommunicationQueryRepository, CommunicationQueryRepository>();
             #endregion
@@ -127,8 +140,10 @@ namespace Valghalla.Internal.Infrastructure
             services.AddScoped<IElectionSharedQueryRepository, ElectionSharedQueryRepository>();
             services.AddScoped<IElectionTypeSharedQueryRepository, ElectionTypeSharedQueryRepository>();
             services.AddScoped<IWorkLocationSharedQueryRepository, WorkLocationSharedQueryRepository>();
+            services.AddScoped<IWorkLocationTemplateSharedQueryRepository, WorkLocationTemplateSharedQueryRepository>();
             services.AddScoped<ICommunicationSharedQueryRepository, CommunicationSharedQueryRepository>();
             services.AddScoped<ITaskTypeSharedQueryRepository, TaskTypeSharedQueryRepository>();
+            services.AddScoped<ITaskTypeTemplateSharedQueryRepository, TaskTypeTemplateSharedQueryRepository>();
             services.AddScoped<ITeamSharedQueryRepository, TeamSharedQueryRepository>();
             services.AddScoped<ISpecialDietSharedQueryRepository, SpecialDietSharedQueryRepository>();
             services.AddScoped<IAreaSharedQueryRepository, AreaSharedQueryRepository>();

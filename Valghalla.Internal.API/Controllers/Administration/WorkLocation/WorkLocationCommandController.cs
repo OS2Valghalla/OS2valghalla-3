@@ -1,5 +1,7 @@
 ﻿using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Valghalla.Integration.Auth;
 using Valghalla.Internal.API.Requests.Administration.WorkLocation;
 using Valghalla.Internal.Application.Abstractions.Messaging;
@@ -32,7 +34,9 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocation
                 VoteLocation = request.VoteLocation,
                 TaskTypeIds = request.TaskTypeIds,
                 TeamIds = request.TeamIds,
-                ResponsibleIds = request.ResponsibleIds
+                ResponsibleIds = request.ResponsibleIds,
+                TaskTypeTemplateIds = request.TaskTypeTemplateIds,
+                ElectionId = request.ElectionId
             };
 
             var id = await sender.Send(command, cancellationToken);
@@ -53,7 +57,8 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocation
                 VoteLocation = request.VoteLocation,
                 TaskTypeIds = request.TaskTypeIds,
                 TeamIds = request.TeamIds,
-                ResponsibleIds = request.ResponsibleIds
+                ResponsibleIds = request.ResponsibleIds,
+                TaskTypeTemplateIds = request.TaskTypeTemplateIds
             };
 
             var result = await sender.Send(command, cancellationToken);

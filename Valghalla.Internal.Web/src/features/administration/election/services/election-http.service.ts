@@ -38,7 +38,19 @@ export class ElectionHttpService {
         }),
       );
   }
+  getAllElections(): Observable<Response<ElectionDetails[]>> {
+    return this.httpClient
+      .get<Response<ElectionDetails[]>>(this.baseUrl + 'getelections', {        
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('administration.election.error.get_election');
+          this.notificationService.showError(msg);
 
+          return throwError(() => err);
+        }),
+      );
+  }
   getElectionCommunicationConfigurations(id: string): Observable<Response<ElectionCommunicationConfigurations>> {
     return this.httpClient
       .get<Response<ElectionCommunicationConfigurations>>(this.baseUrl + 'getelectioncommunicationconfigurations', {

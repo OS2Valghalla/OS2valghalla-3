@@ -17,7 +17,7 @@ export class WorkLocationHttpService {
     private readonly httpClient: HttpClient,
     private readonly translocoService: TranslocoService,
     private readonly notificationService: NotificationService,
-  ) {}
+  ) { }
 
   getWorkLocationDetails(id: string): Observable<Response<WorkLocationDetails>> {
     return this.httpClient
@@ -35,7 +35,39 @@ export class WorkLocationHttpService {
         }),
       );
   }
+  getWorkLocationByElectionId(workLocationId: string, electionId: string): Observable<Response<WorkLocationDetails>> {
+    return this.httpClient
+      .get<Response<WorkLocationDetails>>(this.baseUrl + 'getworklocationbyelectionid', {
+        params: {
+          workLocationId: workLocationId,
+          electionId: electionId,
+        },
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('administration.work_location.error.get_work_location');
+          this.notificationService.showError(msg);
 
+          return throwError(() => err);
+        }),
+      );
+  }
+getAllWorkLocationsForElection(electionId: string): Observable<Response<WorkLocationDetails[]>> {
+    return this.httpClient
+      .get<Response<WorkLocationDetails[]>>(this.baseUrl + 'getworklocationsbyelectionid', {
+        params: {
+          electionId: electionId
+        },
+      })
+      .pipe(
+        catchError((err) => {
+          const msg = this.translocoService.translate('administration.work_location.error.get_work_location');
+          this.notificationService.showError(msg);
+
+          return throwError(() => err);
+        }),
+      );
+  }
   createWorkLocation(value: CreateWorkLocationRequest): Observable<Response<string>> {
     return this.httpClient.post<Response<string>>(this.baseUrl + 'createworklocation', value).pipe(
       catchError((err) => {

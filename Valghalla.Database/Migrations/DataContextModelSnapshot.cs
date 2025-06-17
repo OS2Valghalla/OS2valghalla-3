@@ -876,6 +876,9 @@ namespace Valghalla.Database.Migrations
                     b.Property<Guid?>("TaskReminderCommunicationTemplateId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("TaskTypeTemplateEntityId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("ElectionId", "TaskTypeId");
 
                     b.HasIndex("ChangedBy");
@@ -899,6 +902,8 @@ namespace Valghalla.Database.Migrations
                     b.HasIndex("TaskReminderCommunicationTemplateId");
 
                     b.HasIndex("TaskTypeId");
+
+                    b.HasIndex("TaskTypeTemplateEntityId");
 
                     b.ToTable("ElectionTaskTypeCommunicationTemplates", (string)null);
                 });
@@ -1451,6 +1456,9 @@ namespace Valghalla.Database.Migrations
                     b.Property<Guid>("TaskTypeId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("TaskTypeTemplateEntityId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uuid");
 
@@ -1470,6 +1478,8 @@ namespace Valghalla.Database.Migrations
                     b.HasIndex("ParticipantId");
 
                     b.HasIndex("TaskTypeId");
+
+                    b.HasIndex("TaskTypeTemplateEntityId");
 
                     b.HasIndex("TeamId");
 
@@ -1546,6 +1556,9 @@ namespace Valghalla.Database.Migrations
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("interval");
 
+                    b.Property<Guid?>("TaskTypeTemplateEntityId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -1563,6 +1576,8 @@ namespace Valghalla.Database.Migrations
                     b.HasIndex("ChangedBy");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("TaskTypeTemplateEntityId");
 
                     b.ToTable("TaskType", (string)null);
                 });
@@ -1596,6 +1611,99 @@ namespace Valghalla.Database.Migrations
                     b.HasIndex("FileReferenceId");
 
                     b.ToTable("TaskTypeFile", (string)null);
+                });
+
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.TaskTypeTemplateEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ChangedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ChangedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("interval");
+
+                    b.Property<int?>("Payment")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("SendingReminderEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("interval");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.Property<bool>("Trusted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("ValidationNotRequired")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChangedBy");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.ToTable("TaskTypeTemplate", (string)null);
+                });
+
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.TaskTypeTemplateFileEntity", b =>
+                {
+                    b.Property<Guid>("TaskTypeTemplateId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FileReferenceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ChangedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ChangedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("TaskTypeTemplateId", "FileReferenceId");
+
+                    b.HasIndex("ChangedBy");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("FileReferenceId");
+
+                    b.ToTable("TaskTypeTemplateFile", (string)null);
                 });
 
             modelBuilder.Entity("Valghalla.Database.Entities.Tables.TasksFilteredLinkEntity", b =>
@@ -1891,6 +1999,9 @@ namespace Valghalla.Database.Migrations
                     b.Property<int>("VoteLocation")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("WorkLocationTemplateId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AreaId");
@@ -1898,6 +2009,8 @@ namespace Valghalla.Database.Migrations
                     b.HasIndex("ChangedBy");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("WorkLocationTemplateId");
 
                     b.ToTable("WorkLocation", (string)null);
                 });
@@ -1941,9 +2054,14 @@ namespace Valghalla.Database.Migrations
                     b.Property<Guid>("TaskTypeId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("TaskTypeTemplateEntityId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("WorkLocationId", "TaskTypeId");
 
                     b.HasIndex("TaskTypeId");
+
+                    b.HasIndex("TaskTypeTemplateEntityId");
 
                     b.ToTable("WorkLocationTaskTypes", (string)null);
                 });
@@ -1961,6 +2079,65 @@ namespace Valghalla.Database.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("WorkLocationTeams", (string)null);
+                });
+
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.WorkLocationTemplateEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.Property<Guid>("AreaId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ChangedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ChangedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .UseCollation("da-DK-x-icu");
+
+                    b.Property<int>("VoteLocation")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("ChangedBy");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.ToTable("WorkLocationTemplate", (string)null);
                 });
 
             modelBuilder.Entity("Valghalla.Database.Entities.Views.ApplicationView", b =>
@@ -4412,6 +4589,10 @@ namespace Valghalla.Database.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
+                    b.HasOne("Valghalla.Database.Entities.Tables.TaskTypeTemplateEntity", null)
+                        .WithMany("ElectionTaskTypeCommunicationTemplates")
+                        .HasForeignKey("TaskTypeTemplateEntityId");
+
                     b.Navigation("ChangedByUser");
 
                     b.Navigation("ConfirmationOfCancellationCommunicationTemplate");
@@ -4728,6 +4909,10 @@ namespace Valghalla.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Valghalla.Database.Entities.Tables.TaskTypeTemplateEntity", null)
+                        .WithMany("TaskAssignments")
+                        .HasForeignKey("TaskTypeTemplateEntityId");
+
                     b.HasOne("Valghalla.Database.Entities.Tables.TeamEntity", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId")
@@ -4794,9 +4979,16 @@ namespace Valghalla.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Valghalla.Database.Entities.Tables.TaskTypeTemplateEntity", "TaskTypeTemplate")
+                        .WithMany("TaskTypes")
+                        .HasForeignKey("TaskTypeTemplateEntityId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("ChangedByUser");
 
                     b.Navigation("CreatedByUser");
+
+                    b.Navigation("TaskTypeTemplate");
                 });
 
             modelBuilder.Entity("Valghalla.Database.Entities.Tables.TaskTypeFileEntity", b =>
@@ -4830,6 +5022,56 @@ namespace Valghalla.Database.Migrations
                     b.Navigation("FileReference");
 
                     b.Navigation("TaskType");
+                });
+
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.TaskTypeTemplateEntity", b =>
+                {
+                    b.HasOne("Valghalla.Database.Entities.Tables.UserEntity", "ChangedByUser")
+                        .WithMany()
+                        .HasForeignKey("ChangedBy");
+
+                    b.HasOne("Valghalla.Database.Entities.Tables.UserEntity", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChangedByUser");
+
+                    b.Navigation("CreatedByUser");
+                });
+
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.TaskTypeTemplateFileEntity", b =>
+                {
+                    b.HasOne("Valghalla.Database.Entities.Tables.UserEntity", "ChangedByUser")
+                        .WithMany()
+                        .HasForeignKey("ChangedBy");
+
+                    b.HasOne("Valghalla.Database.Entities.Tables.UserEntity", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Valghalla.Database.Entities.Tables.FileReferenceEntity", "FileReference")
+                        .WithMany("TaskTypeTemplateFiles")
+                        .HasForeignKey("FileReferenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Valghalla.Database.Entities.Tables.TaskTypeTemplateEntity", "TaskTypeTemplate")
+                        .WithMany("TaskTypeFileTemplates")
+                        .HasForeignKey("TaskTypeTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChangedByUser");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("FileReference");
+
+                    b.Navigation("TaskTypeTemplate");
                 });
 
             modelBuilder.Entity("Valghalla.Database.Entities.Tables.TasksFilteredLinkEntity", b =>
@@ -4960,11 +5202,17 @@ namespace Valghalla.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Valghalla.Database.Entities.Tables.WorkLocationTemplateEntity", "WorkLocationTemplate")
+                        .WithMany("WorkLocations")
+                        .HasForeignKey("WorkLocationTemplateId");
+
                     b.Navigation("Area");
 
                     b.Navigation("ChangedByUser");
 
                     b.Navigation("CreatedByUser");
+
+                    b.Navigation("WorkLocationTemplate");
                 });
 
             modelBuilder.Entity("Valghalla.Database.Entities.Tables.WorkLocationResponsibleEntity", b =>
@@ -5008,6 +5256,10 @@ namespace Valghalla.Database.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
+                    b.HasOne("Valghalla.Database.Entities.Tables.TaskTypeTemplateEntity", null)
+                        .WithMany("WorkLocationTaskTypes")
+                        .HasForeignKey("TaskTypeTemplateEntityId");
+
                     b.HasOne("Valghalla.Database.Entities.Tables.WorkLocationEntity", "WorkLocation")
                         .WithMany("WorkLocationTaskTypes")
                         .HasForeignKey("WorkLocationId")
@@ -5036,6 +5288,31 @@ namespace Valghalla.Database.Migrations
                     b.Navigation("Team");
 
                     b.Navigation("WorkLocation");
+                });
+
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.WorkLocationTemplateEntity", b =>
+                {
+                    b.HasOne("Valghalla.Database.Entities.Tables.AreaEntity", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Valghalla.Database.Entities.Tables.UserEntity", "ChangedByUser")
+                        .WithMany()
+                        .HasForeignKey("ChangedBy");
+
+                    b.HasOne("Valghalla.Database.Entities.Tables.UserEntity", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Area");
+
+                    b.Navigation("ChangedByUser");
+
+                    b.Navigation("CreatedByUser");
                 });
 
             modelBuilder.Entity("Valghalla.Database.Entities.Analyze.ColumnEntity", b =>
@@ -5139,6 +5416,8 @@ namespace Valghalla.Database.Migrations
                     b.Navigation("ElectionCommitteeContactInformation");
 
                     b.Navigation("TaskTypeFiles");
+
+                    b.Navigation("TaskTypeTemplateFiles");
                 });
 
             modelBuilder.Entity("Valghalla.Database.Entities.Tables.ParticipantEntity", b =>
@@ -5170,6 +5449,19 @@ namespace Valghalla.Database.Migrations
                     b.Navigation("TaskAssignments");
 
                     b.Navigation("TaskTypeFiles");
+
+                    b.Navigation("WorkLocationTaskTypes");
+                });
+
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.TaskTypeTemplateEntity", b =>
+                {
+                    b.Navigation("ElectionTaskTypeCommunicationTemplates");
+
+                    b.Navigation("TaskAssignments");
+
+                    b.Navigation("TaskTypeFileTemplates");
+
+                    b.Navigation("TaskTypes");
 
                     b.Navigation("WorkLocationTaskTypes");
                 });
@@ -5207,6 +5499,11 @@ namespace Valghalla.Database.Migrations
             modelBuilder.Entity("Valghalla.Database.Entities.Tables.WorkLocationTeamEntity", b =>
                 {
                     b.Navigation("TaskAssignments");
+                });
+
+            modelBuilder.Entity("Valghalla.Database.Entities.Tables.WorkLocationTemplateEntity", b =>
+                {
+                    b.Navigation("WorkLocations");
                 });
 #pragma warning restore 612, 618
         }

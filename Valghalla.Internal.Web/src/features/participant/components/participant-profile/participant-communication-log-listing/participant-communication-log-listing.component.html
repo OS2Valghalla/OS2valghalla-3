@@ -1,5 +1,5 @@
 <app-card cardTitle="participant.communication_log.title">
-  <app-table *appTableCtx="data; let typing" [pageSizeOptions]="[10, 50]" defaultSortColumn="createdAt" defaultSortDirection="desc" [rowNgClass]="getRowNgClass">
+  <app-table [storageKey]="'communication-log'"  *appTableCtx="data; let typing" [pageSizeOptions]="[10, 50]" defaultSortColumn="createdAt" defaultSortDirection="desc" [rowNgClass]="getRowNgClass">
     <app-query-container [label]="'shared.action.search' | transloco" [(model)]="data" (queryEvent)="onQuery($event)" (queryFormEvent)="onQueryForm($event)">
       <mat-accordion multi *appQueryContainerContent>
         <mat-expansion-panel>

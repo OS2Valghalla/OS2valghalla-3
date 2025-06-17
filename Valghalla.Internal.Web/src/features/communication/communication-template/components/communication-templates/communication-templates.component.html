@@ -4,6 +4,7 @@
   actionIcon="add"
   (action)="openAddCommunicationTemplate()">
   <app-table
+    [storageKey]="'communication-template-listing'"
     *appTableCtx="data; let typing"
     defaultSortColumn="title"
     (editEvent)="openEditCommunicationTemplate($event)"

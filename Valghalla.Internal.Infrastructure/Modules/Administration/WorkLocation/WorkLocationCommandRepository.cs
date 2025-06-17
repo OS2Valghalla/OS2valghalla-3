@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+
+using Microsoft.EntityFrameworkCore;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocation.Commands;
@@ -14,8 +17,13 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
         private readonly DbSet<WorkLocationTaskTypeEntity> workLocationTaskTypes;
         private readonly DbSet<WorkLocationResponsibleEntity> workLocationResponsibles;
         private readonly DbSet<WorkLocationTeamEntity> workLocationTeams;
+        private readonly IQueryable<TaskTypeTemplateEntity> TaskTypeTemplates;
+        private readonly DbSet<TaskTypeEntity> taskTypes;
+        private readonly DbSet<TaskTypeFileEntity> taskTypeFiles;
+        private readonly DbSet<ElectionWorkLocationEntity> electionWorkLocationEntities;
+        private readonly IMapper mapper;
 
-        public WorkLocationCommandRepository(DataContext dataContext)
+        public WorkLocationCommandRepository(DataContext dataContext, IMapper mapper)
         {
             this.dataContext = dataContext;
             tasks = dataContext.Set<TaskAssignmentEntity>();
@@ -23,11 +31,50 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             workLocationTaskTypes = dataContext.Set<WorkLocationTaskTypeEntity>();
             workLocationResponsibles = dataContext.Set<WorkLocationResponsibleEntity>();
             workLocationTeams = dataContext.Set<WorkLocationTeamEntity>();
+            TaskTypeTemplates = dataContext.Set<TaskTypeTemplateEntity>().AsNoTracking();
+            taskTypes = dataContext.Set<TaskTypeEntity>();
+            taskTypeFiles = dataContext.Set<TaskTypeFileEntity>();
+            electionWorkLocationEntities = dataContext.Set<ElectionWorkLocationEntity>();
+            this.mapper = mapper;
         }
 
         public async Task<Guid> CreateWorkLocationAsync(CreateWorkLocationCommand command, CancellationToken cancellationToken)
         {
             var workLocationId = Guid.NewGuid();
+
+            var templates = await GetWorkLocationTaskTypeTemplates(command, cancellationToken);
+
+            var taskTypeEntities = new List<TaskTypeEntity>();
+            var fileEntities = new List<TaskTypeFileEntity>();
+
+            if (templates != null)
+            {
+                foreach (var template in templates)
+                {
+                    var taskTypeId = Guid.NewGuid();
+
+                    var taskTypeEntity = mapper.Map<TaskTypeEntity>(template);
+                    taskTypeEntity.Id = taskTypeId;
+
+                    taskTypeEntities.Add(taskTypeEntity);
+
+                    if (template.FileReferences != null)
+                    {
+                        foreach (var fileRef in template.FileReferences)
+                        {
+                            fileEntities.Add(new TaskTypeFileEntity
+                            {
+                                TaskTypeId = taskTypeId,
+                                FileReferenceId = fileRef.Id
+                            });
+                        }
+                    }
+                }
+            }
+            var taskTypeIds = await CreateWorkLocationTaskTypes(taskTypeEntities, fileEntities, workLocationId, cancellationToken);
+
+            command.TaskTypeIds.AddRange(taskTypeIds);
+
             var entity = new WorkLocationEntity()
             {
                 Id = workLocationId,
@@ -40,7 +87,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             };
 
             await workLocations.AddAsync(entity, cancellationToken);
-            foreach(var taskTypeId in command.TaskTypeIds)
+            foreach (var taskTypeId in command.TaskTypeIds)
             {
                 var childEntity = new WorkLocationTaskTypeEntity()
                 {
@@ -68,9 +115,44 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                 await workLocationResponsibles.AddAsync(childEntity, cancellationToken);
             }
 
+            var electionWorkLocation = new ElectionWorkLocationEntity()
+            {
+                ElectionId = command.ElectionId,
+                WorkLocationId = workLocationId
+            };
+            await electionWorkLocationEntities.AddAsync(electionWorkLocation);
+
             await dataContext.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
+        }
+
+        private async Task<List<TaskTypeTemplateEntity>?> GetWorkLocationTaskTypeTemplates(CreateWorkLocationCommand command, CancellationToken cancellationToken)
+        {
+            return await TaskTypeTemplates
+             .Include(i => i.FileReferences)
+             .Where(i => command.TaskTypeTemplateIds.Contains(i.Id))
+             .ToListAsync(cancellationToken);
+        }
+
+        private async Task<List<Guid>> CreateWorkLocationTaskTypes(List<TaskTypeEntity> taskTypeEntities, List<TaskTypeFileEntity> taskTypeFileEntities, Guid workLocationId, CancellationToken cancellationToken)
+        {
+            await taskTypes.AddRangeAsync(taskTypeEntities, cancellationToken);
+
+            await taskTypeFiles.AddRangeAsync(taskTypeFileEntities, cancellationToken);
+
+            var workLocationTaskTypeEntities = taskTypeEntities
+                .Select(t => new WorkLocationTaskTypeEntity
+                {
+                    WorkLocationId = workLocationId,
+                    TaskTypeId = t.Id
+                })
+                .ToList();
+
+            await dataContext.SaveChangesAsync(cancellationToken);
+
+            return taskTypeEntities.Select(t => t.Id).ToList();
+
         }
 
         public async Task<(IEnumerable<Guid>, IEnumerable<Guid>)> UpdateWorkLocationAsync(UpdateWorkLocationCommand command, CancellationToken cancellationToken)
@@ -88,7 +170,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             entity.VoteLocation = command.VoteLocation;
 
             workLocations.Update(entity);
-            
+
             var deletedWorkLocationTaskTypes = existingWorkLocationTaskTypes.Where(r => !command.TaskTypeIds.Contains(r.TaskTypeId)).ToList();
             var deletedWorkLocationTaskTypeIds = deletedWorkLocationTaskTypes.Select(t => t.TaskTypeId).ToList();
             var newWorkLocationTaskTypeIds = command.TaskTypeIds.Where(r => !existingWorkLocationTaskTypes.Any(i => i.TaskTypeId == r)).ToList();
@@ -115,7 +197,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                     TaskTypeId = newWorkLocationTaskTypeId
                 }, cancellationToken);
             }
-            
+
             foreach (var deletedWorkLocationTeam in deletedWorkLocationTeams)
             {
                 workLocationTeams.Remove(deletedWorkLocationTeam);

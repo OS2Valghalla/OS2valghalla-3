@@ -16,6 +16,16 @@
         <input matInput type="text" formControlName="title" />
       </mat-form-field>
     </div>
+<div class="flex flex-col col-span-2">
+      <mat-form-field appearance="fill" *appShowSkeleton="loading">
+        <mat-label>{{ 'administration.work_location.columns.election' | transloco }}</mat-label>
+        <mat-select formControlName="electionId">
+          <mat-option *ngFor="let election of elections" [value]="election.id">
+            {{ election.title }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div class="flex flex-col col-span-2">
       <mat-form-field appearance="fill" *appShowSkeleton="loading">
         <mat-label>{{ 'administration.work_location.columns.area' | transloco }}</mat-label>
@@ -32,6 +42,7 @@
         <input matInput type="text" formControlName="address" />
       </mat-form-field>
     </div>
+
     <div class="flex flex-col col-span-2">
       <mat-form-field appearance="fill" *appShowSkeleton="loading">
         <mat-label>{{ 'administration.work_location.columns.postal_code' | transloco }}</mat-label>
@@ -60,14 +71,14 @@
       <mat-hint>{{ 'administration.work_location.error.active_election_warning' | transloco }}</mat-hint>
     </div>
     <div class="flex flex-col">
-      <h3>{{ 'administration.work_location.columns.relevant_task_types' | transloco }}</h3>
-      <mat-selection-list #selectedTaskTypes *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
+      <h3>{{ 'administration.work_location.columns.relevant_task_type_templates' | transloco }}</h3>
+      <mat-selection-list #selectedTaskTypeTemplates *ngIf="!loading" [multiple]="true" [disabled]="item?.hasActiveElection">
         <mat-list-option
           checkboxPosition="before"
-          *ngFor="let taskType of taskTypes"
-          [value]="taskType.id"
-          (click)="$event.stopPropagation(); changeSelectedTaskTypes()">
-          {{ taskType.title }}
+          *ngFor="let template of taskTypeTemplates"
+          [value]="template.id"
+          (click)="$event.stopPropagation(); changeSelectedTaskTypeTemplate()">
+          {{ template.title }}
         </mat-list-option>
       </mat-selection-list>
     </div>

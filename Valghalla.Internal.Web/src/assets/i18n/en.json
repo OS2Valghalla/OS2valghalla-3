@@ -78,9 +78,17 @@
         "title": "Task types",
         "description": "Here you can administrate all the task types"
       },
+      "task_type_template": {
+        "title": "Task type templates",
+        "description": "Here you can administrate all the task type templates"
+      },
       "work_location": {
         "title": "Work Locations",
         "description": "Here you can administrate all the work locations in the system"
+      },
+      "work_location_template": {
+        "title": "Work Location Templates",
+        "description": "Here you can administrate all the work locations templates in the system"
       },
       "communication": {
         "title": "Communication",
@@ -172,6 +180,7 @@
       "get_areas_shared": "Error fetching areas",
       "get_election_types_shared": "Error fetching election types",
       "get_work_locations_shared": "Error fetching work locations",
+      "get_work_location_templates_shared": "Error fetching work location templates",
       "get_communication_templates_shared": "Error fetching communication templates",
       "get_task_types_shared": "Error fetching task types",
       "get_teams_shared": "Error fetching teams",
@@ -452,6 +461,7 @@
         "activate_election": "Error occured when activating election",
         "deactivate_election": "Error occurred when deactivating election",
         "get_election": "Error occurred when fetching election",
+        "get_elections": "Error occurred when fetching elections",
         "get_election_communication_configurations": "Error occurred when fetching election communication configurations",
         "update_election_communication_configurations": "Error occurred when updating election communication configurations",
         "election_exist": "An election exists with the same name and same election date",
@@ -499,7 +509,7 @@
         "days_after_election": "Days after election date with tasks",
         "days_after_election_hint": "If you make the number less than <strong>[[number]]</strong>, dates with task distribution might be deleted",
         "work_location": "Relevant work locations",
-        "work_location_hint": "Specify the work locations that will be used for the election",
+        "work_location_template_hint": "Specify the work location templates that will be used for the election",
         "standard_messages": "Standard messages",
         "standard_messages_hint": "Specify which templates are automatically sent to participants",
         "task_specific_messages": "Task specific messages",
@@ -694,6 +704,7 @@
       "error": {
         "task_type_exist": "A task type exist with the same name",
         "get_all_task_types": "Error occurred when fetching all task types",
+        "get_all_task_type_templates": "Error occurred when fetching all task type templates",
         "get_task_type_details": "Error occurred when fetching task type details",
         "create_task_type": "Error occurred when creating task type",
         "update_task_type": "Error occurred when updating task type",
@@ -722,12 +733,70 @@
       },
       "task_type_listing": {
         "title": "Task types",
-        "trusted": "Trusted assignment"
+        "trusted": "Trusted assignment",
+        "area": "Area",
+        "election": "Election",
+        "template": "Task Template"
       },
       "task_type_item": {
         "page_title": {
           "create": "Create task type",
           "edit": "Edit task type"
+        },
+        "payment": "Payment",
+        "validation_not_required": "Disable validation",
+        "attach_files_hint": "Uploaded files will be shown on the participants “My tasks” page, when a task is assigned to them.<br/><br/>Allowed file types: pdf.<br/>Remember that the file must be web accessible!<br/>Max 10MB.",
+        "trusted": "Trust assignment",
+        "sending_reminder_enabled": "Send reminder of task",
+        "election": "Election",
+        "work_location": "Work location",
+        "task_type_template": "Task type template"
+      },
+      "columns": {
+        "area": "Area",
+        "election": "Election",
+        "template": "Task template"
+      }
+    },
+    "task_type_template": {
+      "page_title": "Task type template",
+      "error": {
+        "task_type_template_exist": "A task type template exist with the same name",
+        "get_all_task_type_templates": "Error occurred when fetching all task type templates",
+        "get_task_type_template_details": "Error occurred when fetching task type template details",
+        "create_task_type_template": "Error occurred when creating task type template",
+        "update_task_type_template": "Error occurred when updating task type template",
+        "delete_task_type_template": "Error occurred when deleting task type template",
+        "max_file_size_limit": "Max file size limit is 10MB"
+      },
+      "success": {
+        "create_task_type_template": "task type template has been created successfully",
+        "update_task_type_template": "task type template has been updated successfully",
+        "delete_task_type_template": "task type template has been deleted successfully"
+      },
+      "action": {
+        "create_task_type_template": "Create task type template"
+      },
+      "update_task_type_template_confirmation": {
+        "title": "Are you sure you want to update this task type template?",
+        "validation_not_required_turn_on": "Be aware that this removes validation of assigned tasks in active elections",
+        "validation_not_required_turn_off": "Be aware that this will start validation on all assigned tasks in active elections. If any user don’t live up to the validation demands, they will be unassigned from the task",
+        "trusted_turn_on": "Be aware that this might remove the visibility of tasks of this task type template for participants in active elections",
+        "trusted_turn_off": "Be aware that this might make tasks of this task type template visible to participants in active elections"
+      },
+      "delete_task_type_template_confirmation": {
+        "title": "Delete task type template",
+        "content": "Are you sure you want to delete this task type template?",
+        "has_tasks_connected_to_work_location": "There are tasks of this type in a election. They will be deleted when you delete the task type template, and assigned participants in active elections will be unassigned. Do you want to continue?"
+      },
+      "task_type_template_listing": {
+        "title": "task type templates",
+        "trusted": "Trusted assignment"
+      },
+      "task_type_template_item": {
+        "page_title": {
+          "create": "Create task type template",
+          "edit": "Edit task type template"
         },
         "payment": "Payment",
         "validation_not_required": "Disable validation",
@@ -763,11 +832,14 @@
       },
       "columns": {
         "area": "Area",
+        "election": "Election",
+        "template": "Template",
         "address": "Address",
         "postal_code": "Postal code",
         "city": "City",
         "vote_location": "Vote area",
         "relevant_task_types": "Relevant task types",
+        "relevant_task_type_templates": "Relevant task type templates",
         "relevant_teams": "Relevant teams"
       },
       "work_location_item": {
@@ -777,6 +849,56 @@
         }
       },
       "work_location_listing": {
+        "title": "Work locations",
+        "area": "Area",
+        "election": "Election",
+        "template": "Template"
+      }
+    },
+    "work_location_template": {
+      "page_title": "Work location Template",
+      "error": {
+        "work_location_template_exist": "A work location template exist with the same name",
+        "get_work_location_template": "Error occurred when fetching work location template",
+        "create_work_location_template": "Error occurred when creating work location template",
+        "update_work_location_template": "Error occurred when updating work location template",
+        "delete_work_location_template": "Error occurred when deleting work location template",
+        "check_work_location_template_used_in_active_election": "Error occurred when checking if work location template used in active election",
+        "work_location_template_used_in_active_election": "Work location template used in an active election cannot be deleted",
+        "active_election_warning": "Task types and teams cannot be edited, because this work location template is part of an active election."
+      },
+      "success": {
+        "create_work_location_template": "Work location template has been created successfully",
+        "update_work_location_template": "Work location template has been updated successfully",
+        "delete_work_location_template": "Work location template has been deleted successfully"
+      },
+      "action": {
+        "create_work_location_template": "Create work location template",
+        "delete_confirmation": {
+          "title": "Delete work location template",
+          "content_no_task": "Are you sure you want to delete this work location template?",
+          "content_has_task": "There are tasks associated with this work location template, are you sure you want to delete it, the associated tasks will be deleted as well?"
+        }
+      },
+      "columns": {
+        "area": "Area",
+        "election": "Election",
+        "template": "Work location template",
+        "address": "Address",
+        "postal_code": "Postal code",
+        "city": "City",
+        "vote_location": "Vote area",
+        "relevant_task_types": "Relevant task types",
+        "relevant_task_type_templates": "Relevant task type templates",
+        "relevant_teams": "Relevant teams"
+      },
+      "work_location_template_item": {
+        "page_title": {
+          "create": "Create work location template",
+          "edit": "Edit work location template"
+        }
+      },
+      "work_location_template_listing": {
         "title": "Work locations",
         "area": "Area"
       }

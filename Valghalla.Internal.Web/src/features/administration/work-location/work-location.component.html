@@ -1,21 +1,49 @@
 <div class="flex flex-row justify-between">
   <app-page-title>{{ 'administration.work_location.page_title' | transloco }}</app-page-title>
 </div>
-
 <app-card
   [cardTitle]="'administration.work_location.work_location_listing.title' | transloco"
   actionTitle="administration.work_location.action.create_work_location"
   actionIcon="add"
   (action)="openAddWorkLocation()">
+  <div class="flex flex-row items-end gap-4">
+    <div>
+      <div>{{ 'administration.work_location.columns.election' | transloco }}</div>
+      <mat-form-field appearance="fill" *appShowSkeleton="loading" class="pb-4 pr-4">
+        <mat-label>{{ 'shared.common.all' | transloco }}</mat-label>
+        <mat-select [(ngModel)]="selectedElectionId" (selectionChange)="onElectionChange($event.value)">
+          <mat-option [value]="null">{{ 'shared.common.all' | transloco }}</mat-option>
+          <mat-option *ngFor="let election of elections" [value]="election.id">
+            {{ election.title }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <div>{{ 'administration.work_location.columns.template' | transloco }}</div>
+      <mat-form-field appearance="fill" *appShowSkeleton="loading" class="pb-4 pr-4">
+        <mat-label>{{ 'shared.common.all' | transloco }}</mat-label>
+        <mat-select [(ngModel)]="selectedTemplateId" (selectionChange)="onTemplateChange($event.value)">
+          <mat-option [value]="null">{{ 'shared.common.all' | transloco }}</mat-option>
+          <mat-option *ngFor="let template of workLocationTemplates" [value]="template.id">
+            {{ template.title }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
   <app-table
+    [storageKey]="'work-location'" 
     *appTableCtx="data; let typing"
     defaultSortColumn="title"
     (editEvent)="openEditWorkLocation($event)"
     (deleteEvent)="deleteWorkLocation($event)">
+
     <app-query-container
       [hideFilterBtn]="true"
       cacheKey="worklocation"
       [(model)]="data"
+      (modelChange)="onModelChange($event)"
       (queryFormEvent)="onQueryForm($event)"
       (queryEvent)="onQuery($event)">
       <mat-accordion multi *appQueryContainerContent> </mat-accordion>
@@ -26,8 +54,8 @@
       appHeaderRowDef
       key="id"
       [sticky]="true"
-      [columns]="['title', 'areaName', '$actionsEditDelete']"
-      [mobileColumns]="['title', 'areaName']">
+      [columns]="['title', 'areaName','electionTitle','templateTitle', '$actionsEditDelete']"
+      [mobileColumns]="['title', 'areaName','electionTitle','templateTitle']">
     </ng-container>
 
     <ng-container [appTableTyping]="typing" appColumnDef="title">
@@ -40,6 +68,18 @@
         'administration.work_location.work_location_listing.area' | transloco
       }}</ng-container>
       <ng-container *appCellDef="typing; let row">{{ row.areaName }}</ng-container>
+    </ng-container>
+    <ng-container [appTableTyping]="typing" appColumnDef="electionTitle">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.work_location.work_location_listing.election' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.electionTitle }}</ng-container>
+    </ng-container>
+<ng-container [appTableTyping]="typing" appColumnDef="templateTitle">
+      <ng-container *appHeaderCellDef="typing; sortable: true">{{
+        'administration.work_location.work_location_listing.template' | transloco
+      }}</ng-container>
+      <ng-container *appCellDef="typing; let row">{{ row.templateTitle }}</ng-container>
     </ng-container>
   </app-table>
 </app-card>

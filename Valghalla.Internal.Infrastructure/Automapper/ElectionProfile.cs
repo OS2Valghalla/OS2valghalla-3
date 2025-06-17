@@ -13,7 +13,8 @@ namespace Valghalla.Internal.Infrastructure.Automapper
         public ElectionProfile()
         {
             CreateMap<ElectionEntity, ElectionDetailsResponse>()
-               .ForMember(dest => dest.WorkLocationIds, opt => opt.MapFrom(src => src.WorkLocations.Select(i => i.Id).ToArray()));
+               .ForMember(dest => dest.WorkLocationIds, opt => opt.MapFrom(src => src.WorkLocations.Select(i => i.WorkLocationTemplateId).ToArray()));
+               
 
             CreateMap<ElectionEntity, ElectionListingItemResponse>()
                 .ForMember(dest => dest.ElectionTypeName, opt => opt.MapFrom(src => src.ElectionType.Title));

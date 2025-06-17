@@ -4,6 +4,7 @@
 
 <app-card [cardTitle]="'administration.audit_log.audit_log_listing.title' | transloco">
   <app-table
+[storageKey]="'audit-log-listing'" 
     *appTableCtx="data; let typing"
     [pageSizeOptions]="[50]"
     [pageSize]="50"

@@ -25,7 +25,13 @@ namespace Valghalla.Internal.API.Controllers.Administration.Election
             var result = await sender.Send(query, cancellationToken);
             return Ok(result);
         }
-
+        [HttpGet("getelections")]
+        public async Task<IActionResult> GetElectionsAsync(CancellationToken cancellationToken)
+        {
+            var query = new GetElectionsQuery();
+            var result = await sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
         [HttpGet("getelectioncommunicationconfigurations")]
         public async Task<IActionResult> GetElectionCommunicationConfigurationsAsync(Guid id, CancellationToken cancellationToken)
         {
