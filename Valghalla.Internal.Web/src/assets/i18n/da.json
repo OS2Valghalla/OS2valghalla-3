@@ -102,6 +102,8 @@
         "tasks_overview_title": "Oversigt over opgaver",
         "tasks_overview_description": "Få overblik over alle opgaver i det valgte valg",
         "create_task_link_title": "Opret opgavelink",
+        "rejected_tasks_overview_link_title": "Oversigt over afviste opgaver",
+        "rejected_tasks_overview_link_description": "Få overblik over afviste opgaver i det valgte valg",
         "create_task_link_description": "Opret et link til valgte opgaver",
         "work_location_tasks_title": "Opgaver på arbejdssted",
         "work_location_tasks_distribution_title": "Fordel opgaver",
@@ -196,7 +198,8 @@
       "link": "Link",
       "all": "Alle",
       "created_at": "Oprettet den",
-      "select_all": "Vælg alle"
+      "select_all": "Vælg alle",
+      "open": "Åben"
     },
     "task_status": {
       "available": "Ledig",
@@ -980,6 +983,7 @@
       "status_all": "Status",
       "status_missing": "Ledig",
       "status_awaiting": "Ubesvaret",
+      "status_rejected": "Afvist",
       "missing": "LEDIG",
       "rejected_invitations": "Afviste invitationer",
       "reply_on_behalf_of_user": "Svar på vegne af deltager",
@@ -989,7 +993,8 @@
       "trusted_task": "Betroet opgave",
       "available_tasks": "Tilgængelige opgaver",
       "link_description": "Deling af dette link med deltagere vil gøre det muligt for dem at se og tilmelde sig de valgte opgaver",
-      "filtered_tasks_list_header": "Valgte opgaver baseret på filtre"
+      "filtered_tasks_list_header": "Valgte opgaver baseret på filtre",
+      "task_status_summary": "Opgave statusoversigt"
     },
     "actions": {
       "copy_task_link": "Kopier opgavelink",

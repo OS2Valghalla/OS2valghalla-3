@@ -1,4 +1,47 @@
 <h3 *ngIf="!election" [innerHtml]="'start.no_election_message' | transloco"></h3>
+<app-card [cardTitle]="'tasks.labels.task_status_summary' | transloco">
+  <div class="w-full flex flex-wrap gap-2 mb-2" *ngIf="tasksStatusGeneralInfo">    
+    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px;">
+      <mat-card-content class="p-0 m-0" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+        <div class="font-semibold text-xs leading-tight">{{ 'tasks.labels.status_total' | transloco }}</div>
+        <div class="text-lg font-bold leading-tight">
+          {{ tasksStatusGeneralInfo.assignedTasksCount }}/{{ tasksStatusGeneralInfo.allTasksCount }}
+        </div>      
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px;">
+      <mat-card-content class="p-0 m-0" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+        <div class="font-semibold text-xs leading-tight">{{ 'tasks.labels.status_missing' | transloco }}</div>
+        <div class="text-lg font-bold leading-tight">
+          {{ tasksStatusGeneralInfo.missingTasksCount }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px;">
+      <mat-card-content class="p-0 m-0" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+        <div class="font-semibold text-xs leading-tight">{{ 'tasks.labels.status_awaiting' | transloco }}</div>
+        <div class="text-lg font-bold leading-tight">
+          {{ tasksStatusGeneralInfo.awaitingTasksCount }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card 
+      class="flex-1 min-w-[120px] p-2 rejected-tasks-card" 
+      style="height: 70px;"
+      [ngClass]="{'rejectedTasksDetails': tasksStatusGeneralInfo.rejectedTasksCount > 0, 'cursor-pointer': tasksStatusGeneralInfo.rejectedTasksCount > 0}"
+    >
+      <mat-card-content 
+        class="min-w-[100px] font-semibold"
+        style="height: 100%; display: flex; flex-direction: column; justify-content: center;"
+        (click)="onOpenRejectedTasks()">
+        <div class="font-semibold text-xs leading-tight">{{ 'tasks.labels.status_rejected' | transloco }}</div>
+        <div class="text-lg font-bold leading-tight">
+          {{ tasksStatusGeneralInfo.rejectedTasksCount }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</app-card>
 <app-card *ngIf="election" [cardTitle]="'tasks.page_title' | transloco">
   <div class="w-full" *appShowSkeleton="loadingAreas">
     <mat-form-field class="pb-4 pr-4 w-52">

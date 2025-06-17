@@ -4,3 +4,13 @@
 .awaitingAcceptedTasks {
     background-color: #FFEECC;
 }
+.rejectedTasksDetails {
+    background-color: #FFEECC;
+}
+.rejected-tasks-card.rejectedTasksDetails {
+    // background: #f3f4f6;
+background-color: #FFEECC;
+}
+.rejected-tasks-card.rejectedTasksDetails:hover {
+    background: #e8e8e8;     
+}

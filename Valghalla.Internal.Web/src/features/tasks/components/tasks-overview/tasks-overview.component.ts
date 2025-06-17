@@ -8,6 +8,8 @@ import { TasksSummary } from '../../models/tasks-summary';
 import { ElectionAreasGeneralInfo, TaskTypeWithAreaIdsResponse } from '../../models/election-areas-general-info';
 import { ElectionShared } from 'src/shared/models/election/election-shared';
 import { MatSelectionList } from '@angular/material/list';
+import { Router } from '@angular/router';
+import { TaskStatusGeneralInfoResponse } from '../../models/task-status-general-info-response';
 
 export interface AreaTasksSummary {
   areaId: string;
@@ -52,8 +54,8 @@ export interface StatusesTasksSummary {
   styleUrls: ['../../../../shared/components/table/table.component.scss', 'tasks-overview.component.scss'],
   providers: [AreaSharedHttpService, AreaTasksHttpService],
 })
-export class TasksOverviewComponent implements AfterViewInit {
 
+export class TasksOverviewComponent implements AfterViewInit {
   private readonly subs = new SubSink();
 
   loadingAreas = true;
@@ -75,6 +77,8 @@ export class TasksOverviewComponent implements AfterViewInit {
   areaTasksSummary: Array<TasksSummary> = [];
 
   data: Array<AreaTasksSummary> = [];
+
+  tasksStatusGeneralInfo: TaskStatusGeneralInfoResponse;
 
   displayedColumns: Array<string> = ['status'];
 
@@ -103,7 +107,7 @@ export class TasksOverviewComponent implements AfterViewInit {
     }
   ];
 
-  constructor(private globalStateService: GlobalStateService, private areaTasksHttpService: AreaTasksHttpService) { }
+  constructor(private globalStateService: GlobalStateService, private areaTasksHttpService: AreaTasksHttpService, private router: Router) { }
 
   ngAfterViewInit(): void {
     this.workLocationLink = '/' + RoutingNodes.TasksOnWorkLocation + '/';
@@ -117,6 +121,11 @@ export class TasksOverviewComponent implements AfterViewInit {
         this.electionDates = [];
         this.selectedDate = undefined;
         this.selectedTeamId = undefined;
+
+        this.subs.sink = this.areaTasksHttpService.getTasksStatusSummary(this.election.id).subscribe((res) => {
+          this.tasksStatusGeneralInfo = res.data;
+          this.tasksStatusGeneralInfo.rejectedTasksInfoResponses = this.tasksStatusGeneralInfo.rejectedTasksInfoResponses || [];
+        });
 
         this.subs.sink = this.areaTasksHttpService.getAreasGeneralInfo(this.election.id).subscribe((resAreas) => {
           this.areasGeneralInfo = resAreas.data;
@@ -393,6 +402,9 @@ export class TasksOverviewComponent implements AfterViewInit {
   isColumnDisabled(columnName: string): boolean {
     const column = this.columns.find(col => col.name === columnName);
     return column ? column.disabled : false;
+  }
+  onOpenRejectedTasks() {
+    this.router.navigate(['/tasks', RoutingNodes.RejectedTasksOverview]);
   }
 
 }

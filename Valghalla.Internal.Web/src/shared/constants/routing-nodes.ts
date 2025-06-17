@@ -16,6 +16,7 @@ export class RoutingNodes {
   static Administration = 'administration';
   static Tasks = 'tasks';
   static CreateTaskLink = 'create-task-link';
+  static RejectedTasksOverview = 'rejected-tasks-overview';
   static Overview = 'overview';
   static WorkLocation = 'work-location';
   static TasksOnWorkLocation = 'tasks-on-work-location';

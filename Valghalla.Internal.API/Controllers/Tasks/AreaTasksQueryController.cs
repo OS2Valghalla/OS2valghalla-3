@@ -1,5 +1,7 @@
 ﻿using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Valghalla.Integration.Auth;
 using Valghalla.Internal.Application.Modules.Tasks.Queries;
 
@@ -32,6 +34,19 @@ namespace Valghalla.Internal.API.Controllers.Tasks
             var result = await sender.Send(query, cancellationToken);
             return Ok(result);
         }
-
+        [HttpGet("gettasksstatussummary")]
+        public async Task<IActionResult> GetTasksStatusSummaryQuery(Guid electionId, CancellationToken cancellationToken)
+        {
+            var query = new GetParticipantsTasksStatusQuery(electionId);
+            var result = await sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet("getrejectedtasks")]
+        public async Task<IActionResult> GetRejectedTasksAsync(Guid electionId, CancellationToken cancellationToken)
+        {
+            var query = new GetRejectedTasksQuery(electionId);
+            var result = await sender.Send(query, cancellationToken);
+            return Ok(result);
+        }
     }
 }

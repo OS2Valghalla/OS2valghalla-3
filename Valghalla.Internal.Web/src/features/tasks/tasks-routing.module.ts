@@ -4,6 +4,7 @@ import { TasksLandingComponent } from './components/landing/landing.component';
 import { TasksOverviewComponent } from './components/tasks-overview/tasks-overview.component';
 import { CreateTaskLinkComponent } from './components/create-task-link/create-task-link.component';
 import { RoutingNodes } from 'src/shared/constants/routing-nodes';
+import { RejectedTasksOverviewComponent } from './components/rejected-tasks-overview/rejected-tasks-overview.component';
 
 const routes: Routes = [
     {
@@ -22,11 +23,17 @@ const routes: Routes = [
         data: { breadcrumb: 'app.navigation.tasks.create_task_link_title' },
         title: 'app.navigation.tasks.create_task_link_title',
         component: CreateTaskLinkComponent,
-    },  
+    },
+    {
+        path: RoutingNodes.RejectedTasksOverview,
+        data: { breadcrumb: 'app.navigation.tasks.rejected_tasks_overview_link_title' },
+        title: 'app.navigation.tasks.rejected_tasks_overview_link_title',
+        component: RejectedTasksOverviewComponent,
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class TasksRoutingModule {}
+export class TasksRoutingModule { }
