@@ -8,9 +8,9 @@ using Valghalla.Internal.Application.Modules.Administration.TaskTypeTemplate.Res
 
 namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskTypeTemplate
 {
-    internal class TaskTypeTemplateListingQueryRepository : QueryEngineRepository<TaskTypeTemplateListingQueryForm, TaskTypeTemplateListingItemResponse, VoidQueryFormParameters, TaskTypeTemplateEntity>
+    internal class TaskTypeListingQueryRepository : QueryEngineRepository<TaskTypeTemplateListingQueryForm, TaskTypeTemplateListingItemResponse, VoidQueryFormParameters, TaskTypeTemplateEntity>
     {
-        public TaskTypeTemplateListingQueryRepository(DataContext dataContext, IMapper mapper) : base(dataContext, mapper)
+        public TaskTypeListingQueryRepository(DataContext dataContext, IMapper mapper) : base(dataContext, mapper)
         {
             Order((queryable, order) =>
             {
