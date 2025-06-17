@@ -696,6 +696,7 @@
       "error": {
         "task_type_exist": "Der findes allerede en opgavetype med samme navn",
         "get_all_task_types": "Der opstod en fejl under hentning af alle opgavetyper",
+        "get_all_task_type_templates": "Der opstod en fejl under hentning af alle opgavetype-skabeloner",
         "get_task_type_details": "Der opstod en fejl under hentning af opgavetype-detaljer",
         "create_task_type": "Der opstod en fejl under oprettelse af opgavetype",
         "update_task_type": "Der opstod en fejl under opdatering af opgavetype",
@@ -770,6 +771,7 @@
         "city": "By",
         "vote_location": "Afstemningsområde",
         "relevant_task_types": "Relevante opgavetyper",
+        "relevant_task_type_templates": "Relevante opgavetyper",
         "relevant_teams": "Relevante teams"
       },
       "work_location_item": {
@@ -818,6 +820,7 @@
         "city": "By",
         "vote_location": "Afstemningsområde",
         "relevant_task_types": "Relevante opgavetyper",
+        "relevant_task_type_templates": "Relevante opgavetyper",
         "relevant_teams": "Relevante teams"
       },
       "work_location_template_item": {

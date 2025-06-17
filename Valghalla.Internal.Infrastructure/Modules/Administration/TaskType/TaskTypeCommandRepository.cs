@@ -109,17 +109,18 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
 
             if (command.NewWorkLocationId != command.WorkLocationId)
             {
-                var worklocationToRemove = await workLocationTaskTypes.Where(x => x.WorkLocationId == command.WorkLocationId && x.TaskTypeId == command.Id).ToListAsync(cancellationToken);
-                if (worklocationToRemove.Any())
+                var exists = await workLocationTaskTypes
+                    .AnyAsync(x => x.WorkLocationId == command.NewWorkLocationId && x.TaskTypeId == entity.Id, cancellationToken);
+
+                if (!exists)
                 {
-                    workLocationTaskTypes.RemoveRange(worklocationToRemove);
+                    var worklocationToAdd = new WorkLocationTaskTypeEntity()
+                    {
+                        TaskTypeId = entity.Id,
+                        WorkLocationId = command.NewWorkLocationId
+                    };
+                    await workLocationTaskTypes.AddAsync(worklocationToAdd, cancellationToken);
                 }
-                var worklocationToAdd = new WorkLocationTaskTypeEntity()
-                {
-                    TaskTypeId = entity.Id,
-                    WorkLocationId = command.NewWorkLocationId
-                };
-                await workLocationTaskTypes.AddAsync(worklocationToAdd, cancellationToken);
             }
 
 

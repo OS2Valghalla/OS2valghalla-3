@@ -267,8 +267,6 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleWorkLocation(event: MatCheckboxChange, workLocationId: string) {
-console.log('Toggle work location:', workLocationId, 'Checked:', event.checked);
-
     const values = this.formWorkLocationTemplate.value.workLocationIds
       ? this.formWorkLocationTemplate.value.workLocationIds.filter((id) => id != workLocationId)
       : [];

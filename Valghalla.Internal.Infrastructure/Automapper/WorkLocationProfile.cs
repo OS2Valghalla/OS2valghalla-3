@@ -21,12 +21,11 @@ namespace Valghalla.Internal.Infrastructure.Automapper
             CreateMap<WorkLocationEntity, WorkLocationDetailResponse>()
                 .ForMember(f => f.AreaName, opt => opt.MapFrom(src => src.Area != null ? src.Area.Name : string.Empty))
                 .ForMember(f => f.TaskTypeIds, x => x.MapFrom(src => src.WorkLocationTaskTypes.Select(i => i.TaskTypeId)))
+                .ForMember(f => f.TaskTypeTemplateIds, x => x.MapFrom(src => src.WorkLocationTaskTypes.Where(wltt => wltt.TaskType != null && wltt.TaskType.TaskTypeTemplate != null).Select(wltt => wltt.TaskType.TaskTypeTemplate.Id)))
                 .ForMember(f => f.TeamIds, x => x.MapFrom(src => src.WorkLocationTeams.Select(i => i.TeamId)))
                 .ForMember(f => f.ResponsibleIds, x => x.MapFrom(src => src.WorkLocationResponsibles.Select(i => i.ParticipantId)))
                 .ForMember(f => f.HasActiveElection, a => a.Ignore())
                 .ForMember(f => f.ElectionId, a => a.MapFrom(src => src.ElectionWorkLocations.Select(i => i.ElectionId).FirstOrDefault()));
-
-            ;
 
             CreateMap<WorkLocationResponsibleEntity, WorkLocationResponsibleResponse>()
                 .ForMember(f => f.ParticipantFirstName, a => a.Ignore())

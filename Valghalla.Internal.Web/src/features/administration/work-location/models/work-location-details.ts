@@ -8,6 +8,7 @@ export interface WorkLocationDetails {
   voteLocation: number;
   hasActiveElection?: boolean;
   taskTypeIds: Array<string>;
+  taskTypeTemplateIds: Array<string>;
   teamIds: Array<string>;
   responsibleIds: Array<string>;
   electionId?: string;

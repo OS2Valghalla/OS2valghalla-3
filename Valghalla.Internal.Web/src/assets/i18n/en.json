@@ -701,6 +701,7 @@
       "error": {
         "task_type_exist": "A task type exist with the same name",
         "get_all_task_types": "Error occurred when fetching all task types",
+        "get_all_task_type_templates": "Error occurred when fetching all task type templates",
         "get_task_type_details": "Error occurred when fetching task type details",
         "create_task_type": "Error occurred when creating task type",
         "update_task_type": "Error occurred when updating task type",
@@ -835,6 +836,7 @@
         "city": "City",
         "vote_location": "Vote area",
         "relevant_task_types": "Relevant task types",
+        "relevant_task_type_templates": "Relevant task type templates",
         "relevant_teams": "Relevant teams"
       },
       "work_location_item": {
@@ -884,6 +886,7 @@
         "city": "City",
         "vote_location": "Vote area",
         "relevant_task_types": "Relevant task types",
+        "relevant_task_type_templates": "Relevant task type templates",
         "relevant_teams": "Relevant teams"
       },
       "work_location_template_item": {

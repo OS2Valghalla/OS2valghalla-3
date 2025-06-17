@@ -48,13 +48,18 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
         public async Task<WorkLocationDetailResponse?> GetWorkLocationAsync(GetWorkLocationQuery query, CancellationToken cancellationToken)
         {
             var entity = await workLocations
-                .Include(i => i.Area).Include(i => i.WorkLocationTaskTypes).Include(i => i.WorkLocationTeams).Include(i => i.WorkLocationResponsibles).Include(i => i.ElectionWorkLocations)
+                .Include(i => i.Area)
+                .Include(i => i.WorkLocationTaskTypes).ThenInclude(wltt => wltt.TaskType).ThenInclude(ttt => ttt.TaskTypeTemplate)
+                .Include(i => i.WorkLocationTeams).Include(i => i.WorkLocationResponsibles).Include(i => i.ElectionWorkLocations)
                 .SingleOrDefaultAsync(i => i.Id == query.WorkLocationId, cancellationToken);
 
             if (entity == null) return null;
 
             var mappedEntity = mapper.Map<WorkLocationDetailResponse>(entity);
             mappedEntity.HasActiveElection = await workLocations.Include(x => x.Elections).AnyAsync(x => x.Id == query.WorkLocationId && x.Elections.Any(e => e.Active), cancellationToken);
+
+
+            // .ThenInclude(wltt => wltt.TaskType).ThenInclude(tt => tt.TaskTypeTemplate)
 
             return mappedEntity;
         }
@@ -86,7 +91,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             if (entities == null) return null;
 
             var mappedEntity = entities.Select(entity => mapper.Map<WorkLocationDetailResponse>(entity));
-            
+
             return mappedEntity.ToList();
         }
         public async Task<List<WorkLocationResponsibleResponse>> GetWorkLocationResponsiblesAsync(GetWorkLocationResponsibleParticipantsQuery query, CancellationToken cancellationToken)

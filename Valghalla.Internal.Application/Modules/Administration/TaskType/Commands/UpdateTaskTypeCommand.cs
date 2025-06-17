@@ -57,10 +57,6 @@ namespace Valghalla.Internal.Application.Modules.Administration.TaskType.Command
             {
                 RuleFor(x => x.Payment).GreaterThan(0);
             });
-
-            RuleFor(x => x)
-                .Must((command) => !repository.CheckIfTaskTypeExistsAsync(command, default).Result)
-                .WithMessage("administration.task_type.error.task_type_exist");
         }
     }
 

@@ -33,6 +33,18 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
                     i.EndTime == command.EndTime)
                 .AnyAsync(cancellationToken);
         }
+        public async Task<(bool, Guid?)> CheckIfTaskTypeExistsAsync(Guid taskTypeTemplateId, Guid workLocationId, CancellationToken cancellationToken)
+        {
+            var taskTypeId = await taskTypes
+                .Where(i =>
+                    i.TaskTypeTemplateEntityId == taskTypeTemplateId &&
+                    i.WorkLocationTaskTypes.Any(wltt => wltt.WorkLocationId == workLocationId && wltt.TaskTypeId == i.Id)
+                )
+                .Select(i => (Guid?)i.Id)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            return (taskTypeId != null, taskTypeId);
+        }     
 
         public async Task<bool> CheckIfTaskTypeExistsAsync(UpdateTaskTypeCommand command, CancellationToken cancellationToken)
         {
@@ -70,7 +82,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
 
             return mapper.Map<TaskTypeDetailResponse>(entity);
         }
-
         public async Task<IList<TaskTypeListingItemResponse>> GetAllTaskTypesAsync(CancellationToken cancellationToken)
         {
             var entities = await taskTypes.OrderBy(i => i.Title)
@@ -85,6 +96,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
                 .Where(t => t.TaskAssignments.Any(a => a.ElectionId == electionId))
                 .OrderBy(t => t.Title)
                 .ToListAsync(cancellationToken);
+
 
             return entities.Select(mapper.Map<TaskTypeListingItemResponse>).ToList();
         }

@@ -12,6 +12,7 @@
         public int VoteLocation { get; set; }
         public bool HasActiveElection { get; set; } = false;
         public List<Guid> TaskTypeIds { get; init; } = new List<Guid>();
+        public List<Guid> TaskTypeTemplateIds { get; init; } = new List<Guid>();
         public List<Guid> TeamIds { get; init; } = new List<Guid>();
         public List<Guid> ResponsibleIds { get; init; } = new List<Guid>();
         public Guid ElectionId { get; set; }
