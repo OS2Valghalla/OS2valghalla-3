@@ -52,10 +52,7 @@ namespace Valghalla.Internal.Application.Modules.Administration.WorkLocation.Com
             RuleFor(x => x.City)
                 .MaximumLength(Valghalla.Application.Constants.Validation.MaximumGeneralStringLength)
                 .NotEmpty();
-
-            RuleFor(x => x)
-               .Must((command) => !buildingQueryRepository.CheckIfWorkLocationExistsAsync(command, default).Result)
-               .WithMessage("administration.work_location.error.work_location_exist");
+            
         }
     }
 
