@@ -42,9 +42,9 @@
     </mat-card>
   </div>
 </app-card>
-<app-card *ngIf="election" [cardTitle]="'tasks.page_title' | transloco">
-  <div class="w-full" *appShowSkeleton="loadingAreas">
-    <mat-form-field class="pb-4 pr-4 w-52">
+<app-card *ngIf="election" class="mb-4" [cardTitle]="'shared.common.filters' | transloco">
+  <div class="w-full flex flex-wrap gap-4 items-start print:hidden" *appShowSkeleton="loadingAreas">
+    <mat-form-field class="pr-4 w-52">
       <mat-select
         [(ngModel)]="selectedDate"
         [ngModelOptions]="{ standalone: true }"
@@ -56,7 +56,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field class="pb-4">
+    <mat-form-field>
       <mat-select
         [(ngModel)]="selectedTeamId"
         [ngModelOptions]="{ standalone: true }"
@@ -68,9 +68,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
-  <div class="w-full pb-4 print:hidden">
-    <mat-expansion-panel>
+    <mat-expansion-panel class="flex-1 min-w-[300px]">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <strong>{{ 'list.participant_list.labels.select_columns' | transloco }}</strong>
@@ -105,6 +103,8 @@
       </mat-selection-list>
     </mat-expansion-panel>
   </div>
+</app-card>
+<app-card *ngIf="election" [cardTitle]="'tasks.page_title' | transloco">
 
   <div class="w-full flex pb-4 gap-4" *appShowSkeleton="loadingTasks">
     <div class="flex-none w-48">
