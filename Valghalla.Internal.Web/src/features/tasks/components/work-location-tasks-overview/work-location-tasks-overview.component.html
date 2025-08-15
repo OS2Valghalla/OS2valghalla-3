@@ -290,6 +290,9 @@
             <mat-row *matRowDef="let row; columns: teamTasksColumns"></mat-row>
           </mat-table>
           <h3 class="pb-2">{{ 'tasks.labels.move_tasks' | transloco }}</h3>
+          <p class="text-sm text-gray-600 font-semibold">
+            {{ 'tasks.labels.move_tasks_description' | transloco }}
+          </p>
           <div class="flex items-center gap-4 pb-4">
             <mat-form-field class="pb-0 mb-0">
               <mat-select
@@ -307,7 +310,7 @@
               mat-flat-button
               extended
               color="primary"
-              class="mt-2 mb-2 mr-2 move-task-button"
+              class="mr-2 move-task-button min-h-[56px] flex items-center"
               (click)="moveVacantTasksToOtherTeam(team.id, teamIndex)"
               [disabled]="!selectedTeam || (this.targetTeamId && this.targetTeamId === team.id)"
               [disableRipple]="!selectedTeam || (this.targetTeamId && this.targetTeamId === team.id)">

@@ -204,7 +204,8 @@
       "all": "Alle",
       "created_at": "Oprettet den",
       "select_all": "Vælg alle",
-      "open": "Åben"
+      "open": "Åben",
+      "filters": " Filtre"
     },
     "task_status": {
       "available": "Ledig",
@@ -1050,7 +1051,8 @@
       "available_tasks": "Tilgængelige opgaver",
       "link_description": "Deling af dette link med deltagere vil gøre det muligt for dem at se og tilmelde sig de valgte opgaver",
       "filtered_tasks_list_header": "Valgte opgaver baseret på filtre",
-      "task_status_summary": "Opgave statusoversigt"
+      "task_status_summary": "Opgave statusoversigt",
+      "move_tasks_description": "Vælg det team, du vil flytte opgaverne til. Alle ledige opgaver vil blive flyttet til det valgte team."
     },
     "actions": {
       "copy_task_link": "Kopier opgavelink",

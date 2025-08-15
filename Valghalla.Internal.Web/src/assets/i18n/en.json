@@ -208,7 +208,8 @@
       "all": "All",
       "created_at": "Created at",
       "select_all": "Select all",
-      "open": "Open"
+      "open": "Open",
+      "filters": "Task filters"
     },
     "task_status": {
       "available": "Available",
@@ -1117,7 +1118,8 @@
       "available_tasks": "Available tasks",
       "link_description": "Sharing this link with participants will make it possible for them to see and assign to the chosen tasks",
       "filtered_tasks_list_header": "Chosen tasks based on filters",
-      "task_status_summary": "Task status summary"
+      "task_status_summary": "Task status summary",
+      "move_tasks_description": "Select the team you want to move the tasks to. All vacant tasks will be moved to the selected team."
     },
     "actions": {
       "copy_task_link": "Copy task link",
