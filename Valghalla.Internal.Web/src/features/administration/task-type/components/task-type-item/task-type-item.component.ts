@@ -53,7 +53,7 @@ export class TaskTypeItemComponent implements OnInit, AfterViewInit, OnDestroy {
     description: ['', Validators.required],
     startTime: [undefined as string, Validators.required],
     endTime: [undefined as string, Validators.required],
-    payment: [undefined],
+    payment: [0],
     validationNotRequired: [false],
     trusted: [false],
     sendingReminderEnabled: [true],
