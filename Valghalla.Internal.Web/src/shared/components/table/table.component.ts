@@ -250,6 +250,18 @@ export class TableComponent<T> implements OnInit, OnDestroy, AfterViewInit, Afte
     });
   }
 
+  /**
+   * Reset paginator page index to first page without triggering a full refresh lifecycle.
+   * Useful when external filters (e.g. selection dropdowns) change the underlying dataset
+   * and we want to show results from the beginning.
+   */
+  resetPageIndex() {
+    if (this.paginator) {
+      this.paginator.pageIndex = 0;
+      sessionStorage.setItem(`${this.storageKey}-pageIndex`, '0');
+    }
+  }
+
   setPaginator(keys: Array<keyof T>) {
     this.keys = keys;
     this.paginator.length = keys.length;
