@@ -51,6 +51,7 @@ namespace Valghalla.Worker.Infrastructure.Modules.Participant.Repositories
                 entity.ExemptDigitalPost = record.ExemptDigitalPost;
                 entity.ProtectedAddress = record.ProtectedAddress;
                 entity.LastValidationDate = DateTime.UtcNow;
+                entity.City = record.City;
             }
 
             participants.UpdateRange(entities);
