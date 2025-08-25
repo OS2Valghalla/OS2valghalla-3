@@ -282,12 +282,20 @@
                 {{ task.participantName ? task.participantName : ('tasks.labels.missing' | transloco) }}
               </mat-cell>
             </ng-container>
+            <ng-container matColumnDef="rejectedDate">
+              <mat-header-cell *matHeaderCellDef class="flex-none min-w-[150px] max-w-[150px]">{{
+                'tasks.labels.rejected_date' | transloco
+              }}</mat-header-cell>
+              <mat-cell *matCellDef="let task" class="flex-none min-w-[150px] max-w-[150px]">
+                {{ task.rejectedDate ? (task.rejectedDate | date:'dd-MM-yyyy') : '' }}
+              </mat-cell>
+            </ng-container>
             <ng-container matColumnDef="actions">
               <mat-header-cell *matHeaderCellDef></mat-header-cell>
               <mat-cell *matCellDef="let task" class="place-content-end"> </mat-cell>
             </ng-container>
-            <mat-header-row *matHeaderRowDef="teamTasksColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: teamTasksColumns"></mat-row>
+            <mat-header-row *matHeaderRowDef="rejectedTeamTasksColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: rejectedTeamTasksColumns"></mat-row>
           </mat-table>
           <h3 class="pb-2">{{ 'tasks.labels.move_tasks' | transloco }}</h3>
           <p class="text-sm text-gray-600 font-semibold">

@@ -1,5 +1,5 @@
 export interface TaskAssignment {
-    id: string;    
+    id: string;
     electionId: string;
     workLocationId: string;
     workLocationName: string;
@@ -12,4 +12,5 @@ export interface TaskAssignment {
     taskDate: Date;
     accepted: boolean;
     responsed: boolean;
+    rejectedDate?: string;
 }

@@ -1098,6 +1098,7 @@
       "task_type": "Task type",
       "task_status": "Task status",
       "task_date": "Task date",
+  "rejected_date": "Rejected date",
       "participant": "Participant",
       "status_total": "Status total",
       "all_dates": "All dates",
