@@ -28,9 +28,14 @@ namespace Valghalla.Internal.API.Controllers.Tasks
         }
 
         [HttpGet("getareataskssummary")]
-        public async Task<IActionResult> GetAreaTasksSummaryAsync(Guid electionId, DateTime? selectedDate, Guid? selectedTeamId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAreaTasksSummaryAsync(
+            [FromQuery] Guid electionId,
+            [FromQuery] List<DateTime>? selectedDates,
+            [FromQuery] List<Guid>? selectedTeamIds,
+            CancellationToken cancellationToken)
         {
-            var query = new GetElectionAreaTasksSummaryQuery(electionId, selectedDate.HasValue ? selectedDate.Value.ToUniversalTime() : null, selectedTeamId);
+            IList<DateTime>? normalizedDates = selectedDates?.Select(d => d.ToUniversalTime().Date).Distinct().ToList();
+            var query = new GetElectionAreaTasksSummaryQuery(electionId, normalizedDates, selectedTeamIds);
             var result = await sender.Send(query, cancellationToken);
             return Ok(result);
         }

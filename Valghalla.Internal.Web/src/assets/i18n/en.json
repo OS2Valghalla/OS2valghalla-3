@@ -1098,7 +1098,7 @@
       "task_type": "Task type",
       "task_status": "Task status",
       "task_date": "Task date",
-  "rejected_date": "Rejected date",
+      "rejected_date": "Rejected date",
       "participant": "Participant",
       "status_total": "Status total",
       "all_dates": "All dates",
@@ -1120,7 +1120,8 @@
       "link_description": "Sharing this link with participants will make it possible for them to see and assign to the chosen tasks",
       "filtered_tasks_list_header": "Chosen tasks based on filters",
       "task_status_summary": "Task status summary",
-      "move_tasks_description": "Select the team you want to move the tasks to. All vacant tasks will be moved to the selected team."
+      "move_tasks_description": "Select the team you want to move the tasks to. All vacant tasks will be moved to the selected team.",
+      "select_columns": "Select columns to display"
     },
     "actions": {
       "copy_task_link": "Copy task link",

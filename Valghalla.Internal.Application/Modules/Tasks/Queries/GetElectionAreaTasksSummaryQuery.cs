@@ -1,15 +1,14 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Valghalla.Application.Abstractions.Messaging;
 using Valghalla.Internal.Application.Modules.Tasks.Interfaces;
 
 namespace Valghalla.Internal.Application.Modules.Tasks.Queries
 {
-    public sealed record GetElectionAreaTasksSummaryQuery(Guid ElectionId, DateTime? SelectedDate, Guid? SelectedTeamId) : IQuery<Response>;
+    public sealed record GetElectionAreaTasksSummaryQuery(
+        Guid ElectionId,
+        IList<DateTime>? SelectedDates,
+        IList<Guid>? SelectedTeamIds) : IQuery<Response>;
 
     public sealed class GetElectionAreaTasksSummaryQueryValidator : AbstractValidator<GetElectionAreaTasksSummaryQuery>
     {
