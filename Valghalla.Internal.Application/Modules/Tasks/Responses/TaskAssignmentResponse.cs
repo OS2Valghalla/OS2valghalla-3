@@ -1,6 +1,4 @@
-﻿using Valghalla.Internal.Application.Modules.Shared.Participant.Responses;
-
-namespace Valghalla.Internal.Application.Modules.Tasks.Responses
+﻿namespace Valghalla.Internal.Application.Modules.Tasks.Responses
 {
     public sealed record TaskAssignmentResponse
     {
@@ -18,5 +16,6 @@ namespace Valghalla.Internal.Application.Modules.Tasks.Responses
         public bool Responsed { get; set; }
         public bool Accepted { get; set; }
         public string? TaskDetailsPageUrl { get; set; }
+        public DateTime? RejectedDate { get; set; } // Added for rejected tasks
     }
 }

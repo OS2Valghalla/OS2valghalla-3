@@ -17,6 +17,7 @@ export interface RejectedTasksDetailsReponse {
   AreaName: string;
   TeamName: string;
   workLocationName: string;
+  rejectedDate: string;
 }
 
 @Component({
@@ -37,9 +38,10 @@ export class RejectedTasksOverviewComponent implements AfterViewInit {
     'participantName',
     'taskTypeName',
     'taskDate',
+  'rejectedDate',
     'areaName',
     'teamName',
-    'actions',
+  'actions'
   ];
 
   constructor(private globalStateService: GlobalStateService, private areaTasksHttpService: AreaTasksHttpService, private router: Router) { }

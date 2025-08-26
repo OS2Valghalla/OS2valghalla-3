@@ -33,6 +33,14 @@
           {{ task.taskDate | date }}
         </mat-cell>
       </ng-container>
+      <ng-container matColumnDef="rejectedDate">
+        <mat-header-cell *matHeaderCellDef class="flex-none min-w-[125px] max-w-[125px]">{{
+          'tasks.labels.rejected_date' | transloco
+        }}</mat-header-cell>
+        <mat-cell *matCellDef="let task" class="flex-none min-w-[125px] max-w-[125px]">
+          {{ task.rejectedDate | date }}
+        </mat-cell>
+      </ng-container>
       <ng-container matColumnDef="areaName">
         <mat-header-cell *matHeaderCellDef class="flex-none min-w-[180px]">{{
           'tasks.labels.area' | transloco

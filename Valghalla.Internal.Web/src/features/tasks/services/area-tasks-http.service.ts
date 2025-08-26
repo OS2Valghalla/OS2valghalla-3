@@ -37,24 +37,30 @@ export class AreaTasksHttpService {
       );
   }
 
-  getAreaTasksSummary(electionId: string, selectedDate?: Date, selectedTeamId?: string): Observable<Response<Array<TasksSummary>>> {
-    let params = new HttpParams();
-    params = params.append('electionId', electionId);
-    if (selectedDate) {
-      params = params.append('selectedDate', selectedDate.toUTCString());
+  getAreaTasksSummary(
+    electionId: string,
+    selectedDates?: Date[],
+    selectedTeamIds?: string[],
+  ): Observable<Response<Array<TasksSummary>>> {
+
+    let params = new HttpParams().set('electionId', electionId);
+
+    if (selectedDates && selectedDates.length > 0) {
+      selectedDates.filter(d => d instanceof Date).forEach(d => {
+        params = params.append('selectedDates', (d as Date).toISOString());
+      });
     }
-    if (selectedTeamId) {
-      params = params.append('selectedTeamId', selectedTeamId);
+    if (selectedTeamIds && selectedTeamIds.length > 0) {
+      selectedTeamIds.filter(id => !!id).forEach(id => {
+        params = params.append('selectedTeamIds', id);
+      });
     }
     return this.httpClient
-      .get<Response<Array<TasksSummary>>>(this.baseUrl + 'getareataskssummary', {
-        params: params,
-      })
+      .get<Response<Array<TasksSummary>>>(this.baseUrl + 'getareataskssummary', { params })
       .pipe(
         catchError((err) => {
           const msg = this.translocoService.translate('tasks.error.get_area_tasks_summary');
           this.notificationService.showError(msg);
-
           return throwError(() => err);
         }),
       );

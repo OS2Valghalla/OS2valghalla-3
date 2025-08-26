@@ -49,7 +49,7 @@ namespace Valghalla.Internal.Application.Modules.Administration.TaskType.Command
 
             When(command => command.Payment.HasValue, () =>
             {
-                RuleFor(x => x.Payment).GreaterThan(0);
+                RuleFor(x => x.Payment).GreaterThanOrEqualTo(0);
             });
 
             RuleFor(x => x)

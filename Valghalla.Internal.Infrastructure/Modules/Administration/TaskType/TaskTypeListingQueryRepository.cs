@@ -15,7 +15,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
     {
         public TaskTypeListingQueryRepository(DataContext dataContext, IMapper mapper) : base(dataContext, mapper)
         {
-            Order((queryable, order) =>
+            Order((queryable, order) => order.Name switch
             {
                 if (order.Name == "title")
                 {
@@ -52,10 +52,13 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
             });
 
             QueryFor(x => x.Search)
-                .Use((queryable, query) => queryable
-                    .Where(i =>
-                        i.Title.ToLower().Contains(query.Value) ||
-                        i.ShortName.ToLower().Contains(query.Value)));
+                .Use((queryable, query) =>
+                {
+                    var value = query.Value.ToLower();
+                    return queryable.Where(i =>
+                        i.Title.ToLower().Contains(value) ||
+                        i.ShortName.ToLower().Contains(value));
+                });
 
             QueryFor(x => x.Area)
                 .With(async request =>
