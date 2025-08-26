@@ -58,18 +58,35 @@ export class WorkLocationComponent implements OnDestroy {
   }
 
   onQuery(event: QueryEvent<QueryForm>) {
+    // Ensure default ordering
     if (!event.query.order) {
-      event.query.order = {
-        name: 'title',
-        descending: false,
-      };
+      event.query.order = { name: 'title', descending: false };
     }
+
+    // If we already have data loaded (allData) apply client-side filters first
+    if (this.allData && this.allData.length > 0) {
+      // Re-apply filters to update this.data
+      this.applyElectionFilter();
+
+      const pageSize = this.table?.paginator?.pageSize || event.query.take || 10;
+      // If the filtered result fits on a single page, avoid hitting the server again
+      if (this.data.length > 0 && this.data.length <= pageSize) {
+        // Adjust paginator to reflect filtered size
+        const keys = this.data.map(x => (x as any).id) as any[];
+        this.table?.setPaginator(keys);
+        this.table?.resetPageIndex();
+        return; // Skip server query
+      }
+    }
+
+    // Attach server-side filters only when we actually query
     if (this.selectedElectionId) {
       event.query.electionId = this.selectedElectionId;
     }
     if (this.selectedTemplateId) {
       event.query.templateId = this.selectedTemplateId;
     }
+
     event.execute('administration/worklocation/queryworklocationlisting', event.query);
   }
 
@@ -87,15 +104,26 @@ export class WorkLocationComponent implements OnDestroy {
       this.data = this.data.filter(item => item.templateId === this.selectedTemplateId);
     } else {
     }
+    // After both election & template filters applied, update table paginator to reflect filtered dataset
+    if (this.table && this.data) {
+      const keys = this.data.map(x => (x as any).id) as any[];
+      this.table.setPaginator(keys);
+      // Ensure we are on a valid page (reset to first page after filter change)
+      this.table.resetPageIndex();
+    }
   }
 
   onElectionChange(electionId: string) {
     this.selectedElectionId = electionId;
+    // Reset table to first page when filter changes
+    this.table?.resetPageIndex();
     this.applyElectionFilter();
   }
 
   onTemplateChange(templateId: string) {
     this.selectedTemplateId = templateId;
+    // Reset table to first page when filter changes
+    this.table?.resetPageIndex();
     this.applyElectionFilter();
   }
   onQueryForm(event: QueryFormEvent<void>) {

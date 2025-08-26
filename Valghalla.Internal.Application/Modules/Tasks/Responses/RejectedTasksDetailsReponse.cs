@@ -8,5 +8,6 @@
         public string TeamName { get; set; }
         public string WorkLocationName { get; set; }
         public string TaskTypeName { get; set; }
+        public string RejectedDate { get; set; }
     }
 }

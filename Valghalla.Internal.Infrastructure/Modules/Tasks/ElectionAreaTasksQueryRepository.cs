@@ -1,10 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Linq.Dynamic.Core;
+
+using AutoMapper;
+
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Dynamic.Core;
+
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
 using Valghalla.Internal.Application.Modules.Shared.Area.Responses;
-using Valghalla.Internal.Application.Modules.Shared.TaskType.Responses;
 using Valghalla.Internal.Application.Modules.Shared.Team.Responses;
 using Valghalla.Internal.Application.Modules.Shared.WorkLocation.Responses;
 using Valghalla.Internal.Application.Modules.Tasks.Interfaces;
@@ -13,7 +15,7 @@ using Valghalla.Internal.Application.Modules.Tasks.Responses;
 
 namespace Valghalla.Internal.Infrastructure.Modules.Tasks
 {
-    internal class ElectionAreaTasksQueryRepository: IElectionAreaTasksQueryRepository
+    internal class ElectionAreaTasksQueryRepository : IElectionAreaTasksQueryRepository
     {
         private readonly IQueryable<ElectionEntity> elections;
         private readonly IQueryable<AreaEntity> areas;
@@ -44,7 +46,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
                 .Include(x => x.WorkLocation).ThenInclude(x => x.WorkLocationTeams).ThenInclude(x => x.Team)
                 .Include(x => x.WorkLocation).ThenInclude(x => x.WorkLocationTaskTypes).ThenInclude(x => x.TaskType)
                 .Where(x => x.ElectionId == query.ElectionId).OrderBy(x => x.WorkLocation.Title).ToListAsync(cancellationToken);
-            
+
             var response = new ElectionAreasGeneralInfoResponse
             {
                 ElectionStartDate = election.ElectionStartDate,
@@ -54,7 +56,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
                 TaskTypes = workLocations.SelectMany(x => x.WorkLocation.WorkLocationTaskTypes.Select(w => mapper.Map<TaskTypeWithAreaIdsResponse>(w.TaskType))).DistinctBy(t => t.Id).OrderBy(t => t.ShortName).ToList(),
                 Teams = workLocations.SelectMany(x => x.WorkLocation.WorkLocationTeams.Select(w => mapper.Map<TeamSharedResponse>(w.Team))).Distinct().OrderBy(t => t.Name).ToList()
             };
-
 
             foreach (var workLocationTaskType in response.TaskTypes)
             {
@@ -68,24 +69,27 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
         {
             List<WorkLocationTasksSummaryResponse> response = new List<WorkLocationTasksSummaryResponse>();
 
-            var tasks = await taskAssignments
-                .Where(i => i.ElectionId == query.ElectionId 
-                && (!query.SelectedDate.HasValue || i.TaskDate == query.SelectedDate.Value)
-                && (!query.SelectedTeamId.HasValue || i.TeamId == query.SelectedTeamId.Value)
-                ).ToListAsync(cancellationToken);
+            var tasksQuery = taskAssignments.Where(i => i.ElectionId == query.ElectionId);
+
+            if (query.SelectedDates != null && query.SelectedDates.Any())
+            {
+                tasksQuery = tasksQuery.Where(i => query.SelectedDates.Contains(i.TaskDate));
+            }
+
+            if (query.SelectedTeamIds != null && query.SelectedTeamIds.Any())
+            {
+                tasksQuery = tasksQuery.Where(i => query.SelectedTeamIds.Contains(i.TeamId));
+            }
+
+            var tasks = await tasksQuery.ToListAsync(cancellationToken);
 
             foreach (var task in tasks)
             {
                 if (response.Any(t => t.WorkLocationId == task.WorkLocationId && t.TaskTypeId == task.TaskTypeId)) continue;
 
-                var assignedTasksCount = tasks.Count(t => t.WorkLocationId == task.WorkLocationId && t.TaskTypeId == task.TaskTypeId
-                    && t.Accepted);
-
-                var missingTasksCount = tasks.Count(t => t.WorkLocationId == task.WorkLocationId && t.TaskTypeId == task.TaskTypeId
-                    && !t.ParticipantId.HasValue);
-
-                var awaitingTasksCount = tasks.Count(t => t.WorkLocationId == task.WorkLocationId && t.TaskTypeId == task.TaskTypeId
-                    && t.ParticipantId.HasValue && !t.Responsed);
+                var assignedTasksCount = tasks.Count(t => t.WorkLocationId == task.WorkLocationId && t.TaskTypeId == task.TaskTypeId && t.Accepted);
+                var missingTasksCount = tasks.Count(t => t.WorkLocationId == task.WorkLocationId && t.TaskTypeId == task.TaskTypeId && !t.ParticipantId.HasValue);
+                var awaitingTasksCount = tasks.Count(t => t.WorkLocationId == task.WorkLocationId && t.TaskTypeId == task.TaskTypeId && t.ParticipantId.HasValue && !t.Responsed);
 
                 response.Add(new WorkLocationTasksSummaryResponse
                 {

@@ -24,7 +24,8 @@ namespace Valghalla.Internal.Infrastructure.Automapper
                 .ForMember(f => f.WorkLocationName, a => a.Ignore())
                 .ForMember(f => f.TeamName, a => a.Ignore())
                 .ForMember(f => f.TaskTypeName, opt => opt.MapFrom(src => src.TaskType.Title))
-                .ForMember(f => f.ParticipantName, opt => opt.MapFrom(src => src.Participant.FirstName + " " + src.Participant.LastName));
+                .ForMember(f => f.ParticipantName, opt => opt.MapFrom(src => src.Participant.FirstName + " " + src.Participant.LastName))
+                .ForMember(f => f.RejectedDate, opt => opt.MapFrom(src => src.CreatedAt));
 
             CreateMap<TaskAssignmentEntity, AvailableTasksDetailsResponse>()
                 .ForMember(f => f.AvailableTasksCount, a => a.Ignore())

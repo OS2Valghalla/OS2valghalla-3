@@ -243,7 +243,9 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
                     TaskTypeName = result.TaskType.Title,
                     TaskDate = result.TaskDate.ToString(),
                     WorkLocationName = result.WorkLocation.Title,
-                    TeamName = result.Team.Name
+                    TeamName = result.Team.Name,
+                    RejectedDate = result.CreatedAt.ToString()
+                    
                 });
 
             }

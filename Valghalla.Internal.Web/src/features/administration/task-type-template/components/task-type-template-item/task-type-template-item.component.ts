@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild ,ViewEncapsulation} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { SubSink } from 'subsink';
 import { FormBuilder, Validators } from '@angular/forms';
 import { FormPageComponent } from 'src/shared/components/form-page/form-page.component';
@@ -36,7 +36,7 @@ export class TaskTypeTemplateItemComponent implements OnInit, AfterViewInit, OnD
     description: ['', Validators.required],
     startTime: [undefined as string, Validators.required],
     endTime: [undefined as string, Validators.required],
-    payment: [undefined],
+    payment: [0],
     validationNotRequired: [false],
     trusted: [false],
     sendingReminderEnabled: [true],
@@ -49,7 +49,7 @@ export class TaskTypeTemplateItemComponent implements OnInit, AfterViewInit, OnD
     private readonly formBuilder: FormBuilder,
     private readonly changeDetectorRef: ChangeDetectorRef,
     private readonly taskTypeTemplateHttpService: TaskTypeTemplateHttpService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form.addValidators((control) => {
@@ -169,7 +169,7 @@ export class TaskTypeTemplateItemComponent implements OnInit, AfterViewInit, OnD
 
   isEmptyContent() {
     if ((this.form.controls.description.touched && (!this.form.controls.description.value || this.form.controls.description.value == '<p></p>'))) {
-      this.form.controls.description.setErrors({required: true});
+      this.form.controls.description.setErrors({ required: true });
       return true;
     }
 

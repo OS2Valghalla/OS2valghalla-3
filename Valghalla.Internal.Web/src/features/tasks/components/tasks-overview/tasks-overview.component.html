@@ -1,38 +1,46 @@
 <h3 *ngIf="!election" [innerHtml]="'start.no_election_message' | transloco"></h3>
 <app-card [cardTitle]="'tasks.labels.task_status_summary' | transloco">
-  <div class="w-full flex flex-wrap gap-2 mb-2" *ngIf="tasksStatusGeneralInfo">    
-    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px;">
-      <mat-card-content class="p-0 m-0" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+  <div class="w-full flex flex-wrap gap-2 mb-2" *ngIf="tasksStatusGeneralInfo">
+    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px">
+      <mat-card-content
+        class="p-0 m-0"
+        style="height: 100%; display: flex; flex-direction: column; justify-content: center">
         <div class="font-semibold text-xs leading-tight">{{ 'tasks.labels.status_total' | transloco }}</div>
         <div class="text-lg font-bold leading-tight">
           {{ tasksStatusGeneralInfo.assignedTasksCount }}/{{ tasksStatusGeneralInfo.allTasksCount }}
-        </div>      
+        </div>
       </mat-card-content>
     </mat-card>
-    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px;">
-      <mat-card-content class="p-0 m-0" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px">
+      <mat-card-content
+        class="p-0 m-0"
+        style="height: 100%; display: flex; flex-direction: column; justify-content: center">
         <div class="font-semibold text-xs leading-tight">{{ 'tasks.labels.status_missing' | transloco }}</div>
         <div class="text-lg font-bold leading-tight">
           {{ tasksStatusGeneralInfo.missingTasksCount }}
         </div>
       </mat-card-content>
     </mat-card>
-    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px;">
-      <mat-card-content class="p-0 m-0" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+    <mat-card class="flex-1 min-w-[120px] p-2" style="height: 70px">
+      <mat-card-content
+        class="p-0 m-0"
+        style="height: 100%; display: flex; flex-direction: column; justify-content: center">
         <div class="font-semibold text-xs leading-tight">{{ 'tasks.labels.status_awaiting' | transloco }}</div>
         <div class="text-lg font-bold leading-tight">
           {{ tasksStatusGeneralInfo.awaitingTasksCount }}
         </div>
       </mat-card-content>
     </mat-card>
-    <mat-card 
-      class="flex-1 min-w-[120px] p-2 rejected-tasks-card" 
-      style="height: 70px;"
-      [ngClass]="{'rejectedTasksDetails': tasksStatusGeneralInfo.rejectedTasksCount > 0, 'cursor-pointer': tasksStatusGeneralInfo.rejectedTasksCount > 0}"
-    >
-      <mat-card-content 
+    <mat-card
+      class="flex-1 min-w-[120px] p-2 rejected-tasks-card"
+      style="height: 70px"
+      [ngClass]="{
+        rejectedTasksDetails: tasksStatusGeneralInfo.rejectedTasksCount > 0,
+        'cursor-pointer': tasksStatusGeneralInfo.rejectedTasksCount > 0,
+      }">
+      <mat-card-content
         class="min-w-[100px] font-semibold"
-        style="height: 100%; display: flex; flex-direction: column; justify-content: center;"
+        style="height: 100%; display: flex; flex-direction: column; justify-content: center"
         (click)="onOpenRejectedTasks()">
         <div class="font-semibold text-xs leading-tight">{{ 'tasks.labels.status_rejected' | transloco }}</div>
         <div class="text-lg font-bold leading-tight">
@@ -42,43 +50,44 @@
     </mat-card>
   </div>
 </app-card>
-<app-card *ngIf="election" [cardTitle]="'tasks.page_title' | transloco">
-  <div class="w-full" *appShowSkeleton="loadingAreas">
-    <mat-form-field class="pb-4 pr-4 w-52">
+<app-card *ngIf="election" class="mb-4" [cardTitle]="'shared.common.filters' | transloco">
+  <div class="w-full flex flex-wrap gap-4 items-start print:hidden" *appShowSkeleton="loadingAreas">
+    <mat-form-field class="pr-4 w-64">
       <mat-select
-        [(ngModel)]="selectedDate"
+        [(ngModel)]="selectedDates"
         [ngModelOptions]="{ standalone: true }"
         [placeholder]="'tasks.labels.all_dates' | transloco"
-        (selectionChange)="onFilterChanged()">
-        <mat-option>{{ 'tasks.labels.all_dates' | transloco }}</mat-option>
+        [matTooltip]="getSelectedDatesTooltip()"
+        matTooltipPosition="above"
+        (selectionChange)="onFilterChanged()"
+        multiple>
         <mat-option *ngFor="let electionDate of electionDates" [value]="electionDate">
           {{ electionDate | date }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field class="pb-4">
+    <mat-form-field class="w-64">
       <mat-select
-        [(ngModel)]="selectedTeamId"
+        [(ngModel)]="selectedTeamIds"
         [ngModelOptions]="{ standalone: true }"
         [placeholder]="'tasks.labels.all_teams' | transloco"
-        (selectionChange)="onFilterChanged()">
-        <mat-option>{{ 'tasks.labels.all_teams' | transloco }}</mat-option>
+        [matTooltip]="getSelectedTeamsTooltip()"
+        matTooltipPosition="above"
+        (selectionChange)="onFilterChanged()"
+        multiple>
         <mat-option *ngFor="let team of areasGeneralInfo.teams" [value]="team.id">
           {{ team.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-  </div>
-  <div class="w-full pb-4 print:hidden">
-    <mat-expansion-panel>
+  <div #columnsPanelWrapper class="flex-1 min-w-[300px]">
+  <mat-expansion-panel #columnsPanel class="w-full">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <strong>{{ 'list.participant_list.labels.select_columns' | transloco }}</strong>
+          <strong>{{ 'tasks.labels.select_columns' | transloco }}</strong>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-selection-list
-        [(ngModel)]="selectedColumns"
-        (ngModelChange)="changeSelectedColumns()"
         #columnsList
         *ngIf="!loadingTasks"
         [multiple]="true"
@@ -86,7 +95,7 @@
         class="flex flex-wrap">
         <mat-checkbox
           [(ngModel)]="allColumnsSelected"
-          [indeterminate]="displayedColumns.length < columns.length"
+          [indeterminate]="selectedColumns.length > 0 && selectedColumns.length < displayedColumnsOptions.length"
           [ngModelOptions]="{ standalone: true }"
           (change)="toggleAllColumns()"
           class="min-w-full pb-2"
@@ -95,17 +104,17 @@
         <mat-list-option
           *ngFor="let column of displayedColumnsOptions"
           checkboxPosition="before"
-          [value]="column.id"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [disabled]="isColumnDisabled(column.displayName)"
+          [selected]="selectedColumns.includes(column.id)"
+          (click)="$event.stopPropagation(); toggleColumn(column.id)"
           class="min-w-[350px] max-w-[350px]">
           {{ column.displayName }}
         </mat-list-option>
       </mat-selection-list>
     </mat-expansion-panel>
+    </div>
   </div>
-
+</app-card>
+<app-card *ngIf="election" [cardTitle]="'tasks.page_title' | transloco">
   <div class="w-full flex pb-4 gap-4" *appShowSkeleton="loadingTasks">
     <div class="flex-none w-48">
       <mat-card>
@@ -139,6 +148,9 @@
             <div *ngIf="status.statusName === 'awaiting'">
               {{ status.sumAwaitingTasksCount }}
             </div>
+            <div *ngIf="status.statusName === 'rejected'">
+              {{ status.sumRejectedTasksCount }}
+            </div>
           </mat-cell>
         </ng-container>
         <ng-container *ngFor="let taskType of areasGeneralInfo.taskTypes" [matColumnDef]="taskType.id">
@@ -158,6 +170,9 @@
             </div>
             <div *ngIf="status.statusName === 'awaiting'">
               {{ status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].awaitingTasksCount }}
+            </div>
+            <div *ngIf="status.statusName === 'rejected'">
+              {{ status.taskTypes[areasGeneralInfo.taskTypes.indexOf(taskType)].rejectedTasksCount || 0 }}
             </div>
           </mat-cell>
         </ng-container>

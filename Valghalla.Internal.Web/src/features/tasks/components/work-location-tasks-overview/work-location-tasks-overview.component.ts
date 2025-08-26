@@ -69,6 +69,8 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
 
   teamTasksColumns: Array<string> = ['status', 'taskType', 'date', 'participant', 'actions'];
 
+  rejectedTeamTasksColumns: Array<string> = ['status', 'taskType', 'date', 'participant', 'rejectedDate', 'actions'];
+
   workLocation: WorkLocationInfo;
 
   workLocationTasksSummary: WorkLocationTasksSummary;
