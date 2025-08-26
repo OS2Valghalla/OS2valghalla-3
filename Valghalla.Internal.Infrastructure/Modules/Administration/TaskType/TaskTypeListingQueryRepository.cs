@@ -15,29 +15,24 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
     {
         public TaskTypeListingQueryRepository(DataContext dataContext, IMapper mapper) : base(dataContext, mapper)
         {
-            Order((queryable, order) => order.Name switch
+            Order((queryable, order) =>
             {
-                if (order.Name == "title")
+                return order.Name?.ToLower() switch
                 {
-                    return queryable.SortBy(i => i.Title, order);
-                }
-                else if (order.Name == "shortName")
-                {
-                    return queryable.SortBy(i => i.ShortName, order);
-                }
-                else if (order.Name == "trusted")
-                {
-                    return queryable.SortBy(i => i.Trusted, order);
-                }
-                else if (order.Name == "electionTitle")
-                {
-                    return queryable.SortBy(i => i.WorkLocationTaskTypes
+                    "title" => queryable.SortBy(i => i.Title, order),
+                    "shortname" => queryable.SortBy(i => i.ShortName, order),
+                    "shortName" => queryable.SortBy(i => i.ShortName, order), // safeguard in case casing retained
+                    "trusted" => queryable.SortBy(i => i.Trusted, order),
+                    "electiontitle" => queryable.SortBy(i => i.WorkLocationTaskTypes
                         .Select(n => n.WorkLocation.ElectionWorkLocations
-                        .Select(y => y.Election.Title))
-                        .FirstOrDefault(), order);
-                }
-
-                return queryable;
+                            .Select(y => y.Election.Title))
+                        .FirstOrDefault(), order),
+                    "electionTitle" => queryable.SortBy(i => i.WorkLocationTaskTypes
+                        .Select(n => n.WorkLocation.ElectionWorkLocations
+                            .Select(y => y.Election.Title))
+                        .FirstOrDefault(), order), // safeguard
+                    _ => queryable
+                };
             });
 
 

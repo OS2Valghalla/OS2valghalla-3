@@ -32,25 +32,11 @@ export class WorkLocationComponent implements OnDestroy {
   }
 
   onQuery(event: QueryEvent<QueryForm>) {
-    // Ensure default ordering
     if (!event.query.order) {
-      event.query.order = { name: 'title', descending: false };
-    }
-
-    // If we already have data loaded (allData) apply client-side filters first
-    if (this.allData && this.allData.length > 0) {
-      // Re-apply filters to update this.data
-      this.applyElectionFilter();
-
-      const pageSize = this.table?.paginator?.pageSize || event.query.take || 10;
-      // If the filtered result fits on a single page, avoid hitting the server again
-      if (this.data.length > 0 && this.data.length <= pageSize) {
-        // Adjust paginator to reflect filtered size
-        const keys = this.data.map(x => (x as any).id) as any[];
-        this.table?.setPaginator(keys);
-        this.table?.resetPageIndex();
-        return; // Skip server query
-      }
+      event.query.order = {
+        name: 'title',
+        descending: false,
+      };
     }
     event.execute('administration/worklocation/queryworklocationlisting', event.query);
   }
