@@ -33,10 +33,6 @@ import { WorkLocationComponent } from './work-location/work-location.component';
 import { WorkLocationItemComponent } from './work-location/components/work-location-item/work-location-item.component';
 import { AuditLogLandingComponent } from './audit-log/audit-log.component';
 import { CopyInviteLinkDialogComponent } from './teams/components/copy-invite-link-dialog/copy-invite-link-dialog.component';
-import { WorkLocationTemplateComponent } from './work-location-template/work-location-template.component';
-import { WorkLocationTemplateItemComponent } from './work-location-template/components/work-location-template-item/work-location-template-item.component';
-import { TaskTypeTemplateComponent } from './task-type-template/task-type-template.component';
-import { TaskTypeTemplateItemComponent } from './task-type-template/components/task-type-template-item/task-type-template-item.component';
 
 @NgModule({
   declarations: [
@@ -64,12 +60,8 @@ import { TaskTypeTemplateItemComponent } from './task-type-template/components/t
     WebFAQPageComponent,
     TaskTypeComponent,
     TaskTypeItemComponent,
-    TaskTypeTemplateComponent,
-    TaskTypeTemplateItemComponent,
     WorkLocationComponent,
     WorkLocationItemComponent,
-    WorkLocationTemplateComponent,
-    WorkLocationTemplateItemComponent,
     CommunicationTemplateSelectionComponent,
     EditElectionCommunicationConfigurationComponent,
     AuditLogLandingComponent,

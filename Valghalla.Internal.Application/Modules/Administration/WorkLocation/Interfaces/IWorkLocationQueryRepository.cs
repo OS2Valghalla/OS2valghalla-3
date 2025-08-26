@@ -11,8 +11,6 @@ namespace Valghalla.Internal.Application.Modules.Administration.WorkLocation.Int
         Task<bool> CheckIfWorkLocationUsedInActiveElectionAsync(Guid id, CancellationToken cancellationToken);
         Task<bool> CheckIfWorkLocationHasTasksAsync(DeleteWorkLocationCommand command, CancellationToken cancellationToken);
         Task<WorkLocationDetailResponse?> GetWorkLocationAsync(GetWorkLocationQuery query, CancellationToken cancellationToken);
-        Task<WorkLocationDetailResponse?> GetWorkLocationByElectionIdAsync(GetWorkLocationByElectionIdQuery query, CancellationToken cancellationToken);
-        Task<List<WorkLocationDetailResponse>?> GetWorkLocationsByElectionIdAsync(GetWorkLocationsByElectionIdQuery query, CancellationToken cancellationToken);
         Task<List<WorkLocationResponsibleResponse>> GetWorkLocationResponsiblesAsync(GetWorkLocationResponsibleParticipantsQuery query, CancellationToken cancellationToken);
     }
 }

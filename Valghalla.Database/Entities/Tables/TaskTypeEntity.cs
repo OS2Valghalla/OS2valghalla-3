@@ -18,10 +18,8 @@ public partial class TaskTypeEntity : IChangeTrackingEntity
     public Guid CreatedBy { get; set; }
     public DateTime? ChangedAt { get; set; }
     public Guid? ChangedBy { get; set; }
-    public Guid? TaskTypeTemplateEntityId { get; set; }
     public virtual UserEntity CreatedByUser { get; set; } = null!;
     public virtual UserEntity? ChangedByUser { get; set; }
-    public virtual TaskTypeTemplateEntity? TaskTypeTemplate { get; set; }
     public virtual ICollection<TaskAssignmentEntity> TaskAssignments { get; } = new List<TaskAssignmentEntity>();
     public virtual ICollection<FileReferenceEntity> FileReferences { get; } = new List<FileReferenceEntity>();
     public virtual ICollection<TaskTypeFileEntity> TaskTypeFiles { get; } = new List<TaskTypeFileEntity>();

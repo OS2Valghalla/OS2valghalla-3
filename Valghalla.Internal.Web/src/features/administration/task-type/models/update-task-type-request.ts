@@ -10,10 +10,4 @@ export interface UpdateTaskTypeRequest {
   trusted: boolean;
   sendingReminderEnabled: boolean;
   fileReferenceIds: string[];
-  newWorkLocationId?: string;
-  workLocationId?: string;
-  newElectionId?: string;
-  electionId?: string;
-  newTaskTypeTemplateId?: string;
-  taskTypeTemplateId?: string;
 }

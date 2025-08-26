@@ -48,14 +48,6 @@ namespace Valghalla.Internal.API.Controllers.Administration.TaskType
             var result = await sender.Send(query, cancellationToken);
 
             return Ok(result);
-        }
-        [HttpGet("getalltasktypesbyelectionid")]
-        public async Task<IActionResult> GetAllTaskTypesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken)
-        {
-            var query = new GetAllTaskTypesByElectionIdQuery(electionId);
-            var result = await sender.Send(query, cancellationToken);
-
-            return Ok(result);
-        }
+        }        
     }
 }

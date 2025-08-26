@@ -36,9 +36,6 @@ namespace Valghalla.Internal.API.Controllers.Administration.TaskType
                 Trusted = request.Trusted,
                 SendingReminderEnabled = request.SendingReminderEnabled,
                 FileReferenceIds = request.FileReferenceIds,
-                ElectionId = request.ElectionId,
-                WorkLocationId = request.WorkLocationId,
-                TaskTypeTemplateId = request.TaskTypeTemplateId
             };
 
             var id = await sender.Send(command, cancellationToken);
@@ -69,12 +66,6 @@ namespace Valghalla.Internal.API.Controllers.Administration.TaskType
                 Trusted = request.Trusted,
                 SendingReminderEnabled = request.SendingReminderEnabled,
                 FileReferenceIds = request.FileReferenceIds,
-                ElectionId = request.ElectionId,
-                TaskTypeTemplateId = request.TaskTypeTemplateId,
-                WorkLocationId = request.WorkLocationId,
-                NewElectionId = request.NewElectionId,
-                NewTaskTypeTemplateId = request.NewTaskTypeTemplateId,
-                NewWorkLocationId = request.NewWorkLocationId
             };
 
             command.Apply(HttpContext);

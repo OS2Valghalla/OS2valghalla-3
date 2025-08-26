@@ -41,7 +41,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
                 ValidationNotRequired = command.ValidationNotRequired,
                 Trusted = command.Trusted,
                 SendingReminderEnabled = command.SendingReminderEnabled,
-                TaskTypeTemplateEntityId = command.TaskTypeTemplateId
             };
 
             var taskTypeFileEntities = command.FileReferenceIds.Select(fileRefId => new TaskTypeFileEntity()
@@ -51,16 +50,7 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
             });
 
             await taskTypes.AddAsync(entity, cancellationToken);
-
             await taskTypeFiles.AddRangeAsync(taskTypeFileEntities, cancellationToken);
-
-            var workLocationTaskType = new WorkLocationTaskTypeEntity
-            {
-                WorkLocationId = command.WorkLocationId,
-                TaskTypeId = entity.Id
-            };
-            await workLocationTaskTypes.AddAsync(workLocationTaskType, cancellationToken);
-
             await dataContext.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
@@ -88,7 +78,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
         public async Task UpdateTaskTypeAsync(UpdateTaskTypeCommand command, CancellationToken cancellationToken)
         {
             var entity = await taskTypes
-                .Include(x => x.WorkLocationTaskTypes)
                 .Where(i => i.Id == command.Id)
                 .SingleAsync(cancellationToken);
 
@@ -105,25 +94,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
             entity.ValidationNotRequired = command.ValidationNotRequired;
             entity.Trusted = command.Trusted;
             entity.SendingReminderEnabled = command.SendingReminderEnabled;
-            entity.TaskTypeTemplateEntityId = command.TaskTypeTemplateId != command.NewTaskTypeTemplateId ? command.NewTaskTypeTemplateId : command.TaskTypeTemplateId;
-
-            if (command.NewWorkLocationId != command.WorkLocationId)
-            {
-                var exists = await workLocationTaskTypes
-                    .AnyAsync(x => x.WorkLocationId == command.NewWorkLocationId && x.TaskTypeId == entity.Id, cancellationToken);
-
-                if (!exists)
-                {
-                    var worklocationToAdd = new WorkLocationTaskTypeEntity()
-                    {
-                        TaskTypeId = entity.Id,
-                        WorkLocationId = command.NewWorkLocationId
-                    };
-                    await workLocationTaskTypes.AddAsync(worklocationToAdd, cancellationToken);
-                }
-            }
-
-
 
             var taskTypeFileEntitiesToAdd = command.FileReferenceIds
                 .Where(fileRefId => !taskTypeFileEntities.Any(i => i.FileReferenceId == fileRefId))

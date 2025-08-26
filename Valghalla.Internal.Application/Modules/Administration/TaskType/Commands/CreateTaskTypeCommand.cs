@@ -17,9 +17,6 @@ namespace Valghalla.Internal.Application.Modules.Administration.TaskType.Command
         public bool Trusted { get; init; }
         public bool SendingReminderEnabled { get; init; } = true;
         public IEnumerable<Guid> FileReferenceIds { get; init; } = Enumerable.Empty<Guid>();
-        public Guid ElectionId { get; set; }
-        public Guid WorkLocationId { get; set; }
-        public Guid TaskTypeTemplateId { get; set; }
     }
 
     public sealed class CreateTaskTypeCommandValidator : AbstractValidator<CreateTaskTypeCommand>
@@ -53,13 +50,6 @@ namespace Valghalla.Internal.Application.Modules.Administration.TaskType.Command
             RuleFor(x => x)
                 .Must((command) => !taskTypeQueryRepository.CheckIfTaskTypeExistsAsync(command, default).Result)
                 .WithMessage("administration.task_type.error.task_type_exist");
-
-            RuleFor(x => x.ElectionId)
-                .NotEmpty();
-
-            RuleFor(x => x.WorkLocationId)
-                .NotEmpty();
-
         }
     }
 

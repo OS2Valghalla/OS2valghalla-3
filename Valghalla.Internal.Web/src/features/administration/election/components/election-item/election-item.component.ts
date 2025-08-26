@@ -16,14 +16,13 @@ import { ElectionTypeSharedHttpService } from 'src/shared/services/election-type
 import { ElectionDetails } from '../../models/election-details';
 import { CommunicationTemplateListingItem } from '../../../../communication/communication-template/models/communication-template-listing-item';
 import { WorkLocationShared } from 'src/shared/models/work-location/work-location-shared';
+import { WorkLocationSharedHttpService } from 'src/shared/services/work-location-shared-http.service';
 import { CommunicationTemplateShared } from 'src/shared/models/communication/communication-template-shared';
 import { CommunicationSharedHttpService } from 'src/shared/services/communication-shared-http.service';
 import { TaskTypeShared } from 'src/shared/models/task-type/task-type-shared';
 import { DefaultCommunicationTemplates } from 'src/shared/constants/default-communication-templates';
 import { TaskTypeSharedHttpService } from 'src/shared/services/task-type-shared-http.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { WorkLocationTemplateSharedHttpService } from 'src/shared/services/work-location-template-shared-http.service';
-import { WorkLocationTemplateShared } from 'src/shared/models/work-location-template/work-location-template-shared';
 
 interface TaskTypeWithTemplates extends TaskTypeShared {
   confirmationOfRegistration_Template?: CommunicationTemplateShared;
@@ -51,7 +50,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
     private readonly changeDetectorRef: ChangeDetectorRef,
     private readonly electionHttpService: ElectionHttpService,
     private readonly electionTypeSharedHttpService: ElectionTypeSharedHttpService,
-    private readonly workLocationTemplateSharedHttpService: WorkLocationTemplateSharedHttpService,
+    private readonly workLocationSharedHttpService: WorkLocationSharedHttpService,
     private readonly communicationSharedHttpService: CommunicationSharedHttpService,
     private readonly taskTypeSharedHttpService: TaskTypeSharedHttpService,
   ) {}
@@ -59,7 +58,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
   loading = true;
   item: ElectionDetails;
   electionTypes: ElectionTypeShared[] = [];
-  workLocationTemplates: WorkLocationTemplateShared[] = [];
+  workLocations: WorkLocationShared[] = [];
   taskTypes: TaskTypeWithTemplates[] = [];
   communicationTemplates: CommunicationTemplateShared[] = [];
 
@@ -75,7 +74,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
     electionDate: [undefined as Date, Validators.required],
   });
 
-  readonly formWorkLocationTemplate = this.formBuilder.group({
+  readonly formWorkLocation = this.formBuilder.group({
     workLocationIds: [undefined as string[], Validators.required],
   });
 
@@ -102,12 +101,12 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
     this.subs.sink = combineLatest({
       wizardState: this.wizard.state$,
       electionTypes: this.electionTypeSharedHttpService.getElectionTypes(),
-      workLocationTemplates: this.workLocationTemplateSharedHttpService.getWorkLocationTemplates(),
+      workLocations: this.workLocationSharedHttpService.getWorkLocations(),
       taskTypes: this.taskTypeSharedHttpService.getTaskTypes(),
       communicationTemplates: this.communicationSharedHttpService.getCommunicationTemplates(),
     }).subscribe((v) => {
       this.electionTypes = v.electionTypes.data;
-      this.workLocationTemplates = v.workLocationTemplates.data;
+      this.workLocations = v.workLocations.data;
       this.taskTypes = v.taskTypes.data;
       this.communicationTemplates = v.communicationTemplates.data;
       this.setSelectedTemplate(
@@ -199,7 +198,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
             electionDate: res.data.electionDate,
           });
 
-          this.formWorkLocationTemplate.setValue({
+          this.formWorkLocation.setValue({
             workLocationIds: res.data.workLocationIds,
           });
         }
@@ -255,30 +254,30 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
     return null;
   }
 
-  isWorkLocationChecked(workLocation: WorkLocationTemplateShared) {
+  isWorkLocationChecked(workLocation: WorkLocationShared) {
     return (
-      this.formWorkLocationTemplate.value.workLocationIds &&
-      this.formWorkLocationTemplate.value.workLocationIds.some((id) => id == workLocation.id)
+      this.formWorkLocation.value.workLocationIds &&
+      this.formWorkLocation.value.workLocationIds.some((id) => id == workLocation.id)
     );
   }
 
-  isWorkLocationDisabled(workLocation: WorkLocationTemplateShared) {
+  isWorkLocationDisabled(workLocation: WorkLocationShared) {
     return this.item && this.item.workLocationIds && this.item.workLocationIds.some((id) => id == workLocation.id);
   }
 
   toggleWorkLocation(event: MatCheckboxChange, workLocationId: string) {
-    const values = this.formWorkLocationTemplate.value.workLocationIds
-      ? this.formWorkLocationTemplate.value.workLocationIds.filter((id) => id != workLocationId)
+    const values = this.formWorkLocation.value.workLocationIds
+      ? this.formWorkLocation.value.workLocationIds.filter((id) => id != workLocationId)
       : [];
 
     if (event.checked) {
       values.push(workLocationId);
     }
 
-    this.formWorkLocationTemplate.setValue({
+    this.formWorkLocation.setValue({
       workLocationIds: values,
     });
-    this.formWorkLocationTemplate.markAsDirty();
+    this.formWorkLocation.markAsDirty();
   }
 
   createElection(event: WizardEvent) {
@@ -306,7 +305,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
       electionStartDate: this.formDate.value.electionStartDate,
       electionEndDate: this.formDate.value.electionEndDate,
       electionDate: this.formDate.value.electionDate,
-      workLocationIds: this.formWorkLocationTemplate.value.workLocationIds,
+      workLocationIds: this.formWorkLocation.value.workLocationIds,
       confirmationOfRegistrationCommunicationTemplateId:
         this.formCommunicationTemplates.value.confirmationOfRegistration_Template.id,
       confirmationOfCancellationCommunicationTemplateId:
@@ -334,7 +333,7 @@ export class ElectionItemComponent implements AfterViewInit, OnDestroy {
       id: this.wizard.itemId,
       title: this.formInfo.value.title,
       lockPeriod: this.formInfo.value.lockPeriod,
-      workLocationIds: this.formWorkLocationTemplate.value.workLocationIds,
+      workLocationIds: this.formWorkLocation.value.workLocationIds,
     };
 
     this.subs.sink = event.pipe(this.electionHttpService.updateElection(updateRequest)).subscribe((res) => {

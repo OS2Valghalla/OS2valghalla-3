@@ -1,5 +1,7 @@
 ﻿using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
+
 using Valghalla.Integration.Auth;
 using Valghalla.Internal.Application.Modules.Administration.WorkLocation.Queries;
 
@@ -20,24 +22,11 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocation
         [HttpGet("getworklocation")]
         public async Task<IActionResult> GetWorkLocationAsync(Guid workLocationId, CancellationToken cancellationToken)
         {
-            var query = new GetWorkLocationQuery( workLocationId);
+            var query = new GetWorkLocationQuery(workLocationId);
             var result = await sender.Send(query, cancellationToken);
             return Ok(result);
         }
-        [HttpGet("getworklocationbyelectionid")]
-        public async Task<IActionResult> GetWorkLocationByElectionAsync(Guid workLocationId,Guid electionId, CancellationToken cancellationToken)
-        {
-            var query = new GetWorkLocationByElectionIdQuery(workLocationId,electionId);
-            var result = await sender.Send(query, cancellationToken);
-            return Ok(result);
-        }
-        [HttpGet("getworklocationsbyelectionid")]
-        public async Task<IActionResult> GetWorkLocationsByElectionAsync(Guid electionId, CancellationToken cancellationToken)
-        {
-            var query = new GetWorkLocationsByElectionIdQuery( electionId);
-            var result = await sender.Send(query, cancellationToken);
-            return Ok(result);
-        }
+
         [HttpPost("queryworklocationlisting")]
         public async Task<IActionResult> QueryWorkLocationListingAsync(WorkLocationListingQueryForm query, CancellationToken cancellationToken)
         {

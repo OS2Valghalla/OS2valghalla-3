@@ -42,19 +42,9 @@ const routes: Routes = [
       import('../administration/work-location/work-location.routing.module').then((m) => m.WorkLocationRoutingModule),
   },
   {
-    path: RoutingNodes.WorkLocationTemplate,
-    loadChildren: () =>
-      import('../administration/work-location-template/work-location-template.routing.module').then((m) => m.WorkLocationTemplateRoutingModule),
-  },
-  {
     path: RoutingNodes.TaskType,
     loadChildren: () =>
       import('../administration/task-type/task-type.routing.module').then((m) => m.TaskTypeRoutingModule),
-  },
-  {
-    path: RoutingNodes.TaskTypeTemplate,
-    loadChildren: () =>
-      import('../administration/task-type-template/task-type-template.routing.module').then((m) => m.TaskTypeTemplateRoutingModule),
   },
   {
     path: RoutingNodes.AuditLog,
