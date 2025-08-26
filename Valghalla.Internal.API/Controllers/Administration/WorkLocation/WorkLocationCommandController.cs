@@ -35,7 +35,6 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocation
                 TaskTypeIds = request.TaskTypeIds,
                 TeamIds = request.TeamIds,
                 ResponsibleIds = request.ResponsibleIds,
-                TaskTypeTemplateIds = request.TaskTypeTemplateIds,
                 ElectionId = request.ElectionId
             };
 
@@ -57,8 +56,7 @@ namespace Valghalla.Internal.API.Controllers.Administration.WorkLocation
                 VoteLocation = request.VoteLocation,
                 TaskTypeIds = request.TaskTypeIds,
                 TeamIds = request.TeamIds,
-                ResponsibleIds = request.ResponsibleIds,
-                TaskTypeTemplateIds = request.TaskTypeTemplateIds
+                ResponsibleIds = request.ResponsibleIds
             };
 
             var result = await sender.Send(command, cancellationToken);

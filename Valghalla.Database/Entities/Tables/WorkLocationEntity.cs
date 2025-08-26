@@ -6,7 +6,6 @@ public partial class WorkLocationEntity : IChangeTrackingEntity
 {
     public Guid Id { get; set; }
     public Guid AreaId { get; set; }
-    public Guid? WorkLocationTemplateId { get; set; }
     public string Title { get; set; } = null!;
     public string Address { get; set; } = null!;
     public string PostalCode { get; set; } = null!;
@@ -25,5 +24,4 @@ public partial class WorkLocationEntity : IChangeTrackingEntity
     public virtual UserEntity? ChangedByUser { get; set; }
     public virtual ICollection<ElectionEntity> Elections { get; } = new List<ElectionEntity>();
     public virtual ICollection<ElectionWorkLocationEntity> ElectionWorkLocations { get; } = new List<ElectionWorkLocationEntity>();
-    public virtual WorkLocationTemplateEntity WorkLocationTemplate { get; set; } = null!;
 }

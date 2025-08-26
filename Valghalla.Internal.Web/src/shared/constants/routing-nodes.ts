@@ -19,7 +19,6 @@ export class RoutingNodes {
   static RejectedTasksOverview = 'rejected-tasks-overview';
   static Overview = 'overview';
   static WorkLocation = 'work-location';
-  static WorkLocationTemplate = 'work-location-template';
   static TasksOnWorkLocation = 'tasks-on-work-location';
   static ReplyForParticipant = 'reply-for-participant';
   static Election = 'election';
@@ -34,7 +33,6 @@ export class RoutingNodes {
   static Web_DeclarationOfConsent = 'declaration-of-consent';
   static Web_ContactInformation = 'contact-information';
   static TaskType = "task-type";
-  static TaskTypeTemplate = 'task-type-template';
   static Communication = 'communication';
   static CommunicationTemplates = 'communication-templates';
   static SendMessage = 'send-message';

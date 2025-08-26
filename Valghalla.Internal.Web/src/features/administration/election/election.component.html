@@ -7,7 +7,7 @@
   actionTitle="administration.election.action.create_election"
   actionIcon="add"
   (action)="openAddElection()">
-  <app-table [storageKey]="'election-listing'"  #tableElections *appTableCtx="data; let typing" defaultSortColumn="title">
+  <app-table #tableElections *appTableCtx="data; let typing" defaultSortColumn="title">
     <app-query-container
       [hideFilterBtn]="true"
       cacheKey="election"

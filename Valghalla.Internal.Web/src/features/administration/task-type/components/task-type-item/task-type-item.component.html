@@ -7,36 +7,6 @@
   (update)="updateTaskType($event)"
   (delete)="deleteTaskType($event)"
   (onCancelClick)="cancel()">
-<div class="flex flex-col col-span-2">
-      <mat-form-field appearance="fill" *appShowSkeleton="loading">
-        <mat-label>{{ 'administration.task_type.task_type_item.election' | transloco }}</mat-label>
-        <mat-select formControlName="electionId" [disabled]="formPage?.isUpdateForm()">
-          <mat-option *ngFor="let election of elections" [value]="election.id">
-            {{ election.title }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-<div class="flex flex-col col-span-2">
-      <mat-form-field appearance="fill" *appShowSkeleton="loading">
-        <mat-label>{{ 'administration.task_type.task_type_item.work_location' | transloco }}</mat-label>
-        <mat-select formControlName="workLocationId">
-          <mat-option *ngFor="let workLocation of workLocations" [value]="workLocation.id">
-            {{ workLocation.title }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-<div class="flex flex-col col-span-2">
-      <mat-form-field appearance="fill" *appShowSkeleton="loading">
-        <mat-label>{{ 'administration.task_type.task_type_item.task_type_template' | transloco }}</mat-label>
-        <mat-select formControlName="taskTypeTemplateId">
-          <mat-option *ngFor="let taskTypeTemplate of taskTypeTemplates" [value]="taskTypeTemplate.id">
-            {{ taskTypeTemplate.title }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
   <div class="grid grid-cols-6 gap-4">
     <div class="flex flex-col col-span-6">
       <mat-form-field appearance="fill" *appShowSkeleton="loading">

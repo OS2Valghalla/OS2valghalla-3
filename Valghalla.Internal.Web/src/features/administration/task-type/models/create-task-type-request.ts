@@ -9,7 +9,4 @@ export interface CreateTaskTypeRequest {
   trusted: boolean;
   sendingReminderEnabled: boolean;
   fileReferenceIds: string[];
-  workLocationId?: string;
-  electionId?: string;
-  taskTypeTemplateId?: string;
 }

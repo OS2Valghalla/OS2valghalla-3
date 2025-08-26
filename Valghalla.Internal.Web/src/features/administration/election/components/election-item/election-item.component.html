@@ -63,16 +63,16 @@
     </div>
   </app-wizard-step>
   <app-wizard-step
-    [formGroup]="formWorkLocationTemplate"
+    [formGroup]="formWorkLocation"
     [stepTitle]="'administration.election.label.step_form_work_location' | transloco">
     <div *appWizardStep class="flex flex-col w-[36rem]">
-      <mat-hint>{{ 'administration.election.label.work_location_template_hint' | transloco }}</mat-hint>
+      <mat-hint>{{ 'administration.election.label.work_location_hint' | transloco }}</mat-hint>
       <mat-checkbox
-        [disabled]="isWorkLocationDisabled(template)"
-        *ngFor="let template of workLocationTemplates"
-        [checked]="isWorkLocationChecked(template)"
-        (change)="toggleWorkLocation($event, template.id)">
-        {{ template.title }}
+        [disabled]="isWorkLocationDisabled(workLocation)"
+        *ngFor="let workLocation of workLocations"
+        [checked]="isWorkLocationChecked(workLocation)"
+        (change)="toggleWorkLocation($event, workLocation.id)">
+        {{ workLocation.title }}
       </mat-checkbox>
     </div>
   </app-wizard-step>

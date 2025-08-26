@@ -12,7 +12,4 @@ export interface TaskTypeDetails {
   trusted: boolean;
   sendingReminderEnabled: boolean;
   fileReferences: FileReference[];
-  electionId: string;
-  workLocationId: string;
-  taskTypeTemplateId: string;
 }
