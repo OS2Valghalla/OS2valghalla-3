@@ -15,11 +15,5 @@ namespace Valghalla.Internal.Application.Modules.Administration.TaskType.Respons
         public bool Trusted { get; init; }
         public bool SendingReminderEnabled { get; init; }
         public IEnumerable<FileReferenceInfo> FileReferences { get; init; } = Enumerable.Empty<FileReferenceInfo>();
-        public string ElectionId { get; set; }
-        public string ElectionTitle { get; set; }
-        public string TaskTypeTemplateId { get; set; }
-        public string TaskTypeTemplateTitle { get; set; }
-        public string WorkLocationId { get; set; }
-        public string WorkLocationTitle { get; set; }
     }
 }
