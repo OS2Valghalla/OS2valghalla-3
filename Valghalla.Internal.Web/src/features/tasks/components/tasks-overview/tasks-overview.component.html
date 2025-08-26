@@ -80,15 +80,14 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-expansion-panel class="flex-1 min-w-[300px]">
+  <div #columnsPanelWrapper class="flex-1 min-w-[300px]">
+  <mat-expansion-panel #columnsPanel class="w-full">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <strong>{{ 'tasks.labels.select_columns' | transloco }}</strong>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-selection-list
-        [(ngModel)]="selectedColumns"
-        (ngModelChange)="changeSelectedColumns()"
         #columnsList
         *ngIf="!loadingTasks"
         [multiple]="true"
@@ -96,7 +95,7 @@
         class="flex flex-wrap">
         <mat-checkbox
           [(ngModel)]="allColumnsSelected"
-          [indeterminate]="displayedColumns.length < columns.length"
+          [indeterminate]="selectedColumns.length > 0 && selectedColumns.length < displayedColumnsOptions.length"
           [ngModelOptions]="{ standalone: true }"
           (change)="toggleAllColumns()"
           class="min-w-full pb-2"
@@ -105,13 +104,14 @@
         <mat-list-option
           *ngFor="let column of displayedColumnsOptions"
           checkboxPosition="before"
-          [value]="column.id"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [selected]="selectedColumns.includes(column.id)"
+          (click)="$event.stopPropagation(); toggleColumn(column.id)"
           class="min-w-[350px] max-w-[350px]">
           {{ column.displayName }}
         </mat-list-option>
       </mat-selection-list>
     </mat-expansion-panel>
+    </div>
   </div>
 </app-card>
 <app-card *ngIf="election" [cardTitle]="'tasks.page_title' | transloco">

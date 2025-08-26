@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { SubSink } from 'subsink';
 import { RoutingNodes } from 'src/shared/constants/routing-nodes';
 import { AreaSharedHttpService } from 'src/shared/services/area-shared-http.service';
@@ -8,6 +8,7 @@ import { TasksSummary } from '../../models/tasks-summary';
 import { ElectionAreasGeneralInfo, TaskTypeWithAreaIdsResponse } from '../../models/election-areas-general-info';
 import { ElectionShared } from 'src/shared/models/election/election-shared';
 import { MatSelectionList } from '@angular/material/list';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { Router } from '@angular/router';
 import { TaskStatusGeneralInfoResponse } from '../../models/task-status-general-info-response';
 import { TranslocoService } from '@ngneat/transloco';
@@ -96,6 +97,8 @@ export class TasksOverviewComponent implements AfterViewInit {
   allAreasData: Array<StatusesTasksSummary>;
 
   @ViewChild('columnsList') columnsList: MatSelectionList;
+  @ViewChild('columnsPanel') columnsExpansionPanel: MatExpansionPanel;
+  @ViewChild('columnsPanelWrapper') columnsPanelWrapper: ElementRef<HTMLElement>;
 
   allColumnsSelected = false;
 
@@ -371,30 +374,50 @@ export class TasksOverviewComponent implements AfterViewInit {
   }
 
   toggleAllColumns() {
-    this.columnsList.options.forEach(opt => { if (!opt.disabled) opt.selected = this.allColumnsSelected; });
-    this.changeSelectedColumns();
+    const allIds = this.displayedColumnsOptions.map(o => o.id);
+    this.selectedColumns = this.allColumnsSelected ? [...allIds] : [];
+    if (this.columnsList) {
+      this.columnsList.options.forEach(opt => {
+        if (!opt.disabled) {
+          opt.selected = this.allColumnsSelected;
+        }
+      });
+    }
+    this.applySelectedColumns();
   }
 
-  changeSelectedColumns() {
-    const selectedOptions: string[] = this.columnsList
-      ? this.columnsList.selectedOptions.selected.map(item => item.value)
-      : [...this.selectedColumns];
+  toggleColumn(id: string) {
+    const idx = this.selectedColumns.indexOf(id);
+    if (idx >= 0) {
+      this.selectedColumns.splice(idx, 1);
+    } else {
+      this.selectedColumns.push(id);
+    }
+    this.applySelectedColumns();
+  }
 
-    this.allColumnsSelected = selectedOptions.length === this.displayedColumnsOptions.length;
+  private applySelectedColumns() {
+    const order: string[] = this.areasGeneralInfo
+      ? [...this.areasGeneralInfo.taskTypes.map(t => t.id), 'total']
+      : [...this.displayedColumnsOptions.map(o => o.id)];
 
-    const sorted = selectedOptions.sort((a, b) => {
-      const aIndex = this.columns.findIndex(col => col.name === a);
-      const bIndex = this.columns.findIndex(col => col.name === b);
-      return aIndex - bIndex;
-    });
+    this.allColumnsSelected = this.selectedColumns.length === this.displayedColumnsOptions.length;
+
+    const sorted = [...this.selectedColumns].sort((a, b) => order.indexOf(a) - order.indexOf(b));
 
     this.displayedColumns = ['status', ...sorted];
-
-    this.data.forEach((areaSummary) => {
-      areaSummary.displayedColumns = ['workLocation', ...sorted];
-    });
+    this.data.forEach(a => (a.displayedColumns = ['workLocation', ...sorted]));
 
     this.saveColumnSettingsToStorage(this.displayedColumnsOptions, sorted);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.columnsExpansionPanel?.expanded) return;
+    const wrapper = this.columnsPanelWrapper?.nativeElement;
+    if (wrapper && !wrapper.contains(event.target as Node)) {
+      this.columnsExpansionPanel.close();
+    }
   }
 
   isColumnDisabled(columnName: string): boolean { return !!this.columns.find(col => col.name === columnName && col.disabled); }
