@@ -120,52 +120,39 @@ export class TasksOverviewComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.workLocationLink = '/' + RoutingNodes.TasksOnWorkLocation + '/';
-    this.subs.sink = this.globalStateService.election$.subscribe((election) => {
+    this.subs.sink = this.globalStateService.election$.subscribe(election => {
       this.election = election;
-
-      if (this.election) {
-        this.loadingAreas = true;
-        this.loadingTasks = true;
-        this.displayedColumns = ['status'];
-        this.electionDates = [];
-        this.selectedDates = [];
-        this.selectedTeamIds = [];
-
-        this.subs.sink = this.areaTasksHttpService.getTasksStatusSummary(this.election.id).subscribe((res) => {
-          this.tasksStatusGeneralInfo = res.data;
-          this.tasksStatusGeneralInfo.rejectedTasksInfoResponses = this.tasksStatusGeneralInfo.rejectedTasksInfoResponses || [];
+      if (!this.election) return;
+      this.loadingAreas = true;
+      this.loadingTasks = true;
+      this.displayedColumns = ['status'];
+      this.electionDates = [];
+      this.selectedDates = [];
+      this.selectedTeamIds = [];
+      this.subs.sink = this.areaTasksHttpService.getTasksStatusSummary(this.election.id).subscribe(res => {
+        this.tasksStatusGeneralInfo = res.data;
+        this.tasksStatusGeneralInfo.rejectedTasksInfoResponses = this.tasksStatusGeneralInfo.rejectedTasksInfoResponses || [];
+      });
+      this.subs.sink = this.areaTasksHttpService.getAreasGeneralInfo(this.election.id).subscribe(resAreas => {
+        this.areasGeneralInfo = resAreas.data;
+        const start = new Date(this.areasGeneralInfo.electionStartDate);
+        const end = new Date(this.areasGeneralInfo.electionEndDate);
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) this.electionDates.push(new Date(d));
+        this.areasGeneralInfo.taskTypes.forEach(t => this.displayedColumns.push(t.id));
+        this.displayedColumns.push('total');
+        this.loadingAreas = false;
+        this.subs.sink = this.areaTasksHttpService.getAreaTasksSummary(this.election.id).subscribe(res => {
+          this.areaTasksSummary = res.data;
+          this.buildAreaTasksSummary();
+          this.initializeTableDisplayFromSession();
         });
-
-        this.subs.sink = this.areaTasksHttpService.getAreasGeneralInfo(this.election.id).subscribe((resAreas) => {
-          this.areasGeneralInfo = resAreas.data;
-          const tasksDate: Date = new Date(this.areasGeneralInfo.electionStartDate);
-          while (tasksDate <= new Date(this.areasGeneralInfo.electionEndDate)) {
-            this.electionDates.push(new Date(tasksDate));
-            tasksDate.setDate(tasksDate.getDate() + 1);
-          }
-          this.areasGeneralInfo.taskTypes.forEach((taskType) => {
-            this.displayedColumns.push(taskType.id);
-          });
-          this.displayedColumns.push('total');
-
-          this.loadingAreas = false;
-          this.subs.sink = this.areaTasksHttpService.getAreaTasksSummary(this.election.id).subscribe((res) => {
-            this.areaTasksSummary = res.data;
-            this.buildAreaTasksSummary();
-            this.initializeTableDisplayFromSession();
-          });
-        });
-      }
+      });
     });
   }
 
   getSelectedDatesTooltip(): string {
-    if (!this.selectedDates || this.selectedDates.length === 0) {
-      return this.transloco.translate('tasks.labels.all_dates');
-    }
-    return this.selectedDates
-      .map(d => d instanceof Date ? d.toLocaleDateString() : new Date(d).toLocaleDateString())
-      .join(', ');
+    if (!this.selectedDates?.length) return this.transloco.translate('tasks.labels.all_dates');
+    return this.selectedDates.map(d => (d instanceof Date ? d : new Date(d)).toLocaleDateString()).join(', ');
   }
 
   getSelectedTeamsTooltip(): string {
@@ -224,8 +211,8 @@ export class TasksOverviewComponent implements AfterViewInit {
 
   onFilterChanged() {
     this.loadingTasks = true;
-    const dates = this.selectedDates && this.selectedDates.length > 0 ? this.selectedDates : undefined;
-    const teams = this.selectedTeamIds && this.selectedTeamIds.length > 0 ? this.selectedTeamIds : undefined;
+    const dates = this.selectedDates?.length ? this.selectedDates : undefined;
+    const teams = this.selectedTeamIds?.length ? this.selectedTeamIds : undefined;
     this.subs.sink = this.areaTasksHttpService
       .getAreaTasksSummary(this.election.id, dates, teams)
       .subscribe((res) => {
@@ -234,38 +221,45 @@ export class TasksOverviewComponent implements AfterViewInit {
       });
   }
 
-  buildAreaTasksSummary() {
-    this.data = [];
-    this.allAreasData = ['all', 'missing', 'awaiting', 'rejected'].map(status => ({
+  private createEmptyAllAreasData(): Array<StatusesTasksSummary> {
+    return ['all', 'missing', 'awaiting', 'rejected'].map(status => ({
       statusName: status,
-      taskTypes: [] as TaskTypeTasksSummary[],
+      taskTypes: [],
       sumAssignedTasksCount: 0,
       sumAllTasksCount: 0,
       sumAwaitingTasksCount: 0,
       sumMissingTasksCount: 0,
       sumRejectedTasksCount: 0,
     }));
+  }
 
+  private updateAggregateTaskTypes(idx: number, ttId: string, taskSummary: TaskTypeTasksSummary) {
+    if (this.allAreasData[0].taskTypes.length <= idx) {
+      this.allAreasData[0].taskTypes.push({ taskTypeId: ttId, assignedTasksCount: taskSummary.assignedTasksCount, allTasksCount: taskSummary.allTasksCount, awaitingTasksCount: 0, missingTasksCount: 0 });
+      this.allAreasData[1].taskTypes.push({ taskTypeId: ttId, assignedTasksCount: 0, allTasksCount: 0, awaitingTasksCount: 0, missingTasksCount: taskSummary.missingTasksCount });
+      this.allAreasData[2].taskTypes.push({ taskTypeId: ttId, assignedTasksCount: 0, allTasksCount: 0, awaitingTasksCount: taskSummary.awaitingTasksCount, missingTasksCount: 0 });
+    } else {
+      this.allAreasData[0].taskTypes[idx].allTasksCount += taskSummary.allTasksCount;
+      this.allAreasData[0].taskTypes[idx].assignedTasksCount += taskSummary.assignedTasksCount;
+      this.allAreasData[1].taskTypes[idx].missingTasksCount += taskSummary.missingTasksCount;
+      this.allAreasData[2].taskTypes[idx].awaitingTasksCount += taskSummary.awaitingTasksCount;
+    }
+  }
+
+  buildAreaTasksSummary() {
+    this.data = [];
+    this.allAreasData = this.createEmptyAllAreasData();
+    const summaryIndex = new Map<string, TasksSummary>();
+    this.areaTasksSummary.forEach(t => summaryIndex.set(t.workLocationId + '|' + t.taskTypeId, t));
     this.areasGeneralInfo.areas.forEach(area => {
-      const areaSummary: AreaTasksSummary = {
-        areaId: area.id,
-        workLocations: [],
-        displayedColumns: ['workLocation']
-      };
-      this.areasGeneralInfo.taskTypes.forEach(tt => {
-        if (tt.areaIds.includes(area.id)) areaSummary.displayedColumns.push(tt.id);
-      });
+      const areaSummary: AreaTasksSummary = { areaId: area.id, workLocations: [], displayedColumns: ['workLocation'] };
+      this.areasGeneralInfo.taskTypes.forEach(tt => { if (tt.areaIds.includes(area.id)) areaSummary.displayedColumns.push(tt.id); });
       areaSummary.displayedColumns.push('total');
-
       const workLocations = this.areasGeneralInfo.workLocations.filter(wl => wl.areaId === area.id);
       workLocations.forEach(wl => {
-        const wlSummary: WorkLocationTasksSummary = {
-          workLocationId: wl.id,
-          workLocationName: wl.title,
-          taskTypes: []
-        };
+        const wlSummary: WorkLocationTasksSummary = { workLocationId: wl.id, workLocationName: wl.title, taskTypes: [] };
         this.areasGeneralInfo.taskTypes.forEach((tt, idx) => {
-          const found = this.areaTasksSummary.find(t => t.workLocationId === wl.id && t.taskTypeId === tt.id);
+          const found = summaryIndex.get(wl.id + '|' + tt.id);
           const taskSummary: TaskTypeTasksSummary = {
             taskTypeId: tt.id,
             assignedTasksCount: found?.assignedTasksCount || 0,
@@ -274,22 +268,11 @@ export class TasksOverviewComponent implements AfterViewInit {
             allTasksCount: found?.allTasksCount || 0
           };
           wlSummary.taskTypes.push(taskSummary);
-
           this.allAreasData[0].sumAssignedTasksCount += taskSummary.assignedTasksCount;
           this.allAreasData[0].sumAllTasksCount += taskSummary.allTasksCount;
           this.allAreasData[1].sumMissingTasksCount += taskSummary.missingTasksCount;
           this.allAreasData[2].sumAwaitingTasksCount += taskSummary.awaitingTasksCount;
-
-          if (this.allAreasData[0].taskTypes.length <= idx) {
-            this.allAreasData[0].taskTypes.push({ taskTypeId: tt.id, assignedTasksCount: taskSummary.assignedTasksCount, allTasksCount: taskSummary.allTasksCount, awaitingTasksCount: 0, missingTasksCount: 0 });
-            this.allAreasData[1].taskTypes.push({ taskTypeId: tt.id, assignedTasksCount: 0, allTasksCount: 0, awaitingTasksCount: 0, missingTasksCount: taskSummary.missingTasksCount });
-            this.allAreasData[2].taskTypes.push({ taskTypeId: tt.id, assignedTasksCount: 0, allTasksCount: 0, awaitingTasksCount: taskSummary.awaitingTasksCount, missingTasksCount: 0 });
-          } else {
-            this.allAreasData[0].taskTypes[idx].allTasksCount += taskSummary.allTasksCount;
-            this.allAreasData[0].taskTypes[idx].assignedTasksCount += taskSummary.assignedTasksCount;
-            this.allAreasData[1].taskTypes[idx].missingTasksCount += taskSummary.missingTasksCount;
-            this.allAreasData[2].taskTypes[idx].awaitingTasksCount += taskSummary.awaitingTasksCount;
-          }
+          this.updateAggregateTaskTypes(idx, tt.id, taskSummary);
         });
         areaSummary.workLocations.push(wlSummary);
       });
@@ -388,26 +371,16 @@ export class TasksOverviewComponent implements AfterViewInit {
 
   toggleColumn(id: string) {
     const idx = this.selectedColumns.indexOf(id);
-    if (idx >= 0) {
-      this.selectedColumns.splice(idx, 1);
-    } else {
-      this.selectedColumns.push(id);
-    }
+    idx >= 0 ? this.selectedColumns.splice(idx, 1) : this.selectedColumns.push(id);
     this.applySelectedColumns();
   }
 
   private applySelectedColumns() {
-    const order: string[] = this.areasGeneralInfo
-      ? [...this.areasGeneralInfo.taskTypes.map(t => t.id), 'total']
-      : [...this.displayedColumnsOptions.map(o => o.id)];
-
+    const order = this.areasGeneralInfo ? [...this.areasGeneralInfo.taskTypes.map(t => t.id), 'total'] : this.displayedColumnsOptions.map(o => o.id);
     this.allColumnsSelected = this.selectedColumns.length === this.displayedColumnsOptions.length;
-
     const sorted = [...this.selectedColumns].sort((a, b) => order.indexOf(a) - order.indexOf(b));
-
     this.displayedColumns = ['status', ...sorted];
     this.data.forEach(a => (a.displayedColumns = ['workLocation', ...sorted]));
-
     this.saveColumnSettingsToStorage(this.displayedColumnsOptions, sorted);
   }
 
