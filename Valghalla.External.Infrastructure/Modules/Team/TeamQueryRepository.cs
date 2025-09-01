@@ -61,11 +61,11 @@ namespace Valghalla.External.Infrastructure.Modules.Team
             var teamMembers = participantEntities.Select(mapper.Map<TeamMemberResponse>).ToList();
             foreach (var teamMember in teamMembers)
             {
-                teamMember.AssignedTasksCount = tasks.Count(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Accepted && t.TaskDate >= DateTime.Today);
+                teamMember.AssignedTasksCount = tasks.Count(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Accepted && t.TaskDate >= DateTime.Today && t.Election.Active);
                 teamMember.CanBeRemoved = !tasks.Include(i => i.Election).Any(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Accepted && (t.TaskDate < DateTime.Today || t.Election.ElectionEndDate < DateTime.Today));
 
                 var tasksLocationIds = await taskAssignments
-                    .Where(t => t.ParticipantId == teamMember.Id)
+                    .Where(t => t.ParticipantId == teamMember.Id && t.Election.Active)
                     .Select(w => w.WorkLocationId)
                     .Distinct()
                     .ToListAsync(cancellationToken);
