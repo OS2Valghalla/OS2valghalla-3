@@ -58,7 +58,7 @@ export class ParticipantListComponent implements OnInit {
 
   printDataSource: MatTableDataSource<any>;
 
-  displayedColumns: Array<string> = ['participantName', 'participantCpr', 'teamName', 'taskDate', 'taskTypeName'];
+  displayedColumns: Array<string> = ['participantName', 'participantCpr', 'participantProtectedAddress', 'teamName', 'taskDate', 'taskTypeName'];
 
   @ViewChild('TABLE') table: ElementRef<HTMLElement>;
 
@@ -118,13 +118,13 @@ export class ParticipantListComponent implements OnInit {
       disabled: false,
       isSelected: false,
     },
-{
+    {
       name: 'participantProtectedAddress',
       key: 'list.participant_list.labels.participant_protected_address',
       displayName: this.translocoService.translate('list.participant_list.labels.participant_protected_address'),
       index: 7,
-      disabled: false,
-      isSelected: false,
+      disabled: true,
+      isSelected: true,
     },
     {
       name: 'participantSpecialDiets',
@@ -321,6 +321,10 @@ export class ParticipantListComponent implements OnInit {
       selectedOptions.push(selectedColumn.value);
     });
 
+    if (!selectedOptions.includes('participantProtectedAddress')) {
+      selectedOptions.push('participantProtectedAddress');
+    }
+
     this.displayedColumns = selectedOptions.sort((a, b) => {
       const foundA = this.columns.filter((f) => f.name == a)[0];
       const foundB = this.columns.filter((f) => f.name == b)[0];
@@ -348,6 +352,10 @@ export class ParticipantListComponent implements OnInit {
     this.columnsList.selectedOptions.selected.forEach((selectedColumn) => {
       selectedOptions.push(selectedColumn.value);
     });
+
+    if (!selectedOptions.includes('participantProtectedAddress')) {
+      selectedOptions.push('participantProtectedAddress');
+    }
 
     this.displayedColumns = selectedOptions.sort((a, b) => {
       const foundA = this.columns.filter((f) => f.name == a)[0];
