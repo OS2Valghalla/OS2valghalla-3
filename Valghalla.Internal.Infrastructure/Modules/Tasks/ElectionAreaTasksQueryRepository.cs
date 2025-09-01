@@ -73,7 +73,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
 
             if (query.SelectedDates != null && query.SelectedDates.Any())
             {
-                tasksQuery = tasksQuery.Where(i => query.SelectedDates.Contains(i.TaskDate));
+                var selectedDates = query.SelectedDates.Select(d => d.Date).ToList();
+                tasksQuery = tasksQuery.Where(i => selectedDates.Contains(i.TaskDate.Date));
             }
 
             if (query.SelectedTeamIds != null && query.SelectedTeamIds.Any())
