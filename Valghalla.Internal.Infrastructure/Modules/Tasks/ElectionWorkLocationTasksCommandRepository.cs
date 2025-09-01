@@ -279,7 +279,12 @@ namespace Valghalla.Internal.Infrastructure.Modules.Tasks
             var taskIdSet = new HashSet<Guid>(command.TaskIds.Select(Guid.Parse));
 
             var tasks = await taskAssignments
-                .Where(ta => taskIdSet.Contains(ta.Id) && ta.TeamId == sourceTeamId && ta.ParticipantId == null)
+                .Where(ta => taskIdSet.Contains(ta.Id)
+                             && ta.TeamId == sourceTeamId
+                             && ta.ParticipantId == null
+                             && ta.InvitationSent == false
+                             && ta.Responsed == false
+                             && ta.Accepted == false)
                 .ToListAsync(cancellationToken);
 
             if (tasks.Count == 0) return false;
