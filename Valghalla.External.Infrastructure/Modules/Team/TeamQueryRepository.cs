@@ -54,7 +54,7 @@ namespace Valghalla.External.Infrastructure.Modules.Team
             if (!teamEntities.Any(t => t.Id == teamId)) return new List<TeamMemberResponse>();
 
             var participantEntities = await participants.Include(i => i.TeamMembers)
-                .Where(i => i.TeamMembers.Any(i => i.TeamId == teamId) && i.Id != responsible.Id)
+                .Where(i => i.TeamMembers.Any(i => i.TeamId == teamId))
                 .OrderBy(i => i.FirstName).ThenBy(i => i.LastName)
                 .ToListAsync(cancellationToken);
 
