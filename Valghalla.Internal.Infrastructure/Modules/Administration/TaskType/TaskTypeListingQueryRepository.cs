@@ -25,26 +25,18 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.TaskType
                     "trusted" => queryable.SortBy(i => i.Trusted, order),
                     "electiontitle" => queryable.SortBy(i => i.WorkLocationTaskTypes
                         .Select(n => n.WorkLocation.ElectionWorkLocations
-                            .Select(y => y.Election.Title))
+                            .Select(y => y.Election.Title)
+                            .FirstOrDefault())
                         .FirstOrDefault(), order),
                     "electionTitle" => queryable.SortBy(i => i.WorkLocationTaskTypes
                         .Select(n => n.WorkLocation.ElectionWorkLocations
-                            .Select(y => y.Election.Title))
+                            .Select(y => y.Election.Title)
+                            .FirstOrDefault())
                         .FirstOrDefault(), order), // safeguard
                     _ => queryable
                 };
             });
 
-
-            Query(queryable =>
-            {
-                return queryable
-                    .Include(i => i.TaskAssignments).ThenInclude(ta => ta.Election)
-                    .Include(i => i.TaskAssignments).ThenInclude(ta => ta.WorkLocation.Area)
-                    .Include(i => i.WorkLocationTaskTypes).ThenInclude(wltt => wltt.WorkLocation).ThenInclude(wl => wl.Area)
-                    .Include(i => i.WorkLocationTaskTypes).ThenInclude(wltt => wltt.WorkLocation).ThenInclude(wl => wl.ElectionWorkLocations)
-                    .Include(i => i.WorkLocationTaskTypes).ThenInclude(wltt => wltt.WorkLocation).ThenInclude(wl => wl.Elections);
-            });
 
             QueryFor(x => x.Search)
                 .Use((queryable, query) =>

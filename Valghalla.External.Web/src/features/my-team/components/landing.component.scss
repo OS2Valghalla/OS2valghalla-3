@@ -1,5 +1,14 @@
-.xl-select select {
-    height: 52px;
-    font-size: 2rem;
-    max-width: 64rem;
+.xl-select select { height:52px; font-size:2rem; max-width:64rem; }
+
+.table--responsive-scroll, .table { width:100%; }
+
+.inner-task-table { width:100%; table-layout:fixed; }
+.inner-task-table th, .inner-task-table td { white-space:nowrap; }
+
+.inner-task-table th:first-child, .inner-task-table td:first-child { width:55%; white-space:normal; word-break:break-word; }
+.inner-task-table th:nth-child(2), .inner-task-table td:nth-child(2) { width:20%; }
+.inner-task-table th:nth-child(3), .inner-task-table td:nth-child(3) { width:25%; }
+
+@media (max-width:480px) {
+    .inner-task-table th:nth-child(2), .inner-task-table td:nth-child(2) { white-space:normal; }
 }

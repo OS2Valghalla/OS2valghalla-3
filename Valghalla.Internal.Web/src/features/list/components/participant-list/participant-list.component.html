@@ -146,9 +146,9 @@
         <mat-list-option
           checkboxPosition="before"
           [value]="'participantProtectedAddress'"
-          (click)="$event.stopPropagation(); changeSelectedColumns()"
-          [disabled]="false"
-          [selected]="isColumnDisabled('participantProtectedAddress')"
+            (click)="$event.stopPropagation(); changeSelectedColumns()"
+          [disabled]="true"
+          [selected]="true"
           class="min-w-[350px] max-w-[350px]">
           {{ 'list.participant_list.labels.participant_protected_address' | transloco }}
         </mat-list-option>

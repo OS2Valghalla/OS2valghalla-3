@@ -11,9 +11,45 @@
         (change)="onFilterChanged()"
         *ngIf="!loading"
         [ngClass]="!form.controls.selectedTeamId.value ? 'empty-select' : ''">
+        <option value="ALL">{{ 'my_team.labels.all_my_teams' | transloco }}</option>
         <option *ngFor="let team of teams" [value]="team.id" class="select-option">
           {{ team.name }}
         </option>
+      </select>
+    </div>
+    <div appFormGroup class="col-12 col-sm-12 col-md-6 col-lg-3 form-control xl-select mt-4 mt-md-0">
+      <span appFormError></span>
+      <select
+        appFormSelect
+        [formControl]="form.controls.workLocation"
+        (change)="applyFilters()"
+        [ngClass]="!form.controls.workLocation.value ? 'empty-select' : ''">
+        <option value="">{{ 'my_team.labels.all_work_locations' | transloco }}</option>
+        <option *ngFor="let wl of workLocationOptions" [value]="wl" class="select-option">{{ wl }}</option>
+      </select>
+    </div>
+    <div appFormGroup class="col-12 col-sm-12 col-md-6 col-lg-3 form-control xl-select mt-4 mt-lg-0">
+      <span appFormError></span>
+      <select
+        appFormSelect
+        [formControl]="form.controls.taskStatus"
+        (change)="applyFilters()"
+        [ngClass]="!form.controls.taskStatus.value ? 'empty-select' : ''">
+        <option value="">{{ 'my_team.labels.all_task_statuses' | transloco }}</option>
+        <option value="0">{{ 'my_team.labels.task_status_accepted' | transloco }}</option>
+        <option value="1">{{ 'my_team.labels.task_status_unanswered' | transloco }}</option>
+        <option value="2">{{ 'my_team.labels.task_status_rejected' | transloco }}</option>
+      </select>
+    </div>
+    <div appFormGroup class="col-12 col-sm-12 col-md-6 col-lg-3 form-control xl-select mt-4 mt-lg-0">
+      <span appFormError></span>
+      <select
+        appFormSelect
+        [formControl]="form.controls.taskDate"
+        (change)="applyFilters()"
+        [ngClass]="!form.controls.taskDate.value ? 'empty-select' : ''">
+        <option value="">{{ 'my_team.labels.all_task_dates' | transloco }}</option>
+        <option *ngFor="let d of taskDateOptions" [value]="d" class="select-option">{{ d }}</option>
       </select>
     </div>
     <div class="col-12 col-sm-12 col-md-6 col-lg-3 mt-4 mt-lg-0 mt-xl-0 align-self-end d-print-none">
@@ -23,10 +59,10 @@
           generating
             ? ('shared.common.generating' | transloco)
             : !isSafariBrowser()
-            ? ('my_team.labels.copy_link_to_team' | transloco)
-            : generatedLink && generatedLink.length > 0
-            ? ('my_team.labels.copy_link_to_team' | transloco)
-            : ('my_team.labels.generate_link_to_team' | transloco)
+              ? ('my_team.labels.copy_link_to_team' | transloco)
+              : generatedLink && generatedLink.length > 0
+                ? ('my_team.labels.copy_link_to_team' | transloco)
+                : ('my_team.labels.generate_link_to_team' | transloco)
         }}
       </button>
     </div>
@@ -43,7 +79,7 @@
       [innerHTML]="'my_team.labels.link_description' | transloco"></div>
   </div>
   <div class="row">
-    <div class="col-12 col-sm-12 col-md-9 col-lg-9">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
       <h2>{{ 'my_team.labels.team_members' | transloco }}</h2>
       <div class="spinner" style="margin-top: 20px" *ngIf="loadingMembers"></div>
       <form novalidate="" [formGroup]="form" method="get" id="formSearchTable" (ngSubmit)="searchMembers()">
@@ -65,7 +101,7 @@
           </button>
         </div>
       </form>
-      <div class="table--responsive-scroll" *ngIf="!loadingMembers">
+      <div class="table--responsive-scroll" *ngIf="!loadingMembers && !allTeamsSelected">
         <table class="table table--borderless" id="searchTable" aria-live="polite">
           <thead>
             <tr>
@@ -80,7 +116,7 @@
           <tbody>
             <tr
               *ngFor="
-                let member of displayTeamMembers | paginate : { itemsPerPage: itemsPerPage, currentPage: currentPage }
+                let member of displayTeamMembers | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }
               ">
               <th scope="row">
                 {{ member.name }}
@@ -89,14 +125,56 @@
                 {{ member.assignedTasksCount }}
                 {{ (member.assignedTasksCount > 1 ? 'my_team.labels.tasks' : 'my_team.labels.task') | transloco }}
               </td>
-              <td>               
-                {{ member.workLocations }}
+              <td>
+                <div *ngIf="member.workLocations?.length; else noWl">
+                  <div *ngFor="let wl of member.workLocations" class="mb-2">
+                    <strong>{{ wl.workLocationTitle }}</strong>
+                    <table
+                      class="table table--compact table--borderless inner-task-table mt-1"
+                      *ngIf="wl.tasks?.length">
+                      <thead>
+                        <tr>
+                          <th scope="col">{{ 'my_team.labels.task' | transloco }}</th>
+                          <th scope="col">{{ 'my_team.labels.task_date' | transloco }}</th>
+                          <th scope="col">{{ 'my_team.labels.status' | transloco }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let t of wl.tasks">
+                          <td>{{ t.taskTitle }}</td>
+                          <td>{{ t.taskDate ? (t.taskDate | date: 'yyyy-MM-dd') : '-' }}</td>
+                          <td>
+                            <span
+                              class="badge badge-small"
+                              [ngClass]="{
+                                'badge-success': t.taskStatus === 0,
+                                'badge-warning': t.taskStatus === 1,
+                                'badge-error': t.taskStatus === 2,
+                                'badge-secondary': t.taskStatus === 3,
+                              }">
+                              {{
+                                t.taskStatus === 0
+                                  ? ('my_team.labels.task_status_accepted' | transloco)
+                                  : t.taskStatus === 1
+                                    ? ('my_team.labels.task_status_unanswered' | transloco)
+                                    : t.taskStatus === 2
+                                      ? ('my_team.labels.task_status_rejected' | transloco)
+                                      : ('my_team.labels.task_status_available' | transloco)
+                              }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <ng-template #noWl>-</ng-template>
               </td>
               <td class="d-print-none align-text-md-right">
                 <a
                   href="javascript:void(0)"
                   (click)="showRemoveMemberDialog(member)"
-                  *ngIf="member.canBeRemoved"
+                  *ngIf="member.canBeRemoved && !allTeamsSelected"
                   data-module="modal"
                   [attr.data-target]="'modal-remove-member-' + member.id"
                   aria-haspopup="dialog">
@@ -107,7 +185,7 @@
                   appTooltip
                   [attr.data-tooltip]="'my_team.labels.cannot_be_removed_tooltip' | transloco"
                   data-tooltip-position="top"
-                  *ngIf="!member.canBeRemoved">
+                  *ngIf="!member.canBeRemoved && !allTeamsSelected">
                   {{ 'my_team.labels.cannot_be_removed' | transloco }}
                 </span>
 
@@ -154,7 +232,81 @@
             </tr>
           </tbody>
         </table>
-        <app-pagination [pageCount]="pageCount" [(currentPage)]="currentPage"></app-pagination>
+        <app-pagination
+          [pageCount]="pageCount"
+          [(currentPage)]="currentPage"
+          *ngIf="!allTeamsSelected"></app-pagination>
+      </div>
+
+      <div *ngIf="!loadingMembers && allTeamsSelected">
+        <div *ngFor="let grp of multiTeamMembersFiltered">
+          <h3 class="mt-5">{{ grp.team.name }}</h3>
+          <div class="table--responsive-scroll">
+            <table class="table table--borderless" aria-live="polite">
+              <thead>
+                <tr>
+                  <th scope="col">{{ 'my_team.labels.name' | transloco }}</th>
+                  <th scope="col">{{ 'my_team.labels.number_of_tasks' | transloco }}</th>
+                  <th scope="col">{{ 'my_team.labels.work_locations' | transloco }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let member of grp.members">
+                  <th scope="row">{{ member.name }}</th>
+                  <td>
+                    {{ member.assignedTasksCount }}
+                    {{ (member.assignedTasksCount > 1 ? 'my_team.labels.tasks' : 'my_team.labels.task') | transloco }}
+                  </td>
+                  <td>
+                    <div *ngIf="member.workLocations?.length; else noWl2">
+                      <div *ngFor="let wl of member.workLocations" class="mb-2">
+                        <strong>{{ wl.workLocationTitle }}</strong>
+                        <table
+                          class="table table--compact table--borderless inner-task-table mt-1"
+                          *ngIf="wl.tasks?.length">
+                          <thead>
+                            <tr>
+                              <th scope="col">{{ 'my_team.labels.task' | transloco }}</th>
+                              <th scope="col">{{ 'my_team.labels.task_date' | transloco }}</th>
+                              <th scope="col">{{ 'my_team.labels.status' | transloco }}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let t of wl.tasks">
+                              <td>{{ t.taskTitle }}</td>
+                              <td>{{ t.taskDate ? (t.taskDate | date: 'yyyy-MM-dd') : '-' }}</td>
+                              <td>
+                                <span
+                                  class="badge badge-small"
+                                  [ngClass]="{
+                                    'badge-success': t.taskStatus === 0,
+                                    'badge-warning': t.taskStatus === 1,
+                                    'badge-error': t.taskStatus === 2,
+                                    'badge-secondary': t.taskStatus === 3,
+                                  }">
+                                  {{
+                                    t.taskStatus === 0
+                                      ? ('my_team.labels.task_status_accepted' | transloco)
+                                      : t.taskStatus === 1
+                                        ? ('my_team.labels.task_status_unanswered' | transloco)
+                                        : t.taskStatus === 2
+                                          ? ('my_team.labels.task_status_rejected' | transloco)
+                                          : ('my_team.labels.task_status_available' | transloco)
+                                  }}
+                                </span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <ng-template #noWl2>-</ng-template>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>

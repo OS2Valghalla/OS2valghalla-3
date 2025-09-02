@@ -366,7 +366,19 @@
       "remove_member_confirmation": "will no longer be part of the team and all assigned tasks will be removed.",
       "search_for_name": "Search for name",
       "cannot_be_removed": "Cannot be removed",
-      "cannot_be_removed_tooltip": "It is not possible to remove this member, because we need their information for their payment for a previous task."
+      "cannot_be_removed_tooltip": "It is not possible to remove this member, because we need their information for their payment for a previous task.",
+      "all_work_locations": "All work locations",
+      "task_status_accepted": "Accepted",
+      "task_status_pending": "Pending",
+      "task_status_unanswered": "Unanswered",
+      "task_status_rejected": "Rejected",
+      "task_status_available": "Available",
+      "all_my_teams": "All my teams",
+      "all_task_statuses": "All task statuses",
+      "all_task_dates": "All task dates",
+      "task_dates": "Task dates",
+      "task_date": "Task date",
+      "status": "Status"
     },
     "error": {
       "get_team_by_team_link": "Error fetching team info",

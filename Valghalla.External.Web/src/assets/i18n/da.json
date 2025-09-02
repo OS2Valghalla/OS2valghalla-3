@@ -366,7 +366,19 @@
       "remove_member_confirmation": "vil ikke længere være en del af teamet, og alle tildelte opgaver fjernes.",
       "search_for_name": "Søg efter navn",
       "cannot_be_removed": "Kan ikke fjernes",
-      "cannot_be_removed_tooltip": "Det er ikke muligt at fjerne dette medlem, da vi har brug for oplysninger til betaling for en tidligere udført opgave."
+      "cannot_be_removed_tooltip": "Det er ikke muligt at fjerne dette medlem, da vi har brug for oplysninger til betaling for en tidligere udført opgave.",
+      "all_work_locations": "Alle arbejdssteder",
+      "task_status_accepted": "Accepteret",
+      "task_status_pending": "Afventer",
+      "task_status_unanswered": "Ubesvaret",
+      "task_status_rejected": "Afvist",
+      "task_status_available": "Ledig",
+      "all_my_teams": "Alle mine teams",
+      "all_task_statuses": "Alle opgavestatusser",
+      "all_task_dates": "Alle opgavedatoer",
+      "task_dates": "Opgavedatoer",
+      "task_date": "Opgavedato",
+      "status": "Status"
     },
     "error": {
       "get_team_by_team_link": "Fejl ved hentning af teamoplysninger",
