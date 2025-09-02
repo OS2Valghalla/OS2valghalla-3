@@ -17,6 +17,7 @@ namespace Valghalla.External.Infrastructure.Modules.Team
         private readonly IQueryable<TaskAssignmentEntity> tasks;
         private readonly IQueryable<WorkLocationEntity> workLocations;
         private readonly IQueryable<TaskAssignmentEntity> taskAssignments;
+        private readonly IQueryable<RejectedTaskAssignmentEntity> rejectedTaskAssignments;
 
         public TeamQueryRepository(DataContext dataContext, IMapper mapper)
         {
@@ -26,6 +27,7 @@ namespace Valghalla.External.Infrastructure.Modules.Team
             tasks = dataContext.Set<TaskAssignmentEntity>().AsNoTracking();
             workLocations = dataContext.Set<WorkLocationEntity>().AsNoTracking();
             taskAssignments = dataContext.Set<TaskAssignmentEntity>().AsNoTracking();
+            rejectedTaskAssignments = dataContext.Set<RejectedTaskAssignmentEntity>().AsNoTracking();
         }
 
         public async Task<IList<TeamResponse>> GetMyTeamsAsync(Guid participantId, CancellationToken cancellationToken)
@@ -61,28 +63,38 @@ namespace Valghalla.External.Infrastructure.Modules.Team
             var teamMembers = participantEntities.Select(mapper.Map<TeamMemberResponse>).ToList();
             foreach (var teamMember in teamMembers)
             {
-                teamMember.AssignedTasksCount = tasks.Count(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Accepted && t.TaskDate >= DateTime.Today && t.Election.Active);
+                teamMember.AssignedTasksCount = tasks.Count(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.TaskDate >= DateTime.Today && t.Election.Active);
                 teamMember.CanBeRemoved = !tasks.Include(i => i.Election).Any(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Accepted && (t.TaskDate < DateTime.Today || t.Election.ElectionEndDate < DateTime.Today));
 
-                var tasksLocationIds = await taskAssignments
-                    .Where(t => t.ParticipantId == teamMember.Id && t.Election.Active)
-                    .Select(w => w.WorkLocationId)
-                    .Distinct()
+                var memberTasks = await taskAssignments
+                    .Where(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Election.Active)
+                    .Include(t => t.WorkLocation)
+                    .Include(t => t.TaskType)
                     .ToListAsync(cancellationToken);
 
-                if (tasksLocationIds.Count > 0)
-                {
-                    var workLocationTitles = await workLocations
-                        .Where(i => tasksLocationIds.Contains(i.Id))
-                        .Select(i => i.Title)
-                        .ToListAsync(cancellationToken);
+                var memberRejectedTasks = await rejectedTaskAssignments
+                    .Where(t => t.TeamId == teamId && t.ParticipantId == teamMember.Id && t.Election.Active)
+                    .Include(t => t.WorkLocation)
+                    .Include(t => t.TaskType)
+                    .ToListAsync(cancellationToken);
 
-                    teamMember.WorkLocations = string.Join(", ", workLocationTitles);
-                }
-                else
+
+                var workLocationGroups = memberTasks
+                    .Select(mt => new { mt.WorkLocationId, Location = mt.WorkLocation.Title, TaskTitle = mt.TaskType.Title, mt.TaskDate, TaskStatus = mt.Accepted ? 0 : (!mt.Responsed ? 1 : 2) })
+                    .Concat(memberRejectedTasks.Select(rt => new { rt.WorkLocationId, Location = rt.WorkLocation.Title, TaskTitle = rt.TaskType.Title, rt.TaskDate, TaskStatus = 2 }))
+                    .GroupBy(x => new { x.WorkLocationId, x.Location })
+                    .ToList();
+
+                teamMember.WorkLocations = workLocationGroups.Select(g => new TeamMemberWorkLocationDetailsResponse
                 {
-                    teamMember.WorkLocations = string.Empty;
-                }
+                    WorkLocationTitle = g.Key.Location,
+                    Tasks = g.Select(t => new TeamMemberTaskDetailsResponse
+                    {
+                        TaskTitle = t.TaskTitle,
+                        TaskStatus = t.TaskStatus,
+                        TaskDate = DateOnly.FromDateTime(t.TaskDate)
+                    }).OrderBy(t => t.TaskDate).ToList()
+                }).OrderBy(w => w.WorkLocationTitle).ToList();
             }
 
             return teamMembers;
