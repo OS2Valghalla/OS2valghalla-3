@@ -1,12 +1,11 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { SubSink } from 'subsink';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { FormBuilder } from '@angular/forms';
 import { TeamHttpService } from '../services/team-http.service';
 import { Team } from '../models/team';
 import { TeamMember } from '../models/team-member';
-import { forkJoin, map, interval, fromEvent } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { forkJoin, map } from 'rxjs';
 import { isSafari } from 'src/shared/functions/utils';
 import { TranslocoService } from '@ngneat/transloco';
 import { NotificationService } from 'src/shared/services/notification.service';
@@ -17,7 +16,7 @@ import { NotificationService } from 'src/shared/services/notification.service';
   styleUrls: ['landing.component.scss'],
   providers: [TeamHttpService],
 })
-export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
+export class MyTeamLandingComponent implements AfterViewInit {
   private readonly subs = new SubSink();
 
   loading = true;
@@ -56,8 +55,7 @@ export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
   workLocationOptions: string[] = [];
   taskDateOptions: string[] = [];
 
-  private readonly autoRefreshIntervalMs = 5000;
-  private lastMembersSnapshot = '';
+  // (Auto-refresh removed)
 
   constructor(
     private clipboard: Clipboard,
@@ -72,16 +70,12 @@ export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
       if (res.data) {
         this.teams = res.data;
         this.form.controls.selectedTeamId.setValue(this.teams[0].id);
-        this.getMembers();
-        this.setupAutoRefresh();
+    this.getMembers();
       }
       this.loading = false;
     });
   }
-
-  ngOnDestroy(): void {
-    this.subs.unsubscribe();
-  }
+  // (OnDestroy removal as auto-refresh logic removed; SubSink still collects active subscriptions which naturally complete.)
 
   get allTeamsSelected(): boolean {
     return this.form.controls.selectedTeamId.value === 'ALL';
@@ -96,9 +90,8 @@ export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
       this.subs.sink = forkJoin(requests).subscribe(results => {
         this.multiTeamMembersOriginal = results;
         this.teamMembers = results.flatMap(r => r.members);
-        this.populateWorkLocationOptions();
-        this.applyFilters();
-        this.snapshotMembers();
+  this.populateWorkLocationOptions();
+  this.applyFilters();
         this.loadingMembers = false;
       });
     } else {
@@ -108,64 +101,8 @@ export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
           this.populateWorkLocationOptions();
           this.applyFilters();
           this.pageCount = Math.ceil(this.teamMembers.length / this.itemsPerPage);
-          this.snapshotMembers();
         }
         this.loadingMembers = false;
-      });
-    }
-  }
-
-  private snapshotMembers() {
-    try {
-      const relevant = this.allTeamsSelected ? this.multiTeamMembersOriginal : this.teamMembers;
-      this.lastMembersSnapshot = JSON.stringify(relevant, (key, value) => {
-        if (typeof value === 'function') return undefined;
-        return value;
-      });
-    } catch {
-    }
-  }
-
-  private setupAutoRefresh() {
-    this.subs.sink = interval(this.autoRefreshIntervalMs).subscribe(() => {
-      if (!this.loadingMembers) {
-        this.refreshIfChanged();
-      }
-    });
-    this.subs.sink = fromEvent(document, 'visibilitychange')
-      .pipe(filter(() => document.visibilityState === 'visible'))
-      .subscribe(() => {
-        if (!this.loadingMembers) {
-          this.refreshIfChanged(true);
-        }
-      });
-  }
-
-  private refreshIfChanged(force: boolean = false) {
-    const prevSnapshot = this.lastMembersSnapshot;
-    const selected = this.form.controls.selectedTeamId.value;
-    if (selected === 'ALL') {
-      const requests = this.teams.map(t => this.teamHttpService.getTeamMembers(t.id).pipe(map(r => ({ team: t, members: r.data || [] }))));
-      this.subs.sink = forkJoin(requests).subscribe(results => {
-        const newSnapshot = JSON.stringify(results);
-        if (force || newSnapshot !== prevSnapshot) {
-          this.multiTeamMembersOriginal = results;
-          this.teamMembers = results.flatMap(r => r.members);
-          this.populateWorkLocationOptions();
-          this.applyFilters();
-          this.lastMembersSnapshot = newSnapshot;
-        }
-      });
-    } else {
-      this.subs.sink = this.teamHttpService.getTeamMembers(selected).subscribe(res => {
-        const members = res.data || [];
-        const newSnapshot = JSON.stringify(members);
-        if (force || newSnapshot !== prevSnapshot) {
-          this.teamMembers = members;
-          this.populateWorkLocationOptions();
-          this.applyFilters();
-          this.lastMembersSnapshot = newSnapshot;
-        }
       });
     }
   }
