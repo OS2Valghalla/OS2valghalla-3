@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { SubSink } from 'subsink';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { FormBuilder } from '@angular/forms';
@@ -16,7 +16,7 @@ import { NotificationService } from 'src/shared/services/notification.service';
   styleUrls: ['landing.component.scss'],
   providers: [TeamHttpService],
 })
-export class MyTeamLandingComponent implements AfterViewInit {
+export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
   private readonly subs = new SubSink();
 
   loading = true;
@@ -55,8 +55,6 @@ export class MyTeamLandingComponent implements AfterViewInit {
   workLocationOptions: string[] = [];
   taskDateOptions: string[] = [];
 
-  // (Auto-refresh removed)
-
   constructor(
     private clipboard: Clipboard,
     private formBuilder: FormBuilder,
@@ -70,13 +68,12 @@ export class MyTeamLandingComponent implements AfterViewInit {
       if (res.data) {
         this.teams = res.data;
         this.form.controls.selectedTeamId.setValue(this.teams[0].id);
-    this.getMembers();
+        this.getMembers();
       }
       this.loading = false;
     });
   }
-  // (OnDestroy removal as auto-refresh logic removed; SubSink still collects active subscriptions which naturally complete.)
-
+  ngOnDestroy(): void { this.subs.unsubscribe(); }
   get allTeamsSelected(): boolean {
     return this.form.controls.selectedTeamId.value === 'ALL';
   }
@@ -90,8 +87,8 @@ export class MyTeamLandingComponent implements AfterViewInit {
       this.subs.sink = forkJoin(requests).subscribe(results => {
         this.multiTeamMembersOriginal = results;
         this.teamMembers = results.flatMap(r => r.members);
-  this.populateWorkLocationOptions();
-  this.applyFilters();
+        this.populateWorkLocationOptions();
+        this.applyFilters();
         this.loadingMembers = false;
       });
     } else {
@@ -117,51 +114,47 @@ export class MyTeamLandingComponent implements AfterViewInit {
   }
 
   applyFilters() {
-    const keyword = (this.form.controls.keyword.value || '').toLowerCase();
-    const wl = this.form.controls.workLocation.value;
-    const statusFilter = this.form.controls.taskStatus.value;
-    const dateFilter = this.form.controls.taskDate.value; // yyyy-MM-dd
-    const statusNumber = statusFilter === '' || statusFilter === null ? null : +statusFilter;
-
-    const filterTasksByStatus = (members: TeamMember[]): TeamMember[] => {
-      if (statusNumber === null || statusNumber === undefined) return members;
-      return members
-        .map(m => {
-          const filteredWorkLocations = (m.workLocations || [])
-            .map(w => ({
-              ...w,
-              tasks: (w.tasks || []).filter(t => t.taskStatus === statusNumber && (!dateFilter || (t.taskDate && t.taskDate.startsWith(dateFilter)))),
-            }))
-            .filter(w => w.tasks.length > 0);
-          return { ...m, workLocations: filteredWorkLocations } as TeamMember;
-        })
-        .filter(m => m.workLocations && m.workLocations.length > 0);
-    };
+    const { keyword, workLocation, taskStatus, taskDate } = this.form.value;
+    const k = (keyword || '').toLowerCase();
+    const wl = workLocation as string;
+    const dateFilter = taskDate as string;
+    const statusNumber = taskStatus === '' || taskStatus === null ? null : Number(taskStatus);
+    const process = (members: TeamMember[]) => this.pruneMembers(this.filterMembers(members, k, wl, dateFilter), statusNumber, dateFilter);
     if (this.allTeamsSelected) {
       this.multiTeamMembersFiltered = this.multiTeamMembersOriginal
-        .map(grp => {
-          let members = grp.members.filter(member => {
-            const matchesName = !keyword || member.name.toLowerCase().includes(keyword);
-            const matchesWl = !wl || member.workLocations?.some(w => w.workLocationTitle === wl);
-            const matchesDate = !dateFilter || member.workLocations?.some(w => w.tasks?.some(t => t.taskDate && t.taskDate.startsWith(dateFilter)));
-            return matchesName && matchesWl && matchesDate;
-          });
-          members = filterTasksByStatus(members);
-          return { team: grp.team, members };
-        })
-        .filter(grp => grp.members.length > 0);
+        .map(g => ({ team: g.team, members: process(g.members) }))
+        .filter(g => g.members.length);
     } else {
-      let filtered = this.teamMembers.filter(member => {
-        const matchesName = !keyword || member.name.toLowerCase().includes(keyword);
-        const matchesWl = !wl || member.workLocations?.some(w => w.workLocationTitle === wl);
-        const matchesDate = !dateFilter || member.workLocations?.some(w => w.tasks?.some(t => t.taskDate && t.taskDate.startsWith(dateFilter)));
-        return matchesName && matchesWl && matchesDate;
-      });
-      filtered = filterTasksByStatus(filtered);
-      this.displayTeamMembers = filtered;
+      this.displayTeamMembers = process(this.teamMembers);
       this.currentPage = 1;
       this.pageCount = Math.ceil(this.displayTeamMembers.length / this.itemsPerPage);
     }
+  }
+
+  private filterMembers(members: TeamMember[], keyword: string, wl: string, date: string): TeamMember[] {
+    return members.filter(m => {
+      const nameOk = !keyword || m.name.toLowerCase().includes(keyword);
+      const wlOk = !wl || m.workLocations?.some(w => w.workLocationTitle === wl);
+      const dateOk = !date || m.workLocations?.some(w => w.tasks?.some(t => t.taskDate && t.taskDate.startsWith(date)));
+      return nameOk && wlOk && dateOk;
+    });
+  }
+
+  private pruneMembers(members: TeamMember[], statusNumber: number | null, date: string): TeamMember[] {
+    if (statusNumber === null && !date) return members;
+    return members
+      .map(m => {
+        const workLocations = (m.workLocations || [])
+          .map(w => {
+            let tasks = w.tasks || [];
+            if (statusNumber !== null) tasks = tasks.filter(t => t.taskStatus === statusNumber);
+            if (date) tasks = tasks.filter(t => t.taskDate && t.taskDate.startsWith(date));
+            return { ...w, tasks };
+          })
+          .filter(w => w.tasks.length);
+        return { ...m, workLocations } as TeamMember;
+      })
+      .filter(m => m.workLocations && m.workLocations.length);
   }
 
   onFilterChanged() {
