@@ -228,17 +228,18 @@ export class CommunicationTemplateItemComponent implements AfterViewInit, OnDest
       this.previewSubject = this.formContent.controls.subject.value;
       this.previewContent = this.formInfo.value.templateType != CommunicationTemplateTypes.SMS ? this.formContent.controls.content.value : this.formContent.controls.plainTextContent.value;
 
-      this.tokens.sort((a, b) => { return -1 * (a.length - b.length); }).forEach((token) => {
-        const baseTranslation = this.translocoService.translate('communication.tokens_preview.' + token);
-        const replacement = token === 'payment' && baseTranslation && !/\bkr\.?$/.test(baseTranslation.trim())
-          ? baseTranslation + ' kr.'
-          : baseTranslation;
-
-        if (this.formInfo.value.templateType != CommunicationTemplateTypes.SMS) {
-          this.previewSubject = (this.previewSubject as any).replaceAll('!' + token, replacement);
-        }
-        this.previewContent = (this.previewContent as any).replaceAll('!' + token, replacement);
-      });
+      this.tokens
+        .sort((a, b) => -1 * (a.length - b.length))
+        .forEach((token) => {
+          let tokenValue = this.translocoService.translate('communication.tokens_preview.' + token);
+          if (token === 'payment') {
+            tokenValue = tokenValue + ' kr.';
+          }
+          if (this.formInfo.value.templateType != CommunicationTemplateTypes.SMS) {
+            this.previewSubject = (this.previewSubject as any).replaceAll('!' + token, tokenValue);
+          }
+            this.previewContent = (this.previewContent as any).replaceAll('!' + token, tokenValue);
+        });
 
       this.preparingPreviewContent = false;
     }
