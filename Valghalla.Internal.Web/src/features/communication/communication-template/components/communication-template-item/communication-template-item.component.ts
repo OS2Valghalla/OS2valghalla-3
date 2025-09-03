@@ -229,10 +229,15 @@ export class CommunicationTemplateItemComponent implements AfterViewInit, OnDest
       this.previewContent = this.formInfo.value.templateType != CommunicationTemplateTypes.SMS ? this.formContent.controls.content.value : this.formContent.controls.plainTextContent.value;
 
       this.tokens.sort((a, b) => { return -1 * (a.length - b.length); }).forEach((token) => {
+        const baseTranslation = this.translocoService.translate('communication.tokens_preview.' + token);
+        const replacement = token === 'payment' && baseTranslation && !/\bkr\.?$/.test(baseTranslation.trim())
+          ? baseTranslation + ' kr.'
+          : baseTranslation;
+
         if (this.formInfo.value.templateType != CommunicationTemplateTypes.SMS) {
-          this.previewSubject = (this.previewSubject as any).replaceAll('!' + token, this.translocoService.translate('communication.tokens_preview.' + token));
+          this.previewSubject = (this.previewSubject as any).replaceAll('!' + token, replacement);
         }
-        this.previewContent = (this.previewContent as any).replaceAll('!' + token, this.translocoService.translate('communication.tokens_preview.' + token));
+        this.previewContent = (this.previewContent as any).replaceAll('!' + token, replacement);
       });
 
       this.preparingPreviewContent = false;
