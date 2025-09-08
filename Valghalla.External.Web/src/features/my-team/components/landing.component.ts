@@ -44,6 +44,8 @@ export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
 
   selectedTeamMember: TeamMember;
 
+  private participantTableRow: Record<string, Array<{ workLocationTitle: string; taskTitle: string; taskDate?: string; taskStatus: number }>> = {};
+
   readonly form = this.formBuilder.group({
     selectedTeamId: [''],
     keyword: '',
@@ -119,15 +121,17 @@ export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
     const wl = workLocation as string;
     const dateFilter = taskDate as string;
     const statusNumber = taskStatus === '' || taskStatus === null ? null : Number(taskStatus);
-    const process = (members: TeamMember[]) => this.pruneMembers(this.filterMembers(members, k, wl, dateFilter), statusNumber, dateFilter);
+    const process = (members: TeamMember[]) => this.pruneMembers(this.filterMembers(members, k, wl, dateFilter), statusNumber, dateFilter, wl);
     if (this.allTeamsSelected) {
       this.multiTeamMembersFiltered = this.multiTeamMembersOriginal
         .map(g => ({ team: g.team, members: process(g.members) }))
         .filter(g => g.members.length);
+      this.participantTableRow = {};
     } else {
       this.displayTeamMembers = process(this.teamMembers);
       this.currentPage = 1;
       this.pageCount = Math.ceil(this.displayTeamMembers.length / this.itemsPerPage);
+      this.buildRowsForParticipants(this.displayTeamMembers);
     }
   }
 
@@ -140,11 +144,15 @@ export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  private pruneMembers(members: TeamMember[], statusNumber: number | null, date: string): TeamMember[] {
-    if (statusNumber === null && !date) return members;
+  private pruneMembers(members: TeamMember[], statusNumber: number | null, date: string, workLocationFilter?: string): TeamMember[] {
+    if (statusNumber === null && !date && !workLocationFilter) return members;
     return members
       .map(m => {
-        const workLocations = (m.workLocations || [])
+        let workLocations = (m.workLocations || []);
+        if (workLocationFilter) {
+          workLocations = workLocations.filter(w => w.workLocationTitle === workLocationFilter);
+        }
+        workLocations = workLocations
           .map(w => {
             let tasks = w.tasks || [];
             if (statusNumber !== null) tasks = tasks.filter(t => t.taskStatus === statusNumber);
@@ -212,5 +220,27 @@ export class MyTeamLandingComponent implements AfterViewInit, OnDestroy {
 
   searchMembers() {
     this.applyFilters();
+  }
+  private buildRowsForParticipants(members: TeamMember[]) {
+    const cache: typeof this.participantTableRow = {};
+    members.forEach(m => {
+      const rows: Array<{ workLocationTitle: string; taskTitle: string; taskDate?: string; taskStatus: number }> = [];
+      (m.workLocations || []).forEach(wl => {
+        (wl.tasks || []).forEach(t => {
+          rows.push({
+            workLocationTitle: wl.workLocationTitle,
+            taskTitle: t.taskTitle,
+            taskDate: t.taskDate,
+            taskStatus: t.taskStatus,
+          });
+        });
+      });
+      cache[m.id] = rows;
+    });
+    this.participantTableRow = cache;
+  }
+
+  getParticipantRow(member: TeamMember) {
+    return this.participantTableRow[member.id] || [];
   }
 }

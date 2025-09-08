@@ -19,6 +19,6 @@
     {
         public string TaskTitle { get; set; } = string.Empty;
         public int TaskStatus { get; set; }
-        public DateOnly TaskDate { get; set; }
+        public DateTime TaskDate { get; set; }
     }
 }
