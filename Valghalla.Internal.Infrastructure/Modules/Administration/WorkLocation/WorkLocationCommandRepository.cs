@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using Valghalla.Database;
 using Valghalla.Database.Entities.Tables;
@@ -17,12 +15,8 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
         private readonly DbSet<WorkLocationTaskTypeEntity> workLocationTaskTypes;
         private readonly DbSet<WorkLocationResponsibleEntity> workLocationResponsibles;
         private readonly DbSet<WorkLocationTeamEntity> workLocationTeams;
-        private readonly DbSet<TaskTypeEntity> taskTypes;
-        private readonly DbSet<TaskTypeFileEntity> taskTypeFiles;
-        private readonly DbSet<ElectionWorkLocationEntity> electionWorkLocationEntities;
-        private readonly IMapper mapper;
 
-        public WorkLocationCommandRepository(DataContext dataContext, IMapper mapper)
+        public WorkLocationCommandRepository(DataContext dataContext)
         {
             this.dataContext = dataContext;
             tasks = dataContext.Set<TaskAssignmentEntity>();
@@ -30,16 +24,11 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             workLocationTaskTypes = dataContext.Set<WorkLocationTaskTypeEntity>();
             workLocationResponsibles = dataContext.Set<WorkLocationResponsibleEntity>();
             workLocationTeams = dataContext.Set<WorkLocationTeamEntity>();
-            taskTypes = dataContext.Set<TaskTypeEntity>();
-            taskTypeFiles = dataContext.Set<TaskTypeFileEntity>();
-            electionWorkLocationEntities = dataContext.Set<ElectionWorkLocationEntity>();
-            this.mapper = mapper;
         }
 
         public async Task<Guid> CreateWorkLocationAsync(CreateWorkLocationCommand command, CancellationToken cancellationToken)
         {
             var workLocationId = Guid.NewGuid();
-
             var entity = new WorkLocationEntity()
             {
                 Id = workLocationId,
@@ -47,12 +36,10 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                 AreaId = command.AreaId,
                 Address = command.Address,
                 PostalCode = command.PostalCode,
-                City = command.City,
-                VoteLocation = command.VoteLocation
+                City = command.City
             };
 
             await workLocations.AddAsync(entity, cancellationToken);
-
             foreach (var taskTypeId in command.TaskTypeIds)
             {
                 var childEntity = new WorkLocationTaskTypeEntity()
@@ -81,13 +68,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
                 await workLocationResponsibles.AddAsync(childEntity, cancellationToken);
             }
 
-            var electionWorkLocation = new ElectionWorkLocationEntity()
-            {
-                ElectionId = command.ElectionId,
-                WorkLocationId = workLocationId
-            };
-            await electionWorkLocationEntities.AddAsync(electionWorkLocation);
-
             await dataContext.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
@@ -105,7 +85,6 @@ namespace Valghalla.Internal.Infrastructure.Modules.Administration.WorkLocation
             entity.Address = command.Address;
             entity.PostalCode = command.PostalCode;
             entity.City = command.City;
-            entity.VoteLocation = command.VoteLocation;
 
             workLocations.Update(entity);
 
