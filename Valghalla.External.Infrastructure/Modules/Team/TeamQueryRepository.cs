@@ -78,10 +78,9 @@ namespace Valghalla.External.Infrastructure.Modules.Team
                     .Include(t => t.TaskType)
                     .ToListAsync(cancellationToken);
 
-
                 var workLocationGroups = memberTasks
-                    .Select(mt => new { mt.WorkLocationId, Location = mt.WorkLocation.Title, TaskTitle = mt.TaskType.Title, mt.TaskDate, TaskStatus = mt.Accepted ? 0 : (!mt.Responsed ? 1 : 2) })
-                    .Concat(memberRejectedTasks.Select(rt => new { rt.WorkLocationId, Location = rt.WorkLocation.Title, TaskTitle = rt.TaskType.Title, rt.TaskDate, TaskStatus = 2 }))
+                    .Select(mt => new { mt.WorkLocationId, Location = mt.WorkLocation.Title, TaskTitle = mt.TaskType.Title, TaskDate = ToLocalCalendarDate(mt.TaskDate), TaskStatus = mt.Accepted ? 0 : (!mt.Responsed ? 1 : 2) })
+                    .Concat(memberRejectedTasks.Select(rt => new { rt.WorkLocationId, Location = rt.WorkLocation.Title, TaskTitle = rt.TaskType.Title, TaskDate = ToLocalCalendarDate(rt.TaskDate), TaskStatus = 2 }))
                     .GroupBy(x => new { x.WorkLocationId, x.Location })
                     .ToList();
 
@@ -92,12 +91,24 @@ namespace Valghalla.External.Infrastructure.Modules.Team
                     {
                         TaskTitle = t.TaskTitle,
                         TaskStatus = t.TaskStatus,
-                        TaskDate = DateOnly.FromDateTime(t.TaskDate)
+                        TaskDate = DateTime.SpecifyKind(t.TaskDate, DateTimeKind.Unspecified)
                     }).OrderBy(t => t.TaskDate).ToList()
                 }).OrderBy(w => w.WorkLocationTitle).ToList();
             }
 
             return teamMembers;
         }
+
+        private static DateTime ToLocalCalendarDate(DateTime dt)
+        {
+            if (dt.Kind == DateTimeKind.Utc)
+                dt = dt.ToLocalTime();
+            else if (dt.Kind == DateTimeKind.Unspecified)
+            {
+                dt = DateTime.SpecifyKind(dt, DateTimeKind.Utc).ToLocalTime();
+            }
+            return dt.Date;
+        }
     }
+
 }
