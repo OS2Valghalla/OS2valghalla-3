@@ -17,7 +17,7 @@ namespace Valghalla.External.Infrastructure.Modules.Team
         private readonly IQueryable<TaskAssignmentEntity> tasks;
         private readonly IQueryable<WorkLocationEntity> workLocations;
         private readonly IQueryable<TaskAssignmentEntity> taskAssignments;
-        private readonly IQueryable<RejectedTaskAssignmentEntity> rejectedTaskAssignments;
+        private readonly IQueryable<RejectedTaskAssignmentEntity> rejectedTaskAssignments;        
 
         public TeamQueryRepository(DataContext dataContext, IMapper mapper)
         {
@@ -27,7 +27,7 @@ namespace Valghalla.External.Infrastructure.Modules.Team
             tasks = dataContext.Set<TaskAssignmentEntity>().AsNoTracking();
             workLocations = dataContext.Set<WorkLocationEntity>().AsNoTracking();
             taskAssignments = dataContext.Set<TaskAssignmentEntity>().AsNoTracking();
-            rejectedTaskAssignments = dataContext.Set<RejectedTaskAssignmentEntity>().AsNoTracking();
+            rejectedTaskAssignments = dataContext.Set<RejectedTaskAssignmentEntity>().AsNoTracking();            
         }
 
         public async Task<IList<TeamResponse>> GetMyTeamsAsync(Guid participantId, CancellationToken cancellationToken)
@@ -55,8 +55,10 @@ namespace Valghalla.External.Infrastructure.Modules.Team
 
             if (!teamEntities.Any(t => t.Id == teamId)) return new List<TeamMemberResponse>();
 
-            var participantEntities = await participants.Include(i => i.TeamMembers)
-                .Where(i => i.TeamMembers.Any(i => i.TeamId == teamId))
+            var participantEntities = await participants
+                .Include(i => i.TeamMembers)
+                .Include(i => i.TeamResponsibles)
+                .Where(i => i.TeamMembers.Any(tm => tm.TeamId == teamId) || i.TeamResponsibles.Any(tr => tr.TeamId == teamId))
                 .OrderBy(i => i.FirstName).ThenBy(i => i.LastName)
                 .ToListAsync(cancellationToken);
 
