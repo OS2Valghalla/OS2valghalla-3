@@ -13,6 +13,8 @@ import { Router } from '@angular/router';
 import { TaskStatusGeneralInfoResponse } from '../../models/task-status-general-info-response';
 import { TranslocoService } from '@ngneat/transloco';
 
+const DANISH_LOCALE = 'da';
+
 export interface AreaTasksSummary {
   areaId: string;
   workLocations: Array<WorkLocationTasksSummary>;
@@ -251,14 +253,26 @@ export class TasksOverviewComponent implements AfterViewInit {
     this.allAreasData = this.createEmptyAllAreasData();
     const summaryIndex = new Map<string, TasksSummary>();
     this.areaTasksSummary.forEach(t => summaryIndex.set(t.workLocationId + '|' + t.taskTypeId, t));
-    this.areasGeneralInfo.areas.forEach(area => {
+
+    const sortedAreas = [...this.areasGeneralInfo.areas].sort((a, b) => a.name.localeCompare(b.name, DANISH_LOCALE));
+
+    sortedAreas.forEach(area => {
       const areaSummary: AreaTasksSummary = { areaId: area.id, workLocations: [], displayedColumns: ['workLocation'] };
       this.areasGeneralInfo.taskTypes.forEach(tt => { if (tt.areaIds.includes(area.id)) areaSummary.displayedColumns.push(tt.id); });
       areaSummary.displayedColumns.push('total');
-      const workLocations = this.areasGeneralInfo.workLocations.filter(wl => wl.areaId === area.id);
+
+      const workLocations = this.areasGeneralInfo.workLocations
+        .filter(wl => wl.areaId === area.id)
+        .sort((a, b) => a.title.localeCompare(b.title, DANISH_LOCALE));
+
       workLocations.forEach(wl => {
         const wlSummary: WorkLocationTasksSummary = { workLocationId: wl.id, workLocationName: wl.title, taskTypes: [] };
-        this.areasGeneralInfo.taskTypes.forEach((tt, idx) => {
+        const sortedTaskTypes = [...this.areasGeneralInfo.taskTypes].sort((a, b) => {
+          const an = a.shortName || a.title || '';
+          const bn = b.shortName || b.title || '';
+          return an.localeCompare(bn, DANISH_LOCALE);
+        });
+        sortedTaskTypes.forEach((tt, idx) => {
           const found = summaryIndex.get(wl.id + '|' + tt.id);
           const taskSummary: TaskTypeTasksSummary = {
             taskTypeId: tt.id,
