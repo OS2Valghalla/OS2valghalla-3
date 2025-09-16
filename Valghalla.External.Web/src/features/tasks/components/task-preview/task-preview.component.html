@@ -35,7 +35,7 @@
       <span>{{ model.team.name }}</span>
     </div>
   </div>
-  <div class="row row-bordered no-gutters">
+  <div class="row row-bordered no-gutters" *ngIf="model?.taskType?.payment !== 0">
     <div class="col">
       <span class="bold mr-2">{{ 'tasks.task_preview.labels.payment' | transloco }}</span>
       <span
