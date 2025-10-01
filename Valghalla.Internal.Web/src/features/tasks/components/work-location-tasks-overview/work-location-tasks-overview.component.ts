@@ -18,6 +18,7 @@ import { TaskAssignment } from '../../models/task-assignment';
 import { AssignParticipantToTaskRequest } from '../../models/assign-participant-to-task-request';
 import { RemoveParticipantFromTaskRequest } from '../../models/remove-participant-from-task-request';
 import { WorkLocationTasksHttpService } from '../../services/work-location-tasks-http.service';
+import { DateUtils } from 'src/shared/functions/date-utils';
 import { TeamShared } from 'src/shared/models/team/team-shared';
 import { MoveTasksRequest } from '../../models/move-tasks-request';
 
@@ -181,7 +182,7 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
           this.allDatesWorkLocationTasks.teams.push(allDatesTaskTypesSummary);
         }
         this.workLocationTasksSummary.taskTypes.forEach((taskType, taskTypeIndex) => {
-          const foundTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == team.id && t.taskTypeId == taskType.id && new Date(t.tasksDate).valueOf() === tasksDate.valueOf());
+          const foundTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == team.id && t.taskTypeId == taskType.id && DateUtils.sameDay(t.tasksDate, tasksDate));
 
           const taskTypeTasksSummary: TaskTypeTasksSummary = {
             taskTypeId: taskType.id,
@@ -216,8 +217,8 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
 
     if (this.selectedDateIndex >= 0) {
       this.dailyTeamTasks.forEach((team) => {
-        team.displayingTasks = team.tasks.filter(t => (new Date(t.taskDate)).valueOf() === this.dailyWorkLocationTasks[this.selectedDateIndex].tasksDate.valueOf());
-        team.rejectedDisplayingTasks = team.rejectedTasks.filter(t => (new Date(t.taskDate)).valueOf() === this.dailyWorkLocationTasks[this.selectedDateIndex].tasksDate.valueOf());
+        team.displayingTasks = team.tasks.filter(t => DateUtils.sameDay(t.taskDate, this.dailyWorkLocationTasks[this.selectedDateIndex].tasksDate));
+        team.rejectedDisplayingTasks = team.rejectedTasks.filter(t => DateUtils.sameDay(t.taskDate, this.dailyWorkLocationTasks[this.selectedDateIndex].tasksDate));
       });
     }
 
@@ -247,8 +248,8 @@ export class WorkLocationTasksOverviewComponent implements OnInit {
   onDateChanged() {
     if (this.selectedDateIndex >= 0) {
       this.dailyTeamTasks.forEach((team) => {
-        team.displayingTasks = team.tasks.filter(t => (new Date(t.taskDate)).valueOf() === this.dailyWorkLocationTasks[this.selectedDateIndex].tasksDate.valueOf());
-        team.rejectedDisplayingTasks = team.rejectedTasks.filter(t => (new Date(t.taskDate)).valueOf() === this.dailyWorkLocationTasks[this.selectedDateIndex].tasksDate.valueOf());
+        team.displayingTasks = team.tasks.filter(t => DateUtils.sameDay(t.taskDate, this.dailyWorkLocationTasks[this.selectedDateIndex].tasksDate));
+        team.rejectedDisplayingTasks = team.rejectedTasks.filter(t => DateUtils.sameDay(t.taskDate, this.dailyWorkLocationTasks[this.selectedDateIndex].tasksDate));
       });
     }
     else {
