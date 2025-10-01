@@ -11,7 +11,7 @@ import { WorkLocationInfo } from '../../models/work-location-info';
 import { WorkLocationTasksSummary } from '../../models/work-location-tasks-summary';
 import { WorkLocationTasksDistributingRequest, TasksDistributingRequest } from '../../models/work-location-tasks-distributing-request';
 import { WorkLocationTasksHttpService } from '../../services/work-location-tasks-http.service';
-import { DanishLocale, compareStringsLocale } from 'src/shared/functions/sort-helper';
+import { DateUtils } from 'src/shared/functions/date-utils';
 
 interface DailyWorkLocationTasks {
   tasksDate: Date;
@@ -83,9 +83,6 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
           this.breadcrumbService.set('/' + RoutingNodes.TasksOnWorkLocation + '/:' + RoutingNodes.WorkLocationId, this.translocoService.translate('tasks.work_location_tasks.tasks_on') + ' ' + this.workLocation.title);
           this.subs.sink = this.workLocationTasksHttpService.getWorkLocationTasksSummary(this.itemId, this.election.id).subscribe((taskTypesSummaryResult) => {
             this.workLocationTasksSummary = taskTypesSummaryResult.data;
-            if (this.workLocationTasksSummary?.teams) {
-              this.workLocationTasksSummary.teams.sort((a, b) => compareStringsLocale(a.name, b.name, DanishLocale));
-            }
             this.workLocationTasksSummary.taskTypes.forEach((taskType) => {
               this.displayedColumns.push(taskType.id);
             });
@@ -114,7 +111,7 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
     const electionDate: Date = new Date(this.workLocationTasksSummary.electionDate);
     const tasksDate: Date = new Date(this.workLocationTasksSummary.electionStartDate);
     if (this.workLocationTasksSummary?.teams) {
-      this.workLocationTasksSummary.teams.sort((a, b) => compareStringsLocale(a.name, b.name, DanishLocale));
+      this.workLocationTasksSummary.teams.sort((a, b) => a.name.localeCompare(b.name, 'da'));
     }
     while (tasksDate <= new Date(this.workLocationTasksSummary.electionEndDate)) {
       const clonedTasksDate = new Date(tasksDate);
@@ -129,7 +126,7 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
           taskTypes: []
         };
         this.workLocationTasksSummary.taskTypes.forEach((taskType) => {
-          const foundTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == team.id && t.taskTypeId == taskType.id && new Date(t.tasksDate).valueOf() === tasksDate.valueOf());
+          const foundTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == team.id && t.taskTypeId == taskType.id && DateUtils.sameDay(t.tasksDate, clonedTasksDate));
 
           const taskTypeTasksSummary: TaskTypeTasksSummary = {
             taskTypeId: taskType.id,
@@ -140,11 +137,11 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
         });
         dailyWorkLocationTasksItem.teams.push(taskTypesSummary);
       });
-      dailyWorkLocationTasksItem.teams.sort((a, b) => compareStringsLocale(a.teamName, b.teamName, DanishLocale));
+  dailyWorkLocationTasksItem.teams.sort((a, b) => a.teamName.localeCompare(b.teamName, 'da'));
 
       this.dailyWorkLocationTasks.push(dailyWorkLocationTasksItem);
 
-      if (tasksDate.valueOf() === electionDate.valueOf()) {
+      if (DateUtils.sameDay(tasksDate, electionDate)) {
         this.initSelectedDateIndex = this.dailyWorkLocationTasks.indexOf(dailyWorkLocationTasksItem);
       }
       tasksDate.setDate(tasksDate.getDate() + 1);
@@ -217,9 +214,9 @@ export class WorkLocationTasksDistributionComponent implements OnInit, AfterView
 
     const dailyWorkLocationTask = this.dailyWorkLocationTasks[this.selectedDateIndex];
 
-    const foundWorkLocationTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == teamsSummary.teamId && t.taskTypeId == taskTypesSummary.taskTypeId && (new Date(t.tasksDate)).valueOf() === dailyWorkLocationTask.tasksDate.valueOf());
+  const foundWorkLocationTasks = this.workLocationTasksSummary.tasks.filter(t => t.teamId == teamsSummary.teamId && t.taskTypeId == taskTypesSummary.taskTypeId && DateUtils.sameDay(t.tasksDate, dailyWorkLocationTask.tasksDate));
 
-    const foundUpdatingTasks = this.updatingTasks.filter(t => t.teamId == teamsSummary.teamId && t.taskTypeId == taskTypesSummary.taskTypeId && (new Date(t.tasksDate)).valueOf() === dailyWorkLocationTask.tasksDate.valueOf());
+  const foundUpdatingTasks = this.updatingTasks.filter(t => t.teamId == teamsSummary.teamId && t.taskTypeId == taskTypesSummary.taskTypeId && DateUtils.sameDay(t.tasksDate, dailyWorkLocationTask.tasksDate));
     if (!foundWorkLocationTasks || foundWorkLocationTasks.length == 0) {
       if (!foundUpdatingTasks || foundUpdatingTasks.length == 0) {
         if (taskTypesSummary.allTasksCount > 0) {
