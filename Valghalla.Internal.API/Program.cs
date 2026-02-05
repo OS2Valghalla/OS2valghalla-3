@@ -15,6 +15,7 @@ using Valghalla.Application.Secret;
 using Valghalla.Application.Tenant;
 using Valghalla.Application.User;
 using Valghalla.Integration;
+using Valghalla.Integration.Saml;
 using Valghalla.Internal.API.Auth;
 using Valghalla.Internal.API.HealthChecks.Responses;
 using Valghalla.Internal.API.Middlewares;
@@ -104,6 +105,15 @@ namespace Valghalla.Internal.API
 
             builder.Services.AddAuthServices();
 
+            // Register SAML2 log cleanup service for periodic cleanup
+            builder.Services.AddHostedService(provider =>
+            {
+                var loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+                var logger = loggerFactory.CreateLogger<Saml2LogCleanupService>();
+                var saml2LogDir = Saml2LoggerConfiguration.GetDefaultLogDirectory();
+                return new Saml2LogCleanupService(logger, saml2LogDir, retentionDays: 7, cleanupTimeUtc: "02:00");
+            });
+
             var corsPolicyName = "ValghallaCorsPolicy";
 
             builder.Services.AddCors(options =>
@@ -146,6 +156,9 @@ namespace Valghalla.Internal.API
                     shared: true,
                     outputTemplate: serilogConfig.OutputTemplate,
                     rollingInterval: Enum.Parse<RollingInterval>(serilogConfig.RollingInterval))
+                .ConfigureSaml2Logging(
+                    logDirectory: Saml2LoggerConfiguration.GetDefaultLogDirectory(),
+                    retentionDays: 7)
                 .CreateBootstrapLogger();
 
             builder.Logging.ClearProviders();
@@ -172,6 +185,9 @@ namespace Valghalla.Internal.API
                             shared: true,
                             outputTemplate: serilogConfig.OutputTemplate,
                             rollingInterval: Enum.Parse<RollingInterval>(serilogConfig.RollingInterval))
+                        .ConfigureSaml2Logging(
+                            logDirectory: Saml2LoggerConfiguration.GetDefaultLogDirectory(),
+                            retentionDays: 7)
                         .WriteTo.Map(nameof(LogContextHandlingMiddleware), (logFilePath, wt) =>
                         {
                             wt.File(
