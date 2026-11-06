@@ -1,12 +1,13 @@
+using System.Reflection;
+
 using MassTransit;
 
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 using Serilog;
 
-using System.Reflection;
 using Valghalla.Application.Auth;
 using Valghalla.Application.Authentication;
 using Valghalla.Application.Queue;
@@ -182,7 +183,7 @@ namespace Valghalla.Internal.API
                         });
                 });
 
-                builder.WebHost.UseUrls("http://*:80"); // Note: This needs to be removed in Dev
+                //builder.WebHost.UseUrls("http://*:80"); // Note: This needs to be removed in Dev
 
                 var app = builder.Build();
 

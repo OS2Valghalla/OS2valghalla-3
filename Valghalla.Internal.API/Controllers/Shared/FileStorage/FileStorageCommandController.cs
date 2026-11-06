@@ -18,7 +18,7 @@ namespace Valghalla.Internal.API.Controllers.Shared.FileStorage
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFileAsync([FromForm] IFormFile content, [FromQuery] string type, CancellationToken cancellationToken)
+        public async Task<IActionResult> UploadFileAsync(IFormFile content, [FromQuery] string type, CancellationToken cancellationToken)
         {
             var stream = content.OpenReadStream();
             var fileName = content.FileName;

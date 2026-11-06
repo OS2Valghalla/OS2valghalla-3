@@ -2,7 +2,7 @@ using MassTransit;
 using MassTransit.Internals;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Serilog;
 using System.Reflection;
 using Valghalla.Application.Auth;
@@ -185,7 +185,7 @@ namespace Valghalla.External.API
                         });
                 });
 
-                builder.WebHost.UseUrls("http://*:80");
+                //builder.WebHost.UseUrls("http://*:80");
 
                 var app = builder.Build();
 
