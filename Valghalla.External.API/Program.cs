@@ -185,7 +185,10 @@ namespace Valghalla.External.API
                         });
                 });
 
-                //builder.WebHost.UseUrls("http://*:80");
+                if (builder.Environment.IsDevelopment())
+                {
+                    builder.WebHost.UseUrls("http://*:80");
+                }
 
                 var app = builder.Build();
 
